@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "ticketingsystemadmin",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authticketingsystemadmin93d9a57393d9a573",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

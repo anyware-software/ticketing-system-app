@@ -1,0 +1,36 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-ticketingsystemadmin-dev-132756-authRole",
+      "UnauthRoleArn": "arn:aws:iam::330114034090:role/amplify-ticketingsystemadmin-dev-132756-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::330114034090:role/amplify-ticketingsystemadmin-dev-132756-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",
+      "UnauthRoleName": "amplify-ticketingsystemadmin-dev-132756-unauthRole",
+      "StackName": "amplify-ticketingsystemadmin-dev-132756",
+      "StackId": "arn:aws:cloudformation:us-east-2:330114034090:stack/amplify-ticketingsystemadmin-dev-132756/036c48b0-91cf-11ee-a8a8-020f12f1bc7d",
+      "AmplifyAppId": "d311szznfgp2qu",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-ticketingsystemadmin-dev-132756-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "ticketingsystemadmin93d9a57393d9a573": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries58d9dabb": {
+          "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",
+          "s3Key": "amplify-builds/AdminQueries58d9dabb-5a6f46796a4c322f5a5a-build.zip"
+        },
+        "ticketingsystemadmin93d9a57393d9a573PreSignup": {
+          "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",
+          "s3Key": "amplify-builds/ticketingsystemadmin93d9a57393d9a573PreSignup-57632b614d39614f6154-build.zip"
+        }
+      },
+      "api": {
+        "AdminQueries": {},
+        "ticketingsystemadmin": {}
+      }
+    }
+  }
+}

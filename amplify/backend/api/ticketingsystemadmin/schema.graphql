@@ -1,0 +1,260 @@
+type Account
+  @model
+  @auth(
+    rules: [
+      # allow admin to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read accounts
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read accounts
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  logo: Attachment @hasOne
+  domain: String!
+  siteTitle: String!
+  guestsCount: Int
+  tagline: String!
+  description: String!
+  siteAddress: String!
+  defaultLanguage: String!
+  languages: [String]!
+  features: [String]!
+  status: String!
+  socialLinks: [String]
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type Concept
+  @model
+  @auth(
+    rules: [
+      # allow admin to create, update, and delete Concept
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read Concept
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read Concept
+      {
+        allow: public
+        operations: [create, update, delete, read]
+        provider: iam
+      }
+    ]
+  ) {
+  id: ID!
+  accountID: String!
+  name: String!
+  description: String
+  logo: String
+  type: String
+  location: String
+  precedence: Int
+  longitude: String
+  latitude: String
+
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type Language
+  @model
+  @auth(
+    rules: [
+      # allow admin to create, update, and delete Language
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read Language
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read Language
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  code: String!
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type Feature
+  @model
+  @auth(
+    rules: [
+      # allow admin to create, update, and delete Feature
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read Feature
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read Feature
+      { allow: public, operations: [read], provider: iam }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  icon: String
+  slug: String!
+  precedence: String!
+  parent: String
+  private: Boolean
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type AdminRole
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete AdminRole
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read AdminRole
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read AdminRole
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  name: String
+  description: String
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type AdminGroup
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete AdminGroup
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read AdminGroup
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read AdminGroup
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  name: String
+  description: String
+  roles: [ID]
+  users: [ID]
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type Attachment
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  mediaID: ID!
+  fileUrl: String!
+  filename: String!
+  filetype: String
+  fileSize: Int
+  alternativeText: String
+  caption: String
+  description: String
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type UserConcepts
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [read], provider: iam }
+    ]
+  ) {
+  id: ID!
+  defaultConcept: ID
+  concepts: [ID]
+  conceptsRoles: [String]
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type Guest
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete guest
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read guest
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read guest
+      { allow: public, operations: [create, update, delete, read] }
+      { allow: public, provider: iam, operations: [create, update, delete, read] }
+    ]
+  ) {
+  id: ID!
+  name: String
+  username: String
+  email: String
+  phone_number: String
+    @index(
+      name: "usersByPhoneNumber"
+      queryField: "ByPhoneNumber"
+      sortKeyFields: ["deleted", "name", "createdAt"]
+    )
+  guestGroupID: ID
+  guest_avatar: String
+  avg_spend:Int
+  avg_ticket_type: String
+  avg_ticket_number:Int
+  connections:[ID]
+  last_attended_event: String
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type GuestGroup
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete AdminGroup
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read AdminGroup
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read AdminGroup
+      { allow: public, operations: [create, update, delete, read] }
+      { allow: public, provider: iam, operations: [create, update, delete, read] }
+    ]
+  ) {
+  id: ID!
+  name: String
+  description: String
+  guests: [ID]
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
