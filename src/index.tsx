@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 
 import { Amplify } from 'aws-amplify';
 import config from './aws-exports';
-import amplifyconfig from './amplifyconfiguration.json';
 
 Amplify.configure(config);
 
