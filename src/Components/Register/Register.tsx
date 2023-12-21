@@ -5,6 +5,7 @@ import {
   Button,
   Checkbox,
   FormControl,
+  FormControlLabel,
   FormHelperText,
   FormLabel,
   IconButton,
@@ -12,6 +13,8 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  Radio,
+  RadioGroup,
   TextField,
   Typography,
 } from "@mui/material";
@@ -23,10 +26,10 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate();
   const handleButtonClick = () => {
-    navigate("/register");
+    navigate("/login");
   };
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -37,7 +40,6 @@ export default function Login() {
   ) => {
     event.preventDefault();
   };
-
   return (
     <>
       <Box
@@ -141,23 +143,23 @@ export default function Login() {
                   <Button
                     sx={{
                       color: "white",
-                      backgroundColor: "#EB5757",
+                      backgroundColor: "#4f4f4f",
                       border: 0,
                       px: 5,
                       fontWeight: "bold",
                     }}
+                    onClick={handleButtonClick}
                   >
                     SIGN IN
                   </Button>
                   <Button
                     sx={{
                       color: "white",
-                      backgroundColor: "#4f4f4f",
+                      backgroundColor: "#EB5757",
                       border: 0,
                       fontWeight: "bold",
                       px: 5,
                     }}
-                    onClick={handleButtonClick}
                   >
                     REGISTER
                   </Button>
@@ -208,12 +210,60 @@ export default function Login() {
                     width: "100%",
                   }}
                 />
+
                 <Typography
                   sx={{
                     color: "white",
                     my: 1,
                     fontWeight: "700",
-                    marginTop: "3vh",
+                    display: { xs: "none", sm: "flex" },
+                  }}
+                >
+                  Email address
+                </Typography>
+                <TextField
+                  id="username"
+                  placeholder="Type your Username"
+                  sx={{
+                    backgroundColor: "rgba(255, 255, 255, 0.31)",
+                    "input::placeholder": {
+                      color: "white",
+                    },
+                    input: {
+                      color: "white",
+                    },
+                    border: "1px solid",
+                    borderColor: "rgba(255, 255, 255, 0.63)",
+                    width: "100%",
+                  }}
+                />
+
+                <Box>
+                  <FormControl sx={{ color: "white" }}>
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-row-radio-buttons-group-label"
+                      name="row-radio-buttons-group"
+                    >
+                      <FormControlLabel
+                        value="male"
+                        control={<Radio />}
+                        label="Male"
+                      />
+                      <FormControlLabel
+                        value="female"
+                        control={<Radio />}
+                        label="Female"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </Box>
+
+                <Typography
+                  sx={{
+                    color: "white",
+                    my: 1,
+                    fontWeight: "700",
                     display: { xs: "none", sm: "flex" },
                   }}
                 >
@@ -314,100 +364,6 @@ export default function Login() {
                   />
                 </Button>
               </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: "#9D9898",
-                  }}
-                >
-                  OR
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: 2,
-                  flexDirection: { xs: "column", sm: "row" },
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "end",
-                      gap: 1,
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        backgroundColor: "#D9D9D9",
-                        borderRadius: "50%",
-                        width: "2.5rem",
-                        height: "2.5rem",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <img src="../../../Images/instagram.png" alt="" />
-                    </Box>
-                    <Typography
-                      sx={{
-                        color: "white",
-                      }}
-                    >
-                      Login with Instagram
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "end",
-                      gap: 1,
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        backgroundColor: "#D9D9D9",
-                        borderRadius: "50%",
-                        width: "2.5rem",
-                        height: "2.5rem",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <img src="../../../Images/face.png" alt="" />
-                    </Box>
-                    <Typography
-                      sx={{
-                        color: "white",
-                      }}
-                    >
-                      Login with FaceBook
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
             </Box>
           </Grid>
           <Grid
@@ -497,7 +453,6 @@ export default function Login() {
                   lineHeight: "25px",
                   wordWrap: "break-word",
                 }}
-                onClick={handleButtonClick}
               >
                 Register
               </Button>

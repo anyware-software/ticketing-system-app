@@ -18,6 +18,7 @@ import AppLayout from "./Applayout";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./Components/Login/Login";
 import NotFound from "./Components/NotFound/NotFound";
+import Register from "./Components/Register/Register";
 
 //-------------------------------------------------------------
 
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Login /> },
       { path: "/login", element: <Login /> },
+      { path: "/register", element: <Register /> },
       { path: "*", element: <NotFound /> },
     ],
   },
