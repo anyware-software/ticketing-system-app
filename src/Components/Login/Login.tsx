@@ -89,13 +89,13 @@ export default function Login() {
             xs={12}
             sm={6}
             lg={6}
-            sx={{ zIndex: 1, position: "relative" }}
+            sx={{ zIndex: 1, position: "relative" , display: "flex" , justifyContent:'center' , alignItems:"center" , height: "90vh"}}
           >
             <Box
               sx={{
-                width: "50%",
-                marginLeft: "5rem",
-                marginTop: "5rem",
+                display: "flex",
+                flexDirection: 'column',
+                gap:5
               }}
             >
               <Box
@@ -113,7 +113,7 @@ export default function Login() {
                     py: 1,
                     border: "1px solid",
                     borderColor: "#e8e8e8",
-                    width: "53%",
+                    px:1.5
                   }}
                 >
                   <Button
@@ -121,7 +121,7 @@ export default function Login() {
                       color: "white",
                       backgroundColor: "#EB5757",
                       border: 0,
-                      px: 3,
+                      px: 5,
                       fontWeight: "bold",
                     }}
                   >
@@ -133,6 +133,7 @@ export default function Login() {
                       backgroundColor: "#4f4f4f",
                       border: 0,
                       fontWeight: "bold",
+                      px: 5,
                     }}
                   >
                     REGISTER
@@ -145,7 +146,6 @@ export default function Login() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  marginTop: "8vh",
                 }}
               >
                 <Typography sx={{ color: "white", my: 1, fontWeight: "700" }}>
@@ -174,11 +174,7 @@ export default function Login() {
                 >
                   Password
                 </Typography>
-                <FormControl
-                  sx={{
-                    backgroundColor: "#625d5b",
-                  }}
-                >
+                <FormControl>
                   <OutlinedInput
                     placeholder="Enter your Password"
                     sx={{
@@ -186,6 +182,7 @@ export default function Login() {
                         color: "white",
                       },
                       color: "white",
+                      backgroundColor: "#625d5b",
                     }}
                     type={showPassword ? "text" : "password"}
                     endAdornment={
@@ -275,7 +272,7 @@ export default function Login() {
                 sx={{
                   display: "flex",
                   justifyContent: "center",
-                  marginTop: "5vh",
+                  
                 }}
               >
                 <Typography
@@ -297,7 +294,6 @@ export default function Login() {
                   sx={{
                     display: "flex",
                     justifyContent: "center",
-                    marginTop: "5vh",
                   }}
                 >
                   <Box
@@ -334,7 +330,6 @@ export default function Login() {
                   sx={{
                     display: "flex",
                     justifyContent: "center",
-                    marginTop: "5vh",
                   }}
                 >
                   <Box
@@ -381,14 +376,13 @@ export default function Login() {
               // flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              gap:20
             }}
           >
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                
+                marginLeft:'10rem'
               }}
             >
               <img
@@ -407,6 +401,22 @@ export default function Login() {
                 style={{ width: "15rem", height: "1.5rem" }}
               />
             </Box>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            lg={12}
+            sx={{
+              zIndex: 1,
+              position: "relative",
+              display: "flex",
+              // flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <img src="../../../Images/anyware.png" alt="" />
           </Grid>
         </Grid>
       </Box>
