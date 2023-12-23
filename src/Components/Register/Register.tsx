@@ -40,6 +40,16 @@ export default function Register() {
   ) => {
     event.preventDefault();
   };
+
+  const [selectedDate, setSelectedDate] = React.useState<string>("");
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDate(event.target.value);
+  };
+  const handlePhoneInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Allow only numeric input
+    event.target.value = event.target.value.replace(/[^0-9]/g, "");
+  };
   return (
     <>
       <Box
@@ -79,7 +89,8 @@ export default function Register() {
             boxShadow: "none",
             alignItems: { xs: "center", sm: "start" },
             justifyContent: { xs: "end", sm: "start" },
-            height: "15vh",
+            height: "10vh",
+            // display: { xs: "none", sm: "flex" },
           }}
         >
           <Toolbar disableGutters>
@@ -87,7 +98,7 @@ export default function Register() {
               sx={{
                 mx: 5,
                 mt: 3,
-                // display: { xs: "flex", sm: "flex" }
+                display: { xs: "none", sm: "flex" },
               }}
             >
               <img
@@ -95,6 +106,24 @@ export default function Register() {
                 style={{ height: "3vh" }}
                 alt=""
               />
+            </Box>
+            <Box
+              sx={{
+                mx: 5,
+                mt: 3,
+                display: { xs: "flex", sm: "none" },
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "white",
+                  fontWeight: "400",
+                  fontSize: "24px",
+                  display: { xs: "flex", sm: "none" },
+                }}
+              >
+                Sign up
+              </Typography>
             </Box>
           </Toolbar>
         </AppBar>
@@ -174,7 +203,7 @@ export default function Register() {
                   gap: { xs: 2, sm: 0 },
                 }}
               >
-                <Typography
+                {/* <Typography
                   sx={{
                     color: "white",
                     my: 1,
@@ -183,7 +212,7 @@ export default function Register() {
                   }}
                 >
                   Sign in
-                </Typography>
+                </Typography> */}
                 <Typography
                   sx={{
                     color: "white",
@@ -222,8 +251,8 @@ export default function Register() {
                   Email address
                 </Typography>
                 <TextField
-                  id="username"
-                  placeholder="Type your Username"
+                  id="email"
+                  placeholder="Type your Email Address"
                   sx={{
                     backgroundColor: "rgba(255, 255, 255, 0.31)",
                     "input::placeholder": {
@@ -239,24 +268,112 @@ export default function Register() {
                 />
 
                 <Box>
-                  <FormControl sx={{ color: "white" }}>
+                  <FormControl sx={{ color: "white", marginTop: "0.5vh" }}>
                     <RadioGroup
                       row
                       aria-labelledby="demo-row-radio-buttons-group-label"
                       name="row-radio-buttons-group"
+                      defaultValue={"male"}
                     >
                       <FormControlLabel
                         value="male"
-                        control={<Radio />}
+                        control={
+                          <Radio
+                            sx={{
+                              "&.Mui-checked": { color: "blue" },
+                              "&:not(.Mui-checked)": { color: "white" },
+                            }}
+                          />
+                        }
                         label="Male"
                       />
                       <FormControlLabel
                         value="female"
-                        control={<Radio />}
+                        control={
+                          <Radio
+                            sx={{
+                              "&.Mui-checked": { color: "red" },
+                              "&:not(.Mui-checked)": { color: "white" },
+                            }}
+                          />
+                        }
                         label="Female"
                       />
                     </RadioGroup>
                   </FormControl>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", sm: "row" },
+                    justifyContent: "space-between",
+                    gap: 3,
+                  }}
+                >
+                  <Box>
+                    <Typography
+                      sx={{
+                        color: "white",
+                        my: 1,
+                        fontWeight: "700",
+                        display: { xs: "none", sm: "flex" },
+                      }}
+                    >
+                      Mobile
+                    </Typography>
+                    <TextField
+                      id="phone"
+                      placeholder="+20100000000"
+                      type="text"
+                      onInput={handlePhoneInput}
+                      sx={{
+                        backgroundColor: "rgba(255, 255, 255, 0.31)",
+                        "input::placeholder": {
+                          color: "white",
+                        },
+                        input: {
+                          color: "white",
+                        },
+                        border: "1px solid",
+                        borderColor: "rgba(255, 255, 255, 0.63)",
+                        width: "100%",
+                      }}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography
+                      sx={{
+                        color: "white",
+                        my: 1,
+                        fontWeight: "700",
+                        display: { xs: "none", sm: "flex" },
+                      }}
+                    >
+                      Birth date
+                    </Typography>
+                    <TextField
+                      id="date"
+                      type="date"
+                      sx={{
+                        backgroundColor: "rgba(255, 255, 255, 0.31)",
+                        "input::placeholder": {
+                          color: "white",
+                        },
+                        input: {
+                          color: "white",
+                        },
+                        border: "1px solid",
+                        borderColor: "rgba(255, 255, 255, 0.63)",
+                        width: "100%",
+                      }}
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Box>
                 </Box>
 
                 <Typography
@@ -296,73 +413,34 @@ export default function Register() {
                     }
                   />
                 </FormControl>
+
                 <Box
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    marginTop: "3vh",
+                    display: { xs: "flex", sm: "none" },
+                    justifyContent: "center",
                   }}
                 >
-                  <Box
-                    sx={{
+                  <Button
+                    style={{
+                      width: "15rem",
+                      height: "6vh",
+                      background:
+                        "linear-gradient(90deg, #EB5757 0%, rgba(242, 88, 62, 0.46) 100%)",
+                      boxShadow:
+                        "0px 10px 35px rgba(111.39, 125.96, 200.59, 0.25)",
+                      borderRadius: 3,
+                      color: "white",
+                      marginTop: "3vh",
                       display: "flex",
-                      alignItems: "center",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <Checkbox
-                      defaultChecked
-                      color="default"
-                      sx={{
-                        color: "white",
-                        p: 0,
-                        m: 0,
-                      }}
+                    <p style={{ flexGrow: 1 }}> Register</p>
+                    <ArrowCircleRightIcon
+                      sx={{ color: "white", fontSize: "25px" }}
                     />
-                    <Typography
-                      sx={{
-                        color: "white",
-                      }}
-                    >
-                      Rememebr me
-                    </Typography>
-                  </Box>
-                  <Typography
-                    sx={{
-                      color: "#F0635A",
-                    }}
-                  >
-                    Forgot Password ?
-                  </Typography>
+                  </Button>
                 </Box>
-              </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Button
-                  style={{
-                    width: "15rem",
-                    height: "6vh",
-                    background:
-                      "linear-gradient(90deg, #EB5757 0%, rgba(242, 88, 62, 0.46) 100%)",
-                    boxShadow:
-                      "0px 10px 35px rgba(111.39, 125.96, 200.59, 0.25)",
-                    borderRadius: 3,
-                    color: "white",
-                    marginTop: "3vh",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <p style={{ flexGrow: 1 }}> Sign in</p>
-                  <ArrowCircleRightIcon
-                    sx={{ color: "white", fontSize: "25px" }}
-                  />
-                </Button>
               </Box>
             </Box>
           </Grid>
@@ -375,16 +453,18 @@ export default function Register() {
               zIndex: 1,
               position: "relative",
               display: { xs: "none", sm: "flex" },
-              // flexDirection: "column",
+              flexDirection: "column",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-between",
             }}
           >
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                marginLeft: "10rem",
+                marginLeft: { xs: "0rem", sm: "10rem" },
+                justifyContent: "center",
+                flexGrow: 1,
               }}
             >
               <img
@@ -403,7 +483,37 @@ export default function Register() {
                 style={{ width: "15rem", height: "1.5rem" }}
               />
             </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                // marginLeft: "20rem",
+                marginLeft: { xs: "0rem", sm: "10rem", lg: "20rem" },
+              }}
+            >
+              <Button
+                style={{
+                  width: "15rem",
+                  height: "6vh",
+                  background:
+                    "linear-gradient(90deg, #EB5757 0%, rgba(242, 88, 62, 0.46) 100%)",
+                  boxShadow: "0px 10px 35px rgba(111.39, 125.96, 200.59, 0.25)",
+                  borderRadius: 3,
+                  color: "white",
+                  marginTop: "3vh",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <p style={{ flexGrow: 1 }}> REGISTER</p>
+                <ArrowCircleRightIcon
+                  sx={{ color: "white", fontSize: "25px" }}
+                />
+              </Button>
+            </Box>
           </Grid>
+
           <Grid
             item
             xs={12}
@@ -443,7 +553,7 @@ export default function Register() {
                 wordWrap: "break-word",
               }}
             >
-              Don't have an account?
+              Already have an account?
               <Button
                 variant="text"
                 sx={{
@@ -453,8 +563,9 @@ export default function Register() {
                   lineHeight: "25px",
                   wordWrap: "break-word",
                 }}
+                onClick={handleButtonClick}
               >
-                Register
+                Sign in
               </Button>
             </Typography>
           </Grid>

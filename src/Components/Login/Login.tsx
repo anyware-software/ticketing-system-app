@@ -334,7 +334,7 @@ export default function Login() {
                   display: "flex",
                   justifyContent: "center",
                   gap: 2,
-                  flexDirection: { xs: "column", sm: "row" },
+                  flexDirection: { xs: "column", sm: "column", lg: "row"},
                 }}
               >
                 <Box
