@@ -131,6 +131,17 @@
     },
     "ticketingGuestsData": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "ticketingsystemadmin"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },

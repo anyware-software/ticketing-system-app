@@ -1,4 +1,10 @@
-/**
+/* Amplify Params - DO NOT EDIT
+	API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT
+	API_TICKETINGSYSTEMADMIN_GRAPHQLAPIIDOUTPUT
+	API_TICKETINGSYSTEMADMIN_GRAPHQLAPIKEYOUTPUT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */ /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 const fetch = require("node-fetch");
@@ -7,12 +13,14 @@ const { operationIdEnum } = require("./constants/enum");
 const { createGuest, getGuest } = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
-  process.env.API_CALLCENTERADMIN_GRAPHQLAPIENDPOINTOUTPUT;
-const GRAPHQL_API_KEY = process.env.API_CALLCENTERADMIN_GRAPHQLAPIKEYOUTPUT;
+  process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
+const GRAPHQL_API_KEY =
+  process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIKEYOUTPUT;
 
 exports.handler = async (event) => {
   try {
     const requestBody = JSON.parse(event.body);
+    // const requestBody = event.body;
     console.log({ requestBody });
     const operationId = requestBody.operationId;
     const userID = requestBody.userID;
@@ -36,10 +44,10 @@ exports.handler = async (event) => {
       };
       query = createGuest;
     } else if (operationId === operationIdEnum.getGuest) {
-        variables = {
-          id: userID,
-        };
-        query = getGuest;
+      variables = {
+        id: userID,
+      };
+      query = getGuest;
     }
 
     let responseBody = {};
@@ -62,10 +70,11 @@ exports.handler = async (event) => {
     console.log({ responseBody });
 
     let items = [];
-    if (operationId === operationIdEnum.createUser) {
-      items = responseBody.data.createUser;
+    if (operationId === operationIdEnum.createGuest) {
+      items = responseBody.data.createGuest;
+    } else if (operationId === operationIdEnum.getGuest) {
+        items = responseBody.data.getGuest;
     }
-
     return {
       statusCode: 200,
       body: JSON.stringify(items),

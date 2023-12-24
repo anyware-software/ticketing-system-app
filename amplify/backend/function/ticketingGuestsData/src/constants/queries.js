@@ -1,4 +1,4 @@
-export const createGuest = /* GraphQL */ 
+const createGuest = /* GraphQL */ 
 `mutation CreateGuest(
     $input: CreateGuestInput!
     $condition: ModelGuestConditionInput
@@ -29,7 +29,7 @@ export const createGuest = /* GraphQL */
   }
   `;
 
-  export const getGuest = /* GraphQL */ 
+ const getGuest = /* GraphQL */ 
   `query GetGuest($id: ID!) {
     getGuest(id: $id) {
       id

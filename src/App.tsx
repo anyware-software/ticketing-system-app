@@ -21,7 +21,7 @@ import store from "./state/store";
 import { setLogin } from "./state";
 import createGuest from "./services/createGuest";
 import getGuest from "./services/getGuest";
-
+import Dashboard from "./Components/Dashboard/Dashboard";
 //-------------------------------------------------------------
 
 const provider = {
@@ -41,6 +41,7 @@ const router = createBrowserRouter([
       { index: true, element: <Login /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
+      { path: "/dashboard", element: <Dashboard /> },
       { path: "*", element: <NotFound /> },
     ],
   },
@@ -151,37 +152,42 @@ function App() {
   const mode = useSelector((state: any) => state.mode);
   const [loading, setLoading] = useState(true);
 
-  const fetchUser=async()=>{
-    if(!user)
-    {
-      try
-      {
-        let loggedInUser:any= await fetchUserAttributes()
-        console.log(loggedInUser)
-        if(loggedInUser)
-        {
-          let group:any=null
-          if( loggedInUser.identities && loggedInUser.identities.toString().includes("Facebook") ){group="Facebook"}
-          else{group="Cognito"}
-          let currentUser= await getGuest(loggedInUser.sub)
-          if(!currentUser)
-          {
-            let newUser= await createGuest(loggedInUser,group)
-            dispatch(setLogin({ user: newUser }));
+  const fetchUser = async () => {
+    if (!user) {
+      try {
+        let loggedInUser: any = await fetchUserAttributes();
+        console.log(loggedInUser);
+        if (loggedInUser) {
+          let group: any = null;
+          if (
+            loggedInUser.identities &&
+            loggedInUser.identities.toString().includes("Facebook")
+          ) {
+            group = "Facebook";
+          } else {
+            group = "Cognito";
           }
-          else
-          {
+          console.log(group);
+          console.log(loggedInUser.sub);
+          let currentUser = await getGuest(loggedInUser.sub);
+          console.log(currentUser);
+          if (!currentUser) {
+            console.log("case1");
+            let newUser = await createGuest(loggedInUser, group);
+            dispatch(setLogin({ user: newUser }));
+          } else {
+            console.log("case2");
             dispatch(setLogin({ user: currentUser }));
           }
         }
-      } catch(e:any){
-        console.log(e)
-        console.log("not logged in")
-        localStorage.removeItem("user")
+      } catch (e: any) {
+        console.log(e);
+        console.log("not logged in");
+        localStorage.removeItem("user");
         dispatch(setLogin({ user: null }));
       }
     }
-  }
+  };
 
   useEffect(() => {
     fetchUser();
