@@ -1,34 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
 import {
   Box,
   Button,
   Checkbox,
   FormControl,
-  FormHelperText,
-  FormLabel,
   IconButton,
-  Input,
   InputAdornment,
-  InputLabel,
   OutlinedInput,
   TextField,
   Typography,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import { Form, useNavigate } from "react-router-dom";
-import { Input as BaseInput, InputProps, inputClasses } from "@mui/base/Input";
+import { useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
+import { signInWithRedirect } from "aws-amplify/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { setLogin } from "../../state";
 
 export default function Login() {
+  const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const handleButtonClick = () => {
     navigate("/register");
   };
-  const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -38,6 +39,18 @@ export default function Login() {
     event.preventDefault();
   };
 
+  const handleFacebookLogin = async () => {
+    try {
+      setLoading(true)
+      await signInWithRedirect({ provider: "Facebook" });
+      localStorage.setItem("user","true")
+      dispatch(setLogin({ user: "" }));
+      setLoading(false)
+    } catch (error) {
+      console.error("Error logging in with Facbook:", error);
+      setLoading(false)
+    }
+  };
   return (
     <>
       <Box
@@ -402,6 +415,7 @@ export default function Login() {
                       sx={{
                         color: "white",
                       }}
+                      onClick={handleFacebookLogin}
                     >
                       Login with FaceBook
                     </Typography>
