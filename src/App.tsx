@@ -18,6 +18,9 @@ import NotFound from "./Components/NotFound/NotFound";
 import Register from "./Components/Register/Register";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "./state/store";
+import { setLogin } from "./state";
+import createGuest from "./services/createGuest";
+import getGuest from "./services/getGuest";
 
 //-------------------------------------------------------------
 
@@ -148,41 +151,41 @@ function App() {
   const mode = useSelector((state: any) => state.mode);
   const [loading, setLoading] = useState(true);
 
-  // const fetchUser=async()=>{
-  //   if(!user)
-  //   {
-  //     try
-  //     {
-  //       let loggedInUser:any= await fetchUserAttributes()
-  //       if(loggedInUser)
-  //       {
-  //         let group:any=null
-  //         if( loggedInUser.identities && loggedInUser.identities.toString().includes("Google") ){group="Google"}
-  //         else if( loggedInUser.identities &&  loggedInUser.identities.toString().includes("Apple")){group="Apple"}
-  //         else{group="Cognito"}
-  //         let currentUser= await getUser(loggedInUser.sub)
-  //         if(!currentUser)
-  //         {
-  //           let newUser= await createUser(loggedInUser,group)
-  //           dispatch(setLogin({ user: newUser }));
-  //         }
-  //         else
-  //         {
-  //           dispatch(setLogin({ user: currentUser }));
-  //         }
-  //       }
-  //     } catch(e:any){
-  //       console.log(e)
-  //       console.log("not logged in")
-  //       localStorage.removeItem("user")
-  //       dispatch(setLogin({ user: null }));
-  //     }
-  //   }
-  // }
+  const fetchUser=async()=>{
+    if(!user)
+    {
+      try
+      {
+        let loggedInUser:any= await fetchUserAttributes()
+        console.log(loggedInUser)
+        if(loggedInUser)
+        {
+          let group:any=null
+          if( loggedInUser.identities && loggedInUser.identities.toString().includes("Facebook") ){group="Facebook"}
+          else{group="Cognito"}
+          let currentUser= await getGuest(loggedInUser.sub)
+          if(!currentUser)
+          {
+            let newUser= await createGuest(loggedInUser,group)
+            dispatch(setLogin({ user: newUser }));
+          }
+          else
+          {
+            dispatch(setLogin({ user: currentUser }));
+          }
+        }
+      } catch(e:any){
+        console.log(e)
+        console.log("not logged in")
+        localStorage.removeItem("user")
+        dispatch(setLogin({ user: null }));
+      }
+    }
+  }
 
-  // useEffect(() => {
-  //   fetchUser();
-  // }, [user]);
+  useEffect(() => {
+    fetchUser();
+  }, [user]);
 
   return (
     <>
@@ -209,9 +212,7 @@ function App() {
         </div>
       </header>
     </div> */}
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+      <RouterProvider router={router} />
     </>
   );
 }

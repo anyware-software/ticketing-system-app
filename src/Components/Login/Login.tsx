@@ -414,6 +414,7 @@ export default function Login() {
                     <Typography
                       sx={{
                         color: "white",
+                        cursor: 'pointer',
                       }}
                       onClick={handleFacebookLogin}
                     >
