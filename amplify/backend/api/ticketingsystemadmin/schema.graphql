@@ -217,6 +217,11 @@ type Guest
   name: String
   username: String
   email: String
+    @index(
+      name: "usersByEmail"
+      queryField: "ByEmail"
+      sortKeyFields: ["deleted", "name", "createdAt"]
+    )
   phone_number: String
     @index(
       name: "usersByPhoneNumber"
@@ -230,6 +235,8 @@ type Guest
   avg_ticket_number:Int
   connections:[ID]
   last_attended_event: String
+  gender: String
+  appPassword: String
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!

@@ -10,14 +10,14 @@ import {
 } from "aws-amplify/auth";
 import axios from "axios";
 import { LoginSocialFacebook, IResolveParams } from "reactjs-social-login";
-
 import { FacebookLoginButton } from "react-social-login-buttons";
-
-import { User } from "./Components/User/user";
 import AppLayout from "./Applayout";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./Components/Login/Login";
 import NotFound from "./Components/NotFound/NotFound";
+import Register from "./Components/Register/Register";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import store from "./state/store";
 
 //-------------------------------------------------------------
 
@@ -37,106 +37,100 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Login /> },
       { path: "/login", element: <Login /> },
+      { path: "/register", element: <Register /> },
       { path: "*", element: <NotFound /> },
     ],
   },
 ]);
 
 function App() {
-  async function checkUser() {
-    const { username, userId, signInDetails } = await getCurrentUser();
-    console.log(`The username: ${username}`);
-    console.log(`The userId: ${userId}`);
-    console.log(`The signInDetails: ${signInDetails}`);
-    console.log("-----------------------------------");
+  // async function checkUser() {
+  //   const { username, userId, signInDetails } = await getCurrentUser();
+  //   console.log(`The username: ${username}`);
+  //   console.log(`The userId: ${userId}`);
+  //   console.log(`The signInDetails: ${signInDetails}`);
+  //   console.log("-----------------------------------");
 
-    // const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
-    // console.log(accessToken?.toString());
-    // console.log(idToken?.toString());
-    // console.log("-----------------------------------");
+  //   // const { accessToken, idToken } = (await fetchAuthSession()).tokens ?? {};
+  //   // console.log(accessToken?.toString());
+  //   // console.log(idToken?.toString());
+  //   // console.log("-----------------------------------");
 
-    const user2 = await fetchUserAttributes();
-    console.log("user : ", user2);
-    const user5 = await fetchAuthSession();
-    console.log("user : ", user5);
-  }
-
-  const [profilePicUrl, setProfilePicUrl] = useState("");
-
-  useEffect(() => {
-    const getProfileData = async () => {
-      try {
-        const user = await fetchUserAttributes();
-        const accessToken = user.profile;
-        const profilePicResponse = await axios.get(
-          `https://graph.facebook.com/me?fields=picture&redirect=false&access_token=${accessToken}`
-        );
-        const picUrl = profilePicResponse.data.picture.data.url;
-        console.log(picUrl);
-        setProfilePicUrl(picUrl);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getProfileData();
-  }, []);
-  function handleSignOutClick() {
-    signOut();
-    console.log("User is signed out");
-  }
-
-  // async function test(){
-  //   const user = await fetchAuthSession()
-  //   accessToken = user;
-  //   console.log(accessToken.tokens?.accessToken.toString());
+  //   const user2 = await fetchUserAttributes();
+  //   console.log("user : ", user2);
+  //   const user5 = await fetchAuthSession();
+  //   console.log("user : ", user5);
   // }
-  // test()
 
-  async function getFriends() {
-    const user = await fetchUserAttributes();
-    const name = user.name;
-    console.log("Name : " + name);
-    const email = user.email;
-    console.log("Email : " + email);
-    const phoneNumber = user.phone_number;
-    console.log("PhoneNumber : " + phoneNumber);
-    const gender = user.gender;
-    console.log("Gender : " + gender);
+  // const [profilePicUrl, setProfilePicUrl] = useState("");
 
-    const accessToken = user.profile;
-    axios
-      .get(`https://graph.facebook.com/me/friends?access_token=${accessToken}`)
-      .then((response) => {
-        console.log("User Friends : ");
-        console.log(response.data.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    axios
-      .get(
-        `https://graph.facebook.com/me?fields=picture&access_token=${accessToken}`
-      )
-      .then((response) => {
-        console.log("User Profile Pic : ");
-        console.log(response.data.picture.data.url);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    axios
-      .get(
-        `https://graph.facebook.com/me?fields=gender&access_token=${accessToken}`
-      )
-      .then((response) => {
-        console.log("User Gender : ");
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+  // useEffect(() => {
+  //   const getProfileData = async () => {
+  //     try {
+  //       const user = await fetchUserAttributes();
+  //       const accessToken = user.profile;
+  //       const profilePicResponse = await axios.get(
+  //         `https://graph.facebook.com/me?fields=picture&redirect=false&access_token=${accessToken}`
+  //       );
+  //       const picUrl = profilePicResponse.data.picture.data.url;
+  //       console.log(picUrl);
+  //       setProfilePicUrl(picUrl);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   getProfileData();
+  // }, []);
+  // function handleSignOutClick() {
+  //   signOut();
+  //   console.log("User is signed out");
+  // }
+
+  // async function getFriends() {
+  //   const user = await fetchUserAttributes();
+  //   const name = user.name;
+  //   console.log("Name : " + name);
+  //   const email = user.email;
+  //   console.log("Email : " + email);
+  //   const phoneNumber = user.phone_number;
+  //   console.log("PhoneNumber : " + phoneNumber);
+  //   const gender = user.gender;
+  //   console.log("Gender : " + gender);
+
+  //   const accessToken = user.profile;
+  //   axios
+  //     .get(`https://graph.facebook.com/me/friends?access_token=${accessToken}`)
+  //     .then((response) => {
+  //       console.log("User Friends : ");
+  //       console.log(response.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  //   axios
+  //     .get(
+  //       `https://graph.facebook.com/me?fields=picture&access_token=${accessToken}`
+  //     )
+  //     .then((response) => {
+  //       console.log("User Profile Pic : ");
+  //       console.log(response.data.picture.data.url);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  //   axios
+  //     .get(
+  //       `https://graph.facebook.com/me?fields=gender&access_token=${accessToken}`
+  //     )
+  //     .then((response) => {
+  //       console.log("User Gender : ");
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }
   //-------------------------------------------------------------------------------
 
   // const [provider, setProvider] = useState("");
@@ -149,10 +143,50 @@ function App() {
   //   setProvider("");
   //   alert("logout success");
   // }, []);
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.user);
+  const mode = useSelector((state: any) => state.mode);
+  const [loading, setLoading] = useState(true);
+
+  // const fetchUser=async()=>{
+  //   if(!user)
+  //   {
+  //     try
+  //     {
+  //       let loggedInUser:any= await fetchUserAttributes()
+  //       if(loggedInUser)
+  //       {
+  //         let group:any=null
+  //         if( loggedInUser.identities && loggedInUser.identities.toString().includes("Google") ){group="Google"}
+  //         else if( loggedInUser.identities &&  loggedInUser.identities.toString().includes("Apple")){group="Apple"}
+  //         else{group="Cognito"}
+  //         let currentUser= await getUser(loggedInUser.sub)
+  //         if(!currentUser)
+  //         {
+  //           let newUser= await createUser(loggedInUser,group)
+  //           dispatch(setLogin({ user: newUser }));
+  //         }
+  //         else
+  //         {
+  //           dispatch(setLogin({ user: currentUser }));
+  //         }
+  //       }
+  //     } catch(e:any){
+  //       console.log(e)
+  //       console.log("not logged in")
+  //       localStorage.removeItem("user")
+  //       dispatch(setLogin({ user: null }));
+  //     }
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   fetchUser();
+  // }, [user]);
 
   return (
     <>
-    {/* <div className="App">
+      {/* <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <div
@@ -175,7 +209,9 @@ function App() {
         </div>
       </header>
     </div> */}
-    <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </>
   );
 }
