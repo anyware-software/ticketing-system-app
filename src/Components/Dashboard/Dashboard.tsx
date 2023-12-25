@@ -89,6 +89,7 @@ export default function Profile() {
         open={open}
         sx={{
           backgroundColor: "#000000",
+          display:{xs:'none', sm:'flex'}
         }}
       >
         <Toolbar
@@ -203,6 +204,7 @@ export default function Profile() {
                 fontWeight: "600",
                 wordWrap: "break-word",
                 my: 1,
+                display: open ? "block" : "none",
               }}
             >
               Ali Nader

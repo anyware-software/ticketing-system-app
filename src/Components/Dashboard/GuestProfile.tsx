@@ -57,11 +57,20 @@ export default function GuestProfile() {
         flexDirection: "column",
       }}
     >
-      <Grid container spacing={2} sx={{ overflow: "hidden", flexGrow: 1 , display:'flex', alignItems:'end' }}>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          overflow: { xs: "auto", sm: "" },
+          flexGrow: 1,
+          display: "flex",
+          alignItems: "end",
+        }}
+      >
         <Grid
           item
           xs={12}
-          sm={6}
+          sm={12}
           lg={4}
           sx={{
             zIndex: 1,
@@ -70,7 +79,8 @@ export default function GuestProfile() {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            gap: 10,
+            gap: { xs: 0, sm: 10 },
+            marginTop: { xs: "5vh", sm: "0vh" },
           }}
         >
           <Box
@@ -95,9 +105,18 @@ export default function GuestProfile() {
               sx={{
                 display: "flex",
                 alignItems: "center",
+                flexDirection: "column",
                 gap: 1,
               }}
             >
+                <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+                
               <Typography
                 sx={{
                   color: "white",
@@ -110,6 +129,29 @@ export default function GuestProfile() {
                 Ali Nader
               </Typography>
               <VerifiedIcon sx={{ color: "#49adf4" }} />
+            </Box>
+
+              <Box
+                sx={{
+                  backgroundColor: "#62b58f",
+                  color: "white",
+                  borderRadius: "5px",
+                  display: { xs: "flex", sm: "none" },
+                  justifyContent: "center",
+                  width: "5rem",
+                  marginBottom:5,
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: "600",
+                    color: "black",
+                  }}
+                >
+                  VIP
+                </Typography>
+              </Box>
+
             </Box>
           </Box>
 
@@ -342,7 +384,7 @@ export default function GuestProfile() {
         <Grid
           item
           xs={12}
-          sm={6}
+          sm={12}
           lg={8}
           sx={{
             zIndex: 1,
@@ -360,6 +402,7 @@ export default function GuestProfile() {
               justifyContent: "start",
               flexDirection: "column",
               gap: 4,
+              width: { xs: "90%", sm: "51%" },
             }}
           >
             <Box>
@@ -383,7 +426,8 @@ export default function GuestProfile() {
                 alignItems: "center",
                 padding: "1rem",
                 borderRadius: "10px",
-                gap: 3,
+
+                justifyContent: "space-between",
               }}
             >
               <Box>
@@ -403,6 +447,7 @@ export default function GuestProfile() {
                       fontSize: 18,
                       fontWeight: "700",
                       wordWrap: "break-word",
+                      display: { xs: "none", sm: "block" },
                     }}
                   >
                     Electronic Steve-Music Festival
@@ -412,7 +457,8 @@ export default function GuestProfile() {
                 <Box
                   sx={{
                     display: "flex",
-                    gap: 3,
+                    flexDirection: { xs: "column", sm: "row" },
+                    gap: { xs: 0.5, sm: 3 },
                   }}
                 >
                   <Box
@@ -514,6 +560,7 @@ export default function GuestProfile() {
                     fontWeight: "600",
                     wordWrap: "break-word",
                     backgroundColor: "#F0635A",
+                    display: { xs: "none", sm: "none", lg: "block" },
                   }}
                 >
                   VIEW TICKET(S)
@@ -598,9 +645,11 @@ export default function GuestProfile() {
 
             <Box
               sx={{
-                display: "grid",
+                display: { xs: "flex", sm: "grid" },
+                flexDirection: { xs: "column", sm: "" },
                 gridTemplateColumns: "repeat(2, 1fr)",
-                gap: 2,
+                gap: { xs: 1, sm: 2 },
+                // justifyContent: {xs:'center',sm:""}
               }}
             >
               {/* Friend Attends */}
@@ -1263,7 +1312,6 @@ export default function GuestProfile() {
         >
           <img src="../../../Images/anyware.png" alt="" />
         </Grid>
-
       </Grid>
     </Box>
   );
