@@ -86,7 +86,6 @@ export default function Profile() {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
-        position="absolute"
         open={open}
         sx={{
           backgroundColor: "#000000",
