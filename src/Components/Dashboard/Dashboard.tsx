@@ -17,17 +17,18 @@ import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { mainListItems } from "./ListItems";
+// import { mainListItems } from "./ListItems";
 import GuestProfile from "./GuestProfile";
 import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
 import { Button, Checkbox, FormControl, TextField } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "../../state";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "aws-amplify/auth";
-import { log } from "console";
+import { MainListItems } from "./ListItems";
+import NotFound from "../NotFound/NotFound";
 
 const drawerWidth: number = 240;
 
@@ -81,12 +82,17 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-export default function Profile() {
+export default function Dashboard() {
   const [open, setOpen] = React.useState(false);
   const user = useSelector((state: any) => state.app.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [selectedItem, setSelectedItem] = React.useState<string | null>(
+    "My Profile"
+  );
+  const handleListItemClick = (item: string) => {
+    setSelectedItem(item);
+  };
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -94,16 +100,20 @@ export default function Profile() {
   const handleLogOut = async () => {
     if (!user) {
       console.log("There is no User");
-      
+
       return;
     }
     dispatch(setLogin({ user: null }));
     if (user.group === "Cognito") {
       navigate("/login");
     }
-    localStorage.removeItem("user")
+    localStorage.removeItem("user");
     await signOut();
   };
+  console.log(selectedItem);
+  if (selectedItem === "Sign Out") {
+    handleLogOut();
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -112,7 +122,7 @@ export default function Profile() {
         open={open}
         sx={{
           backgroundColor: "#000000",
-          display:{xs:'none', sm:'flex'}
+          display: { xs: "none", sm: "flex" },
         }}
       >
         <Toolbar
@@ -154,43 +164,45 @@ export default function Profile() {
               alt=""
             />
           </Box>
-          <Box sx={{
-            display:'flex',
-            gap:2,
-            alignItems: 'center',
-          }}>
-          <Typography
+          <Box
             sx={{
-              color: "white",
-              fontSize: 16,
-              fontWeight: "400",
-              wordWrap: "break-word",
+              display: "flex",
+              gap: 2,
+              alignItems: "center",
             }}
           >
-            Contact Us
-          </Typography>
-          <Button
-            variant="text"
-            sx={{
-              color: "#FC0000",
-              fontSize: "16px",
-              fontWeight: "700",
-              lineHeight: "25px",
-              wordWrap: "break-word",
-              gap: 1,
-            }}
-            onClick={() => {
-              handleLogOut();
-            }}
-          >
-            <LoginIcon sx={{ color: "white", fontSize: "25px" }} />
-            <p> Sign Out</p>
-          </Button>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="warning">
-              <ChatBubbleOutlineOutlinedIcon />
-            </Badge>
-          </IconButton>
+            <Typography
+              sx={{
+                color: "white",
+                fontSize: 16,
+                fontWeight: "400",
+                wordWrap: "break-word",
+              }}
+            >
+              Contact Us
+            </Typography>
+            <Button
+              variant="text"
+              sx={{
+                color: "#FC0000",
+                fontSize: "16px",
+                fontWeight: "700",
+                lineHeight: "25px",
+                wordWrap: "break-word",
+                gap: 1,
+              }}
+              onClick={() => {
+                handleLogOut();
+              }}
+            >
+              <LoginIcon sx={{ color: "white", fontSize: "25px" }} />
+              <p> Sign Out</p>
+            </Button>
+            <IconButton color="inherit">
+              <Badge badgeContent={4} color="warning">
+                <ChatBubbleOutlineOutlinedIcon />
+              </Badge>
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
@@ -241,10 +253,30 @@ export default function Profile() {
           </IconButton>
         </Toolbar>
         {/* <Divider /> */}
-        <List component="nav">{mainListItems}</List>
+        {/* <List component="nav">{mainListItems}</List> */}
+        <List component="nav">
+          <MainListItems onItemSelected={handleListItemClick} />
+        </List>
       </Drawer>
       {/* Main Component */}
-      <GuestProfile />
+      {/* <GuestProfile /> */}
+      {selectedItem === "My Profile" ? (
+        <GuestProfile />
+      ) : (
+        // ) : selectedItem === "Notifications" ? (
+        //   <NotificationsComponent />
+        // ) : selectedItem === "Calender" ? (
+        //   <CalendarComponent />
+        // ) : selectedItem === "Bookmark" ? (
+        //   <BookmarkComponent />
+        // ) : selectedItem === "Contact Us" ? (
+        //   <ContactUsComponent />
+        // ) : selectedItem === "Setting" ? (
+        //   <SettingsComponent />
+        // ) : selectedItem === "Help & FAQs" ? (
+        //   <HelpAndFaqsComponent />
+        <NotFound />
+      )}
     </Box>
   );
 }
