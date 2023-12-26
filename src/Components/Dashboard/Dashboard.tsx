@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from "aws-amplify/auth";
 import { MainListItems } from "./ListItems";
 import NotFound from "../NotFound/NotFound";
+import Login from "../Login/Login";
 
 const drawerWidth: number = 240;
 
@@ -110,7 +111,7 @@ export default function Dashboard() {
     localStorage.removeItem("user");
     await signOut();
   };
-  console.log(selectedItem);
+  // console.log(selectedItem);
   if (selectedItem === "Sign Out") {
     handleLogOut();
   }
@@ -275,7 +276,7 @@ export default function Dashboard() {
         //   <SettingsComponent />
         // ) : selectedItem === "Help & FAQs" ? (
         //   <HelpAndFaqsComponent />
-        <NotFound />
+        <Login />
       )}
     </Box>
   );

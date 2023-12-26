@@ -587,6 +587,7 @@ export const onCreateGuest = /* GraphQL */ `subscription OnCreateGuest($filter: 
     group
     appPassword
     birthdate
+    isVerified
     deleted
     createdAt
     createdByID
@@ -617,6 +618,7 @@ export const onUpdateGuest = /* GraphQL */ `subscription OnUpdateGuest($filter: 
     group
     appPassword
     birthdate
+    isVerified
     deleted
     createdAt
     createdByID
@@ -647,6 +649,7 @@ export const onDeleteGuest = /* GraphQL */ `subscription OnDeleteGuest($filter: 
     group
     appPassword
     birthdate
+    isVerified
     deleted
     createdAt
     createdByID

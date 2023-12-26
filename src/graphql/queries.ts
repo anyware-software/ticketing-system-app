@@ -436,6 +436,7 @@ export const getGuest = /* GraphQL */ `query GetGuest($id: ID!) {
     group
     appPassword
     birthdate
+    isVerified
     deleted
     createdAt
     createdByID
@@ -468,6 +469,7 @@ export const listGuests = /* GraphQL */ `query ListGuests(
       group
       appPassword
       birthdate
+      isVerified
       deleted
       createdAt
       createdByID
@@ -516,6 +518,7 @@ export const ByEmail = /* GraphQL */ `query ByEmail(
       group
       appPassword
       birthdate
+      isVerified
       deleted
       createdAt
       createdByID
@@ -561,6 +564,7 @@ export const ByPhoneNumber = /* GraphQL */ `query ByPhoneNumber(
       group
       appPassword
       birthdate
+      isVerified
       deleted
       createdAt
       createdByID

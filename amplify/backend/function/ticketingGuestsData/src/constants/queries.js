@@ -20,6 +20,7 @@ const createGuest = /* GraphQL */
     group
     appPassword
     birthdate
+    isVerified
     deleted
     createdAt
     createdByID
@@ -49,6 +50,7 @@ const createGuest = /* GraphQL */
     group
     appPassword
     birthdate
+    isVerified
     deleted
     createdAt
     createdByID

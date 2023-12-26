@@ -644,6 +644,7 @@ export const createGuest = /* GraphQL */ `mutation CreateGuest(
     group
     appPassword
     birthdate
+    isVerified
     deleted
     createdAt
     createdByID
@@ -677,6 +678,7 @@ export const updateGuest = /* GraphQL */ `mutation UpdateGuest(
     group
     appPassword
     birthdate
+    isVerified
     deleted
     createdAt
     createdByID
@@ -710,6 +712,7 @@ export const deleteGuest = /* GraphQL */ `mutation DeleteGuest(
     group
     appPassword
     birthdate
+    isVerified
     deleted
     createdAt
     createdByID

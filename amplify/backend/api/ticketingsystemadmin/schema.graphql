@@ -239,6 +239,7 @@ type Guest
   group: String
   appPassword: String
   birthdate: String
+  isVerified : Boolean
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!

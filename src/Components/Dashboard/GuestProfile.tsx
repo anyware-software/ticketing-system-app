@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -16,46 +16,26 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import MobileViewTabs from "./MobileViewTabs";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { fetchUserAttributes } from "aws-amplify/auth";
+import TextField from "@mui/material/TextField";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
 
-const options = ["Choice 1", "Choice 2", "Choice 3"];
+const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
 const ITEM_HEIGHT = 48;
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
+interface MyObject {
+  name: string;
+  id: string;
 }
 
 export default function GuestProfile() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [friends, setFriends] = useState<null | Array<string>>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -63,13 +43,122 @@ export default function GuestProfile() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const user = useSelector((state: any) => state.app.user);
 
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+  useEffect(() => {
+    async function getFriends() {
+      const userdata = await fetchUserAttributes();
+      console.log(userdata);
+      const accessToken = userdata.profile;
+      axios
+        .get(
+          `https://graph.facebook.com/me/friends?access_token=${accessToken}`
+        )
+        .then((response) => {
+          console.log("User Friends : ");
+          console.log(response.data.data.map((item: MyObject) => item.name));
+          setFriends(response.data.data.map((item: MyObject) => item.name));
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+    getFriends();
+  }, []);
+  //---------------------------------------------------------------
+  //Email Edit
+  const [emailEditing, setEmailEditing] = useState(false);
+  const [emailText, setEmailText] = useState(user?.email);
+  const [originalEmailText, setOriginalEmailText] = useState(user?.email);
+  const handleEditEmailClick = () => {
+    setEmailEditing(true);
   };
-
+  const handleSaveEmailClick = () => {
+    setOriginalEmailText(emailText);
+    setEmailEditing(false);
+  };
+  const handleCancelEmailClick = () => {
+    setEmailText(originalEmailText);
+    setEmailEditing(false);
+  };
+  useEffect(() => {
+    if (!user) return;
+    setEmailText(user.email);
+    setOriginalEmailText(user.email);
+  }, [user]);
+  //Email Edit
+  //----------------------------------------------------------------
+  //---------------------------------------------------------------
+  //Birth Date Edit
+  const [birthEditing, setBirthEditing] = useState(false);
+  const [birthText, setBirthText] = useState(user?.birthdate);
+  const [originalBirthText, setOriginalBirthText] = useState(user?.birthdate);
+  const handleEditBirthClick = () => {
+    setBirthEditing(true);
+  };
+  const handleSaveBirthClick = () => {
+    setOriginalBirthText(birthText);
+    setBirthEditing(false);
+  };
+  const handleCancelBrithClick = () => {
+    setBirthText(originalBirthText);
+    setBirthEditing(false);
+  };
+  useEffect(() => {
+    if (!user) return;
+    setBirthText(user.birthdate);
+    setOriginalBirthText(user.birthdate);
+  }, [user]);
+  //Birth Date Edit
+  //----------------------------------------------------------------
+  //---------------------------------------------------------------
+  //Gender Edit
+  const [genderEditing, setGenderEditing] = useState(false);
+  const [genderText, setGenderText] = useState(user?.gender);
+  const [originalGenderText, setOriginalGenderText] = useState(user?.gender);
+  const handleEditGenderClick = () => {
+    setGenderEditing(true);
+  };
+  const handleSaveGenderClick = () => {
+    setOriginalGenderText(genderText);
+    setGenderEditing(false);
+  };
+  const handleCancelGenderClick = () => {
+    setGenderText(originalGenderText);
+    setGenderEditing(false);
+  };
+  useEffect(() => {
+    if (!user) return;
+    setGenderText(user.gender);
+    setOriginalGenderText(user.gender);
+  }, [user]);
+  //Gender Edit
+  //----------------------------------------------------------------
+  //---------------------------------------------------------------
+  //Mobile Edit
+  const [mobileEditing, setMobileEditing] = useState(false);
+  const [mobileText, setMobileText] = useState(user?.phone_number);
+  const [originalMobileText, setOriginalMobileText] = useState(
+    user?.phone_number
+  );
+  const handleEditMobileClick = () => {
+    setMobileEditing(true);
+  };
+  const handleSaveMobileClick = () => {
+    setOriginalMobileText(mobileText);
+    setMobileEditing(false);
+  };
+  const handleCancelMobileClick = () => {
+    setMobileText(originalMobileText);
+    setMobileEditing(false);
+  };
+  useEffect(() => {
+    if (!user) return;
+    setMobileText(user.phone_number);
+    setOriginalMobileText(user.phone_number);
+  }, [user]);
+  //Mobile Edit
+  //----------------------------------------------------------------
   return (
     <Box
       sx={{
@@ -122,7 +211,7 @@ export default function GuestProfile() {
             alignItems: "center",
             flexDirection: "column",
             gap: { xs: 0, sm: 10 },
-            marginTop: { xs: "5vh", sm: "10vh" , l :'0vh' },
+            marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
           }}
         >
           <Box
@@ -167,31 +256,34 @@ export default function GuestProfile() {
                     my: 1,
                   }}
                 >
-                  Ali Nader
+                  {user?.name &&
+                    user.name.charAt(0).toUpperCase() + user.name.slice(1)}
                 </Typography>
-                <VerifiedIcon sx={{ color: "#49adf4" }} />
+                {user?.isVerified && <VerifiedIcon sx={{ color: "#49adf4" }} />}
               </Box>
 
-              <Box
-                sx={{
-                  backgroundColor: "#62b58f",
-                  color: "white",
-                  borderRadius: "5px",
-                  display: { xs: "flex", sm: "none" },
-                  justifyContent: "center",
-                  width: "5rem",
-                  marginBottom: 5,
-                }}
-              >
-                <Typography
+              {user?.avg_ticket_type === "VIP" && (
+                <Box
                   sx={{
-                    fontWeight: "600",
-                    color: "black",
+                    backgroundColor: "#62b58f",
+                    color: "white",
+                    borderRadius: "5px",
+                    display: { xs: "flex", sm: "none" },
+                    justifyContent: "center",
+                    width: "5rem",
+                    marginBottom: 5,
                   }}
                 >
-                  VIP
-                </Typography>
-              </Box>
+                  <Typography
+                    sx={{
+                      fontWeight: "600",
+                      color: "black",
+                    }}
+                  >
+                    VIP
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </Box>
 
@@ -199,7 +291,7 @@ export default function GuestProfile() {
             <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <AvatarGroup
-                  // max={4}
+                  max={friends?.length}
                   sx={{
                     "& .MuiAvatar-root": {
                       width: 35,
@@ -211,8 +303,11 @@ export default function GuestProfile() {
                     },
                   }}
                 >
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                   <Avatar
+                    alt={friends ? friends[0] : ""}
+                    src="/static/images/avatar/1.jpg"
+                  />
+                  {/* <Avatar
                     alt="Travis Howard"
                     src="/static/images/avatar/2.jpg"
                   />
@@ -220,7 +315,7 @@ export default function GuestProfile() {
                   <Avatar
                     alt="Agnes Walker"
                     src="/static/images/avatar/4.jpg"
-                  />
+                  /> */}
                 </AvatarGroup>
                 <Typography
                   style={{
@@ -230,7 +325,7 @@ export default function GuestProfile() {
                     fontSize: "22px",
                   }}
                 >
-                  140
+                  {friends?.length}
                 </Typography>
               </Box>
               <Typography
@@ -334,7 +429,72 @@ export default function GuestProfile() {
                   Email
                 </Typography>
 
-                <Typography
+                {/* Email Field */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {emailEditing ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextField
+                        sx={{
+                          backgroundColor: "rgba(255, 255, 255, 0.31)",
+                          "input::placeholder": {
+                            color: "white",
+                          },
+                          input: {
+                            color: "white",
+                          },
+                          border: "1px solid",
+                          borderColor: "rgba(255, 255, 255, 0.63)",
+                          width: "100%",
+                        }}
+                        value={emailText}
+                        onChange={(e) => setEmailText(e.target.value)}
+                      />
+                      <IconButton
+                        onClick={handleSaveEmailClick}
+                        sx={{ color: "white" }}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={handleCancelEmailClick}
+                        sx={{ color: "white" }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalEmailText}
+                      </span>
+                      <IconButton
+                        onClick={handleEditEmailClick}
+                        sx={{ color: "white" }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </div>
+                  )}
+                </div>
+
+                {/* <Typography
                   sx={{
                     color: "white",
                     fontSize: 18,
@@ -343,7 +503,7 @@ export default function GuestProfile() {
                   }}
                 >
                   Alinader@gmail.com
-                </Typography>
+                </Typography> */}
               </Box>
               <Box>
                 <Typography
@@ -357,7 +517,73 @@ export default function GuestProfile() {
                   Birth Date
                 </Typography>
 
-                <Typography
+                {/* Birth Field */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {birthEditing ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextField
+                        type="date"
+                        sx={{
+                          backgroundColor: "rgba(255, 255, 255, 0.31)",
+                          "input::placeholder": {
+                            color: "white",
+                          },
+                          input: {
+                            color: "white",
+                          },
+                          border: "1px solid",
+                          borderColor: "rgba(255, 255, 255, 0.63)",
+                          width: "100%",
+                        }}
+                        value={birthText}
+                        onChange={(e) => setBirthText(e.target.value)}
+                      />
+                      <IconButton
+                        onClick={handleSaveBirthClick}
+                        sx={{ color: "white" }}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={handleCancelBrithClick}
+                        sx={{ color: "white" }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalBirthText}
+                      </span>
+                      <IconButton
+                        onClick={handleEditBirthClick}
+                        sx={{ color: "white" }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </div>
+                  )}
+                </div>
+
+                {/* <Typography
                   sx={{
                     color: "white",
                     fontSize: 18,
@@ -366,7 +592,7 @@ export default function GuestProfile() {
                   }}
                 >
                   12/2/1997
-                </Typography>
+                </Typography> */}
               </Box>
             </Box>
             <Box
@@ -387,7 +613,77 @@ export default function GuestProfile() {
                   Gender
                 </Typography>
 
-                <Typography
+                {/* Gender Field */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {genderEditing ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextField
+                        select
+                        sx={{
+                          backgroundColor: "rgba(255, 255, 255, 0.63)",
+                          "input::placeholder": {
+                            color: "white",
+                          },
+                          input: {
+                            color: "white",
+                          },
+                          border: "1px solid",
+                          borderColor: "rgba(255, 255, 255, 0.63)",
+                          width: "100%",
+                        }}
+                        value={genderText}
+                        // value = "male"
+                        onChange={(e) => setGenderText(e.target.value)}
+                      >
+                        <MenuItem value="male">Male</MenuItem>
+                        <MenuItem value="female">Female</MenuItem>
+                      </TextField>
+                      <IconButton
+                        onClick={handleSaveGenderClick}
+                        sx={{ color: "white" }}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={handleCancelGenderClick}
+                        sx={{ color: "white" }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalGenderText}
+                      </span>
+                      <IconButton
+                        onClick={handleEditGenderClick}
+                        sx={{ color: "white" }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </div>
+                  )}
+                </div>
+
+                {/* <Typography
                   sx={{
                     color: "white",
                     fontSize: 18,
@@ -396,7 +692,7 @@ export default function GuestProfile() {
                   }}
                 >
                   Male
-                </Typography>
+                </Typography> */}
               </Box>
               <Box>
                 <Typography
@@ -409,7 +705,74 @@ export default function GuestProfile() {
                 >
                   Mobile No.
                 </Typography>
-                <Typography
+
+                {/* Mobile Field */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {mobileEditing ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextField
+                      type="number"
+                        sx={{
+                          backgroundColor: "rgba(255, 255, 255, 0.31)",
+                          "input::placeholder": {
+                            color: "white",
+                          },
+                          input: {
+                            color: "white",
+                          },
+                          border: "1px solid",
+                          borderColor: "rgba(255, 255, 255, 0.63)",
+                          width: "100%",
+                        }}
+                        value={mobileText}
+                        onChange={(e) => setMobileText(e.target.value)}
+                      />
+                      <IconButton
+                        onClick={handleSaveMobileClick}
+                        sx={{ color: "white" }}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={handleCancelMobileClick}
+                        sx={{ color: "white" }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalMobileText}
+                      </span>
+                      <IconButton
+                        onClick={handleEditMobileClick}
+                        sx={{ color: "white" }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </div>
+                  )}
+                </div>
+
+                {/* <Typography
                   sx={{
                     color: "white",
                     fontSize: 18,
@@ -418,7 +781,8 @@ export default function GuestProfile() {
                   }}
                 >
                   +2010000000
-                </Typography>
+                </Typography> */}
+
               </Box>
             </Box>
           </Box>
@@ -675,12 +1039,14 @@ export default function GuestProfile() {
                   <Typography
                     sx={{
                       fontSize: 11,
-                      fontWeight: "700",
                       wordWrap: "break-word",
                       color: "black",
                     }}
                   >
-                    Total : 44
+                    Total :{" "}
+                    <span style={{ fontSize: "12px", fontWeight: "700" }}>
+                      44
+                    </span>
                   </Typography>
                 </Box>
               </Box>

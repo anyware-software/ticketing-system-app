@@ -148,8 +148,8 @@ function App() {
   //   alert("logout success");
   // }, []);
   const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.user);
-  const mode = useSelector((state: any) => state.mode);
+  const user = useSelector((state: any) => state.app.user);
+  const mode = useSelector((state: any) => state.app.mode);
   const [loading, setLoading] = useState(true);
 
   const fetchUser = async () => {

@@ -17,6 +17,10 @@ import LocalPostOfficeOutlinedIcon from "@mui/icons-material/LocalPostOfficeOutl
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import LoginIcon from "@mui/icons-material/Login";
+import { setLogin } from "../../state";
+import { signOut } from "aws-amplify/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 interface MainListItemsProps {
   onItemSelected: (item: string) => void;
@@ -24,10 +28,27 @@ interface MainListItemsProps {
 
 export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
   const [selectedItem, setSelectedItem] = React.useState<string | null>(null);
+  const user = useSelector((state: any) => state.app.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleItemClick = (item: string) => {
     setSelectedItem(item);
     onItemSelected(item);
+  };
+
+  const handleLogOut = async () => {
+    if (!user) {
+      console.log("There is no User");
+
+      return;
+    }
+    dispatch(setLogin({ user: null }));
+    if (user.group === "Cognito") {
+      navigate("/login");
+    }
+    localStorage.removeItem("user");
+    await signOut();
   };
 
   return (
