@@ -10,6 +10,8 @@ import {
   OutlinedInput,
   TextField,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -20,11 +22,14 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { signInWithRedirect } from "aws-amplify/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "../../state";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Login() {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = useState(false);
+  const [validationWarning, setValidationWarning] = useState<boolean>(false);
+  const [message, setMessage] = useState<any>("");
 
   const navigate = useNavigate();
   const handleButtonClick = () => {
@@ -46,8 +51,12 @@ export default function Login() {
       localStorage.setItem("user","true")
       dispatch(setLogin({ user: "" }));
       setLoading(false)
+      // navigate('/dashboard')
     } catch (error) {
       console.error("Error logging in with Facbook:", error);
+      setValidationWarning(true)
+      setMessage("You are Logged in with Facbook already !")
+      // navigate('/dashboard')
       setLoading(false)
     }
   };
@@ -109,6 +118,35 @@ export default function Login() {
             </Box>
           </Toolbar>
         </AppBar>
+
+        <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            open={validationWarning}
+            autoHideDuration={3000}
+            onClose={()=>{ setValidationWarning(false)}}
+          >
+            <Alert
+            onClose={()=>{ setValidationWarning(false)}}
+            severity="warning"
+              sx={{
+                position: "fixed",
+                top: "16px",
+                right: "16px",
+              }}
+              action={
+                <IconButton
+                  size="small"
+                  aria-label="close"
+                  color="inherit"
+                  onClick={()=>{setValidationWarning(false)}}
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              }
+            >
+              {message}
+            </Alert>
+          </Snackbar>
 
         <Grid container spacing={2} sx={{ overflow: "hidden", flexGrow: 1 }}>
           <Grid
@@ -414,6 +452,7 @@ export default function Login() {
                     <Typography
                       sx={{
                         color: "white",
+                        cursor: 'pointer',
                       }}
                       onClick={handleFacebookLogin}
                     >

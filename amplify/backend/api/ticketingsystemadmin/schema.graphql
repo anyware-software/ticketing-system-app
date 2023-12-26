@@ -236,7 +236,10 @@ type Guest
   connections:[ID]
   last_attended_event: String
   gender: String
+  group: String
   appPassword: String
+  birthdate: String
+  isVerified : Boolean
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!
