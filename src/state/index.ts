@@ -10,7 +10,7 @@ const initialState: AppState = {
   user: null,
 };
 
-export const appSlice = createSlice({
+export const appSlice:any = createSlice({
   name: "app",
   initialState,
   reducers: {

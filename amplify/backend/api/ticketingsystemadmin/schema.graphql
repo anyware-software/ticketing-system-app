@@ -238,6 +238,7 @@ type Guest
   gender: String
   group: String
   appPassword: String
+  birthdate: String
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!

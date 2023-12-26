@@ -23,6 +23,11 @@ import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
 import { Button, Checkbox, FormControl, TextField } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import { useDispatch, useSelector } from "react-redux";
+import { setLogin } from "../../state";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "aws-amplify/auth";
+import { log } from "console";
 
 const drawerWidth: number = 240;
 
@@ -78,8 +83,26 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Profile() {
   const [open, setOpen] = React.useState(false);
+  const user = useSelector((state: any) => state.app.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+
+  const handleLogOut = async () => {
+    if (!user) {
+      console.log("There is no User");
+      
+      return;
+    }
+    dispatch(setLogin({ user: null }));
+    if (user.group === "Cognito") {
+      navigate("/login");
+    }
+    localStorage.removeItem("user")
+    await signOut();
   };
 
   return (
@@ -155,6 +178,9 @@ export default function Profile() {
               lineHeight: "25px",
               wordWrap: "break-word",
               gap: 1,
+            }}
+            onClick={() => {
+              handleLogOut();
             }}
           >
             <LoginIcon sx={{ color: "white", fontSize: "25px" }} />

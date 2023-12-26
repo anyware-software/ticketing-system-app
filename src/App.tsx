@@ -167,16 +167,16 @@ function App() {
           } else {
             group = "Cognito";
           }
-          console.log(group);
-          console.log(loggedInUser.sub);
+          // console.log(group);
+          // console.log(loggedInUser.sub);
           let currentUser = await getGuest(loggedInUser.sub);
-          console.log(currentUser);
+          // console.log(currentUser);
           if (!currentUser) {
-            console.log("case1");
+            // console.log("case1");
             let newUser = await createGuest(loggedInUser, group);
             dispatch(setLogin({ user: newUser }));
           } else {
-            console.log("case2");
+            // console.log("case2");
             dispatch(setLogin({ user: currentUser }));
           }
         }

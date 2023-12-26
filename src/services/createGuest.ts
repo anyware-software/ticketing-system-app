@@ -10,8 +10,9 @@ async function createGuest(
     const userAttributes={
       email:user.email,
       name:user.name?user.name:"user",
-      phone_number:user.phone_number?(user.phone_number.substring(2,user?.phone_number.length+1)):"00",
+      phone_number:user.phone_number?(user.phone_number.substring(2,user?.phone_number.length+1)):"",
       group:group,
+      birthdate:user.birthdate?(user.birthdate.tostring()):"",
       createdAt: new Date(),
       createdByID:user.sub,
       createdByName: user.email,

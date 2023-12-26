@@ -34,6 +34,7 @@ exports.handler = async (event) => {
         name: userAttributes.name,
         phone_number: userAttributes.phone_number,
         group: userAttributes.group,
+        birthdate:userAttributes.birthdate,
         deleted: "0",
         createdAt: userAttributes.createdAt,
         createdByID: userAttributes.createdByID,
