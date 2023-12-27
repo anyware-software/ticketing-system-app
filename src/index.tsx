@@ -8,9 +8,9 @@ import { Amplify } from "aws-amplify";
 import { Provider } from "react-redux";
 import store from "./state/store";
 import amplifyconfig from './amplifyconfiguration.json';
-import config from "./aws-exports";
+// import config from "./aws-exports";
 
-Amplify.configure(config);
+Amplify.configure(amplifyconfig);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

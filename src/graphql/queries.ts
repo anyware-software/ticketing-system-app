@@ -487,7 +487,7 @@ export const listGuests = /* GraphQL */ `query ListGuests(
 >;
 export const ByEmail = /* GraphQL */ `query ByEmail(
   $email: String!
-  $deletedNameCreatedAt: ModelGuestUsersByEmailCompositeKeyConditionInput
+  $name: ModelStringKeyConditionInput
   $sortDirection: ModelSortDirection
   $filter: ModelGuestFilterInput
   $limit: Int
@@ -495,7 +495,7 @@ export const ByEmail = /* GraphQL */ `query ByEmail(
 ) {
   ByEmail(
     email: $email
-    deletedNameCreatedAt: $deletedNameCreatedAt
+    name: $name
     sortDirection: $sortDirection
     filter: $filter
     limit: $limit
@@ -533,7 +533,7 @@ export const ByEmail = /* GraphQL */ `query ByEmail(
 ` as GeneratedQuery<APITypes.ByEmailQueryVariables, APITypes.ByEmailQuery>;
 export const ByPhoneNumber = /* GraphQL */ `query ByPhoneNumber(
   $phone_number: String!
-  $deletedNameCreatedAt: ModelGuestUsersByPhoneNumberCompositeKeyConditionInput
+  $name: ModelStringKeyConditionInput
   $sortDirection: ModelSortDirection
   $filter: ModelGuestFilterInput
   $limit: Int
@@ -541,7 +541,7 @@ export const ByPhoneNumber = /* GraphQL */ `query ByPhoneNumber(
 ) {
   ByPhoneNumber(
     phone_number: $phone_number
-    deletedNameCreatedAt: $deletedNameCreatedAt
+    name: $name
     sortDirection: $sortDirection
     filter: $filter
     limit: $limit

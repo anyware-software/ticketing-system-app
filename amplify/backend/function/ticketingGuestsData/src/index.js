@@ -10,7 +10,7 @@ Amplify Params - DO NOT EDIT */ /**
 const fetch = require("node-fetch");
 const { operationIdEnum } = require("./constants/enum");
 
-const { createGuest, getGuest } = require("./constants/queries");
+const { createGuest, getGuest, updateGuest } = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
@@ -34,7 +34,7 @@ exports.handler = async (event) => {
         name: userAttributes.name,
         phone_number: userAttributes.phone_number,
         group: userAttributes.group,
-        birthdate:userAttributes.birthdate,
+        birthdate: userAttributes.birthdate,
         deleted: "0",
         createdAt: userAttributes.createdAt,
         createdByID: userAttributes.createdByID,
@@ -49,6 +49,23 @@ exports.handler = async (event) => {
         id: userID,
       };
       query = getGuest;
+    } else if (operationId === operationIdEnum.updateGuest) {
+      console.log(operationIdEnum.updateGuest);
+      variables = {
+        input: {
+          id: userID,
+          email: userAttributes.email,
+          name: userAttributes.name,
+          phone_number: userAttributes.phone_number,
+          birthdate: userAttributes.birthdate,
+          gender: userAttributes.gender,
+          guest_avatar: userAttributes.guest_avatar,
+          deleted: userAttributes.deleted,
+          createdAt: userAttributes.createdAt,
+        },
+      };
+      console.log(updateGuest);
+      query = updateGuest;
     }
 
     let responseBody = {};
@@ -74,7 +91,9 @@ exports.handler = async (event) => {
     if (operationId === operationIdEnum.createGuest) {
       items = responseBody.data.createGuest;
     } else if (operationId === operationIdEnum.getGuest) {
-        items = responseBody.data.getGuest;
+      items = responseBody.data.getGuest;
+    } else if (operationId === operationIdEnum.updateGuest) {
+      items = responseBody.data.updateGuest;
     }
     return {
       statusCode: 200,

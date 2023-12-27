@@ -220,13 +220,13 @@ type Guest
     @index(
       name: "usersByEmail"
       queryField: "ByEmail"
-      sortKeyFields: ["deleted", "name", "createdAt"]
+      sortKeyFields: ["name"]
     )
   phone_number: String
     @index(
       name: "usersByPhoneNumber"
       queryField: "ByPhoneNumber"
-      sortKeyFields: ["deleted", "name", "createdAt"]
+      sortKeyFields: ["name"]
     )
   guestGroupID: ID
   guest_avatar: String

@@ -16,13 +16,15 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import MobileViewTabs from "./MobileViewTabs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { fetchUserAttributes } from "aws-amplify/auth";
 import TextField from "@mui/material/TextField";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
+import updateGuest from "../../services/updateGuest";
+import { setLogin } from "../../state";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -36,6 +38,7 @@ interface MyObject {
 export default function GuestProfile() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [friends, setFriends] = useState<null | Array<string>>(null);
+  const dispatch = useDispatch();
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -68,14 +71,27 @@ export default function GuestProfile() {
   //---------------------------------------------------------------
   //Email Edit
   const [emailEditing, setEmailEditing] = useState(false);
-  const [emailText, setEmailText] = useState(user?.email);
+  const [emailText, setEmailText] = useState(user?.email||"");
   const [originalEmailText, setOriginalEmailText] = useState(user?.email);
   const handleEditEmailClick = () => {
     setEmailEditing(true);
   };
-  const handleSaveEmailClick = () => {
-    setOriginalEmailText(emailText);
-    setEmailEditing(false);
+  const handleSaveEmailClick = async () => {
+    try {
+      const updatedData = {
+        userID: user?.id,
+        email: emailText,
+      };
+      let UpdatedGuest = await updateGuest(
+        updatedData.userID,
+        updatedData.email
+      );
+      dispatch(setLogin({ user: UpdatedGuest }));
+      setOriginalEmailText(emailText);
+      setEmailEditing(false);
+    } catch (error) {
+      console.error("Error updating email:", error);
+    }
   };
   const handleCancelEmailClick = () => {
     setEmailText(originalEmailText);
@@ -91,14 +107,35 @@ export default function GuestProfile() {
   //---------------------------------------------------------------
   //Birth Date Edit
   const [birthEditing, setBirthEditing] = useState(false);
-  const [birthText, setBirthText] = useState(user?.birthdate);
+  const [birthText, setBirthText] = useState(user?.birthdate || "");
   const [originalBirthText, setOriginalBirthText] = useState(user?.birthdate);
   const handleEditBirthClick = () => {
     setBirthEditing(true);
   };
-  const handleSaveBirthClick = () => {
-    setOriginalBirthText(birthText);
-    setBirthEditing(false);
+  const handleSaveBirthClick = async () => {
+    // setOriginalBirthText(birthText);
+    // setBirthEditing(false);
+    try {
+      const updatedData = {
+        userID: user?.id,
+        email:user?.email,
+        name:user?.name,
+        phone_number:user?.phone_number,
+        birthdate: birthText,
+      };
+      let UpdatedGuest = await updateGuest(
+        updatedData.userID,
+        updatedData.email,
+        updatedData.name,
+        updatedData.phone_number,
+        updatedData.birthdate,
+      );
+      dispatch(setLogin({ user: UpdatedGuest }));
+      setOriginalBirthText(birthText);
+      setBirthEditing(false);
+    } catch (error) {
+      console.error("Error updating BirthDate:", error);
+    }
   };
   const handleCancelBrithClick = () => {
     setBirthText(originalBirthText);
@@ -119,9 +156,34 @@ export default function GuestProfile() {
   const handleEditGenderClick = () => {
     setGenderEditing(true);
   };
-  const handleSaveGenderClick = () => {
-    setOriginalGenderText(genderText);
-    setGenderEditing(false);
+  // const handleSaveGenderClick = () => {
+  //   setOriginalGenderText(genderText);
+  //   setGenderEditing(false);
+  // };
+  const handleSaveGenderClick = async () => {
+    try {
+      const updatedData = {
+        userID: user?.id,
+        email:user?.email,
+        name:user?.name,
+        phone_number:user?.phone_number,
+        birthdate: user?.birthdate,
+        gender: genderText,
+      };
+      let UpdatedGuest = await updateGuest(
+        updatedData.userID,
+        updatedData.email,
+        updatedData.name,
+        updatedData.phone_number,
+        updatedData.birthdate,
+        updatedData.gender,
+      );
+      dispatch(setLogin({ user: UpdatedGuest }));
+      setOriginalGenderText(genderText);
+      setGenderEditing(false);
+    } catch (error) {
+      console.error("Error updating BirthDate:", error);
+    }
   };
   const handleCancelGenderClick = () => {
     setGenderText(originalGenderText);
@@ -144,9 +206,32 @@ export default function GuestProfile() {
   const handleEditMobileClick = () => {
     setMobileEditing(true);
   };
-  const handleSaveMobileClick = () => {
-    setOriginalMobileText(mobileText);
-    setMobileEditing(false);
+  const handleSaveMobileClick = async () => {
+    // setOriginalMobileText(mobileText);
+    // setMobileEditing(false);
+    try {
+      const updatedData = {
+        userID: user?.id,
+        email:user?.email,
+        name:user?.name,
+        phone_number:mobileText,
+        birthdate: user?.birthdate,
+        gender: user?.gender,
+      };
+      let UpdatedGuest = await updateGuest(
+        updatedData.userID,
+        updatedData.email,
+        updatedData.name,
+        updatedData.phone_number,
+        updatedData.birthdate,
+        updatedData.gender,
+      );
+      dispatch(setLogin({ user: UpdatedGuest }));
+      setOriginalMobileText(genderText);
+      setMobileEditing(false);
+    } catch (error) {
+      console.error("Error updating BirthDate:", error);
+    }
   };
   const handleCancelMobileClick = () => {
     setMobileText(originalMobileText);
@@ -721,7 +806,7 @@ export default function GuestProfile() {
                       }}
                     >
                       <TextField
-                      type="number"
+                        type="number"
                         sx={{
                           backgroundColor: "rgba(255, 255, 255, 0.31)",
                           "input::placeholder": {
@@ -782,7 +867,6 @@ export default function GuestProfile() {
                 >
                   +2010000000
                 </Typography> */}
-
               </Box>
             </Box>
           </Box>
