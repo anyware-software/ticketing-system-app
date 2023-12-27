@@ -1,7 +1,7 @@
 import { EndPoints} from "../constants/Enums";
 import axios from "axios";
 
-async function updateUser(
+async function updateGuest(
     userID:any,
     email?:any,
     name?:any,
@@ -12,6 +12,8 @@ async function updateUser(
     deleted?:any,
     createdAt?:any,
 ) {
+  console.log(userID,email ,birthdate );
+  
   try {
     const operationId = 3;
     const userAttributes={
@@ -45,4 +47,4 @@ async function updateUser(
   }
 }
 
-export default updateUser;
+export default updateGuest;

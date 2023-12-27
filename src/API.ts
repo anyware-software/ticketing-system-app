@@ -948,20 +948,14 @@ export type ModelGuestConnection = {
   nextToken?: string | null,
 };
 
-export type ModelGuestUsersByEmailCompositeKeyConditionInput = {
-  eq?: ModelGuestUsersByEmailCompositeKeyInput | null,
-  le?: ModelGuestUsersByEmailCompositeKeyInput | null,
-  lt?: ModelGuestUsersByEmailCompositeKeyInput | null,
-  ge?: ModelGuestUsersByEmailCompositeKeyInput | null,
-  gt?: ModelGuestUsersByEmailCompositeKeyInput | null,
-  between?: Array< ModelGuestUsersByEmailCompositeKeyInput | null > | null,
-  beginsWith?: ModelGuestUsersByEmailCompositeKeyInput | null,
-};
-
-export type ModelGuestUsersByEmailCompositeKeyInput = {
-  deleted?: string | null,
-  name?: string | null,
-  createdAt?: string | null,
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
 };
 
 export enum ModelSortDirection {
@@ -969,22 +963,6 @@ export enum ModelSortDirection {
   DESC = "DESC",
 }
 
-
-export type ModelGuestUsersByPhoneNumberCompositeKeyConditionInput = {
-  eq?: ModelGuestUsersByPhoneNumberCompositeKeyInput | null,
-  le?: ModelGuestUsersByPhoneNumberCompositeKeyInput | null,
-  lt?: ModelGuestUsersByPhoneNumberCompositeKeyInput | null,
-  ge?: ModelGuestUsersByPhoneNumberCompositeKeyInput | null,
-  gt?: ModelGuestUsersByPhoneNumberCompositeKeyInput | null,
-  between?: Array< ModelGuestUsersByPhoneNumberCompositeKeyInput | null > | null,
-  beginsWith?: ModelGuestUsersByPhoneNumberCompositeKeyInput | null,
-};
-
-export type ModelGuestUsersByPhoneNumberCompositeKeyInput = {
-  deleted?: string | null,
-  name?: string | null,
-  createdAt?: string | null,
-};
 
 export type ModelGuestGroupFilterInput = {
   id?: ModelIDInput | null,
@@ -2448,7 +2426,7 @@ export type ListGuestsQuery = {
 
 export type ByEmailQueryVariables = {
   email: string,
-  deletedNameCreatedAt?: ModelGuestUsersByEmailCompositeKeyConditionInput | null,
+  name?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelGuestFilterInput | null,
   limit?: number | null,
@@ -2489,7 +2467,7 @@ export type ByEmailQuery = {
 
 export type ByPhoneNumberQueryVariables = {
   phone_number: string,
-  deletedNameCreatedAt?: ModelGuestUsersByPhoneNumberCompositeKeyConditionInput | null,
+  name?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelGuestFilterInput | null,
   limit?: number | null,
