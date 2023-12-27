@@ -18,6 +18,7 @@ const createGuest = /* GraphQL */
     last_attended_event
     gender
     group
+    faceBookID
     appPassword
     birthdate
     isVerified
@@ -48,6 +49,7 @@ const createGuest = /* GraphQL */
     last_attended_event
     gender
     group
+    faceBookID
     appPassword
     birthdate
     isVerified
@@ -81,6 +83,7 @@ const updateGuest = /* GraphQL */
     last_attended_event
     gender
     group
+    faceBookID
     appPassword
     birthdate
     isVerified

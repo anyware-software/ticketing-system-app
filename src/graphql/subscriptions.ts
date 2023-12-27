@@ -585,6 +585,7 @@ export const onCreateGuest = /* GraphQL */ `subscription OnCreateGuest($filter: 
     last_attended_event
     gender
     group
+    faceBookID
     appPassword
     birthdate
     isVerified
@@ -616,6 +617,7 @@ export const onUpdateGuest = /* GraphQL */ `subscription OnUpdateGuest($filter: 
     last_attended_event
     gender
     group
+    faceBookID
     appPassword
     birthdate
     isVerified
@@ -647,6 +649,7 @@ export const onDeleteGuest = /* GraphQL */ `subscription OnDeleteGuest($filter: 
     last_attended_event
     gender
     group
+    faceBookID
     appPassword
     birthdate
     isVerified

@@ -1,9 +1,17 @@
 {
   "body": {
     "operationId": 3,
-    "userID": "baf720df-6bff-4efe-95ed-5366ee138888",
+    "userID": "52daff5a-2f7f-43cb-b9e6-d4034da4f71a",
     "userAttributes": {
-      "birthdate": "1997-10-12"
+        "email": "medosamir11999966@gmail.com",
+        "name": "Mohamed Samir",
+        "phone_number": "01060254789",
+        "birthdate": "",
+        "gender": null,
+        "guest_avatar": "[6924716960943964]",
+        "connections": [
+            "6924716960943964"
+        ]
     }
-  }
+}
 }

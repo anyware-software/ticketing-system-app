@@ -9,10 +9,11 @@ async function updateGuest(
     birthdate?: any,
     gender?: any,
     guest_avatar?: any,
+    connections?:[any],
     deleted?:any,
     createdAt?:any,
 ) {
-  console.log(userID,email ,birthdate );
+  // console.log(userID,email ,birthdate );
   
   try {
     const operationId = 3;
@@ -23,6 +24,7 @@ async function updateGuest(
         birthdate: birthdate,
         gender: gender,
         guest_avatar: guest_avatar,
+        connections:connections,
         deleted:deleted,
         createdAt:createdAt,
       }

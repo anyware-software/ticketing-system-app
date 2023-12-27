@@ -276,7 +276,7 @@ export default function Dashboard() {
         //   <SettingsComponent />
         // ) : selectedItem === "Help & FAQs" ? (
         //   <HelpAndFaqsComponent />
-        <Login />
+        <GuestProfile />
       )}
     </Box>
   );

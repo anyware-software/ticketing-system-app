@@ -237,6 +237,7 @@ type Guest
   last_attended_event: String
   gender: String
   group: String
+  faceBookID: ID
   appPassword: String
   birthdate: String
   isVerified : Boolean

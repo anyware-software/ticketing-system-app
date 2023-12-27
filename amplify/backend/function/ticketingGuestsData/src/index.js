@@ -19,8 +19,8 @@ const GRAPHQL_API_KEY =
 
 exports.handler = async (event) => {
   try {
-    const requestBody = JSON.parse(event.body);
-    // const requestBody = event.body;
+    // const requestBody = JSON.parse(event.body);
+    const requestBody = event.body;
     console.log({ requestBody });
     const operationId = requestBody.operationId;
     const userID = requestBody.userID;
@@ -34,6 +34,7 @@ exports.handler = async (event) => {
         name: userAttributes.name,
         phone_number: userAttributes.phone_number,
         group: userAttributes.group,
+        faceBookID: userAttributes.faceBookID,
         birthdate: userAttributes.birthdate,
         deleted: "0",
         createdAt: userAttributes.createdAt,
@@ -60,6 +61,7 @@ exports.handler = async (event) => {
           birthdate: userAttributes.birthdate,
           gender: userAttributes.gender,
           guest_avatar: userAttributes.guest_avatar,
+          connections:userAttributes.connections,
           deleted: userAttributes.deleted,
           createdAt: userAttributes.createdAt,
         },

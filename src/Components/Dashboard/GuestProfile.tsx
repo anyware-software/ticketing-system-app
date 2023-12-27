@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -25,6 +25,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import updateGuest from "../../services/updateGuest";
 import { setLogin } from "../../state";
+// import { Storage } from "aws-amplify";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -33,6 +34,17 @@ const ITEM_HEIGHT = 48;
 interface MyObject {
   name: string;
   id: string;
+}
+
+const initialState = {
+  image: null,
+};
+
+interface FormData {
+  image: any;
+}
+interface FormDataProps {
+  image?: string | undefined | null;
 }
 
 export default function GuestProfile() {
@@ -49,29 +61,64 @@ export default function GuestProfile() {
   const user = useSelector((state: any) => state.app.user);
 
   useEffect(() => {
+    if(!user) return
     async function getFriends() {
       const userdata = await fetchUserAttributes();
-      console.log(userdata);
+      // console.log(userdata);
       const accessToken = userdata.profile;
       axios
         .get(
           `https://graph.facebook.com/me/friends?access_token=${accessToken}`
         )
         .then((response) => {
-          console.log("User Friends : ");
-          console.log(response.data.data.map((item: MyObject) => item.name));
+          // console.log("User Friends : ");
+          // console.log(response.data.data.map((item: MyObject) => item.name));
+          // console.log(response.data.data.map((item: MyObject) => item.id));
+          let friends = response.data.data.map((item: MyObject) => item.id);
           setFriends(response.data.data.map((item: MyObject) => item.name));
+          async function updateConnections() {
+            try {
+              const updatedData = {
+                userID: user?.id,
+                email: user?.email,
+                name: user?.name,
+                phone_number: user?.phone_number,
+                birthdate: user?.birthdate,
+                gender: user?.gender,
+                guest_avatar: user?.guest_avatar,
+                connections: friends,
+              };
+              console.log(updatedData);
+              
+              let UpdatedGuest = await updateGuest(
+                updatedData.userID,
+                updatedData.email,
+                updatedData.name,
+                updatedData.phone_number,
+                updatedData.birthdate,
+                updatedData.gender,
+                updatedData.guest_avatar,
+                updatedData.connections
+              );
+              console.log(UpdatedGuest);
+              
+              // dispatch(setLogin({ user: UpdatedGuest }));
+            } catch (error) {
+              console.error("Error updating Connections:", error);
+            }
+          }
+          updateConnections();
         })
         .catch((error) => {
           console.error(error);
         });
     }
     getFriends();
-  }, []);
+  }, [user]);
   //---------------------------------------------------------------
   //Email Edit
   const [emailEditing, setEmailEditing] = useState(false);
-  const [emailText, setEmailText] = useState(user?.email||"");
+  const [emailText, setEmailText] = useState(user?.email || "");
   const [originalEmailText, setOriginalEmailText] = useState(user?.email);
   const handleEditEmailClick = () => {
     setEmailEditing(true);
@@ -118,9 +165,9 @@ export default function GuestProfile() {
     try {
       const updatedData = {
         userID: user?.id,
-        email:user?.email,
-        name:user?.name,
-        phone_number:user?.phone_number,
+        email: user?.email,
+        name: user?.name,
+        phone_number: user?.phone_number,
         birthdate: birthText,
       };
       let UpdatedGuest = await updateGuest(
@@ -128,7 +175,7 @@ export default function GuestProfile() {
         updatedData.email,
         updatedData.name,
         updatedData.phone_number,
-        updatedData.birthdate,
+        updatedData.birthdate
       );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalBirthText(birthText);
@@ -164,9 +211,9 @@ export default function GuestProfile() {
     try {
       const updatedData = {
         userID: user?.id,
-        email:user?.email,
-        name:user?.name,
-        phone_number:user?.phone_number,
+        email: user?.email,
+        name: user?.name,
+        phone_number: user?.phone_number,
         birthdate: user?.birthdate,
         gender: genderText,
       };
@@ -176,7 +223,7 @@ export default function GuestProfile() {
         updatedData.name,
         updatedData.phone_number,
         updatedData.birthdate,
-        updatedData.gender,
+        updatedData.gender
       );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalGenderText(genderText);
@@ -212,9 +259,9 @@ export default function GuestProfile() {
     try {
       const updatedData = {
         userID: user?.id,
-        email:user?.email,
-        name:user?.name,
-        phone_number:mobileText,
+        email: user?.email,
+        name: user?.name,
+        phone_number: mobileText,
         birthdate: user?.birthdate,
         gender: user?.gender,
       };
@@ -224,7 +271,7 @@ export default function GuestProfile() {
         updatedData.name,
         updatedData.phone_number,
         updatedData.birthdate,
-        updatedData.gender,
+        updatedData.gender
       );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalMobileText(genderText);
@@ -244,6 +291,38 @@ export default function GuestProfile() {
   }, [user]);
   //Mobile Edit
   //----------------------------------------------------------------
+  //image part
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [formData, setFormData] = useState<FormData>(initialState);
+
+  const handleUploadImage = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current?.click();
+    }
+  };
+  const handleFileChange = (e: any) => {
+    const selectedFile = e.target.files[0];
+    uploadImage(selectedFile);
+  };
+  const handleImageChange = (imageName: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      image: imageName,
+    }));
+  };
+  const uploadImage = async (file: any) => {
+    // try {
+    //   const result = await Storage.put(
+    //     `${new Date().getTime()}-${file.name.replace(" ", "-")}`,
+    //     file,
+    //     { level: "public" }
+    //   );
+    //   handleImageChange(result.key);
+    // } catch (error) {
+    //   console.error("Error uploading image:", error);
+    // }
+  };
+
   return (
     <Box
       sx={{

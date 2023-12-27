@@ -156,14 +156,21 @@ function App() {
     if (!user) {
       try {
         let loggedInUser: any = await fetchUserAttributes();
-        console.log(loggedInUser);
+        // console.log(loggedInUser.identities);
+        const identitiesString = loggedInUser.identities;
+        const identitiesArray = JSON.parse(identitiesString);
+        const userId = identitiesArray[0].userId;
+
+        console.log(userId);
         if (loggedInUser) {
           let group: any = null;
+          let faceBookID : any = null;
           if (
             loggedInUser.identities &&
             loggedInUser.identities.toString().includes("Facebook")
           ) {
             group = "Facebook";
+            faceBookID =  userId;
           } else {
             group = "Cognito";
           }
@@ -173,7 +180,7 @@ function App() {
           // console.log(currentUser);
           if (!currentUser) {
             // console.log("case1");
-            let newUser = await createGuest(loggedInUser, group);
+            let newUser = await createGuest(loggedInUser, group , faceBookID);
             dispatch(setLogin({ user: newUser }));
           } else {
             // console.log("case2");

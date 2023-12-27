@@ -434,6 +434,7 @@ export const getGuest = /* GraphQL */ `query GetGuest($id: ID!) {
     last_attended_event
     gender
     group
+    faceBookID
     appPassword
     birthdate
     isVerified
@@ -467,6 +468,7 @@ export const listGuests = /* GraphQL */ `query ListGuests(
       last_attended_event
       gender
       group
+      faceBookID
       appPassword
       birthdate
       isVerified
@@ -516,6 +518,7 @@ export const ByEmail = /* GraphQL */ `query ByEmail(
       last_attended_event
       gender
       group
+      faceBookID
       appPassword
       birthdate
       isVerified
@@ -562,6 +565,7 @@ export const ByPhoneNumber = /* GraphQL */ `query ByPhoneNumber(
       last_attended_event
       gender
       group
+      faceBookID
       appPassword
       birthdate
       isVerified

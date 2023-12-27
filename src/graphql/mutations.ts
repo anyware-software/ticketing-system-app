@@ -642,6 +642,7 @@ export const createGuest = /* GraphQL */ `mutation CreateGuest(
     last_attended_event
     gender
     group
+    faceBookID
     appPassword
     birthdate
     isVerified
@@ -676,6 +677,7 @@ export const updateGuest = /* GraphQL */ `mutation UpdateGuest(
     last_attended_event
     gender
     group
+    faceBookID
     appPassword
     birthdate
     isVerified
@@ -710,6 +712,7 @@ export const deleteGuest = /* GraphQL */ `mutation DeleteGuest(
     last_attended_event
     gender
     group
+    faceBookID
     appPassword
     birthdate
     isVerified
