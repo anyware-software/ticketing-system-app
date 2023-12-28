@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -26,7 +26,9 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import updateGuest from "../../services/updateGuest";
 import { setLogin } from "../../state";
 // import { Storage } from "aws-amplify";
-
+import { uploadData } from "aws-amplify/storage";
+import { getUrl } from "aws-amplify/storage";
+import { dbStorage } from "../../constants/Enums";
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
 const ITEM_HEIGHT = 48;
@@ -36,16 +38,16 @@ interface MyObject {
   id: string;
 }
 
-const initialState = {
-  image: null,
-};
+// const initialState = {
+//   image: null,
+// };
 
-interface FormData {
-  image: any;
-}
-interface FormDataProps {
-  image?: string | undefined | null;
-}
+// interface FormData {
+//   image: any;
+// }
+// interface FormDataProps {
+//   image?: string | undefined | null;
+// }
 
 export default function GuestProfile() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -61,7 +63,7 @@ export default function GuestProfile() {
   const user = useSelector((state: any) => state.app.user);
 
   useEffect(() => {
-    if(!user) return
+    if (!user) return;
     async function getFriends() {
       const userdata = await fetchUserAttributes();
       // console.log(userdata);
@@ -89,7 +91,7 @@ export default function GuestProfile() {
                 connections: friends,
               };
               console.log(updatedData);
-              
+
               let UpdatedGuest = await updateGuest(
                 updatedData.userID,
                 updatedData.email,
@@ -101,7 +103,7 @@ export default function GuestProfile() {
                 updatedData.connections
               );
               console.log(UpdatedGuest);
-              
+
               // dispatch(setLogin({ user: UpdatedGuest }));
             } catch (error) {
               console.error("Error updating Connections:", error);
@@ -292,35 +294,66 @@ export default function GuestProfile() {
   //Mobile Edit
   //----------------------------------------------------------------
   //image part
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [formData, setFormData] = useState<FormData>(initialState);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const handleUploadImage = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current?.click();
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      try {
+        const result = await uploadImage(file);
+        console.log(`${result}`);
+
+        setSelectedImage(`${dbStorage}${result}`);
+      } catch (error) {
+        // Handle the error
+        console.error(error);
+      }
     }
   };
-  const handleFileChange = (e: any) => {
-    const selectedFile = e.target.files[0];
-    uploadImage(selectedFile);
-  };
-  const handleImageChange = (imageName: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      image: imageName,
-    }));
-  };
-  const uploadImage = async (file: any) => {
-    // try {
-    //   const result = await Storage.put(
-    //     `${new Date().getTime()}-${file.name.replace(" ", "-")}`,
-    //     file,
-    //     { level: "public" }
-    //   );
-    //   handleImageChange(result.key);
-    // } catch (error) {
-    //   console.error("Error uploading image:", error);
-    // }
+
+  const uploadImage = async (file: File) => {
+    try {
+      const result = await uploadData({
+        key: `${new Date().getTime()}-${file.name.replace(/\s/g, "-")}`,
+        data: file,
+        options: {
+          accessLevel: "guest",
+        },
+      }).result;
+      // console.log("Succeeded uploading image: ", result);
+
+      try {
+        const updatedData = {
+          userID: user?.id,
+          email: user?.email,
+          name: user?.name,
+          phone_number: user?.phone_number,
+          birthdate: user?.birthdate,
+          gender: user?.gender,
+          guest_avatar: result.key,
+        };
+        console.log(updatedData);
+        let UpdatedGuest = await updateGuest(
+          updatedData.userID,
+          updatedData.email,
+          updatedData.name,
+          updatedData.phone_number,
+          updatedData.birthdate,
+          updatedData.gender,
+          updatedData.guest_avatar
+        );
+        console.log(UpdatedGuest);
+        dispatch(setLogin({ user: UpdatedGuest }));
+      } catch (error) {
+        console.error("Error updating Connections:", error);
+      }
+
+      return result.key;
+    } catch (error) {
+      console.log("Error uploading image: ", error);
+      throw error;
+    }
   };
 
   return (
@@ -366,7 +399,7 @@ export default function GuestProfile() {
           item
           xs={12}
           sm={12}
-          lg={4}
+          lg={5}
           sx={{
             zIndex: 1,
             position: "relative",
@@ -386,16 +419,60 @@ export default function GuestProfile() {
               gap: 4,
             }}
           >
-            <img
+            {/* Test */}
+            {/* <img
               src="../../../Images/testPerson.png"
               style={{
-                width: "12rem",
-                height: "12rem",
+                width: "10rem",
+                height: "10rem",
                 borderRadius: "50%",
                 marginLeft: "1rem",
               }}
               alt="unknownUser"
-            />
+            /> */}
+
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                id="imageInput"
+                style={{ display: "none" }}
+                onChange={handleImageChange}
+              />
+              <label htmlFor="imageInput">
+                {selectedImage ? (
+                  <img
+                    // src={selectedImage}
+                    src={`${dbStorage}${user?.guest_avatar}`}
+                    style={{
+                      width: "10rem",
+                      height: "10rem",
+                      borderRadius: "50%",
+                      marginLeft: "1rem",
+                      cursor: "pointer",
+                    }}
+                    alt="unknownUser"
+                  />
+                ) : (
+                  <img
+                    src={
+                      user?.guest_avatar
+                        ? `${dbStorage}${user?.guest_avatar}`
+                        : "../../../Images/unknownUser.png"
+                    }
+                    style={{
+                      width: "10rem",
+                      height: "10rem",
+                      borderRadius: "50%",
+                      marginLeft: "1rem",
+                      cursor: "pointer",
+                    }}
+                    alt="unknownUser"
+                  />
+                )}
+              </label>
+            </div>
+
             <Box
               sx={{
                 display: "flex",
@@ -955,7 +1032,7 @@ export default function GuestProfile() {
           item
           xs={12}
           sm={12}
-          lg={8}
+          lg={7}
           sx={{
             zIndex: 1,
             position: "relative",
@@ -972,7 +1049,7 @@ export default function GuestProfile() {
               justifyContent: "start",
               flexDirection: "column",
               gap: 4,
-              width: { xs: "90%", sm: "51%" },
+              width: { xs: "90%", sm: "57%" },
             }}
           >
             <Box>
@@ -1222,6 +1299,7 @@ export default function GuestProfile() {
                 gridTemplateColumns: "repeat(2, 1fr)",
                 gap: { xs: 1, sm: 2 },
                 // justifyContent: {xs:'center',sm:""}
+                width: { xs: "90%", sm: "%" },
               }}
             >
               {/* Friend Attends */}

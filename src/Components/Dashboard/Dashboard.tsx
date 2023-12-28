@@ -207,6 +207,7 @@ export default function Dashboard() {
           </Box>
         </Toolbar>
       </AppBar>
+      
       <Drawer variant="permanent" open={open}>
         <Toolbar
           sx={{

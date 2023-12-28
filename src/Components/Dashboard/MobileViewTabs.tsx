@@ -317,6 +317,7 @@ export default function MobileViewTabs() {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
+                flexDirection: "column",
               }}
             >
               <Box>
@@ -501,6 +502,7 @@ export default function MobileViewTabs() {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
+                flexDirection: "column",
               }}
             >
               <Box>
