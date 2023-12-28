@@ -1,6 +1,4 @@
-import React from 'react'
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import Divider from "@mui/material/Divider";
@@ -15,6 +13,17 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { fetchUserAttributes } from "aws-amplify/auth";
+import TextField from "@mui/material/TextField";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
+import updateGuest from "../../services/updateGuest";
+import { setLogin } from "../../state";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -54,67 +63,658 @@ function a11yProps(index: number) {
 }
 
 export default function MobileViewTabs() {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-  
-    const [value, setValue] = React.useState(0);
-  
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-      setValue(newValue);
-    };
-  
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  const user = useSelector((state: any) => state.app.user);
+  const dispatch = useDispatch();
+
+  //---------------------------------------------------------------
+  //Email Edit
+  const [emailEditing, setEmailEditing] = useState(false);
+  const [emailText, setEmailText] = useState(user?.email || "");
+  const [originalEmailText, setOriginalEmailText] = useState(user?.email);
+  const handleEditEmailClick = () => {
+    setEmailEditing(true);
+  };
+  const handleSaveEmailClick = async () => {
+    try {
+      const updatedData = {
+        userID: user?.id,
+        email: emailText,
+      };
+      let UpdatedGuest = await updateGuest(
+        updatedData.userID,
+        updatedData.email
+      );
+      dispatch(setLogin({ user: UpdatedGuest }));
+      setOriginalEmailText(emailText);
+      setEmailEditing(false);
+    } catch (error) {
+      console.error("Error updating email:", error);
+    }
+  };
+  const handleCancelEmailClick = () => {
+    setEmailText(originalEmailText);
+    setEmailEditing(false);
+  };
+  useEffect(() => {
+    if (!user) return;
+    setEmailText(user.email);
+    setOriginalEmailText(user.email);
+  }, [user]);
+  //Email Edit
+  //----------------------------------------------------------------
+  //---------------------------------------------------------------
+  //Birth Date Edit
+  const [birthEditing, setBirthEditing] = useState(false);
+  const [birthText, setBirthText] = useState(user?.birthdate || "");
+  const [originalBirthText, setOriginalBirthText] = useState(user?.birthdate);
+  const handleEditBirthClick = () => {
+    setBirthEditing(true);
+  };
+  const handleSaveBirthClick = async () => {
+    // setOriginalBirthText(birthText);
+    // setBirthEditing(false);
+    try {
+      const updatedData = {
+        userID: user?.id,
+        email: user?.email,
+        name: user?.name,
+        phone_number: user?.phone_number,
+        birthdate: birthText,
+      };
+      let UpdatedGuest = await updateGuest(
+        updatedData.userID,
+        updatedData.email,
+        updatedData.name,
+        updatedData.phone_number,
+        updatedData.birthdate
+      );
+      dispatch(setLogin({ user: UpdatedGuest }));
+      setOriginalBirthText(birthText);
+      setBirthEditing(false);
+    } catch (error) {
+      console.error("Error updating BirthDate:", error);
+    }
+  };
+  const handleCancelBrithClick = () => {
+    setBirthText(originalBirthText);
+    setBirthEditing(false);
+  };
+  useEffect(() => {
+    if (!user) return;
+    setBirthText(user.birthdate);
+    setOriginalBirthText(user.birthdate);
+  }, [user]);
+  //Birth Date Edit
+  //----------------------------------------------------------------
+  //---------------------------------------------------------------
+  //Gender Edit
+  const [genderEditing, setGenderEditing] = useState(false);
+  const [genderText, setGenderText] = useState(user?.gender);
+  const [originalGenderText, setOriginalGenderText] = useState(user?.gender);
+  const handleEditGenderClick = () => {
+    setGenderEditing(true);
+  };
+  // const handleSaveGenderClick = () => {
+  //   setOriginalGenderText(genderText);
+  //   setGenderEditing(false);
+  // };
+  const handleSaveGenderClick = async () => {
+    try {
+      const updatedData = {
+        userID: user?.id,
+        email: user?.email,
+        name: user?.name,
+        phone_number: user?.phone_number,
+        birthdate: user?.birthdate,
+        gender: genderText,
+      };
+      let UpdatedGuest = await updateGuest(
+        updatedData.userID,
+        updatedData.email,
+        updatedData.name,
+        updatedData.phone_number,
+        updatedData.birthdate,
+        updatedData.gender
+      );
+      dispatch(setLogin({ user: UpdatedGuest }));
+      setOriginalGenderText(genderText);
+      setGenderEditing(false);
+    } catch (error) {
+      console.error("Error updating BirthDate:", error);
+    }
+  };
+  const handleCancelGenderClick = () => {
+    setGenderText(originalGenderText);
+    setGenderEditing(false);
+  };
+  useEffect(() => {
+    if (!user) return;
+    setGenderText(user.gender);
+    setOriginalGenderText(user.gender);
+  }, [user]);
+  //Gender Edit
+  //----------------------------------------------------------------
+  //---------------------------------------------------------------
+  //Mobile Edit
+  const [mobileEditing, setMobileEditing] = useState(false);
+  const [mobileText, setMobileText] = useState(user?.phone_number);
+  const [originalMobileText, setOriginalMobileText] = useState(
+    user?.phone_number
+  );
+  const handleEditMobileClick = () => {
+    setMobileEditing(true);
+  };
+  const handleSaveMobileClick = async () => {
+    // setOriginalMobileText(mobileText);
+    // setMobileEditing(false);
+    try {
+      const updatedData = {
+        userID: user?.id,
+        email: user?.email,
+        name: user?.name,
+        phone_number: mobileText,
+        birthdate: user?.birthdate,
+        gender: user?.gender,
+      };
+      let UpdatedGuest = await updateGuest(
+        updatedData.userID,
+        updatedData.email,
+        updatedData.name,
+        updatedData.phone_number,
+        updatedData.birthdate,
+        updatedData.gender
+      );
+      dispatch(setLogin({ user: UpdatedGuest }));
+      setOriginalMobileText(genderText);
+      setMobileEditing(false);
+    } catch (error) {
+      console.error("Error updating BirthDate:", error);
+    }
+  };
+  const handleCancelMobileClick = () => {
+    setMobileText(originalMobileText);
+    setMobileEditing(false);
+  };
+  useEffect(() => {
+    if (!user) return;
+    setMobileText(user.phone_number);
+    setOriginalMobileText(user.phone_number);
+  }, [user]);
+  //Mobile Edit
+  //----------------------------------------------------------------
+
   return (
     <>
-<Box sx={{ width: "100%", display: { xs: "block", sm: "none" } }}>
-            <Box>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="basic tabs example"
-                TabIndicatorProps={{
-                  style: { display: "none" },
-                }}
-              >
-                <Tab
-                  label="My Bookings"
-                  {...a11yProps(0)}
+      <Box sx={{ width: "100%", display: { xs: "block", sm: "none" } }}>
+        <Box>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+            TabIndicatorProps={{
+              style: { display: "none" },
+            }}
+          >
+            <Tab
+              label="About Info"
+              {...a11yProps(0)}
+              sx={{
+                color: "#A19F9F",
+                "&.Mui-selected": {
+                  color: "white",
+                },
+              }}
+            />
+            <Tab
+              label="My Bookings"
+              {...a11yProps(1)}
+              sx={{
+                color: "#A19F9F",
+                "&.Mui-selected": {
+                  color: "white",
+                },
+              }}
+            />
+          </Tabs>
+        </Box>
+        {/* info part */}
+        <CustomTabPanel value={value} index={0}>
+        <Box
+            sx={{
+              width: { xs: "90%", sm: "70%" },
+              display: { xs: "flex", sm: "none" },
+              flexDirection: "column",
+              gap: 3,
+              marginTop: { xs: "2vh", sm: "0vh" },
+            }}
+          >
+            <Typography
+              sx={{
+                color: "white",
+                fontSize: 18,
+                fontWeight: "600",
+                wordWrap: "break-word",
+              }}
+            >
+              About Info
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box>
+                <Typography
                   sx={{
-                    color: "#A19F9F",
-                    "&.Mui-selected": {
-                      color: "white",
-                    },
+                    color: "#848383",
+                    fontSize: 18,
+                    fontWeight: "600",
+                    wordWrap: "break-word",
                   }}
-                />
-                <Tab
-                  label="About Info"
-                  {...a11yProps(1)}
+                >
+                  Email
+                </Typography>
+
+                {/* Email Field */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {emailEditing ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextField
+                        sx={{
+                          backgroundColor: "rgba(255, 255, 255, 0.31)",
+                          "input::placeholder": {
+                            color: "white",
+                          },
+                          input: {
+                            color: "white",
+                          },
+                          border: "1px solid",
+                          borderColor: "rgba(255, 255, 255, 0.63)",
+                          width: "100%",
+                        }}
+                        value={emailText}
+                        onChange={(e) => setEmailText(e.target.value)}
+                      />
+                      <IconButton
+                        onClick={handleSaveEmailClick}
+                        sx={{ color: "white" }}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={handleCancelEmailClick}
+                        sx={{ color: "white" }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalEmailText}
+                      </span>
+                      <IconButton
+                        onClick={handleEditEmailClick}
+                        sx={{ color: "white" }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </div>
+                  )}
+                </div>
+
+                {/* <Typography
                   sx={{
-                    color: "#A19F9F",
-                    "&.Mui-selected": {
-                      color: "white",
-                    },
+                    color: "white",
+                    fontSize: 18,
+                    fontWeight: "600",
+                    wordWrap: "break-word",
                   }}
-                />
-              </Tabs>
+                >
+                  Alinader@gmail.com
+                </Typography> */}
+              </Box>
+              <Box>
+                <Typography
+                  sx={{
+                    color: "#848383",
+                    fontSize: 18,
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  Birth Date
+                </Typography>
+
+                {/* Birth Field */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {birthEditing ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextField
+                        type="date"
+                        sx={{
+                          backgroundColor: "rgba(255, 255, 255, 0.31)",
+                          "input::placeholder": {
+                            color: "white",
+                          },
+                          input: {
+                            color: "white",
+                          },
+                          border: "1px solid",
+                          borderColor: "rgba(255, 255, 255, 0.63)",
+                          width: "100%",
+                        }}
+                        value={birthText}
+                        onChange={(e) => setBirthText(e.target.value)}
+                      />
+                      <IconButton
+                        onClick={handleSaveBirthClick}
+                        sx={{ color: "white" }}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={handleCancelBrithClick}
+                        sx={{ color: "white" }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalBirthText}
+                      </span>
+                      <IconButton
+                        onClick={handleEditBirthClick}
+                        sx={{ color: "white" }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </div>
+                  )}
+                </div>
+
+                {/* <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: 18,
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  12/2/1997
+                </Typography> */}
+              </Box>
             </Box>
-            {/* info part */}
-            <CustomTabPanel value={value} index={0}>
-              <Box
-                sx={{
-                  width: { xs: "90%", sm: "70%" },
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 3,
-                  marginTop: { xs: "2vh", sm: "0vh" },
-                  height:'36vh'
-                }}
-              >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box>
+                <Typography
+                  sx={{
+                    color: "#848383",
+                    fontSize: 18,
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  Gender
+                </Typography>
+
+                {/* Gender Field */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {genderEditing ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextField
+                        select
+                        sx={{
+                          backgroundColor: "rgba(255, 255, 255, 0.63)",
+                          "input::placeholder": {
+                            color: "white",
+                          },
+                          input: {
+                            color: "white",
+                          },
+                          border: "1px solid",
+                          borderColor: "rgba(255, 255, 255, 0.63)",
+                          width: "100%",
+                        }}
+                        value={genderText}
+                        // value = "male"
+                        onChange={(e) => setGenderText(e.target.value)}
+                      >
+                        <MenuItem value="male">Male</MenuItem>
+                        <MenuItem value="female">Female</MenuItem>
+                      </TextField>
+                      <IconButton
+                        onClick={handleSaveGenderClick}
+                        sx={{ color: "white" }}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={handleCancelGenderClick}
+                        sx={{ color: "white" }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalGenderText}
+                      </span>
+                      <IconButton
+                        onClick={handleEditGenderClick}
+                        sx={{ color: "white" }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </div>
+                  )}
+                </div>
+
+                {/* <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: 18,
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  Male
+                </Typography> */}
+              </Box>
+              <Box>
+                <Typography
+                  sx={{
+                    color: "#848383",
+                    fontSize: 18,
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  Mobile No.
+                </Typography>
+
+                {/* Mobile Field */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {mobileEditing ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextField
+                        type="number"
+                        sx={{
+                          backgroundColor: "rgba(255, 255, 255, 0.31)",
+                          "input::placeholder": {
+                            color: "white",
+                          },
+                          input: {
+                            color: "white",
+                          },
+                          border: "1px solid",
+                          borderColor: "rgba(255, 255, 255, 0.63)",
+                          width: "100%",
+                        }}
+                        value={mobileText}
+                        onChange={(e) => setMobileText(e.target.value)}
+                      />
+                      <IconButton
+                        onClick={handleSaveMobileClick}
+                        sx={{ color: "white" }}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={handleCancelMobileClick}
+                        sx={{ color: "white" }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalMobileText}
+                      </span>
+                      <IconButton
+                        onClick={handleEditMobileClick}
+                        sx={{ color: "white" }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </div>
+                  )}
+                </div>
+
+                {/* <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: 18,
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  +2010000000
+                </Typography> */}
+              </Box>
+            </Box>
+          </Box>
+        </CustomTabPanel>
+        {/* event part */}
+        <CustomTabPanel value={value} index={1}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            lg={8}
+            sx={{
+              zIndex: 1,
+              position: "relative",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              // gap: 10,
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "start",
+                flexDirection: "column",
+                gap: 4,
+                width: { xs: "90%", sm: "51%" },
+              }}
+            >
+              <Box>
                 <Typography
                   sx={{
                     color: "white",
@@ -123,141 +723,30 @@ export default function MobileViewTabs() {
                     wordWrap: "break-word",
                   }}
                 >
-                  About Info
+                  My Bookings
                 </Typography>
-                
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box>
-                    <Typography
-                      sx={{
-                        color: "#848383",
-                        fontSize: 18,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      Email
-                    </Typography>
-
-                    <Typography
-                      sx={{
-                        color: "white",
-                        fontSize: 18,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      Alinader@gmail.com
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography
-                      sx={{
-                        color: "#848383",
-                        fontSize: 18,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      Birth Date
-                    </Typography>
-
-                    <Typography
-                      sx={{
-                        color: "white",
-                        fontSize: 18,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      12/2/1997
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box>
-                    <Typography
-                      sx={{
-                        color: "#848383",
-                        fontSize: 18,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      Gender
-                    </Typography>
-
-                    <Typography
-                      sx={{
-                        color: "white",
-                        fontSize: 18,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      Male
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography
-                      sx={{
-                        color: "#848383",
-                        fontSize: 18,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      Mobile No.
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "white",
-                        fontSize: 18,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      +2010000000
-                    </Typography>
-                  </Box>
-                </Box>
-                
               </Box>
-            </CustomTabPanel>
-            {/* event part */}
-            <CustomTabPanel value={value} index={1}>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                lg={8}
+
+              <Box
                 sx={{
-                  zIndex: 1,
-                  position: "relative",
+                  //   height: "10vh",
+                  background: "rgba(247.56, 247.56, 247.56, 0.21)",
                   display: "flex",
-                  justifyContent: "center",
                   alignItems: "center",
-                  flexDirection: "column",
-                  // gap: 10,
+                  padding: "1rem",
+                  borderRadius: "10px",
+
+                  justifyContent: "space-between",
                 }}
               >
+                <Box>
+                  <img src="../../../Images/eventAvatar.png" alt="" />
+                </Box>
+
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent: "start",
                     flexDirection: "column",
-                    gap: 4,
-                    width: { xs: "90%", sm: "51%" },
                   }}
                 >
                   <Box>
@@ -265,922 +754,885 @@ export default function MobileViewTabs() {
                       sx={{
                         color: "white",
                         fontSize: 18,
-                        fontWeight: "600",
+                        fontWeight: "700",
                         wordWrap: "break-word",
+                        display: { xs: "none", sm: "block" },
                       }}
                     >
-                      My Bookings
+                      Electronic Steve-Music Festival
                     </Typography>
                   </Box>
 
                   <Box
                     sx={{
-                      //   height: "10vh",
-                      background: "rgba(247.56, 247.56, 247.56, 0.21)",
                       display: "flex",
-                      alignItems: "center",
-                      padding: "1rem",
-                      borderRadius: "10px",
-
-                      justifyContent: "space-between",
+                      flexDirection: { xs: "column", sm: "row" },
+                      gap: { xs: 0.5, sm: 3 },
                     }}
                   >
-                    <Box>
-                      <img src="../../../Images/eventAvatar.png" alt="" />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <Box>
+                        <CalendarTodayIcon
+                          sx={{ color: "white", fontSize: "20px" }}
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <Box>
+                          <Typography
+                            sx={{
+                              color: "white",
+                              fontSize: 12,
+                              fontWeight: "400",
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            14 December, 2021
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <Typography
+                            sx={{
+                              color: "white",
+                              fontSize: 9,
+                              fontWeight: "400",
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            Tuesday, 4:00PM - 9:00PM
+                          </Typography>
+                        </Box>
+                      </Box>
                     </Box>
 
                     <Box
                       sx={{
                         display: "flex",
-                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 1,
                       }}
                     >
                       <Box>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: 18,
-                            fontWeight: "700",
-                            wordWrap: "break-word",
-                            display: { xs: "none", sm: "block" },
-                          }}
-                        >
-                          Electronic Steve-Music Festival
-                        </Typography>
+                        <PlaceIcon sx={{ color: "white", fontSize: "20px" }} />
                       </Box>
-
                       <Box
                         sx={{
                           display: "flex",
-                          flexDirection: { xs: "column", sm: "row" },
-                          gap: { xs: 0.5, sm: 3 },
+                          flexDirection: "column",
                         }}
                       >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1,
-                          }}
-                        >
-                          <Box>
-                            <CalendarTodayIcon
-                              sx={{ color: "white", fontSize: "20px" }}
-                            />
-                          </Box>
-                          <Box
+                        <Box>
+                          <Typography
                             sx={{
-                              display: "flex",
-                              flexDirection: "column",
+                              color: "white",
+                              fontSize: 12,
+                              fontWeight: "400",
+                              wordWrap: "break-word",
                             }}
                           >
-                            <Box>
-                              <Typography
-                                sx={{
-                                  color: "white",
-                                  fontSize: 12,
-                                  fontWeight: "400",
-                                  wordWrap: "break-word",
-                                }}
-                              >
-                                14 December, 2021
-                              </Typography>
-                            </Box>
-                            <Box>
-                              <Typography
-                                sx={{
-                                  color: "white",
-                                  fontSize: 9,
-                                  fontWeight: "400",
-                                  wordWrap: "break-word",
-                                }}
-                              >
-                                Tuesday, 4:00PM - 9:00PM
-                              </Typography>
-                            </Box>
-                          </Box>
+                            Gala Convention Center
+                          </Typography>
                         </Box>
-
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1,
-                          }}
-                        >
-                          <Box>
-                            <PlaceIcon
-                              sx={{ color: "white", fontSize: "20px" }}
-                            />
-                          </Box>
-                          <Box
+                        <Box>
+                          <Typography
                             sx={{
-                              display: "flex",
-                              flexDirection: "column",
+                              color: "white",
+                              fontSize: 9,
+                              fontWeight: "400",
+                              wordWrap: "break-word",
                             }}
                           >
-                            <Box>
-                              <Typography
-                                sx={{
-                                  color: "white",
-                                  fontSize: 12,
-                                  fontWeight: "400",
-                                  wordWrap: "break-word",
-                                }}
-                              >
-                                Gala Convention Center
-                              </Typography>
-                            </Box>
-                            <Box>
-                              <Typography
-                                sx={{
-                                  color: "white",
-                                  fontSize: 9,
-                                  fontWeight: "400",
-                                  wordWrap: "break-word",
-                                }}
-                              >
-                                36 Guild Street London, UK
-                              </Typography>
-                            </Box>
-                          </Box>
+                            36 Guild Street London, UK
+                          </Typography>
                         </Box>
                       </Box>
                     </Box>
-
-                    <Box>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          color: "white",
-                          fontSize: 13,
-                          fontWeight: "600",
-                          wordWrap: "break-word",
-                          backgroundColor: "#F0635A",
-                          display: { xs: "none", sm: "none", lg: "block" },
-                        }}
-                      >
-                        VIEW TICKET(S)
-                      </Button>
-                    </Box>
                   </Box>
+                </Box>
+
+                <Box>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      color: "white",
+                      fontSize: 13,
+                      fontWeight: "600",
+                      wordWrap: "break-word",
+                      backgroundColor: "#F0635A",
+                      display: { xs: "none", sm: "none", lg: "block" },
+                    }}
+                  >
+                    VIEW TICKET(S)
+                  </Button>
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "#A19F9F",
+                    fontSize: 14,
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  Accompanied Guests
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 2,
+                  }}
+                >
+                  <AvatarGroup
+                    total={44}
+                    sx={{
+                      "& .MuiAvatar-root": {
+                        width: 35,
+                        height: 35,
+                        fontSize: 10,
+                        color: "black",
+                        border: "1px solid white",
+                        backgroundColor: 'darkgrey" , borderColor',
+                      },
+                    }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/1.jpg"
+                    />
+                    <Avatar
+                      alt="Travis Howard"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                    <Avatar
+                      alt="Agnes Walker"
+                      src="/static/images/avatar/4.jpg"
+                    />
+                    <Avatar
+                      alt="Trevor Henderson"
+                      src="/static/images/avatar/5.jpg"
+                    />
+                  </AvatarGroup>
 
                   <Box
                     sx={{
+                      backgroundColor: "#EE726A",
                       display: "flex",
-                      flexDirection: "column",
+                      alignItems: "center",
+                      px: "8px",
+                      py: "5px",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: 11,
+                        fontWeight: "700",
+                        wordWrap: "break-word",
+                        color: "black",
+                      }}
+                    >
+                      Total : 44
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  display: { xs: "flex", sm: "grid" },
+                  flexDirection: { xs: "column", sm: "" },
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gap: { xs: 1, sm: 2 },
+                  // justifyContent: {xs:'center',sm:""}
+                }}
+              >
+                {/* Friend Attends */}
+                <Box
+                  sx={{
+                    backgroundColor: "#333333",
+                    display: "flex",
+                    borderRadius: "5px",
+                    p: 1.5,
+                    paddingRight: 0,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
                       gap: 1,
                     }}
                   >
-                    <Typography
-                      sx={{
-                        color: "#A19F9F",
-                        fontSize: 14,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                      }}
-                    >
-                      Accompanied Guests
-                    </Typography>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        gap: 2,
-                      }}
-                    >
-                      <AvatarGroup
-                        total={44}
-                        sx={{
-                          "& .MuiAvatar-root": {
-                            width: 35,
-                            height: 35,
-                            fontSize: 10,
-                            color: "black",
-                            border: "1px solid white",
-                            backgroundColor: 'darkgrey" , borderColor',
-                          },
-                        }}
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                        />
-                        <Avatar
-                          alt="Travis Howard"
-                          src="/static/images/avatar/2.jpg"
-                        />
-                        <Avatar
-                          alt="Agnes Walker"
-                          src="/static/images/avatar/4.jpg"
-                        />
-                        <Avatar
-                          alt="Trevor Henderson"
-                          src="/static/images/avatar/5.jpg"
-                        />
-                      </AvatarGroup>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/1.jpg"
+                    />
 
-                      <Box
+                    <Box>
+                      <Typography
                         sx={{
-                          backgroundColor: "#EE726A",
-                          display: "flex",
-                          alignItems: "center",
-                          px: "8px",
-                          py: "5px",
-                          borderRadius: "5px",
+                          color: "white",
+                          fontSize: 14,
+                          fontWeight: "500",
+                          wordWrap: "break-word",
                         }}
                       >
-                        <Typography
-                          sx={{
-                            fontSize: 11,
-                            fontWeight: "700",
-                            wordWrap: "break-word",
-                            color: "black",
-                          }}
-                        >
-                          Total : 44
-                        </Typography>
-                      </Box>
+                        Ahmed Selim
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#A4A4A4",
+                          fontSize: 11,
+                          fontWeight: "400",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        6 Sep 2023, 9:00 pm
+                      </Typography>
                     </Box>
                   </Box>
-
-                  <Box
-                    sx={{
-                      display: { xs: "flex", sm: "grid" },
-                      flexDirection: { xs: "column", sm: "" },
-                      gridTemplateColumns: "repeat(2, 1fr)",
-                      gap: { xs: 1, sm: 2 },
-                      // justifyContent: {xs:'center',sm:""}
-                    }}
-                  >
-                    {/* Friend Attends */}
-                    <Box
-                      sx={{
-                        backgroundColor: "#333333",
-                        display: "flex",
-                        borderRadius: "5px",
-                        p: 1.5,
-                        paddingRight: 0,
-                        justifyContent: "space-between",
+                  <Box>
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      aria-controls={open ? "long-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <MoreVertIcon sx={{ color: "white" }} />
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "long-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      PaperProps={{
+                        style: {
+                          maxHeight: ITEM_HEIGHT * 4.5,
+                          width: "20ch",
+                        },
                       }}
                     >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          gap: 1,
-                        }}
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                        />
-
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 14,
-                              fontWeight: "500",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            Ahmed Selim
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "#A4A4A4",
-                              fontSize: 11,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            6 Sep 2023, 9:00 pm
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box>
-                        <IconButton
-                          aria-label="more"
-                          id="long-button"
-                          aria-controls={open ? "long-menu" : undefined}
-                          aria-expanded={open ? "true" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleClick}
+                      {options.map((option) => (
+                        <MenuItem
+                          key={option}
+                          selected={option === "Pyxis"}
+                          onClick={handleClose}
                         >
-                          <MoreVertIcon sx={{ color: "white" }} />
-                        </IconButton>
-                        <Menu
-                          id="long-menu"
-                          MenuListProps={{
-                            "aria-labelledby": "long-button",
-                          }}
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          PaperProps={{
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4.5,
-                              width: "20ch",
-                            },
-                          }}
-                        >
-                          {options.map((option) => (
-                            <MenuItem
-                              key={option}
-                              selected={option === "Pyxis"}
-                              onClick={handleClose}
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </Box>
-                    </Box>
-                    {/* Friend Attends */}
-                    <Box
-                      sx={{
-                        backgroundColor: "#333333",
-                        display: "flex",
-                        borderRadius: "5px",
-                        p: 1.5,
-                        paddingRight: 0,
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          gap: 1,
-                        }}
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                        />
-
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 14,
-                              fontWeight: "500",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            Ahmed Selim
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "#A4A4A4",
-                              fontSize: 11,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            6 Sep 2023, 9:00 pm
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box>
-                        <IconButton
-                          aria-label="more"
-                          id="long-button"
-                          aria-controls={open ? "long-menu" : undefined}
-                          aria-expanded={open ? "true" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleClick}
-                        >
-                          <MoreVertIcon sx={{ color: "white" }} />
-                        </IconButton>
-                        <Menu
-                          id="long-menu"
-                          MenuListProps={{
-                            "aria-labelledby": "long-button",
-                          }}
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          PaperProps={{
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4.5,
-                              width: "20ch",
-                            },
-                          }}
-                        >
-                          {options.map((option) => (
-                            <MenuItem
-                              key={option}
-                              selected={option === "Pyxis"}
-                              onClick={handleClose}
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </Box>
-                    </Box>
-                    {/* Friend Attends */}
-                    <Box
-                      sx={{
-                        backgroundColor: "#333333",
-                        display: "flex",
-                        borderRadius: "5px",
-                        p: 1.5,
-                        paddingRight: 0,
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          gap: 1,
-                        }}
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                        />
-
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 14,
-                              fontWeight: "500",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            Ahmed Selim
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "#A4A4A4",
-                              fontSize: 11,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            6 Sep 2023, 9:00 pm
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box>
-                        <IconButton
-                          aria-label="more"
-                          id="long-button"
-                          aria-controls={open ? "long-menu" : undefined}
-                          aria-expanded={open ? "true" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleClick}
-                        >
-                          <MoreVertIcon sx={{ color: "white" }} />
-                        </IconButton>
-                        <Menu
-                          id="long-menu"
-                          MenuListProps={{
-                            "aria-labelledby": "long-button",
-                          }}
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          PaperProps={{
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4.5,
-                              width: "20ch",
-                            },
-                          }}
-                        >
-                          {options.map((option) => (
-                            <MenuItem
-                              key={option}
-                              selected={option === "Pyxis"}
-                              onClick={handleClose}
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </Box>
-                    </Box>
-                    {/* Friend Attends */}
-                    <Box
-                      sx={{
-                        backgroundColor: "#333333",
-                        display: "flex",
-                        borderRadius: "5px",
-                        p: 1.5,
-                        paddingRight: 0,
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          gap: 1,
-                        }}
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                        />
-
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 14,
-                              fontWeight: "500",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            Ahmed Selim
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "#A4A4A4",
-                              fontSize: 11,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            6 Sep 2023, 9:00 pm
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box>
-                        <IconButton
-                          aria-label="more"
-                          id="long-button"
-                          aria-controls={open ? "long-menu" : undefined}
-                          aria-expanded={open ? "true" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleClick}
-                        >
-                          <MoreVertIcon sx={{ color: "white" }} />
-                        </IconButton>
-                        <Menu
-                          id="long-menu"
-                          MenuListProps={{
-                            "aria-labelledby": "long-button",
-                          }}
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          PaperProps={{
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4.5,
-                              width: "20ch",
-                            },
-                          }}
-                        >
-                          {options.map((option) => (
-                            <MenuItem
-                              key={option}
-                              selected={option === "Pyxis"}
-                              onClick={handleClose}
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </Box>
-                    </Box>
-                    {/* Friend Attends */}
-                    <Box
-                      sx={{
-                        backgroundColor: "#333333",
-                        display: "flex",
-                        borderRadius: "5px",
-                        p: 1.5,
-                        paddingRight: 0,
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          gap: 1,
-                        }}
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                        />
-
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 14,
-                              fontWeight: "500",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            Ahmed Selim
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "#A4A4A4",
-                              fontSize: 11,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            6 Sep 2023, 9:00 pm
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box>
-                        <IconButton
-                          aria-label="more"
-                          id="long-button"
-                          aria-controls={open ? "long-menu" : undefined}
-                          aria-expanded={open ? "true" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleClick}
-                        >
-                          <MoreVertIcon sx={{ color: "white" }} />
-                        </IconButton>
-                        <Menu
-                          id="long-menu"
-                          MenuListProps={{
-                            "aria-labelledby": "long-button",
-                          }}
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          PaperProps={{
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4.5,
-                              width: "20ch",
-                            },
-                          }}
-                        >
-                          {options.map((option) => (
-                            <MenuItem
-                              key={option}
-                              selected={option === "Pyxis"}
-                              onClick={handleClose}
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </Box>
-                    </Box>
-                    {/* Friend Attends */}
-                    <Box
-                      sx={{
-                        backgroundColor: "#333333",
-                        display: "flex",
-                        borderRadius: "5px",
-                        p: 1.5,
-                        paddingRight: 0,
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          gap: 1,
-                        }}
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                        />
-
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 14,
-                              fontWeight: "500",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            Ahmed Selim
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "#A4A4A4",
-                              fontSize: 11,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            6 Sep 2023, 9:00 pm
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box>
-                        <IconButton
-                          aria-label="more"
-                          id="long-button"
-                          aria-controls={open ? "long-menu" : undefined}
-                          aria-expanded={open ? "true" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleClick}
-                        >
-                          <MoreVertIcon sx={{ color: "white" }} />
-                        </IconButton>
-                        <Menu
-                          id="long-menu"
-                          MenuListProps={{
-                            "aria-labelledby": "long-button",
-                          }}
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          PaperProps={{
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4.5,
-                              width: "20ch",
-                            },
-                          }}
-                        >
-                          {options.map((option) => (
-                            <MenuItem
-                              key={option}
-                              selected={option === "Pyxis"}
-                              onClick={handleClose}
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </Box>
-                    </Box>
-                    {/* Friend Attends */}
-                    <Box
-                      sx={{
-                        backgroundColor: "#333333",
-                        display: "flex",
-                        borderRadius: "5px",
-                        p: 1.5,
-                        paddingRight: 0,
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          gap: 1,
-                        }}
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                        />
-
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 14,
-                              fontWeight: "500",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            Ahmed Selim
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "#A4A4A4",
-                              fontSize: 11,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            6 Sep 2023, 9:00 pm
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box>
-                        <IconButton
-                          aria-label="more"
-                          id="long-button"
-                          aria-controls={open ? "long-menu" : undefined}
-                          aria-expanded={open ? "true" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleClick}
-                        >
-                          <MoreVertIcon sx={{ color: "white" }} />
-                        </IconButton>
-                        <Menu
-                          id="long-menu"
-                          MenuListProps={{
-                            "aria-labelledby": "long-button",
-                          }}
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          PaperProps={{
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4.5,
-                              width: "20ch",
-                            },
-                          }}
-                        >
-                          {options.map((option) => (
-                            <MenuItem
-                              key={option}
-                              selected={option === "Pyxis"}
-                              onClick={handleClose}
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </Box>
-                    </Box>
-                    {/* Friend Attends */}
-                    <Box
-                      sx={{
-                        backgroundColor: "#333333",
-                        display: "flex",
-                        borderRadius: "5px",
-                        p: 1.5,
-                        paddingRight: 0,
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          gap: 1,
-                        }}
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                        />
-
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 14,
-                              fontWeight: "500",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            Ahmed Selim
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "#A4A4A4",
-                              fontSize: 11,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            6 Sep 2023, 9:00 pm
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box>
-                        <IconButton
-                          aria-label="more"
-                          id="long-button"
-                          aria-controls={open ? "long-menu" : undefined}
-                          aria-expanded={open ? "true" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleClick}
-                        >
-                          <MoreVertIcon sx={{ color: "white" }} />
-                        </IconButton>
-                        <Menu
-                          id="long-menu"
-                          MenuListProps={{
-                            "aria-labelledby": "long-button",
-                          }}
-                          anchorEl={anchorEl}
-                          open={open}
-                          onClose={handleClose}
-                          PaperProps={{
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4.5,
-                              width: "20ch",
-                            },
-                          }}
-                        >
-                          {options.map((option) => (
-                            <MenuItem
-                              key={option}
-                              selected={option === "Pyxis"}
-                              onClick={handleClose}
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </Box>
-                    </Box>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Menu>
                   </Box>
                 </Box>
-              </Grid>
-            </CustomTabPanel>
-          </Box>
+                {/* Friend Attends */}
+                <Box
+                  sx={{
+                    backgroundColor: "#333333",
+                    display: "flex",
+                    borderRadius: "5px",
+                    p: 1.5,
+                    paddingRight: 0,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                    }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/1.jpg"
+                    />
+
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: 14,
+                          fontWeight: "500",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        Ahmed Selim
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#A4A4A4",
+                          fontSize: 11,
+                          fontWeight: "400",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        6 Sep 2023, 9:00 pm
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box>
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      aria-controls={open ? "long-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <MoreVertIcon sx={{ color: "white" }} />
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "long-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      PaperProps={{
+                        style: {
+                          maxHeight: ITEM_HEIGHT * 4.5,
+                          width: "20ch",
+                        },
+                      }}
+                    >
+                      {options.map((option) => (
+                        <MenuItem
+                          key={option}
+                          selected={option === "Pyxis"}
+                          onClick={handleClose}
+                        >
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                </Box>
+                {/* Friend Attends */}
+                <Box
+                  sx={{
+                    backgroundColor: "#333333",
+                    display: "flex",
+                    borderRadius: "5px",
+                    p: 1.5,
+                    paddingRight: 0,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                    }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/1.jpg"
+                    />
+
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: 14,
+                          fontWeight: "500",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        Ahmed Selim
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#A4A4A4",
+                          fontSize: 11,
+                          fontWeight: "400",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        6 Sep 2023, 9:00 pm
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box>
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      aria-controls={open ? "long-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <MoreVertIcon sx={{ color: "white" }} />
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "long-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      PaperProps={{
+                        style: {
+                          maxHeight: ITEM_HEIGHT * 4.5,
+                          width: "20ch",
+                        },
+                      }}
+                    >
+                      {options.map((option) => (
+                        <MenuItem
+                          key={option}
+                          selected={option === "Pyxis"}
+                          onClick={handleClose}
+                        >
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                </Box>
+                {/* Friend Attends */}
+                <Box
+                  sx={{
+                    backgroundColor: "#333333",
+                    display: "flex",
+                    borderRadius: "5px",
+                    p: 1.5,
+                    paddingRight: 0,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                    }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/1.jpg"
+                    />
+
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: 14,
+                          fontWeight: "500",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        Ahmed Selim
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#A4A4A4",
+                          fontSize: 11,
+                          fontWeight: "400",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        6 Sep 2023, 9:00 pm
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box>
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      aria-controls={open ? "long-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <MoreVertIcon sx={{ color: "white" }} />
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "long-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      PaperProps={{
+                        style: {
+                          maxHeight: ITEM_HEIGHT * 4.5,
+                          width: "20ch",
+                        },
+                      }}
+                    >
+                      {options.map((option) => (
+                        <MenuItem
+                          key={option}
+                          selected={option === "Pyxis"}
+                          onClick={handleClose}
+                        >
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                </Box>
+                {/* Friend Attends */}
+                <Box
+                  sx={{
+                    backgroundColor: "#333333",
+                    display: "flex",
+                    borderRadius: "5px",
+                    p: 1.5,
+                    paddingRight: 0,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                    }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/1.jpg"
+                    />
+
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: 14,
+                          fontWeight: "500",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        Ahmed Selim
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#A4A4A4",
+                          fontSize: 11,
+                          fontWeight: "400",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        6 Sep 2023, 9:00 pm
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box>
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      aria-controls={open ? "long-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <MoreVertIcon sx={{ color: "white" }} />
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "long-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      PaperProps={{
+                        style: {
+                          maxHeight: ITEM_HEIGHT * 4.5,
+                          width: "20ch",
+                        },
+                      }}
+                    >
+                      {options.map((option) => (
+                        <MenuItem
+                          key={option}
+                          selected={option === "Pyxis"}
+                          onClick={handleClose}
+                        >
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                </Box>
+                {/* Friend Attends */}
+                <Box
+                  sx={{
+                    backgroundColor: "#333333",
+                    display: "flex",
+                    borderRadius: "5px",
+                    p: 1.5,
+                    paddingRight: 0,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                    }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/1.jpg"
+                    />
+
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: 14,
+                          fontWeight: "500",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        Ahmed Selim
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#A4A4A4",
+                          fontSize: 11,
+                          fontWeight: "400",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        6 Sep 2023, 9:00 pm
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box>
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      aria-controls={open ? "long-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <MoreVertIcon sx={{ color: "white" }} />
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "long-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      PaperProps={{
+                        style: {
+                          maxHeight: ITEM_HEIGHT * 4.5,
+                          width: "20ch",
+                        },
+                      }}
+                    >
+                      {options.map((option) => (
+                        <MenuItem
+                          key={option}
+                          selected={option === "Pyxis"}
+                          onClick={handleClose}
+                        >
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                </Box>
+                {/* Friend Attends */}
+                <Box
+                  sx={{
+                    backgroundColor: "#333333",
+                    display: "flex",
+                    borderRadius: "5px",
+                    p: 1.5,
+                    paddingRight: 0,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                    }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/1.jpg"
+                    />
+
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: 14,
+                          fontWeight: "500",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        Ahmed Selim
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#A4A4A4",
+                          fontSize: 11,
+                          fontWeight: "400",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        6 Sep 2023, 9:00 pm
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box>
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      aria-controls={open ? "long-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <MoreVertIcon sx={{ color: "white" }} />
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "long-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      PaperProps={{
+                        style: {
+                          maxHeight: ITEM_HEIGHT * 4.5,
+                          width: "20ch",
+                        },
+                      }}
+                    >
+                      {options.map((option) => (
+                        <MenuItem
+                          key={option}
+                          selected={option === "Pyxis"}
+                          onClick={handleClose}
+                        >
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                </Box>
+                {/* Friend Attends */}
+                <Box
+                  sx={{
+                    backgroundColor: "#333333",
+                    display: "flex",
+                    borderRadius: "5px",
+                    p: 1.5,
+                    paddingRight: 0,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                    }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/1.jpg"
+                    />
+
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: 14,
+                          fontWeight: "500",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        Ahmed Selim
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#A4A4A4",
+                          fontSize: 11,
+                          fontWeight: "400",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        6 Sep 2023, 9:00 pm
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box>
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      aria-controls={open ? "long-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <MoreVertIcon sx={{ color: "white" }} />
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "long-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      PaperProps={{
+                        style: {
+                          maxHeight: ITEM_HEIGHT * 4.5,
+                          width: "20ch",
+                        },
+                      }}
+                    >
+                      {options.map((option) => (
+                        <MenuItem
+                          key={option}
+                          selected={option === "Pyxis"}
+                          onClick={handleClose}
+                        >
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </Grid>
+        </CustomTabPanel>
+      </Box>
     </>
-  )
+  );
 }

@@ -19,8 +19,8 @@ const GRAPHQL_API_KEY =
 
 exports.handler = async (event) => {
   try {
-    // const requestBody = JSON.parse(event.body);
-    const requestBody = event.body;
+    const requestBody = JSON.parse(event.body);
+    // const requestBody = event.body;
     console.log({ requestBody });
     const operationId = requestBody.operationId;
     const userID = requestBody.userID;
