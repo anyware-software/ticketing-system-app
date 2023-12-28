@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "ticketingsystemadmin93d9a573_identitypool_93d9a573",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "ticket93d9a573",
     "userPoolName": "ticketingsystemadmin93d9a573_userpool_93d9a573",
     "autoVerifiedAttributes": [
@@ -79,7 +79,9 @@
       }
     ],
     "permissions": [],
-    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"ticketingsystemadmin93d9a57393d9a573PreSignup\"\n  }\n]",
+    "authTriggerConnections": [
+      "{\"triggerType\":\"PreSignUp\",\"lambdaFunctionName\":\"ticketingsystemadmin93d9a57393d9a573PreSignup\"}"
+    ],
     "adminQueryGroup": "admin",
     "parentStack": {
       "Ref": "AWS::StackId"

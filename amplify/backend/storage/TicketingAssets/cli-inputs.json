@@ -1,0 +1,23 @@
+{
+  "resourceName": "TicketingAssets",
+  "policyUUID": "b54071fa",
+  "bucketName": "ticketingsystemadmina29b1f146cd8476b9f9aefcf325",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "CREATE_AND_UPDATE",
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {
+    "admin": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ]
+  }
+}

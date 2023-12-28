@@ -200,5 +200,27 @@
         }
       ]
     }
+  },
+  "storage": {
+    "TicketingAssets": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "ticketingsystemadmin93d9a57393d9a573"
+        },
+        {
+          "attributes": [
+            "adminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    }
   }
 }

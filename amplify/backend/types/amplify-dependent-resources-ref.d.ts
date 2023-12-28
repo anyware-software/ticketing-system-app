@@ -49,5 +49,11 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     }
+  },
+  "storage": {
+    "TicketingAssets": {
+      "BucketName": "string",
+      "Region": "string"
+    }
   }
 }
