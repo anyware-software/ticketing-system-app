@@ -76,7 +76,7 @@ const Drawer = styled(MuiDrawer, {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      width: theme.spacing(7),
+      width: 0,
       [theme.breakpoints.up("sm")]: {
         width: theme.spacing(9),
       },
@@ -118,7 +118,7 @@ export default function Dashboard() {
   }
 
   return (
-    <Box sx={{ display: "flex" , overflow:'hidden'}}>
+    <Box sx={{ display: "flex", overflow: "hidden" }}>
       <CssBaseline />
       <AppBar
         open={open}
@@ -208,7 +208,7 @@ export default function Dashboard() {
           </Box>
         </Toolbar>
       </AppBar>
-      
+
       <Drawer variant="permanent" open={open}>
         <Toolbar
           sx={{
@@ -252,10 +252,11 @@ export default function Dashboard() {
                 display: open ? "block" : "none",
               }}
             >
-              Ali Nader
+              {user?.name &&
+                user.name.charAt(0).toUpperCase() + user.name.slice(1)}
             </Typography>
           </Box>
-          <IconButton onClick={toggleDrawer}>
+          <IconButton onClick={toggleDrawer} sx={{display:{xs:'none',sm:'block'}}}>
             <ChevronLeftIcon sx={{ color: "white" }} />
           </IconButton>
         </Toolbar>
@@ -268,7 +269,7 @@ export default function Dashboard() {
       {/* Main Component */}
       {/* <GuestProfile /> */}
       {selectedItem === "My Profile" ? (
-        <GuestProfile />
+        <GuestProfile toggleDrawer={toggleDrawer} openSideNav={open}/>
       ) : (
         // ) : selectedItem === "Notifications" ? (
         //   <NotificationsComponent />
@@ -282,7 +283,7 @@ export default function Dashboard() {
         //   <SettingsComponent />
         // ) : selectedItem === "Help & FAQs" ? (
         //   <HelpAndFaqsComponent />
-        <GuestProfile />
+        <GuestProfile toggleDrawer={toggleDrawer} openSideNav={open} />
       )}
     </Box>
   );

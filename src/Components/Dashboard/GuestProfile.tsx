@@ -29,6 +29,8 @@ import { setLogin } from "../../state";
 import { uploadData } from "aws-amplify/storage";
 import { getUrl } from "aws-amplify/storage";
 import { dbStorage } from "../../constants/Enums";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
 const ITEM_HEIGHT = 48;
@@ -49,7 +51,12 @@ interface MyObject {
 //   image?: string | undefined | null;
 // }
 
-export default function GuestProfile() {
+type props = {
+  toggleDrawer: any;
+  openSideNav: boolean;
+};
+
+export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [friends, setFriends] = useState<null | Array<string>>(null);
   const dispatch = useDispatch();
@@ -432,106 +439,126 @@ export default function GuestProfile() {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: {xs:0, sm:4},
+              justifyContent: "center",
+              width: "100%",
             }}
           >
-
-            <div>
-              <input
-                type="file"
-                accept="image/*"
-                id="imageInput"
-                style={{ display: "none" }}
-                onChange={handleImageChange}
-              />
-              <label htmlFor="imageInput">
-                {selectedImage ? (
-                  <img
-                    // src={selectedImage}
-                    src={`${dbStorage}${user?.guest_avatar}`}
-                    style={{
-                      width: "10rem",
-                      height: "10rem",
-                      borderRadius: "50%",
-                      marginLeft: "1rem",
-                      cursor: "pointer",
-                    }}
-                    alt="unknownUser"
-                  />
-                ) : (
-                  <img
-                    src={
-                      user?.guest_avatar
-                        ? `${dbStorage}${user?.guest_avatar}`
-                        : "../../../Images/unknownUser.png"
-                    }
-                    style={{
-                      width: "10rem",
-                      height: "10rem",
-                      borderRadius: "50%",
-                      marginLeft: "1rem",
-                      cursor: "pointer",
-                    }}
-                    alt="unknownUser"
-                  />
-                )}
-              </label>
-            </div>
+            <Box>
+              <IconButton
+                onClick={toggleDrawer}
+                sx={{ display: { xs: "block", sm: "none" , } }}
+              >
+                <ChevronLeftIcon sx={{ color: "white" }} />
+              </IconButton>
+            </Box>
 
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
                 flexDirection: "column",
-                gap: 1,
+                alignItems: "center",
+                gap: { xs: 0, sm: 4 },
+                flexGrow:1,
+                marginRight:{xs:"3rem",sm:"0rem",},
               }}
             >
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="imageInput"
+                  style={{ display: "none" }}
+                  onChange={handleImageChange}
+                />
+                <label htmlFor="imageInput">
+                  {selectedImage ? (
+                    <img
+                      // src={selectedImage}
+                      src={`${dbStorage}${user?.guest_avatar}`}
+                      style={{
+                        width: "10rem",
+                        height: "10rem",
+                        borderRadius: "50%",
+                        marginLeft: "1rem",
+                        cursor: "pointer",
+                      }}
+                      alt="unknownUser"
+                    />
+                  ) : (
+                    <img
+                      src={
+                        user?.guest_avatar
+                          ? `${dbStorage}${user?.guest_avatar}`
+                          : "../../../Images/unknownUser.png"
+                      }
+                      style={{
+                        width: "10rem",
+                        height: "10rem",
+                        borderRadius: "50%",
+                        marginLeft: "1rem",
+                        cursor: "pointer",
+                      }}
+                      alt="unknownUser"
+                    />
+                  )}
+                </label>
+              </div>
+
               <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
+                  flexDirection: "column",
                   gap: 1,
                 }}
               >
-                <Typography
-                  sx={{
-                    color: "white",
-                    fontSize: "19px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                    my: 1,
-                  }}
-                >
-                  {user?.name &&
-                    user.name.charAt(0).toUpperCase() + user.name.slice(1)}
-                </Typography>
-                {user?.isVerified && <VerifiedIcon sx={{ color: "#49adf4" }} />}
-              </Box>
-
-              {user?.avg_ticket_type === "VIP" && (
                 <Box
                   sx={{
-                    backgroundColor: "#62b58f",
-                    color: "white",
-                    borderRadius: "5px",
-                    display: { xs: "flex", sm: "none" },
-                    justifyContent: "center",
-                    width: "5rem",
-                    marginBottom: 5,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
                   }}
                 >
                   <Typography
                     sx={{
+                      color: "white",
+                      fontSize: "19px",
                       fontWeight: "600",
-                      color: "black",
+                      wordWrap: "break-word",
+                      my: 1,
                     }}
                   >
-                    VIP
+                    {user?.name &&
+                      user.name.charAt(0).toUpperCase() + user.name.slice(1)}
                   </Typography>
+                  {user?.isVerified && (
+                    <VerifiedIcon sx={{ color: "#49adf4" }} />
+                  )}
                 </Box>
-              )}
+
+                {user?.avg_ticket_type === "VIP" && (
+                  <Box
+                    sx={{
+                      backgroundColor: "#62b58f",
+                      color: "white",
+                      borderRadius: "5px",
+                      display: { xs: "flex", sm: "none" },
+                      justifyContent: "center",
+                      width: "5rem",
+                      marginBottom: 5,
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontWeight: "600",
+                        color: "black",
+                      }}
+                    >
+                      VIP
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
             </Box>
           </Box>
 
@@ -551,29 +578,29 @@ export default function GuestProfile() {
                     },
                   }}
                 >
-                  {friends?.length! > 0 &&(
-                  <Avatar
-                    alt={friends ? friends[0] : "?"}
-                    src="/static/images/avatar/1.jpg"
-                  />
+                  {friends?.length! > 0 && (
+                    <Avatar
+                      alt={friends ? friends[0] : "?"}
+                      src="/static/images/avatar/1.jpg"
+                    />
                   )}
-                  {friends?.length! > 1 &&(
-                  <Avatar
-                    alt={friends ? friends[1] : "?"}
-                    src="/static/images/avatar/2.jpg"
-                  />
+                  {friends?.length! > 1 && (
+                    <Avatar
+                      alt={friends ? friends[1] : "?"}
+                      src="/static/images/avatar/2.jpg"
+                    />
                   )}
-                  {friends?.length! > 2 &&(
-                  <Avatar
-                    alt={friends ? friends[2] : "?"}
-                    src="/static/images/avatar/3.jpg"
-                  />
+                  {friends?.length! > 2 && (
+                    <Avatar
+                      alt={friends ? friends[2] : "?"}
+                      src="/static/images/avatar/3.jpg"
+                    />
                   )}
-                  {friends?.length! > 3 &&(
-                  <Avatar
-                    alt={friends ? friends[3] : "?"}
-                    src="/static/images/avatar/4.jpg"
-                  />
+                  {friends?.length! > 3 && (
+                    <Avatar
+                      alt={friends ? friends[3] : "?"}
+                      src="/static/images/avatar/4.jpg"
+                    />
                   )}
                 </AvatarGroup>
                 <Typography
@@ -1006,9 +1033,14 @@ export default function GuestProfile() {
                           width: "13rem",
                         }}
                         value={mobileText}
-                        onChange={(e) => {setMobileText(e.target.value); setMobileError(false);}}
+                        onChange={(e) => {
+                          setMobileText(e.target.value);
+                          setMobileError(false);
+                        }}
                         error={mobileError}
-                        helperText={mobileError ? "Phone number is not valid" : ""}
+                        helperText={
+                          mobileError ? "Phone number is not valid" : ""
+                        }
                       />
                       <IconButton
                         onClick={handleSaveMobileClick}
@@ -1058,7 +1090,6 @@ export default function GuestProfile() {
               </Box>
             </Box>
           </Box>
-          
         </Grid>
 
         <Grid
