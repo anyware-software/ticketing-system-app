@@ -122,11 +122,18 @@ export default function GuestProfile() {
   const [emailEditing, setEmailEditing] = useState(false);
   const [emailText, setEmailText] = useState(user?.email || "");
   const [originalEmailText, setOriginalEmailText] = useState(user?.email);
+  const [emailError, setEmailError] = useState(false);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const handleEditEmailClick = () => {
     setEmailEditing(true);
   };
   const handleSaveEmailClick = async () => {
     try {
+      if (!emailRegex.test(emailText)) {
+        setEmailError(true);
+        return;
+      }
       const updatedData = {
         userID: user?.id,
         email: emailText,
@@ -138,6 +145,7 @@ export default function GuestProfile() {
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalEmailText(emailText);
       setEmailEditing(false);
+      setEmailError(false);
     } catch (error) {
       console.error("Error updating email:", error);
     }
@@ -145,6 +153,7 @@ export default function GuestProfile() {
   const handleCancelEmailClick = () => {
     setEmailText(originalEmailText);
     setEmailEditing(false);
+    setEmailError(false);
   };
   useEffect(() => {
     if (!user) return;
@@ -252,6 +261,9 @@ export default function GuestProfile() {
   const [originalMobileText, setOriginalMobileText] = useState(
     user?.phone_number
   );
+  const mobileRegex = /^(010|011|012|015)\d{8}$/;
+  const [mobileError, setMobileError] = useState(false);
+
   const handleEditMobileClick = () => {
     setMobileEditing(true);
   };
@@ -259,6 +271,10 @@ export default function GuestProfile() {
     // setOriginalMobileText(mobileText);
     // setMobileEditing(false);
     try {
+      if (!mobileRegex.test(mobileText)) {
+        setMobileError(true);
+        return;
+      }
       const updatedData = {
         userID: user?.id,
         email: user?.email,
@@ -277,6 +293,7 @@ export default function GuestProfile() {
       );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalMobileText(genderText);
+      setMobileError(false);
       setMobileEditing(false);
     } catch (error) {
       console.error("Error updating BirthDate:", error);
@@ -285,6 +302,7 @@ export default function GuestProfile() {
   const handleCancelMobileClick = () => {
     setMobileText(originalMobileText);
     setMobileEditing(false);
+    setMobileError(false);
   };
   useEffect(() => {
     if (!user) return;
@@ -656,7 +674,7 @@ export default function GuestProfile() {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                height:'10vh'
+                height: "10vh",
               }}
             >
               <Box>
@@ -696,10 +714,15 @@ export default function GuestProfile() {
                           },
                           border: "1px solid",
                           borderColor: "rgba(255, 255, 255, 0.63)",
-                          width: "100%",
+                          width: "18rem",
                         }}
                         value={emailText}
-                        onChange={(e) => setEmailText(e.target.value)}
+                        onChange={(e) => {
+                          setEmailText(e.target.value);
+                          setEmailError(false);
+                        }}
+                        error={emailError}
+                        helperText={emailError ? "Invalid email address" : ""}
                       />
                       <IconButton
                         onClick={handleSaveEmailClick}
@@ -841,7 +864,7 @@ export default function GuestProfile() {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                height:'10vh'
+                height: "10vh",
               }}
             >
               <Box>
@@ -873,7 +896,7 @@ export default function GuestProfile() {
                       <TextField
                         select
                         sx={{
-                          backgroundColor: "rgba(255, 255, 255, 0.63)",
+                          backgroundColor: "rgba(255, 255, 255, 0.31)",
                           "input::placeholder": {
                             color: "white",
                           },
@@ -882,11 +905,16 @@ export default function GuestProfile() {
                           },
                           border: "1px solid",
                           borderColor: "rgba(255, 255, 255, 0.63)",
-                          width: "100%",
+                          width: "15rem",
                         }}
                         value={genderText}
                         // value = "male"
                         onChange={(e) => setGenderText(e.target.value)}
+                        SelectProps={{
+                          renderValue: (value: any) => (
+                            <div style={{ color: "white" }}>{value}</div>
+                          ),
+                        }}
                       >
                         <MenuItem value="male">Male</MenuItem>
                         <MenuItem value="female">Female</MenuItem>
@@ -975,10 +1003,12 @@ export default function GuestProfile() {
                           },
                           border: "1px solid",
                           borderColor: "rgba(255, 255, 255, 0.63)",
-                          width: "100%",
+                          width: "13rem",
                         }}
                         value={mobileText}
-                        onChange={(e) => setMobileText(e.target.value)}
+                        onChange={(e) => {setMobileText(e.target.value); setMobileError(false);}}
+                        error={mobileError}
+                        helperText={mobileError ? "Phone number is not valid" : ""}
                       />
                       <IconButton
                         onClick={handleSaveMobileClick}
@@ -1028,7 +1058,6 @@ export default function GuestProfile() {
               </Box>
             </Box>
           </Box>
-          
         </Grid>
 
         <Grid
@@ -1044,7 +1073,7 @@ export default function GuestProfile() {
             alignItems: "center",
             flexDirection: "column",
             height: "90%",
-            
+
             // gap: 10,
           }}
         >
@@ -1962,13 +1991,14 @@ export default function GuestProfile() {
             // flexDirection: "column",
             // alignItems: "end",
             justifyContent: "center",
-           
           }}
         >
-          <Box sx={{
-            py:1,
-          }}>
-          <img src="../../../Images/anyware.png" alt="" />
+          <Box
+            sx={{
+              py: 1,
+            }}
+          >
+            <img src="../../../Images/anyware.png" alt="" />
           </Box>
         </Grid>
       </Grid>
