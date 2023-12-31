@@ -86,11 +86,18 @@ export default function MobileViewTabs() {
   const [emailEditing, setEmailEditing] = useState(false);
   const [emailText, setEmailText] = useState(user?.email || "");
   const [originalEmailText, setOriginalEmailText] = useState(user?.email);
+  const [emailError, setEmailError] = useState(false);
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const handleEditEmailClick = () => {
     setEmailEditing(true);
   };
   const handleSaveEmailClick = async () => {
     try {
+      if (!emailRegex.test(emailText)) {
+        setEmailError(true);
+        return;
+      }
       const updatedData = {
         userID: user?.id,
         email: emailText,
@@ -102,6 +109,7 @@ export default function MobileViewTabs() {
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalEmailText(emailText);
       setEmailEditing(false);
+      setEmailError(false);
     } catch (error) {
       console.error("Error updating email:", error);
     }
@@ -109,6 +117,7 @@ export default function MobileViewTabs() {
   const handleCancelEmailClick = () => {
     setEmailText(originalEmailText);
     setEmailEditing(false);
+    setEmailError(false);
   };
   useEffect(() => {
     if (!user) return;
@@ -216,6 +225,9 @@ export default function MobileViewTabs() {
   const [originalMobileText, setOriginalMobileText] = useState(
     user?.phone_number
   );
+  const mobileRegex = /^(010|011|012|015)\d{8}$/;
+  const [mobileError, setMobileError] = useState(false);
+
   const handleEditMobileClick = () => {
     setMobileEditing(true);
   };
@@ -223,6 +235,10 @@ export default function MobileViewTabs() {
     // setOriginalMobileText(mobileText);
     // setMobileEditing(false);
     try {
+      if (!mobileRegex.test(mobileText)) {
+        setMobileError(true);
+        return;
+      }
       const updatedData = {
         userID: user?.id,
         email: user?.email,
@@ -241,6 +257,7 @@ export default function MobileViewTabs() {
       );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalMobileText(genderText);
+      setMobileError(false);
       setMobileEditing(false);
     } catch (error) {
       console.error("Error updating BirthDate:", error);
@@ -249,6 +266,7 @@ export default function MobileViewTabs() {
   const handleCancelMobileClick = () => {
     setMobileText(originalMobileText);
     setMobileEditing(false);
+    setMobileError(false);
   };
   useEffect(() => {
     if (!user) return;
@@ -277,6 +295,7 @@ export default function MobileViewTabs() {
                 color: "#A19F9F",
                 "&.Mui-selected": {
                   color: "white",
+                  fontWeight: "bold",
                 },
               }}
             />
@@ -287,6 +306,7 @@ export default function MobileViewTabs() {
                 color: "#A19F9F",
                 "&.Mui-selected": {
                   color: "white",
+                  fontWeight: "bold",
                 },
               }}
             />
@@ -299,20 +319,13 @@ export default function MobileViewTabs() {
               width: { xs: "90%", sm: "70%" },
               display: { xs: "flex", sm: "none" },
               flexDirection: "column",
-              gap: 3,
-              marginTop: { xs: "2vh", sm: "0vh" },
+              marginTop: { xs: "0vh", sm: "0vh" },
             }}
           >
-            <Typography
-              sx={{
-                color: "white",
-                fontSize: 18,
-                fontWeight: "600",
-                wordWrap: "break-word",
-              }}
-            >
-              About Info
-            </Typography>
+            <Box sx={{
+              display: "flex",
+              flexDirection: "column",
+            }}>
             <Box
               sx={{
                 display: "flex",
@@ -320,7 +333,9 @@ export default function MobileViewTabs() {
                 flexDirection: "column",
               }}
             >
-              <Box>
+              <Box sx={{
+                height: "10vh",
+              }}>
                 <Typography
                   sx={{
                     color: "#848383",
@@ -357,10 +372,15 @@ export default function MobileViewTabs() {
                           },
                           border: "1px solid",
                           borderColor: "rgba(255, 255, 255, 0.63)",
-                          width: "100%",
+                          width: "18rem",
                         }}
                         value={emailText}
-                        onChange={(e) => setEmailText(e.target.value)}
+                        onChange={(e) => {
+                          setEmailText(e.target.value);
+                          setEmailError(false);
+                        }}
+                        error={emailError}
+                        helperText={emailError ? "Invalid email address" : ""}
                       />
                       <IconButton
                         onClick={handleSaveEmailClick}
@@ -408,7 +428,9 @@ export default function MobileViewTabs() {
                   Alinader@gmail.com
                 </Typography> */}
               </Box>
-              <Box>
+              <Box sx={{
+                height: "10vh",
+              }}>
                 <Typography
                   sx={{
                     color: "#848383",
@@ -505,7 +527,9 @@ export default function MobileViewTabs() {
                 flexDirection: "column",
               }}
             >
-              <Box>
+              <Box sx={{
+                height: "10vh",
+              }}>
                 <Typography
                   sx={{
                     color: "#848383",
@@ -598,7 +622,9 @@ export default function MobileViewTabs() {
                   Male
                 </Typography> */}
               </Box>
-              <Box>
+              <Box sx={{
+                height: "10vh",
+              }}>
                 <Typography
                   sx={{
                     color: "#848383",
@@ -636,10 +662,12 @@ export default function MobileViewTabs() {
                           },
                           border: "1px solid",
                           borderColor: "rgba(255, 255, 255, 0.63)",
-                          width: "100%",
+                          width: "13rem",
                         }}
                         value={mobileText}
-                        onChange={(e) => setMobileText(e.target.value)}
+                        onChange={(e) => {setMobileText(e.target.value); setMobileError(false);}}
+                        error={mobileError}
+                        helperText={mobileError ? "Phone number is not valid" : ""}
                       />
                       <IconButton
                         onClick={handleSaveMobileClick}
@@ -687,6 +715,7 @@ export default function MobileViewTabs() {
                   +2010000000
                 </Typography> */}
               </Box>
+            </Box>
             </Box>
           </Box>
         </CustomTabPanel>
