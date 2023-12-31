@@ -30,6 +30,7 @@ import { signOut } from "aws-amplify/auth";
 import { MainListItems } from "./ListItems";
 import NotFound from "../NotFound/NotFound";
 import Login from "../Login/Login";
+import { dbStorage } from "../../constants/Enums";
 
 const drawerWidth: number = 240;
 
@@ -117,7 +118,7 @@ export default function Dashboard() {
   }
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex" , overflow:'hidden'}}>
       <CssBaseline />
       <AppBar
         open={open}
@@ -227,7 +228,11 @@ export default function Dashboard() {
             }}
           >
             <img
-              src="../../../Images/unknownUser.png"
+              src={
+                user?.guest_avatar
+                  ? `${dbStorage}${user?.guest_avatar}`
+                  : "../../../Images/unknownUser.png"
+              }
               style={{
                 width: "8rem",
                 height: "8rem",
