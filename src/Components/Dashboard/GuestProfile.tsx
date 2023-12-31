@@ -29,6 +29,8 @@ import { setLogin } from "../../state";
 import { uploadData } from "aws-amplify/storage";
 import { getUrl } from "aws-amplify/storage";
 import { dbStorage } from "../../constants/Enums";
+import { listGuests } from "../../services/getOperations";
+import { Guest } from "../../API";
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
 const ITEM_HEIGHT = 48;
@@ -72,12 +74,23 @@ export default function GuestProfile() {
         .get(
           `https://graph.facebook.com/me/friends?access_token=${accessToken}`
         )
-        .then((response) => {
+        .then(async (response) => {
           // console.log("User Friends : ");
           // console.log(response.data.data.map((item: MyObject) => item.name));
           // console.log(response.data.data.map((item: MyObject) => item.id));
-          let friends = response.data.data.map((item: MyObject) => item.id);
+          let faceBookIDs = response.data.data.map((item: MyObject) => item.id);
           setFriends(response.data.data.map((item: MyObject) => item.name));
+          let friends: Guest[] = await listGuests({ faceBookIDs });
+          let connections = JSON.stringify(
+            friends.map((friend) => {
+              return {
+                id: friend.id,
+                image: friend.guest_avatar,
+                name: friend.name,
+              };
+            })
+          );
+
           async function updateConnections() {
             try {
               const updatedData = {
@@ -88,9 +101,8 @@ export default function GuestProfile() {
                 birthdate: user?.birthdate,
                 gender: user?.gender,
                 guest_avatar: user?.guest_avatar,
-                connections: friends,
+                connections,
               };
-              console.log(updatedData);
 
               let UpdatedGuest = await updateGuest(
                 updatedData.userID,
@@ -356,6 +368,8 @@ export default function GuestProfile() {
     }
   };
 
+  let connections = JSON.parse(user?.connections || "[]");
+  
   return (
     <Box
       sx={{
@@ -544,19 +558,13 @@ export default function GuestProfile() {
                     },
                   }}
                 >
-                  <Avatar
-                    alt={friends ? friends[0] : ""}
-                    src="/static/images/avatar/1.jpg"
-                  />
-                  {/* <Avatar
-                    alt="Travis Howard"
-                    src="/static/images/avatar/2.jpg"
-                  />
-                  <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                  <Avatar
-                    alt="Agnes Walker"
-                    src="/static/images/avatar/4.jpg"
-                  /> */}
+                  {connections.map((friend: any) => (
+                    <Avatar
+                      key={friend.id}
+                      alt={friend.name || ""}
+                      src={dbStorage + friend.image}
+                    />
+                  ))}
                 </AvatarGroup>
                 <Typography
                   style={{
@@ -566,7 +574,7 @@ export default function GuestProfile() {
                     fontSize: "22px",
                   }}
                 >
-                  {friends?.length}
+                  {connections?.length}
                 </Typography>
               </Box>
               <Typography
@@ -656,7 +664,7 @@ export default function GuestProfile() {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                height:'10vh'
+                height: "10vh",
               }}
             >
               <Box>
@@ -841,7 +849,7 @@ export default function GuestProfile() {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                height:'10vh'
+                height: "10vh",
               }}
             >
               <Box>
@@ -1028,7 +1036,6 @@ export default function GuestProfile() {
               </Box>
             </Box>
           </Box>
-          
         </Grid>
 
         <Grid
@@ -1044,7 +1051,7 @@ export default function GuestProfile() {
             alignItems: "center",
             flexDirection: "column",
             height: "90%",
-            
+
             // gap: 10,
           }}
         >
@@ -1962,13 +1969,14 @@ export default function GuestProfile() {
             // flexDirection: "column",
             // alignItems: "end",
             justifyContent: "center",
-           
           }}
         >
-          <Box sx={{
-            py:1,
-          }}>
-          <img src="../../../Images/anyware.png" alt="" />
+          <Box
+            sx={{
+              py: 1,
+            }}
+          >
+            <img src="../../../Images/anyware.png" alt="" />
           </Box>
         </Grid>
       </Grid>
