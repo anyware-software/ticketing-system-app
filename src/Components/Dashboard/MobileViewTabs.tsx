@@ -296,6 +296,7 @@ export default function MobileViewTabs() {
                 "&.Mui-selected": {
                   color: "white",
                   fontWeight: "bold",
+                  fontStyle:'underline',
                 },
               }}
             />
@@ -742,22 +743,9 @@ export default function MobileViewTabs() {
                 justifyContent: "start",
                 flexDirection: "column",
                 gap: 4,
-                width: { xs: "90%", sm: "51%" },
+                width: { xs: "100%", sm: "51%" },
               }}
             >
-              <Box>
-                <Typography
-                  sx={{
-                    color: "white",
-                    fontSize: 18,
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  My Bookings
-                </Typography>
-              </Box>
-
               <Box
                 sx={{
                   //   height: "10vh",
@@ -972,16 +960,18 @@ export default function MobileViewTabs() {
                       borderRadius: "5px",
                     }}
                   >
-                    <Typography
-                      sx={{
-                        fontSize: 11,
-                        fontWeight: "700",
-                        wordWrap: "break-word",
-                        color: "black",
-                      }}
-                    >
-                      Total : 44
-                    </Typography>
+                     <Typography
+                    sx={{
+                      fontSize: 11,
+                      wordWrap: "break-word",
+                      color: "black",
+                    }}
+                  >
+                    Total :{" "}
+                    <span style={{ fontSize: "12px", fontWeight: "700" }}>
+                      44
+                    </span>
+                  </Typography>
                   </Box>
                 </Box>
               </Box>

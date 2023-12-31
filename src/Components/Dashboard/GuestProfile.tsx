@@ -425,7 +425,7 @@ export default function GuestProfile() {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            gap: { xs: 0, sm: 10 },
+            gap: { xs: 5, sm: 10 },
             marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
           }}
         >
@@ -434,20 +434,9 @@ export default function GuestProfile() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: 4,
+              gap: {xs:0, sm:4},
             }}
           >
-            {/* Test */}
-            {/* <img
-              src="../../../Images/testPerson.png"
-              style={{
-                width: "10rem",
-                height: "10rem",
-                borderRadius: "50%",
-                marginLeft: "1rem",
-              }}
-              alt="unknownUser"
-            /> */}
 
             <div>
               <input
@@ -562,19 +551,30 @@ export default function GuestProfile() {
                     },
                   }}
                 >
+                  {friends?.length! > 0 &&(
                   <Avatar
-                    alt={friends ? friends[0] : ""}
+                    alt={friends ? friends[0] : "?"}
                     src="/static/images/avatar/1.jpg"
                   />
-                  {/* <Avatar
-                    alt="Travis Howard"
+                  )}
+                  {friends?.length! > 1 &&(
+                  <Avatar
+                    alt={friends ? friends[1] : "?"}
                     src="/static/images/avatar/2.jpg"
                   />
-                  <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+                  )}
+                  {friends?.length! > 2 &&(
                   <Avatar
-                    alt="Agnes Walker"
+                    alt={friends ? friends[2] : "?"}
+                    src="/static/images/avatar/3.jpg"
+                  />
+                  )}
+                  {friends?.length! > 3 &&(
+                  <Avatar
+                    alt={friends ? friends[3] : "?"}
                     src="/static/images/avatar/4.jpg"
-                  /> */}
+                  />
+                  )}
                 </AvatarGroup>
                 <Typography
                   style={{
@@ -1058,6 +1058,7 @@ export default function GuestProfile() {
               </Box>
             </Box>
           </Box>
+          
         </Grid>
 
         <Grid
