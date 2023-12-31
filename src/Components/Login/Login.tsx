@@ -99,7 +99,7 @@ export default function Login() {
             boxShadow: "none",
             alignItems: { xs: "center", sm: "start" },
             justifyContent: { xs: "end", sm: "start" },
-            height: "15vh",
+            height: {xs:'15vh',sm:'10vh'},
           }}
         >
           <Toolbar disableGutters>
@@ -158,10 +158,16 @@ export default function Login() {
               zIndex: 1,
               position: "relative",
               display: "flex",
-              justifyContent: "center",
-              alignItems: "end",
+              justifyContent: {xs:"center",sm:"start"},
+              alignItems: "center",
+              flexDirection:'column',
             }}
           >
+            <Box sx={{
+              display: { xs: "none", sm: "flex"},
+              height:'10vh'
+            }}>
+            </Box>
             <Box
               sx={{
                 display: "flex",
@@ -472,7 +478,7 @@ export default function Login() {
               zIndex: 1,
               position: "relative",
               display: { xs: "none", sm: "flex" },
-              // flexDirection: "column",
+              flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -516,7 +522,13 @@ export default function Login() {
               justifyContent: "center",
             }}
           >
+            <Box
+            sx={{
+              py: 1,
+            }}
+          >
             <img src="../../../Images/anyware.png" alt="" />
+          </Box>
           </Grid>
           
           <Grid

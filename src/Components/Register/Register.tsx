@@ -132,17 +132,22 @@ export default function Register() {
               zIndex: 1,
               position: "relative",
               display: "flex",
-              justifyContent: "center",
-              alignItems: "end",
+              justifyContent: {xs:"center",sm:"start"},
+              alignItems: "center",
+              flexDirection:'column',
             }}
           >
+            <Box sx={{
+              display: { xs: "none", sm: "flex"},
+              height:'10vh'
+            }}>
+            </Box>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
                 gap: 5,
                 width: { xs: "90%", sm: "auto" },
-                
               }}
             >
               <Box
@@ -450,7 +455,7 @@ export default function Register() {
               display: { xs: "none", sm: "flex" },
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "space-between",
+              justifyContent: "center",
             }}
           >
             <Box
@@ -459,6 +464,7 @@ export default function Register() {
                 flexDirection: "column",
                 marginLeft: { xs: "0rem", sm: "10rem" },
                 justifyContent: "center",
+                marginTop: { xs: "0vh", sm: "14.25vh"},
                 flexGrow: 1,
               }}
             >
@@ -478,6 +484,7 @@ export default function Register() {
                 style={{ width: "15rem", height: "1.5rem" }}
               />
             </Box>
+            {/* register right button */}
             <Box
               sx={{
                 display: "flex",
@@ -507,6 +514,7 @@ export default function Register() {
                 />
               </Button>
             </Box>
+
           </Grid>
 
           <Grid
@@ -523,8 +531,15 @@ export default function Register() {
               justifyContent: "center",
             }}
           >
+            <Box
+            sx={{
+              py: 1,
+            }}
+          >
             <img src="../../../Images/anyware.png" alt="" />
+          </Box>
           </Grid>
+
           <Grid
             item
             xs={12}
