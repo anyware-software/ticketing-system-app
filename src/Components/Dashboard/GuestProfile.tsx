@@ -30,6 +30,8 @@ import { uploadData } from "aws-amplify/storage";
 import { getUrl } from "aws-amplify/storage";
 import { dbStorage } from "../../constants/Enums";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { remove } from 'aws-amplify/storage';
+
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -374,7 +376,12 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
       } catch (error) {
         console.error("Error updating Connections:", error);
       }
-
+      try {
+        await remove({ key: `${dbStorage}${user?.guest_avatar}` });
+        console.log('Done deleting old image :)');
+      } catch (error) {
+        console.log('Error while deleting old image :', error);
+      }
       return result.key;
     } catch (error) {
       console.log("Error uploading image: ", error);
@@ -528,6 +535,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                             transition: "opacity 0.3s",
                             zIndex: 1,
                             marginLeft: "1rem",
+                            cursor: "pointer",
                           }}
                         >
                           Upload Photo
