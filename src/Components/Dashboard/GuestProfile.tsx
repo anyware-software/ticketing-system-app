@@ -399,7 +399,7 @@ export default function GuestProfile() {
           item
           xs={12}
           sm={12}
-          lg={5}
+          lg={6}
           sx={{
             zIndex: 1,
             position: "relative",
@@ -656,6 +656,7 @@ export default function GuestProfile() {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
+                height:'10vh'
               }}
             >
               <Box>
@@ -840,6 +841,7 @@ export default function GuestProfile() {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
+                height:'10vh'
               }}
             >
               <Box>
@@ -1026,13 +1028,14 @@ export default function GuestProfile() {
               </Box>
             </Box>
           </Box>
+          
         </Grid>
 
         <Grid
           item
           xs={12}
           sm={12}
-          lg={7}
+          lg={6}
           sx={{
             zIndex: 1,
             position: "relative",
@@ -1040,6 +1043,8 @@ export default function GuestProfile() {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
+            height: "90%",
+            
             // gap: 10,
           }}
         >
@@ -1049,7 +1054,6 @@ export default function GuestProfile() {
               justifyContent: "start",
               flexDirection: "column",
               gap: 4,
-              width: { xs: "90%", sm: "57%" },
             }}
           >
             <Box>
@@ -1073,7 +1077,7 @@ export default function GuestProfile() {
                 alignItems: "center",
                 padding: "1rem",
                 borderRadius: "10px",
-
+                gap: 2,
                 justifyContent: "space-between",
               }}
             >
@@ -1207,7 +1211,7 @@ export default function GuestProfile() {
                     fontWeight: "600",
                     wordWrap: "break-word",
                     backgroundColor: "#F0635A",
-                    display: { xs: "none", sm: "none", lg: "block" },
+                    display: { xs: "none", sm: "block", lg: "block" },
                   }}
                 >
                   VIEW TICKET(S)
@@ -1956,11 +1960,16 @@ export default function GuestProfile() {
             position: "relative",
             display: { xs: "none", sm: "flex" },
             // flexDirection: "column",
-            alignItems: "end",
+            // alignItems: "end",
             justifyContent: "center",
+           
           }}
         >
+          <Box sx={{
+            py:1,
+          }}>
           <img src="../../../Images/anyware.png" alt="" />
+          </Box>
         </Grid>
       </Grid>
     </Box>

@@ -107,7 +107,7 @@ export default function Login() {
               sx={{
                 mx: 5,
                 mt: 3,
-                // display: { xs: "flex", sm: "flex" }
+                display: "flex"
               }}
             >
               <img
@@ -501,6 +501,7 @@ export default function Login() {
               />
             </Box>
           </Grid>
+
           <Grid
             item
             xs={12}
@@ -517,6 +518,7 @@ export default function Login() {
           >
             <img src="../../../Images/anyware.png" alt="" />
           </Grid>
+          
           <Grid
             item
             xs={12}

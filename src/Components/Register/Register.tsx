@@ -142,6 +142,7 @@ export default function Register() {
                 flexDirection: "column",
                 gap: 5,
                 width: { xs: "90%", sm: "auto" },
+                
               }}
             >
               <Box
