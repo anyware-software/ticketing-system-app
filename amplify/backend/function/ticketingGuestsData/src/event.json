@@ -1,6 +1,26 @@
 {
   "body": {
-    "operationId": 4,
-    "faceBookIDs": ["6924716960943964"]
-  }
+    "operationId": 3,
+    "userID": "a16a6cb9-6019-485f-af03-f75ebc8c3737",
+    "userAttributes": {
+        "email": "mkhaled@anyware.software",
+        "name": "محمد خالد",
+        "phone_number": "00",
+        "birthdate": "",
+        "gender": null,
+        "guest_avatar": null,
+        "connections": [
+            {
+                "id": "e274cbf6-31a9-4249-934d-ca9a8a3af622",
+                "image": "1703781142552-testPerson.png",
+                "name": "mohamed samir"
+            },
+            {
+                "id": "0f7c5208-046f-4e55-9f76-0dffecd99931",
+                "image": null,
+                "name": "Mohamed Samir"
+            }
+        ]
+    }
+}
 }
