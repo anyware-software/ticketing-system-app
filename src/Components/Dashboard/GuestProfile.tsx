@@ -61,6 +61,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   const [friends, setFriends] = useState<null | Array<string>>(null);
   const dispatch = useDispatch();
   const open = Boolean(anchorEl);
+  const [isHovered, setIsHovered] = useState(false);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -446,9 +447,9 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             <Box>
               <IconButton
                 onClick={toggleDrawer}
-                sx={{ display: { xs: "block", sm: "none" , } }}
+                sx={{ display: { xs: "block", sm: "none" } }}
               >
-                <ChevronLeftIcon sx={{ color: "white" }} />
+                <ChevronLeftIcon sx={{ color: "white" , fontSize:"40px"}} />
               </IconButton>
             </Box>
 
@@ -458,8 +459,8 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 flexDirection: "column",
                 alignItems: "center",
                 gap: { xs: 0, sm: 4 },
-                flexGrow:1,
-                marginRight:{xs:"3rem",sm:"0rem",},
+                flexGrow: 1,
+                marginRight: { xs: "3rem", sm: "0rem" },
               }}
             >
               <div>
@@ -470,7 +471,12 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                   style={{ display: "none" }}
                   onChange={handleImageChange}
                 />
-                <label htmlFor="imageInput">
+                <label
+                  htmlFor="imageInput"
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                  style={{ position: "relative" }}
+                >
                   {selectedImage ? (
                     <img
                       // src={selectedImage}
@@ -485,21 +491,49 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                       alt="unknownUser"
                     />
                   ) : (
-                    <img
-                      src={
-                        user?.guest_avatar
-                          ? `${dbStorage}${user?.guest_avatar}`
-                          : "../../../Images/unknownUser.png"
-                      }
-                      style={{
-                        width: "10rem",
-                        height: "10rem",
-                        borderRadius: "50%",
-                        marginLeft: "1rem",
-                        cursor: "pointer",
-                      }}
-                      alt="unknownUser"
-                    />
+                    <div
+                      style={{ position: "relative", display: "inline-block" }}
+                    >
+                      <img
+                        src={
+                          user?.guest_avatar
+                            ? `${dbStorage}${user?.guest_avatar}`
+                            : "../../../Images/unknownUser.png"
+                        }
+                        style={{
+                          width: "10rem",
+                          height: "10rem",
+                          borderRadius: "50%",
+                          marginLeft: "1rem",
+                          cursor: "pointer",
+                        }}
+                        alt="unknownUser"
+                      />
+                      {isHovered && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "10rem",
+                            height: "10rem",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "rgba(0, 0, 0, 0.5)",
+                            borderRadius: "50%",
+                            color: "white",
+                            fontSize: "1.5rem",
+                            opacity: 0.9,
+                            transition: "opacity 0.3s",
+                            zIndex: 1,
+                            marginLeft: "1rem",
+                          }}
+                        >
+                          Upload Photo
+                        </div>
+                      )}
+                    </div>
                   )}
                 </label>
               </div>
