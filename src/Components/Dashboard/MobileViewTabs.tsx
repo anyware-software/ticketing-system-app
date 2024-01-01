@@ -24,7 +24,6 @@ import updateGuest from "../../services/updateGuest";
 import { setLogin } from "../../state";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Skeleton from "@mui/material/Skeleton";
 import { original } from "@reduxjs/toolkit";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
@@ -404,7 +403,6 @@ export default function MobileViewTabs() {
                       </div>
                     ) : (
                       <div>
-                        {originalEmailText ? (
                           <span
                             style={{
                               color: "white",
@@ -415,18 +413,7 @@ export default function MobileViewTabs() {
                           >
                             {originalEmailText}
                           </span>
-                        ) : (
-                          <Skeleton
-                            variant="rectangular"
-                            animation="pulse"
-                            width={300}
-                            height={40}
-                            sx={{
-                              backgroundColor: "gray",
-                              display: "inline-block",
-                            }}
-                          />
-                        )}
+
                         <IconButton
                           onClick={handleEditEmailClick}
                           sx={{ color: "white" }}
@@ -510,7 +497,7 @@ export default function MobileViewTabs() {
                       </div>
                     ) : (
                       <div>
-                        {originalBirthText ? (
+
                           <span
                             style={{
                               color: "white",
@@ -521,18 +508,7 @@ export default function MobileViewTabs() {
                           >
                             {originalBirthText}
                           </span>
-                        ) : (
-                          <Skeleton
-                            variant="rectangular"
-                            animation="pulse"
-                            width={200}
-                            height={40}
-                            sx={{
-                              backgroundColor: "gray",
-                              display: "inline-block",
-                            }}
-                          />
-                        )}
+
                         <IconButton
                           onClick={handleEditBirthClick}
                           sx={{ color: "white" }}
@@ -628,7 +604,7 @@ export default function MobileViewTabs() {
                       </div>
                     ) : (
                       <div>
-                        {originalGenderText ? (
+
                           <span
                             style={{
                               color: "white",
@@ -639,18 +615,7 @@ export default function MobileViewTabs() {
                           >
                             {originalGenderText}
                           </span>
-                        ) : (
-                          <Skeleton
-                            variant="rectangular"
-                            animation="pulse"
-                            width={150}
-                            height={40}
-                            sx={{
-                              backgroundColor: "gray",
-                              display: "inline-block",
-                            }}
-                          />
-                        )}
+
                         <IconButton
                           onClick={handleEditGenderClick}
                           sx={{ color: "white" }}
@@ -741,7 +706,6 @@ export default function MobileViewTabs() {
                       </div>
                     ) : (
                       <div>
-                        {originalMobileText ? (
 
                         <span
                           style={{
@@ -753,18 +717,7 @@ export default function MobileViewTabs() {
                         >
                           {originalMobileText}
                         </span>
-                        ):(
-                          <Skeleton
-                          variant="rectangular"
-                          animation="pulse"
-                          width={200}
-                          height={40}
-                          sx={{
-                            backgroundColor: "gray",
-                            display: "inline-block",
-                          }}
-                        />
-                        )}
+
                         <IconButton
                           onClick={handleEditMobileClick}
                           sx={{ color: "white" }}

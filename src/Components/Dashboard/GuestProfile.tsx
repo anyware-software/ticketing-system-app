@@ -31,7 +31,6 @@ import { getUrl } from "aws-amplify/storage";
 import { dbStorage } from "../../constants/Enums";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { remove } from "aws-amplify/storage";
-import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 import Tooltip from "@mui/material/Tooltip";
@@ -74,7 +73,16 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state: any) => state.app.user);
+
+  useEffect(() => {
+    if (!user) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -350,7 +358,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
       }
     }
   };
-  
+
   const uploadImage = async (file: File) => {
     try {
       const result = await uploadData({
@@ -407,7 +415,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
       throw error;
     }
   };
-  const deleteUserPhoto = async (index: any , photo : any) => {
+  const deleteUserPhoto = async (index: any, photo: any) => {
     const updatedImages = [...user.images];
     // console.log(index);
     if (updatedImages.length !== 0) {
@@ -452,7 +460,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
     }
   };
 
-  const changeUserPhoto = async (photo: any) => {    
+  const changeUserPhoto = async (photo: any) => {
     try {
       const updatedData = {
         userID: user?.id,
@@ -471,7 +479,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         updatedData.phone_number,
         updatedData.birthdate,
         updatedData.gender,
-        updatedData.guest_avatar,
+        updatedData.guest_avatar
       );
       console.log(UpdatedGuest);
       dispatch(setLogin({ user: UpdatedGuest }));
@@ -678,7 +686,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                               Select Photo
                             </Button>
                             <Button
-                              onClick={() => deleteUserPhoto(index , photo)}
+                              onClick={() => deleteUserPhoto(index, photo)}
                               sx={{
                                 color: "white",
                                 backgroundColor: "#EB5757",
@@ -711,44 +719,31 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                   gap: 1,
                 }}
               >
-                {user?.name ? (
-                  <Box
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  <Typography
                     sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
+                      color: "white",
+                      fontSize: "19px",
+                      fontWeight: "600",
+                      wordWrap: "break-word",
+                      my: 1,
                     }}
                   >
-                    <Typography
-                      sx={{
-                        color: "white",
-                        fontSize: "19px",
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                        my: 1,
-                      }}
-                    >
-                      {user?.name &&
-                        user.name.charAt(0).toUpperCase() + user.name.slice(1)}
-                    </Typography>
-                    {user?.isVerified && (
-                      <Tooltip title="Verified User" placement="bottom">
-                        <VerifiedIcon sx={{ color: "#49adf4" }} />
-                      </Tooltip>
-                    )}
-                  </Box>
-                ) : (
-                  <Skeleton
-                    variant="rectangular"
-                    animation="pulse"
-                    width={300}
-                    height={30}
-                    sx={{
-                      backgroundColor: "gray",
-                      display: "inline-block",
-                    }}
-                  />
-                )}
+                    {user?.name &&
+                      user.name.charAt(0).toUpperCase() + user.name.slice(1)}
+                  </Typography>
+                  {user?.isVerified && (
+                    <Tooltip title="Verified User" placement="bottom">
+                      <VerifiedIcon sx={{ color: "#49adf4" }} />
+                    </Tooltip>
+                  )}
+                </Box>
 
                 {user?.avg_ticket_type === "VIP" && (
                   <Box
@@ -776,118 +771,102 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             </Box>
           </Box>
 
-          {user?.connections ? (
-            <Box sx={{ display: "flex", gap: 2 }}>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <AvatarGroup
-                    max={connections?.length}
-                    sx={{
-                      "& .MuiAvatar-root": {
-                        width: 35,
-                        height: 35,
-                        fontSize: 10,
-                        color: "black",
-                        border: "1px solid white",
-                        backgroundColor: 'darkgrey" , borderColor',
-                      },
-                    }}
-                  >
-                    {connections.map((friend: any) => (
-                      <Avatar
-                        key={friend.id}
-                        alt={friend.name || ""}
-                        src={dbStorage + friend.image}
-                      />
-                    ))}
-                  </AvatarGroup>
-                  <Typography
-                    style={{
-                      color: "white",
-                      fontWeight: "600",
-                      wordWrap: "break-word",
-                      fontSize: "22px",
-                    }}
-                  >
-                    {connections?.length}
-                  </Typography>
-                </Box>
-                <Typography
-                  style={{
-                    color: "#8684FF",
-                    fontWeight: "400",
-                    wordWrap: "break-word",
-                    fontSize: "16px",
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <AvatarGroup
+                  max={connections?.length}
+                  sx={{
+                    "& .MuiAvatar-root": {
+                      width: 35,
+                      height: 35,
+                      fontSize: 10,
+                      color: "black",
+                      border: "1px solid white",
+                      backgroundColor: 'darkgrey" , borderColor',
+                    },
                   }}
                 >
-                  Connections
-                </Typography>
-              </Box>
-
-              <Divider
-                orientation="vertical"
-                flexItem
-                sx={{ backgroundColor: "white" }}
-              />
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <AvatarGroup
-                    // max={4}
-                    sx={{
-                      "& .MuiAvatar-root": {
-                        width: 35,
-                        height: 35,
-                        fontSize: 10,
-                        color: "black",
-                        border: "1px solid white",
-                        backgroundColor: 'darkgrey" , borderColor',
-                      },
-                    }}
-                  >
+                  {connections.map((friend: any) => (
                     <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
+                      key={friend.id}
+                      alt={friend.name || ""}
+                      src={dbStorage + friend.image}
                     />
-                    <Avatar
-                      alt="Travis Howard"
-                      src="/static/images/avatar/2.jpg"
-                    />
-                  </AvatarGroup>
-                  <Typography
-                    style={{
-                      color: "white",
-                      fontWeight: "600",
-                      wordWrap: "break-word",
-                      fontSize: "22px",
-                    }}
-                  >
-                    2
-                  </Typography>
-                </Box>
+                  ))}
+                </AvatarGroup>
                 <Typography
                   style={{
-                    color: "#8684FF",
-                    fontWeight: "400",
+                    color: "white",
+                    fontWeight: "600",
                     wordWrap: "break-word",
-                    fontSize: "16px",
+                    fontSize: "22px",
                   }}
                 >
-                  Events Attended
+                  {connections?.length}
                 </Typography>
               </Box>
+              <Typography
+                style={{
+                  color: "#8684FF",
+                  fontWeight: "400",
+                  wordWrap: "break-word",
+                  fontSize: "16px",
+                }}
+              >
+                Connections
+              </Typography>
             </Box>
-          ) : (
-            <Skeleton
-              variant="rectangular"
-              animation="pulse"
-              width={300}
-              height={80}
-              sx={{
-                backgroundColor: "gray",
-                display: "inline-block",
-              }}
+
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ backgroundColor: "white" }}
             />
-          )}
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <AvatarGroup
+                  // max={4}
+                  sx={{
+                    "& .MuiAvatar-root": {
+                      width: 35,
+                      height: 35,
+                      fontSize: 10,
+                      color: "black",
+                      border: "1px solid white",
+                      backgroundColor: 'darkgrey" , borderColor',
+                    },
+                  }}
+                >
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                  <Avatar
+                    alt="Travis Howard"
+                    src="/static/images/avatar/2.jpg"
+                  />
+                </AvatarGroup>
+                <Typography
+                  style={{
+                    color: "white",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                    fontSize: "22px",
+                  }}
+                >
+                  2
+                </Typography>
+              </Box>
+              <Typography
+                style={{
+                  color: "#8684FF",
+                  fontWeight: "400",
+                  wordWrap: "break-word",
+                  fontSize: "16px",
+                }}
+              >
+                Events Attended
+              </Typography>
+            </Box>
+          </Box>
 
           <MobileViewTabs />
 
@@ -979,29 +958,17 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
-                      {originalEmailText ? (
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: 18,
-                            fontWeight: 600,
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          {originalEmailText}
-                        </span>
-                      ) : (
-                        <Skeleton
-                          variant="rectangular"
-                          animation="pulse"
-                          width={300}
-                          height={40}
-                          sx={{
-                            backgroundColor: "gray",
-                            display: "inline-block",
-                          }}
-                        />
-                      )}
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalEmailText}
+                      </span>
+
                       <IconButton
                         onClick={handleEditEmailClick}
                         sx={{ color: "white" }}
@@ -1081,31 +1048,17 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
-                      {originalBirthText ? (
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: 18,
-                            fontWeight: 600,
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          {originalBirthText}
-                        </span>
-                      ) : (
-                        <>
-                          <Skeleton
-                            variant="rectangular"
-                            animation="pulse"
-                            width={200}
-                            height={40}
-                            sx={{
-                              backgroundColor: "gray",
-                              display: "inline-block",
-                            }}
-                          />
-                        </>
-                      )}
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalBirthText}
+                      </span>
+
                       <IconButton
                         onClick={handleEditBirthClick}
                         sx={{ color: "white" }}
@@ -1202,29 +1155,17 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
-                      {originalGenderText ? (
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: 18,
-                            fontWeight: 600,
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          {originalGenderText}
-                        </span>
-                      ) : (
-                        <Skeleton
-                          variant="rectangular"
-                          animation="pulse"
-                          width={150}
-                          height={40}
-                          sx={{
-                            backgroundColor: "gray",
-                            display: "inline-block",
-                          }}
-                        />
-                      )}
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalGenderText}
+                      </span>
+
                       <IconButton
                         onClick={handleEditGenderClick}
                         sx={{ color: "white" }}
@@ -1311,29 +1252,17 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
-                      {originalMobileText ? (
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: 18,
-                            fontWeight: 600,
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          {originalMobileText}
-                        </span>
-                      ) : (
-                        <Skeleton
-                          variant="rectangular"
-                          animation="pulse"
-                          width={200}
-                          height={40}
-                          sx={{
-                            backgroundColor: "gray",
-                            display: "inline-block",
-                          }}
-                        />
-                      )}
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalMobileText}
+                      </span>
+
                       <IconButton
                         onClick={handleEditMobileClick}
                         sx={{ color: "white" }}

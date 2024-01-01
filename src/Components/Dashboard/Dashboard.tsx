@@ -31,6 +31,8 @@ import { MainListItems } from "./ListItems";
 import NotFound from "../NotFound/NotFound";
 import Login from "../Login/Login";
 import { dbStorage } from "../../constants/Enums";
+import { useEffect, useState } from "react";
+import ContentLoader from "../ContentLoader/ContentLoder";
 
 const drawerWidth: number = 240;
 
@@ -89,6 +91,8 @@ export default function Dashboard() {
   const user = useSelector((state: any) => state.app.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const [selectedItem, setSelectedItem] = React.useState<string | null>(
     "My Profile"
   );
@@ -116,6 +120,16 @@ export default function Dashboard() {
   if (selectedItem === "Sign Out") {
     handleLogOut();
   }
+
+  useEffect(() => {
+    if (!user) {
+      setLoading(true);
+    }else{
+      setLoading(false);
+    }
+  }, [user]);
+
+  if(loading) return <ContentLoader />
 
   return (
     <Box sx={{ display: "flex", overflow: "hidden" }}>
@@ -256,7 +270,10 @@ export default function Dashboard() {
                 user.name.charAt(0).toUpperCase() + user.name.slice(1)}
             </Typography>
           </Box>
-          <IconButton onClick={toggleDrawer} sx={{display:{xs:'none',sm:'block'}}}>
+          <IconButton
+            onClick={toggleDrawer}
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
             <ChevronLeftIcon sx={{ color: "white" }} />
           </IconButton>
         </Toolbar>
@@ -269,7 +286,7 @@ export default function Dashboard() {
       {/* Main Component */}
       {/* <GuestProfile /> */}
       {selectedItem === "My Profile" ? (
-        <GuestProfile toggleDrawer={toggleDrawer} openSideNav={open}/>
+        <GuestProfile toggleDrawer={toggleDrawer} openSideNav={open} />
       ) : (
         // ) : selectedItem === "Notifications" ? (
         //   <NotificationsComponent />
