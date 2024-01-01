@@ -646,6 +646,7 @@ export const createGuest = /* GraphQL */ `mutation CreateGuest(
     appPassword
     birthdate
     isVerified
+    images
     deleted
     createdAt
     createdByID
@@ -681,6 +682,7 @@ export const updateGuest = /* GraphQL */ `mutation UpdateGuest(
     appPassword
     birthdate
     isVerified
+    images
     deleted
     createdAt
     createdByID
@@ -716,6 +718,7 @@ export const deleteGuest = /* GraphQL */ `mutation DeleteGuest(
     appPassword
     birthdate
     isVerified
+    images
     deleted
     createdAt
     createdByID
@@ -790,4 +793,73 @@ export const deleteGuestGroup = /* GraphQL */ `mutation DeleteGuestGroup(
 ` as GeneratedMutation<
   APITypes.DeleteGuestGroupMutationVariables,
   APITypes.DeleteGuestGroupMutation
+>;
+export const createTimeline = /* GraphQL */ `mutation CreateTimeline(
+  $input: CreateTimelineInput!
+  $condition: ModelTimelineConditionInput
+) {
+  createTimeline(input: $input, condition: $condition) {
+    id
+    actionName
+    oldStatus
+    newStatus
+    bookingId
+    customerId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateTimelineMutationVariables,
+  APITypes.CreateTimelineMutation
+>;
+export const updateTimeline = /* GraphQL */ `mutation UpdateTimeline(
+  $input: UpdateTimelineInput!
+  $condition: ModelTimelineConditionInput
+) {
+  updateTimeline(input: $input, condition: $condition) {
+    id
+    actionName
+    oldStatus
+    newStatus
+    bookingId
+    customerId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateTimelineMutationVariables,
+  APITypes.UpdateTimelineMutation
+>;
+export const deleteTimeline = /* GraphQL */ `mutation DeleteTimeline(
+  $input: DeleteTimelineInput!
+  $condition: ModelTimelineConditionInput
+) {
+  deleteTimeline(input: $input, condition: $condition) {
+    id
+    actionName
+    oldStatus
+    newStatus
+    bookingId
+    customerId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteTimelineMutationVariables,
+  APITypes.DeleteTimelineMutation
 >;

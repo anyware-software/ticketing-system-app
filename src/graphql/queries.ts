@@ -438,6 +438,7 @@ export const getGuest = /* GraphQL */ `query GetGuest($id: ID!) {
     appPassword
     birthdate
     isVerified
+    images
     deleted
     createdAt
     createdByID
@@ -472,6 +473,7 @@ export const listGuests = /* GraphQL */ `query ListGuests(
       appPassword
       birthdate
       isVerified
+      images
       deleted
       createdAt
       createdByID
@@ -522,6 +524,7 @@ export const ByEmail = /* GraphQL */ `query ByEmail(
       appPassword
       birthdate
       isVerified
+      images
       deleted
       createdAt
       createdByID
@@ -569,6 +572,7 @@ export const ByPhoneNumber = /* GraphQL */ `query ByPhoneNumber(
       appPassword
       birthdate
       isVerified
+      images
       deleted
       createdAt
       createdByID
@@ -627,4 +631,90 @@ export const listGuestGroups = /* GraphQL */ `query ListGuestGroups(
 ` as GeneratedQuery<
   APITypes.ListGuestGroupsQueryVariables,
   APITypes.ListGuestGroupsQuery
+>;
+export const getTimeline = /* GraphQL */ `query GetTimeline($id: ID!) {
+  getTimeline(id: $id) {
+    id
+    actionName
+    oldStatus
+    newStatus
+    bookingId
+    customerId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetTimelineQueryVariables,
+  APITypes.GetTimelineQuery
+>;
+export const listTimelines = /* GraphQL */ `query ListTimelines(
+  $filter: ModelTimelineFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listTimelines(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      actionName
+      oldStatus
+      newStatus
+      bookingId
+      customerId
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListTimelinesQueryVariables,
+  APITypes.ListTimelinesQuery
+>;
+export const timelineByCustomerID = /* GraphQL */ `query TimelineByCustomerID(
+  $customerId: String!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelTimelineFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  timelineByCustomerID(
+    customerId: $customerId
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      actionName
+      oldStatus
+      newStatus
+      bookingId
+      customerId
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.TimelineByCustomerIDQueryVariables,
+  APITypes.TimelineByCustomerIDQuery
 >;

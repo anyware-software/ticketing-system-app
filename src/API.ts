@@ -597,6 +597,7 @@ export type CreateGuestInput = {
   appPassword?: string | null,
   birthdate?: string | null,
   isVerified?: boolean | null,
+  images?: Array< string | null > | null,
   deleted?: string | null,
   createdAt?: string | null,
   createdByID: string,
@@ -621,6 +622,7 @@ export type ModelGuestConditionInput = {
   appPassword?: ModelStringInput | null,
   birthdate?: ModelStringInput | null,
   isVerified?: ModelBooleanInput | null,
+  images?: ModelStringInput | null,
   deleted?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   createdByID?: ModelStringInput | null,
@@ -650,6 +652,7 @@ export type Guest = {
   appPassword?: string | null,
   birthdate?: string | null,
   isVerified?: boolean | null,
+  images?: Array< string | null > | null,
   deleted?: string | null,
   createdAt: string,
   createdByID: string,
@@ -676,6 +679,7 @@ export type UpdateGuestInput = {
   appPassword?: string | null,
   birthdate?: string | null,
   isVerified?: boolean | null,
+  images?: Array< string | null > | null,
   deleted?: string | null,
   createdAt?: string | null,
   createdByID?: string | null,
@@ -735,6 +739,66 @@ export type UpdateGuestGroupInput = {
 };
 
 export type DeleteGuestGroupInput = {
+  id: string,
+};
+
+export type CreateTimelineInput = {
+  id?: string | null,
+  actionName: string,
+  oldStatus: string,
+  newStatus: string,
+  bookingId?: string | null,
+  customerId?: string | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID: string,
+  createdByName: string,
+};
+
+export type ModelTimelineConditionInput = {
+  actionName?: ModelStringInput | null,
+  oldStatus?: ModelStringInput | null,
+  newStatus?: ModelStringInput | null,
+  bookingId?: ModelStringInput | null,
+  customerId?: ModelStringInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelTimelineConditionInput | null > | null,
+  or?: Array< ModelTimelineConditionInput | null > | null,
+  not?: ModelTimelineConditionInput | null,
+};
+
+export type Timeline = {
+  __typename: "Timeline",
+  id: string,
+  actionName: string,
+  oldStatus: string,
+  newStatus: string,
+  bookingId?: string | null,
+  customerId?: string | null,
+  deleted?: string | null,
+  createdAt: string,
+  createdByID: string,
+  createdByName: string,
+  updatedAt: string,
+};
+
+export type UpdateTimelineInput = {
+  id: string,
+  actionName?: string | null,
+  oldStatus?: string | null,
+  newStatus?: string | null,
+  bookingId?: string | null,
+  customerId?: string | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID?: string | null,
+  createdByName?: string | null,
+};
+
+export type DeleteTimelineInput = {
   id: string,
 };
 
@@ -938,6 +1002,7 @@ export type ModelGuestFilterInput = {
   appPassword?: ModelStringInput | null,
   birthdate?: ModelStringInput | null,
   isVerified?: ModelBooleanInput | null,
+  images?: ModelStringInput | null,
   deleted?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   createdByID?: ModelStringInput | null,
@@ -986,6 +1051,28 @@ export type ModelGuestGroupFilterInput = {
 export type ModelGuestGroupConnection = {
   __typename: "ModelGuestGroupConnection",
   items:  Array<GuestGroup | null >,
+  nextToken?: string | null,
+};
+
+export type ModelTimelineFilterInput = {
+  id?: ModelIDInput | null,
+  actionName?: ModelStringInput | null,
+  oldStatus?: ModelStringInput | null,
+  newStatus?: ModelStringInput | null,
+  bookingId?: ModelStringInput | null,
+  customerId?: ModelStringInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelTimelineFilterInput | null > | null,
+  or?: Array< ModelTimelineFilterInput | null > | null,
+  not?: ModelTimelineFilterInput | null,
+};
+
+export type ModelTimelineConnection = {
+  __typename: "ModelTimelineConnection",
+  items:  Array<Timeline | null >,
   nextToken?: string | null,
 };
 
@@ -1179,6 +1266,7 @@ export type ModelSubscriptionGuestFilterInput = {
   appPassword?: ModelSubscriptionStringInput | null,
   birthdate?: ModelSubscriptionStringInput | null,
   isVerified?: ModelSubscriptionBooleanInput | null,
+  images?: ModelSubscriptionStringInput | null,
   deleted?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   createdByID?: ModelSubscriptionStringInput | null,
@@ -1198,6 +1286,21 @@ export type ModelSubscriptionGuestGroupFilterInput = {
   createdByName?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionGuestGroupFilterInput | null > | null,
   or?: Array< ModelSubscriptionGuestGroupFilterInput | null > | null,
+};
+
+export type ModelSubscriptionTimelineFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  actionName?: ModelSubscriptionStringInput | null,
+  oldStatus?: ModelSubscriptionStringInput | null,
+  newStatus?: ModelSubscriptionStringInput | null,
+  bookingId?: ModelSubscriptionStringInput | null,
+  customerId?: ModelSubscriptionStringInput | null,
+  deleted?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  createdByID?: ModelSubscriptionStringInput | null,
+  createdByName?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionTimelineFilterInput | null > | null,
+  or?: Array< ModelSubscriptionTimelineFilterInput | null > | null,
 };
 
 export type CreateAccountMutationVariables = {
@@ -1817,6 +1920,7 @@ export type CreateGuestMutation = {
     appPassword?: string | null,
     birthdate?: string | null,
     isVerified?: boolean | null,
+    images?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -1851,6 +1955,7 @@ export type UpdateGuestMutation = {
     appPassword?: string | null,
     birthdate?: string | null,
     isVerified?: boolean | null,
+    images?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -1885,6 +1990,7 @@ export type DeleteGuestMutation = {
     appPassword?: string | null,
     birthdate?: string | null,
     isVerified?: boolean | null,
+    images?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -1945,6 +2051,72 @@ export type DeleteGuestGroupMutation = {
     name?: string | null,
     description?: string | null,
     guests?: Array< string | null > | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateTimelineMutationVariables = {
+  input: CreateTimelineInput,
+  condition?: ModelTimelineConditionInput | null,
+};
+
+export type CreateTimelineMutation = {
+  createTimeline?:  {
+    __typename: "Timeline",
+    id: string,
+    actionName: string,
+    oldStatus: string,
+    newStatus: string,
+    bookingId?: string | null,
+    customerId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateTimelineMutationVariables = {
+  input: UpdateTimelineInput,
+  condition?: ModelTimelineConditionInput | null,
+};
+
+export type UpdateTimelineMutation = {
+  updateTimeline?:  {
+    __typename: "Timeline",
+    id: string,
+    actionName: string,
+    oldStatus: string,
+    newStatus: string,
+    bookingId?: string | null,
+    customerId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteTimelineMutationVariables = {
+  input: DeleteTimelineInput,
+  condition?: ModelTimelineConditionInput | null,
+};
+
+export type DeleteTimelineMutation = {
+  deleteTimeline?:  {
+    __typename: "Timeline",
+    id: string,
+    actionName: string,
+    oldStatus: string,
+    newStatus: string,
+    bookingId?: string | null,
+    customerId?: string | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -2388,6 +2560,7 @@ export type GetGuestQuery = {
     appPassword?: string | null,
     birthdate?: string | null,
     isVerified?: boolean | null,
+    images?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -2425,6 +2598,7 @@ export type ListGuestsQuery = {
       appPassword?: string | null,
       birthdate?: string | null,
       isVerified?: boolean | null,
+      images?: Array< string | null > | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
@@ -2467,6 +2641,7 @@ export type ByEmailQuery = {
       appPassword?: string | null,
       birthdate?: string | null,
       isVerified?: boolean | null,
+      images?: Array< string | null > | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
@@ -2509,6 +2684,7 @@ export type ByPhoneNumberQuery = {
       appPassword?: string | null,
       birthdate?: string | null,
       isVerified?: boolean | null,
+      images?: Array< string | null > | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
@@ -2553,6 +2729,84 @@ export type ListGuestGroupsQuery = {
       name?: string | null,
       description?: string | null,
       guests?: Array< string | null > | null,
+      deleted?: string | null,
+      createdAt: string,
+      createdByID: string,
+      createdByName: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetTimelineQueryVariables = {
+  id: string,
+};
+
+export type GetTimelineQuery = {
+  getTimeline?:  {
+    __typename: "Timeline",
+    id: string,
+    actionName: string,
+    oldStatus: string,
+    newStatus: string,
+    bookingId?: string | null,
+    customerId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListTimelinesQueryVariables = {
+  filter?: ModelTimelineFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListTimelinesQuery = {
+  listTimelines?:  {
+    __typename: "ModelTimelineConnection",
+    items:  Array< {
+      __typename: "Timeline",
+      id: string,
+      actionName: string,
+      oldStatus: string,
+      newStatus: string,
+      bookingId?: string | null,
+      customerId?: string | null,
+      deleted?: string | null,
+      createdAt: string,
+      createdByID: string,
+      createdByName: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type TimelineByCustomerIDQueryVariables = {
+  customerId: string,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelTimelineFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type TimelineByCustomerIDQuery = {
+  timelineByCustomerID?:  {
+    __typename: "ModelTimelineConnection",
+    items:  Array< {
+      __typename: "Timeline",
+      id: string,
+      actionName: string,
+      oldStatus: string,
+      newStatus: string,
+      bookingId?: string | null,
+      customerId?: string | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
@@ -3155,6 +3409,7 @@ export type OnCreateGuestSubscription = {
     appPassword?: string | null,
     birthdate?: string | null,
     isVerified?: boolean | null,
+    images?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -3188,6 +3443,7 @@ export type OnUpdateGuestSubscription = {
     appPassword?: string | null,
     birthdate?: string | null,
     isVerified?: boolean | null,
+    images?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -3221,6 +3477,7 @@ export type OnDeleteGuestSubscription = {
     appPassword?: string | null,
     birthdate?: string | null,
     isVerified?: boolean | null,
+    images?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -3278,6 +3535,69 @@ export type OnDeleteGuestGroupSubscription = {
     name?: string | null,
     description?: string | null,
     guests?: Array< string | null > | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateTimelineSubscriptionVariables = {
+  filter?: ModelSubscriptionTimelineFilterInput | null,
+};
+
+export type OnCreateTimelineSubscription = {
+  onCreateTimeline?:  {
+    __typename: "Timeline",
+    id: string,
+    actionName: string,
+    oldStatus: string,
+    newStatus: string,
+    bookingId?: string | null,
+    customerId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateTimelineSubscriptionVariables = {
+  filter?: ModelSubscriptionTimelineFilterInput | null,
+};
+
+export type OnUpdateTimelineSubscription = {
+  onUpdateTimeline?:  {
+    __typename: "Timeline",
+    id: string,
+    actionName: string,
+    oldStatus: string,
+    newStatus: string,
+    bookingId?: string | null,
+    customerId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteTimelineSubscriptionVariables = {
+  filter?: ModelSubscriptionTimelineFilterInput | null,
+};
+
+export type OnDeleteTimelineSubscription = {
+  onDeleteTimeline?:  {
+    __typename: "Timeline",
+    id: string,
+    actionName: string,
+    oldStatus: string,
+    newStatus: string,
+    bookingId?: string | null,
+    customerId?: string | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,

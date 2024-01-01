@@ -589,6 +589,7 @@ export const onCreateGuest = /* GraphQL */ `subscription OnCreateGuest($filter: 
     appPassword
     birthdate
     isVerified
+    images
     deleted
     createdAt
     createdByID
@@ -621,6 +622,7 @@ export const onUpdateGuest = /* GraphQL */ `subscription OnUpdateGuest($filter: 
     appPassword
     birthdate
     isVerified
+    images
     deleted
     createdAt
     createdByID
@@ -653,6 +655,7 @@ export const onDeleteGuest = /* GraphQL */ `subscription OnDeleteGuest($filter: 
     appPassword
     birthdate
     isVerified
+    images
     deleted
     createdAt
     createdByID
@@ -724,4 +727,64 @@ export const onDeleteGuestGroup = /* GraphQL */ `subscription OnDeleteGuestGroup
 ` as GeneratedSubscription<
   APITypes.OnDeleteGuestGroupSubscriptionVariables,
   APITypes.OnDeleteGuestGroupSubscription
+>;
+export const onCreateTimeline = /* GraphQL */ `subscription OnCreateTimeline($filter: ModelSubscriptionTimelineFilterInput) {
+  onCreateTimeline(filter: $filter) {
+    id
+    actionName
+    oldStatus
+    newStatus
+    bookingId
+    customerId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateTimelineSubscriptionVariables,
+  APITypes.OnCreateTimelineSubscription
+>;
+export const onUpdateTimeline = /* GraphQL */ `subscription OnUpdateTimeline($filter: ModelSubscriptionTimelineFilterInput) {
+  onUpdateTimeline(filter: $filter) {
+    id
+    actionName
+    oldStatus
+    newStatus
+    bookingId
+    customerId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateTimelineSubscriptionVariables,
+  APITypes.OnUpdateTimelineSubscription
+>;
+export const onDeleteTimeline = /* GraphQL */ `subscription OnDeleteTimeline($filter: ModelSubscriptionTimelineFilterInput) {
+  onDeleteTimeline(filter: $filter) {
+    id
+    actionName
+    oldStatus
+    newStatus
+    bookingId
+    customerId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteTimelineSubscriptionVariables,
+  APITypes.OnDeleteTimelineSubscription
 >;
