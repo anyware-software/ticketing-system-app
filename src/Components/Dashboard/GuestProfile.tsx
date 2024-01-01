@@ -30,8 +30,10 @@ import { uploadData } from "aws-amplify/storage";
 import { getUrl } from "aws-amplify/storage";
 import { dbStorage } from "../../constants/Enums";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { remove } from 'aws-amplify/storage';
-
+import { remove } from "aws-amplify/storage";
+import Skeleton from "@mui/material/Skeleton";
+import CircularProgress from "@mui/material/CircularProgress";
+import LinearProgress from '@mui/material/LinearProgress';
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -378,9 +380,9 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
       }
       try {
         await remove({ key: `${dbStorage}${user?.guest_avatar}` });
-        console.log('Done deleting old image :)');
+        console.log("Done deleting old image :)");
       } catch (error) {
-        console.log('Error while deleting old image :', error);
+        console.log("Error while deleting old image :", error);
       }
       return result.key;
     } catch (error) {
@@ -456,7 +458,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 onClick={toggleDrawer}
                 sx={{ display: { xs: "block", sm: "none" } }}
               >
-                <ChevronLeftIcon sx={{ color: "white" , fontSize:"40px"}} />
+                <ChevronLeftIcon sx={{ color: "white", fontSize: "40px" }} />
               </IconButton>
             </Box>
 
@@ -808,16 +810,29 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
-                      <span
-                        style={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: 600,
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        {originalEmailText}
-                      </span>
+                      {originalEmailText ? (
+                        <span
+                          style={{
+                            color: "white",
+                            fontSize: 18,
+                            fontWeight: 600,
+                            wordWrap: "break-word",
+                          }}
+                        >
+                          {originalEmailText}
+                        </span>
+                      ) : (
+                        <Skeleton
+                          variant="rectangular"
+                          animation="pulse"
+                          width={300}
+                          height={40}
+                          sx={{
+                            backgroundColor: "gray",
+                            display: "inline-block",
+                          }}
+                        />
+                      )}
                       <IconButton
                         onClick={handleEditEmailClick}
                         sx={{ color: "white" }}
@@ -897,16 +912,31 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
-                      <span
-                        style={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: 600,
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        {originalBirthText}
-                      </span>
+                      {originalBirthText ? (
+                        <span
+                          style={{
+                            color: "white",
+                            fontSize: 18,
+                            fontWeight: 600,
+                            wordWrap: "break-word",
+                          }}
+                        >
+                          {originalBirthText}
+                        </span>
+                      ) : (
+                        <>
+                          <Skeleton
+                            variant="rectangular"
+                            animation="pulse"
+                            width={200}
+                            height={40}
+                            sx={{
+                              backgroundColor: "gray",
+                              display: "inline-block",
+                            }}
+                          />
+                        </>
+                      )}
                       <IconButton
                         onClick={handleEditBirthClick}
                         sx={{ color: "white" }}
@@ -1003,6 +1033,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
+                      {originalGenderText ? (
                       <span
                         style={{
                           color: "white",
@@ -1013,6 +1044,18 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                       >
                         {originalGenderText}
                       </span>
+                      ):(
+                        <Skeleton
+                            variant="rectangular"
+                            animation="pulse"
+                            width={150}
+                            height={40}
+                            sx={{
+                              backgroundColor: "gray",
+                              display: "inline-block",
+                            }}
+                          />
+                      )}
                       <IconButton
                         onClick={handleEditGenderClick}
                         sx={{ color: "white" }}
@@ -1099,6 +1142,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
+                      {originalMobileText ? (
                       <span
                         style={{
                           color: "white",
@@ -1109,6 +1153,18 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                       >
                         {originalMobileText}
                       </span>
+                      ):(
+                        <Skeleton
+                            variant="rectangular"
+                            animation="pulse"
+                            width={200}
+                            height={40}
+                            sx={{
+                              backgroundColor: "gray",
+                              display: "inline-block",
+                            }}
+                          />
+                      )}
                       <IconButton
                         onClick={handleEditMobileClick}
                         sx={{ color: "white" }}
