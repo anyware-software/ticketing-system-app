@@ -33,10 +33,11 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { remove } from "aws-amplify/storage";
 import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
-import LinearProgress from '@mui/material/LinearProgress';
-
+import LinearProgress from "@mui/material/LinearProgress";
+import Tooltip from '@mui/material/Tooltip';
 import { listGuests } from "../../services/getOperations";
 import { Guest } from "../../API";
+
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
 const ITEM_HEIGHT = 48;
@@ -404,7 +405,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   };
 
   let connections = JSON.parse(user?.connections || "[]");
-  
+
   return (
     <Box
       sx={{
@@ -570,29 +571,44 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                   gap: 1,
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                  }}
-                >
-                  <Typography
+                {user?.name ? (
+                  <Box
                     sx={{
-                      color: "white",
-                      fontSize: "19px",
-                      fontWeight: "600",
-                      wordWrap: "break-word",
-                      my: 1,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
                     }}
                   >
-                    {user?.name &&
-                      user.name.charAt(0).toUpperCase() + user.name.slice(1)}
-                  </Typography>
-                  {user?.isVerified && (
-                    <VerifiedIcon sx={{ color: "#49adf4" }} />
-                  )}
-                </Box>
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: "19px",
+                        fontWeight: "600",
+                        wordWrap: "break-word",
+                        my: 1,
+                      }}
+                    >
+                      {user?.name &&
+                        user.name.charAt(0).toUpperCase() + user.name.slice(1)}
+                    </Typography>
+                    {user?.isVerified && (
+                       <Tooltip title="Verified User" placement="bottom">
+                      <VerifiedIcon sx={{ color: "#49adf4" }} />
+                      </Tooltip>
+                    )}
+                  </Box>
+                ) : (
+                  <Skeleton
+                    variant="rectangular"
+                    animation="pulse"
+                    width={300}
+                    height={30}
+                    sx={{
+                      backgroundColor: "gray",
+                      display: "inline-block",
+                    }}
+                  />
+                )}
 
                 {user?.avg_ticket_type === "VIP" && (
                   <Box
@@ -620,102 +636,118 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             </Box>
           </Box>
 
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <AvatarGroup
-                  max={friends?.length}
-                  sx={{
-                    "& .MuiAvatar-root": {
-                      width: 35,
-                      height: 35,
-                      fontSize: 10,
-                      color: "black",
-                      border: "1px solid white",
-                      backgroundColor: 'darkgrey" , borderColor',
-                    },
-                  }}
-                >
-                  {connections.map((friend: any) => (
-                    <Avatar
-                      key={friend.id}
-                      alt={friend.name || ""}
-                      src={dbStorage + friend.image}
-                    />
-                  ))}
-                </AvatarGroup>
+          {user?.connections ? (
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <AvatarGroup
+                    max={friends?.length}
+                    sx={{
+                      "& .MuiAvatar-root": {
+                        width: 35,
+                        height: 35,
+                        fontSize: 10,
+                        color: "black",
+                        border: "1px solid white",
+                        backgroundColor: 'darkgrey" , borderColor',
+                      },
+                    }}
+                  >
+                    {connections.map((friend: any) => (
+                      <Avatar
+                        key={friend.id}
+                        alt={friend.name || ""}
+                        src={dbStorage + friend.image}
+                      />
+                    ))}
+                  </AvatarGroup>
+                  <Typography
+                    style={{
+                      color: "white",
+                      fontWeight: "600",
+                      wordWrap: "break-word",
+                      fontSize: "22px",
+                    }}
+                  >
+                    {connections?.length}
+                  </Typography>
+                </Box>
                 <Typography
                   style={{
-                    color: "white",
-                    fontWeight: "600",
+                    color: "#8684FF",
+                    fontWeight: "400",
                     wordWrap: "break-word",
-                    fontSize: "22px",
+                    fontSize: "16px",
                   }}
                 >
-                  {connections?.length}
+                  Connections
                 </Typography>
               </Box>
-              <Typography
-                style={{
-                  color: "#8684FF",
-                  fontWeight: "400",
-                  wordWrap: "break-word",
-                  fontSize: "16px",
-                }}
-              >
-                Connections
-              </Typography>
-            </Box>
 
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{ backgroundColor: "white" }}
-            />
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <AvatarGroup
-                  // max={4}
-                  sx={{
-                    "& .MuiAvatar-root": {
-                      width: 35,
-                      height: 35,
-                      fontSize: 10,
-                      color: "black",
-                      border: "1px solid white",
-                      backgroundColor: 'darkgrey" , borderColor',
-                    },
-                  }}
-                >
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                  <Avatar
-                    alt="Travis Howard"
-                    src="/static/images/avatar/2.jpg"
-                  />
-                </AvatarGroup>
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{ backgroundColor: "white" }}
+              />
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <AvatarGroup
+                    // max={4}
+                    sx={{
+                      "& .MuiAvatar-root": {
+                        width: 35,
+                        height: 35,
+                        fontSize: 10,
+                        color: "black",
+                        border: "1px solid white",
+                        backgroundColor: 'darkgrey" , borderColor',
+                      },
+                    }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/1.jpg"
+                    />
+                    <Avatar
+                      alt="Travis Howard"
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </AvatarGroup>
+                  <Typography
+                    style={{
+                      color: "white",
+                      fontWeight: "600",
+                      wordWrap: "break-word",
+                      fontSize: "22px",
+                    }}
+                  >
+                    2
+                  </Typography>
+                </Box>
                 <Typography
                   style={{
-                    color: "white",
-                    fontWeight: "600",
+                    color: "#8684FF",
+                    fontWeight: "400",
                     wordWrap: "break-word",
-                    fontSize: "22px",
+                    fontSize: "16px",
                   }}
                 >
-                  2
+                  Events Attended
                 </Typography>
               </Box>
-              <Typography
-                style={{
-                  color: "#8684FF",
-                  fontWeight: "400",
-                  wordWrap: "break-word",
-                  fontSize: "16px",
-                }}
-              >
-                Events Attended
-              </Typography>
             </Box>
-          </Box>
+          ) : (
+            <Skeleton
+              variant="rectangular"
+              animation="pulse"
+              width={300}
+              height={80}
+              sx={{
+                backgroundColor: "gray",
+                display: "inline-block",
+              }}
+            />
+          )}
 
           <MobileViewTabs />
 
@@ -1031,27 +1063,27 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                   ) : (
                     <div>
                       {originalGenderText ? (
-                      <span
-                        style={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: 600,
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        {originalGenderText}
-                      </span>
-                      ):(
+                        <span
+                          style={{
+                            color: "white",
+                            fontSize: 18,
+                            fontWeight: 600,
+                            wordWrap: "break-word",
+                          }}
+                        >
+                          {originalGenderText}
+                        </span>
+                      ) : (
                         <Skeleton
-                            variant="rectangular"
-                            animation="pulse"
-                            width={150}
-                            height={40}
-                            sx={{
-                              backgroundColor: "gray",
-                              display: "inline-block",
-                            }}
-                          />
+                          variant="rectangular"
+                          animation="pulse"
+                          width={150}
+                          height={40}
+                          sx={{
+                            backgroundColor: "gray",
+                            display: "inline-block",
+                          }}
+                        />
                       )}
                       <IconButton
                         onClick={handleEditGenderClick}
@@ -1140,27 +1172,27 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                   ) : (
                     <div>
                       {originalMobileText ? (
-                      <span
-                        style={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: 600,
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        {originalMobileText}
-                      </span>
-                      ):(
+                        <span
+                          style={{
+                            color: "white",
+                            fontSize: 18,
+                            fontWeight: 600,
+                            wordWrap: "break-word",
+                          }}
+                        >
+                          {originalMobileText}
+                        </span>
+                      ) : (
                         <Skeleton
-                            variant="rectangular"
-                            animation="pulse"
-                            width={200}
-                            height={40}
-                            sx={{
-                              backgroundColor: "gray",
-                              display: "inline-block",
-                            }}
-                          />
+                          variant="rectangular"
+                          animation="pulse"
+                          width={200}
+                          height={40}
+                          sx={{
+                            backgroundColor: "gray",
+                            display: "inline-block",
+                          }}
+                        />
                       )}
                       <IconButton
                         onClick={handleEditMobileClick}
