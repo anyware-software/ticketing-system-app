@@ -241,6 +241,7 @@ type Guest
   appPassword: String
   birthdate: String
   isVerified : Boolean
+  images: [String]
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!
@@ -264,6 +265,36 @@ type GuestGroup
   name: String
   description: String
   guests: [ID]
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type Timeline
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [read, create], provider: iam }
+      { allow: public, operations: [read, create] }
+    ]
+  ) {
+  id: ID!
+  actionName: String!
+  oldStatus: String!
+  newStatus: String!
+  bookingId: String
+  customerId: String
+    @index(
+      name: "timelineByCustomerID"
+      queryField: "timelineByCustomerID"
+      sortKeyFields: ["createdAt"]
+    )
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!
