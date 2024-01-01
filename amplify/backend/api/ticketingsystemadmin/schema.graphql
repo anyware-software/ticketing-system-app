@@ -233,7 +233,7 @@ type Guest
   avg_spend:Int
   avg_ticket_type: String
   avg_ticket_number:Int
-  connections:[ID]
+  connections: AWSJSON
   last_attended_event: String
   gender: String
   group: String

@@ -97,8 +97,47 @@ const updateGuest = /* GraphQL */
 }
 `
 
+const listGuests = /* GraphQL */ `query ListGuests(
+  $filter: ModelGuestFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listGuests(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      username
+      email
+      phone_number
+      guestGroupID
+      guest_avatar
+      avg_spend
+      avg_ticket_type
+      avg_ticket_number
+      connections
+      last_attended_event
+      gender
+      group
+      faceBookID
+      appPassword
+      birthdate
+      isVerified
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+`
+
   module.exports = {
     createGuest,
     getGuest,
     updateGuest,
+    listGuests
   };

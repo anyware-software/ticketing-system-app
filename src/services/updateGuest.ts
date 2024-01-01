@@ -9,7 +9,7 @@ async function updateGuest(
     birthdate?: any,
     gender?: any,
     guest_avatar?: any,
-    connections?:[any],
+    connections?:any,
     deleted?:any,
     createdAt?:any,
 ) {

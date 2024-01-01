@@ -10,7 +10,12 @@ Amplify Params - DO NOT EDIT */ /**
 const fetch = require("node-fetch");
 const { operationIdEnum } = require("./constants/enum");
 
-const { createGuest, getGuest, updateGuest } = require("./constants/queries");
+const {
+  createGuest,
+  getGuest,
+  updateGuest,
+  listGuests,
+} = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
@@ -19,12 +24,17 @@ const GRAPHQL_API_KEY =
 
 exports.handler = async (event) => {
   try {
-    const requestBody = JSON.parse(event.body);
-    // const requestBody = event.body;
+    let requestBody;
+    try {
+      requestBody = JSON.parse(event.body);
+    } catch (error) {
+      requestBody = event.body;
+    }
     console.log({ requestBody });
     const operationId = requestBody.operationId;
     const userID = requestBody.userID;
     const userAttributes = requestBody.userAttributes;
+    const faceBookIDs = requestBody.faceBookIDs;
     let variables, query;
 
     if (operationId === operationIdEnum.createGuest) {
@@ -61,13 +71,26 @@ exports.handler = async (event) => {
           birthdate: userAttributes.birthdate,
           gender: userAttributes.gender,
           guest_avatar: userAttributes.guest_avatar,
-          connections:userAttributes.connections,
+          connections: userAttributes.connections,
           deleted: userAttributes.deleted,
           createdAt: userAttributes.createdAt,
         },
       };
       console.log(updateGuest);
       query = updateGuest;
+    } else if (operationId === operationIdEnum.listGuests) {
+      let filter = {
+        deleted: { eq: "0" },
+      };
+      filter.or = [];
+      if (faceBookIDs) {
+        for (const faceBookID of faceBookIDs) {
+          filter.or.push({ faceBookID: { eq: faceBookID } });
+        }
+      }
+      if (filter.or.length === 0) delete filter.or;
+      variables = { filter };
+      query = listGuests;
     }
 
     let responseBody = {};
@@ -96,6 +119,8 @@ exports.handler = async (event) => {
       items = responseBody.data.getGuest;
     } else if (operationId === operationIdEnum.updateGuest) {
       items = responseBody.data.updateGuest;
+    } else if (operationId === operationIdEnum.listGuests) {
+      items = responseBody.data.listGuests.items;
     }
     return {
       statusCode: 200,
