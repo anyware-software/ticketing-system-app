@@ -22,6 +22,7 @@ const createGuest = /* GraphQL */
     appPassword
     birthdate
     isVerified
+    images
     deleted
     createdAt
     createdByID
@@ -53,6 +54,7 @@ const createGuest = /* GraphQL */
     appPassword
     birthdate
     isVerified
+    images
     deleted
     createdAt
     createdByID
@@ -87,6 +89,7 @@ const updateGuest = /* GraphQL */
     appPassword
     birthdate
     isVerified
+    images
     deleted
     createdAt
     createdByID
@@ -122,6 +125,7 @@ const listGuests = /* GraphQL */ `query ListGuests(
       appPassword
       birthdate
       isVerified
+      images
       deleted
       createdAt
       createdByID

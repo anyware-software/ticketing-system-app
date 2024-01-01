@@ -34,7 +34,7 @@ import { remove } from "aws-amplify/storage";
 import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import { listGuests } from "../../services/getOperations";
 import { Guest } from "../../API";
 
@@ -65,7 +65,6 @@ type props = {
 
 export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [friends, setFriends] = useState<null | Array<string>>(null);
   const dispatch = useDispatch();
   const open = Boolean(anchorEl);
   const [isHovered, setIsHovered] = useState(false);
@@ -92,7 +91,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           // console.log(response.data.data.map((item: MyObject) => item.name));
           // console.log(response.data.data.map((item: MyObject) => item.id));
           let faceBookIDs = response.data.data.map((item: MyObject) => item.id);
-          setFriends(response.data.data.map((item: MyObject) => item.name));
           let friends: Guest[] = await listGuests({ faceBookIDs });
           let connections = JSON.stringify(
             friends.map((friend) => {
@@ -341,12 +339,10 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
     if (file) {
       try {
         const result = await uploadImage(file);
-        console.log(`${result}`);
-
+        // console.log(`${result}`);
         setSelectedImage(`${dbStorage}${result}`);
       } catch (error) {
         // Handle the error
@@ -354,7 +350,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
       }
     }
   };
-
+  
   const uploadImage = async (file: File) => {
     try {
       const result = await uploadData({
@@ -365,7 +361,58 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         },
       }).result;
       // console.log("Succeeded uploading image: ", result);
-
+      if (user.images.length < 3) {
+        try {
+          const updatedData = {
+            userID: user?.id,
+            email: user?.email,
+            name: user?.name,
+            phone_number: user?.phone_number,
+            birthdate: user?.birthdate,
+            gender: user?.gender,
+            guest_avatar: result.key,
+            connections: user?.connections,
+            images: user?.images ? [...user.images, result.key] : [result.key],
+          };
+          console.log(updatedData);
+          let UpdatedGuest = await updateGuest(
+            updatedData.userID,
+            updatedData.email,
+            updatedData.name,
+            updatedData.phone_number,
+            updatedData.birthdate,
+            updatedData.gender,
+            updatedData.guest_avatar,
+            updatedData.connections,
+            updatedData.images
+          );
+          console.log(UpdatedGuest);
+          dispatch(setLogin({ user: UpdatedGuest }));
+        } catch (error) {
+          console.error("Error updating Images:", error);
+        }
+      } else {
+        console.log("you got 3 images remove one and replace it");
+      }
+      //removing images
+      // try {
+      //   await remove({ key: `${dbStorage}${user?.guest_avatar}` });
+      //   console.log("Done deleting old image :)");
+      // } catch (error) {
+      //   console.log("Error while deleting old image :", error);
+      // }
+      return result.key;
+    } catch (error) {
+      console.log("Error uploading image: ", error);
+      throw error;
+    }
+  };
+  const deleteUserPhoto = async (index: any , photo : any) => {
+    const updatedImages = [...user.images];
+    // console.log(index);
+    if (updatedImages.length !== 0) {
+      updatedImages.splice(index, 1);
+      // console.log(updatedImages);
       try {
         const updatedData = {
           userID: user?.id,
@@ -374,7 +421,9 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           phone_number: user?.phone_number,
           birthdate: user?.birthdate,
           gender: user?.gender,
-          guest_avatar: result.key,
+          guest_avatar: user?.guest_avatar,
+          connections: user?.connections,
+          images: updatedImages,
         };
         console.log(updatedData);
         let UpdatedGuest = await updateGuest(
@@ -384,26 +433,54 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           updatedData.phone_number,
           updatedData.birthdate,
           updatedData.gender,
-          updatedData.guest_avatar
+          updatedData.guest_avatar,
+          updatedData.connections,
+          updatedData.images
         );
         console.log(UpdatedGuest);
         dispatch(setLogin({ user: UpdatedGuest }));
       } catch (error) {
-        console.error("Error updating Connections:", error);
+        console.error("Error updating Images:", error);
       }
+      //removing images
       try {
-        await remove({ key: `${dbStorage}${user?.guest_avatar}` });
+        await remove({ key: `${dbStorage}${photo}` });
         console.log("Done deleting old image :)");
       } catch (error) {
         console.log("Error while deleting old image :", error);
       }
-      return result.key;
-    } catch (error) {
-      console.log("Error uploading image: ", error);
-      throw error;
     }
   };
 
+  const changeUserPhoto = async (photo: any) => {    
+    try {
+      const updatedData = {
+        userID: user?.id,
+        email: user?.email,
+        name: user?.name,
+        phone_number: user?.phone_number,
+        birthdate: user?.birthdate,
+        gender: user?.gender,
+        guest_avatar: photo,
+      };
+      console.log(updatedData);
+      let UpdatedGuest = await updateGuest(
+        updatedData.userID,
+        updatedData.email,
+        updatedData.name,
+        updatedData.phone_number,
+        updatedData.birthdate,
+        updatedData.gender,
+        updatedData.guest_avatar,
+      );
+      console.log(UpdatedGuest);
+      dispatch(setLogin({ user: UpdatedGuest }));
+    } catch (error) {
+      console.error("Error updating Images:", error);
+    }
+  };
+  //image part
+  //----------------------------------------------------------------
   let connections = JSON.parse(user?.connections || "[]");
 
   return (
@@ -457,7 +534,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            gap: { xs: 5, sm: 10 },
+            gap: { xs: 5, sm: 7 },
             marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
           }}
         >
@@ -563,6 +640,69 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 </label>
               </div>
 
+              <Box>
+                <AvatarGroup
+                  sx={{
+                    "& .MuiAvatar-root": {
+                      width: 35,
+                      height: 35,
+                      fontSize: 10,
+                      color: "black",
+                      border: "1px solid white",
+                      backgroundColor: 'darkgrey" , borderColor',
+                    },
+                  }}
+                >
+                  {user?.images.map((photo: any, index: number) => (
+                    <Tooltip
+                      placement="bottom"
+                      title={
+                        <>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              gap: 2,
+                              p: 1,
+                            }}
+                          >
+                            <Button
+                              onClick={() => changeUserPhoto(photo)}
+                              sx={{
+                                color: "white",
+                                backgroundColor: "#EB5757",
+                                border: 0,
+                                // px: 5,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Select Photo
+                            </Button>
+                            <Button
+                              onClick={() => deleteUserPhoto(index , photo)}
+                              sx={{
+                                color: "white",
+                                backgroundColor: "#EB5757",
+                                border: 0,
+                                // px: 5,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </Box>
+                        </>
+                      }
+                    >
+                      <Avatar
+                        key={index + photo}
+                        alt={photo || ""}
+                        src={dbStorage + photo}
+                      />
+                    </Tooltip>
+                  ))}
+                </AvatarGroup>
+              </Box>
+
               <Box
                 sx={{
                   display: "flex",
@@ -592,8 +732,8 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                         user.name.charAt(0).toUpperCase() + user.name.slice(1)}
                     </Typography>
                     {user?.isVerified && (
-                       <Tooltip title="Verified User" placement="bottom">
-                      <VerifiedIcon sx={{ color: "#49adf4" }} />
+                      <Tooltip title="Verified User" placement="bottom">
+                        <VerifiedIcon sx={{ color: "#49adf4" }} />
                       </Tooltip>
                     )}
                   </Box>
@@ -641,7 +781,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
               <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <AvatarGroup
-                    max={friends?.length}
+                    max={connections?.length}
                     sx={{
                       "& .MuiAvatar-root": {
                         width: 35,
