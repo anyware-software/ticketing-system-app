@@ -528,6 +528,8 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           flexGrow: 1,
           display: "flex",
           alignItems: "end",
+          // marginTop:'2vh'
+          marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
         }}
       >
         <Grid
@@ -542,8 +544,8 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            gap: { xs: 5, sm: 7 },
-            marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
+            gap: { xs: 1, sm: 0 },
+            // marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
           }}
         >
           <Box
@@ -567,7 +569,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: { xs: 0, sm: 4 },
+                gap: { xs: 0, sm: 2 },
                 flexGrow: 1,
                 marginRight: { xs: "3rem", sm: "0rem" },
               }}
@@ -872,10 +874,10 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
 
           <Box
             sx={{
-              width: { xs: "90%", sm: "70%" },
+              width: { xs: "90%", sm: "80%" },
               display: { xs: "none", sm: "flex" },
               flexDirection: "column",
-              gap: 3,
+              gap: 2,
               marginTop: { xs: "2vh", sm: "0vh" },
             }}
           >
@@ -1300,8 +1302,8 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            height: "90%",
-
+            // height: "90%",
+            // marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
             // gap: 10,
           }}
         >
@@ -1310,7 +1312,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
               display: "flex",
               justifyContent: "start",
               flexDirection: "column",
-              gap: 4,
+              gap: 2,
             }}
           >
             <Box>
@@ -1558,7 +1560,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 display: { xs: "flex", sm: "grid" },
                 flexDirection: { xs: "column", sm: "" },
                 gridTemplateColumns: "repeat(2, 1fr)",
-                gap: { xs: 1, sm: 2 },
+                gap: 1,
                 // justifyContent: {xs:'center',sm:""}
                 width: { xs: "90%", sm: "%" },
               }}

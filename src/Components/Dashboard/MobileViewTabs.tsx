@@ -318,7 +318,7 @@ export default function MobileViewTabs() {
         <CustomTabPanel value={value} index={0}>
           <Box
             sx={{
-              width: { xs: "90%", sm: "70%" },
+              width: { xs: "100%", sm: "80%" },
               display: { xs: "flex", sm: "none" },
               flexDirection: "column",
               marginTop: { xs: "0vh", sm: "0vh" },
@@ -339,7 +339,7 @@ export default function MobileViewTabs() {
               >
                 <Box
                   sx={{
-                    height: "10vh",
+                    height: "15vh",
                   }}
                 >
                   <Typography
@@ -437,7 +437,7 @@ export default function MobileViewTabs() {
                 </Box>
                 <Box
                   sx={{
-                    height: "10vh",
+                    height: "15vh",
                   }}
                 >
                   <Typography
@@ -540,7 +540,7 @@ export default function MobileViewTabs() {
               >
                 <Box
                   sx={{
-                    height: "10vh",
+                    height: "15vh",
                   }}
                 >
                   <Typography
@@ -639,7 +639,7 @@ export default function MobileViewTabs() {
                 </Box>
                 <Box
                   sx={{
-                    height: "10vh",
+                    height: "15vh",
                   }}
                 >
                   <Typography
