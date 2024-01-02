@@ -33,7 +33,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { remove } from "aws-amplify/storage";
 import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress from "@mui/material/LinearProgress";
 
 import { listGuests } from "../../services/getOperations";
 import { Guest } from "../../API";
@@ -99,6 +99,8 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 id: friend.id,
                 image: friend.guest_avatar,
                 name: friend.name,
+                group: friend.group,
+                phone_number: friend.phone_number,
               };
             })
           );
@@ -404,7 +406,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   };
 
   let connections = JSON.parse(user?.connections || "[]");
-  
+
   return (
     <Box
       sx={{
@@ -1031,27 +1033,27 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                   ) : (
                     <div>
                       {originalGenderText ? (
-                      <span
-                        style={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: 600,
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        {originalGenderText}
-                      </span>
-                      ):(
+                        <span
+                          style={{
+                            color: "white",
+                            fontSize: 18,
+                            fontWeight: 600,
+                            wordWrap: "break-word",
+                          }}
+                        >
+                          {originalGenderText}
+                        </span>
+                      ) : (
                         <Skeleton
-                            variant="rectangular"
-                            animation="pulse"
-                            width={150}
-                            height={40}
-                            sx={{
-                              backgroundColor: "gray",
-                              display: "inline-block",
-                            }}
-                          />
+                          variant="rectangular"
+                          animation="pulse"
+                          width={150}
+                          height={40}
+                          sx={{
+                            backgroundColor: "gray",
+                            display: "inline-block",
+                          }}
+                        />
                       )}
                       <IconButton
                         onClick={handleEditGenderClick}
@@ -1140,27 +1142,27 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                   ) : (
                     <div>
                       {originalMobileText ? (
-                      <span
-                        style={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: 600,
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        {originalMobileText}
-                      </span>
-                      ):(
+                        <span
+                          style={{
+                            color: "white",
+                            fontSize: 18,
+                            fontWeight: 600,
+                            wordWrap: "break-word",
+                          }}
+                        >
+                          {originalMobileText}
+                        </span>
+                      ) : (
                         <Skeleton
-                            variant="rectangular"
-                            animation="pulse"
-                            width={200}
-                            height={40}
-                            sx={{
-                              backgroundColor: "gray",
-                              display: "inline-block",
-                            }}
-                          />
+                          variant="rectangular"
+                          animation="pulse"
+                          width={200}
+                          height={40}
+                          sx={{
+                            backgroundColor: "gray",
+                            display: "inline-block",
+                          }}
+                        />
                       )}
                       <IconButton
                         onClick={handleEditMobileClick}
