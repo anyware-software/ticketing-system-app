@@ -36,6 +36,16 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Tooltip from "@mui/material/Tooltip";
 import { listGuests } from "../../services/getOperations";
 import { Guest } from "../../API";
+import {
+  Checkbox,
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import Skeleton from "@mui/material/Skeleton";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -73,16 +83,17 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const [loading, setLoading] = useState(false);
+  const [avatarLoading, SetAvatarLoading] = useState(false);
+
   const user = useSelector((state: any) => state.app.user);
 
-  useEffect(() => {
-    if (!user) {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     setLoading(true);
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -358,9 +369,11 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
       }
     }
   };
-
+  const [validationWarning, setValidationWarning] = useState<boolean>(false);
+  const [message, setMessage] = useState<any>("");
   const uploadImage = async (file: File) => {
     try {
+      SetAvatarLoading(true);
       const result = await uploadData({
         key: `${new Date().getTime()}-${file.name.replace(/\s/g, "-")}`,
         data: file,
@@ -369,7 +382,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         },
       }).result;
       // console.log("Succeeded uploading image: ", result);
-      if (user.images.length < 3) {
+      if (user.images.length < 4) {
         try {
           const updatedData = {
             userID: user?.id,
@@ -396,11 +409,14 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           );
           console.log(UpdatedGuest);
           dispatch(setLogin({ user: UpdatedGuest }));
+          SetAvatarLoading(false);
         } catch (error) {
           console.error("Error updating Images:", error);
         }
       } else {
         console.log("you got 3 images remove one and replace it");
+        setValidationWarning(true);
+        setMessage("You need to replace one of your images to upload new one");
       }
       //removing images
       // try {
@@ -521,6 +537,40 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         position: "relative",
       }}
     >
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={validationWarning}
+        autoHideDuration={5000}
+        onClose={() => {
+          setValidationWarning(false);
+        }}
+      >
+        <Alert
+          onClose={() => {
+            setValidationWarning(false);
+          }}
+          severity="warning"
+          sx={{
+            // position: "fixed",
+            top: "16px",
+            right: "56px",
+          }}
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={() => {
+                setValidationWarning(false);
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        >
+          {message}
+        </Alert>
+      </Snackbar>
       <Grid
         container
         spacing={2}
@@ -575,43 +625,36 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 marginRight: { xs: "3rem", sm: "0rem" },
               }}
             >
-              <div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="imageInput"
-                  style={{ display: "none" }}
-                  onChange={handleImageChange}
+              {avatarLoading ? (
+                <Skeleton
+                  variant="circular"
+                  animation="pulse"
+                  width="10rem"
+                  height="10rem"
+                  sx={{
+                    backgroundColor: "gray",
+                    display: "inline-block",
+                  }}
                 />
-                <label
-                  htmlFor="imageInput"
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                  style={{ position: "relative" }}
-                >
-                  {selectedImage ? (
-                    <img
-                      // src={selectedImage}
-                      src={`${dbStorage}${user?.guest_avatar}`}
-                      style={{
-                        width: "10rem",
-                        height: "10rem",
-                        borderRadius: "50%",
-                        marginLeft: "1rem",
-                        cursor: "pointer",
-                      }}
-                      alt="unknownUser"
-                    />
-                  ) : (
-                    <div
-                      style={{ position: "relative", display: "inline-block" }}
-                    >
+              ) : (
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="imageInput"
+                    style={{ display: "none" }}
+                    onChange={handleImageChange}
+                  />
+                  <label
+                    htmlFor="imageInput"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    style={{ position: "relative" }}
+                  >
+                    {selectedImage ? (
                       <img
-                        src={
-                          user?.guest_avatar
-                            ? `${dbStorage}${user?.guest_avatar}`
-                            : "../../../Images/unknownUser.png"
-                        }
+                        // src={selectedImage}
+                        src={`${dbStorage}${user?.guest_avatar}`}
                         style={{
                           width: "10rem",
                           height: "10rem",
@@ -621,35 +664,58 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                         }}
                         alt="unknownUser"
                       />
-                      {isHovered && (
-                        <div
+                    ) : (
+                      <div
+                        style={{
+                          position: "relative",
+                          display: "inline-block",
+                        }}
+                      >
+                        <img
+                          src={
+                            user?.guest_avatar
+                              ? `${dbStorage}${user?.guest_avatar}`
+                              : "../../../Images/unknownUser.png"
+                          }
                           style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
                             width: "10rem",
                             height: "10rem",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            backgroundColor: "rgba(0, 0, 0, 0.5)",
                             borderRadius: "50%",
-                            color: "white",
-                            fontSize: "1.5rem",
-                            opacity: 0.9,
-                            transition: "opacity 0.3s",
-                            zIndex: 1,
                             marginLeft: "1rem",
                             cursor: "pointer",
                           }}
-                        >
-                          Upload Photo
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </label>
-              </div>
+                          alt="unknownUser"
+                        />
+                        {isHovered && (
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                              width: "10rem",
+                              height: "10rem",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              backgroundColor: "rgba(0, 0, 0, 0.5)",
+                              borderRadius: "50%",
+                              color: "white",
+                              fontSize: "1.5rem",
+                              opacity: 0.9,
+                              transition: "opacity 0.3s",
+                              zIndex: 1,
+                              marginLeft: "1rem",
+                              cursor: "pointer",
+                            }}
+                          >
+                            Upload Photo
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </label>
+                </div>
+              )}
 
               <Box>
                 <AvatarGroup
@@ -664,53 +730,78 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     },
                   }}
                 >
-                  {user?.images.map((photo: any, index: number) => (
-                    <Tooltip
-                      placement="bottom"
-                      title={
-                        <>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              gap: 2,
-                              p: 1,
-                            }}
-                          >
-                            <Button
-                              onClick={() => changeUserPhoto(photo)}
-                              sx={{
-                                color: "white",
-                                backgroundColor: "#EB5757",
-                                border: 0,
-                                // px: 5,
-                                fontWeight: "bold",
-                              }}
-                            >
-                              Select Photo
-                            </Button>
-                            <Button
-                              onClick={() => deleteUserPhoto(index, photo)}
-                              sx={{
-                                color: "white",
-                                backgroundColor: "#EB5757",
-                                border: 0,
-                                // px: 5,
-                                fontWeight: "bold",
-                              }}
-                            >
-                              Delete
-                            </Button>
-                          </Box>
-                        </>
-                      }
-                    >
-                      <Avatar
-                        key={index + photo}
-                        alt={photo || ""}
-                        src={dbStorage + photo}
-                      />
-                    </Tooltip>
-                  ))}
+                  {[...Array(Math.max(4, user?.images.length || 0))].map(
+                    (_, index) => {
+                      const photo = user?.images[index] || "";
+                      return (
+                        <Tooltip
+                          key={index}
+                          placement="bottom"
+                          title={
+                            <>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  gap: 2,
+                                  p: 1,
+                                }}
+                              >
+                                {photo !== "" && (
+                                  <Button
+                                    onClick={() => changeUserPhoto(photo)}
+                                    sx={{
+                                      color: "white",
+                                      backgroundColor: "#EB5757",
+                                      border: 0,
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    Select Photo
+                                  </Button>
+                                )}
+                                {photo !== "" && (
+                                  <Button
+                                    onClick={() =>
+                                      deleteUserPhoto(index, photo)
+                                    }
+                                    sx={{
+                                      color: "white",
+                                      backgroundColor: "#EB5757",
+                                      border: 0,
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    Delete
+                                  </Button>
+                                )}
+                                {photo === "" && (
+                                  <Button
+                                    onClick={() => {
+                                      const inputElement =
+                                        document.getElementById(
+                                          "imageInput"
+                                        ) as HTMLInputElement;
+                                      inputElement?.click();
+                                    }}
+                                    sx={{
+                                      color: "white",
+                                      backgroundColor: "#EB5757",
+                                      border: 0,
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    Upload Photo
+                                  </Button>
+                                )}
+                              </Box>
+                            </>
+                          }
+                        >
+                          <Avatar alt={photo || ""} src={dbStorage + photo} />
+                        </Tooltip>
+                      );
+                    }
+                  )}
                 </AvatarGroup>
               </Box>
 
@@ -1301,7 +1392,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             position: "relative",
             display: { xs: "none", sm: "flex" },
             justifyContent: "center",
-            alignItems: "center",
+            alignItems: { sm: "center", lg: "start" },
             flexDirection: "column",
             // height: "90%",
             // marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
