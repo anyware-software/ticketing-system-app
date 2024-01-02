@@ -229,8 +229,6 @@ export default function Dashboard() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            px: [1],
-            py: [2],
             backgroundColor: "#000000",
           }}
         >
@@ -253,6 +251,7 @@ export default function Dashboard() {
                 borderRadius: "50%",
                 marginLeft: "1rem",
                 display: open ? "block" : "none",
+                marginTop: "2vh",
               }}
               alt="unknownUser"
             />

@@ -518,6 +518,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         zIndex: 0,
         display: "flex",
         flexDirection: "column",
+        position: "relative",
       }}
     >
       <Grid
