@@ -382,7 +382,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         },
       }).result;
       // console.log("Succeeded uploading image: ", result);
-      if (user.images.length < 4) {
+      if (!user?.images || user.images.length < 4) {
         try {
           const updatedData = {
             userID: user?.id,
@@ -730,9 +730,9 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     },
                   }}
                 >
-                  {[...Array(Math.max(4, user?.images.length || 0))].map(
+                  {[...Array(Math.max(4, user?.images?.length || 0))].map(
                     (_, index) => {
-                      const photo = user?.images[index] || "";
+                      const photo = user?.images?.[index] || "";
                       return (
                         <Tooltip
                           key={index}
