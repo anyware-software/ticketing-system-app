@@ -629,7 +629,7 @@ export default function MobileViewTabs() {
                   {/* <Typography
                   sx={{
                     color: "white",
-                    fontSize: 18,
+                    fontSize: 18,F
                     fontWeight: "600",
                     wordWrap: "break-word",
                   }}

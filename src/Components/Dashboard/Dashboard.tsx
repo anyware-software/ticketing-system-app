@@ -20,7 +20,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 // import { mainListItems } from "./ListItems";
 import GuestProfile from "./GuestProfile";
 import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
-import { Button, Checkbox, FormControl, TextField } from "@mui/material";
+import { Button, Checkbox, FormControl, TextField , useMediaQuery} from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,7 +62,7 @@ const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   "& .MuiDrawer-paper": {
-    position: "relative",
+    position: "absolute",
     whiteSpace: "nowrap",
     backgroundColor: "#000000",
     color: "white",
@@ -80,7 +80,7 @@ const Drawer = styled(MuiDrawer, {
       }),
       width: 0,
       [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9),
+        width: theme.spacing(8),
       },
     }),
   },
@@ -271,7 +271,7 @@ export default function Dashboard() {
           </Box>
           <IconButton
             onClick={toggleDrawer}
-            sx={{ display: { xs: "none", sm: "block" } }}
+            sx={{ display: { xs: "block", sm: "block" } }}
           >
             <ChevronLeftIcon sx={{ color: "white" }} />
           </IconButton>

@@ -417,7 +417,7 @@ export default function Login() {
                   <Box
                     sx={{
                       display: "flex",
-                      alignItems: "end",
+                      alignItems: "center",
                       gap: 1,
                     }}
                   >
@@ -452,7 +452,7 @@ export default function Login() {
                   <Box
                     sx={{
                       display: "flex",
-                      alignItems: "end",
+                      alignItems: "center",
                       gap: 1,
                     }}
                   >

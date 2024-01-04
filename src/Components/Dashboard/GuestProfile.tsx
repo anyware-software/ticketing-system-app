@@ -622,7 +622,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 alignItems: "center",
                 gap: { xs: 0, sm: 2 },
                 flexGrow: 1,
-                marginRight: { xs: "3rem", sm: "0rem" },
+                marginRight: { xs: "4rem", sm: "0rem" },
               }}
             >
               {avatarLoading ? (
