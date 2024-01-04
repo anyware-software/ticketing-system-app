@@ -20,7 +20,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 // import { mainListItems } from "./ListItems";
 import GuestProfile from "./GuestProfile";
 import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
-import { Button, Checkbox, FormControl, TextField } from "@mui/material";
+import { Button, Checkbox, FormControl, TextField , useMediaQuery} from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +31,8 @@ import { MainListItems } from "./ListItems";
 import NotFound from "../NotFound/NotFound";
 import Login from "../Login/Login";
 import { dbStorage } from "../../constants/Enums";
+import { useEffect, useState } from "react";
+import ContentLoader from "../ContentLoader/ContentLoder";
 
 const drawerWidth: number = 240;
 
@@ -60,7 +62,7 @@ const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   "& .MuiDrawer-paper": {
-    position: "relative",
+    position: "absolute",
     whiteSpace: "nowrap",
     backgroundColor: "#000000",
     color: "white",
@@ -78,7 +80,7 @@ const Drawer = styled(MuiDrawer, {
       }),
       width: 0,
       [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9),
+        width: theme.spacing(8),
       },
     }),
   },
@@ -89,6 +91,8 @@ export default function Dashboard() {
   const user = useSelector((state: any) => state.app.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const [selectedItem, setSelectedItem] = React.useState<string | null>(
     "My Profile"
   );
@@ -116,6 +120,16 @@ export default function Dashboard() {
   if (selectedItem === "Sign Out") {
     handleLogOut();
   }
+
+  useEffect(() => {
+    if (!user) {
+      setLoading(true);
+    }else{
+      setLoading(false);
+    }
+  }, [user]);
+
+  if(loading) return <ContentLoader />
 
   return (
     <Box sx={{ display: "flex", overflow: "hidden" }}>
@@ -215,8 +229,6 @@ export default function Dashboard() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            px: [1],
-            py: [2],
             backgroundColor: "#000000",
           }}
         >
@@ -239,6 +251,7 @@ export default function Dashboard() {
                 borderRadius: "50%",
                 marginLeft: "1rem",
                 display: open ? "block" : "none",
+                marginTop: "2vh",
               }}
               alt="unknownUser"
             />
@@ -256,7 +269,10 @@ export default function Dashboard() {
                 user.name.charAt(0).toUpperCase() + user.name.slice(1)}
             </Typography>
           </Box>
-          <IconButton onClick={toggleDrawer} sx={{display:{xs:'none',sm:'block'}}}>
+          <IconButton
+            onClick={toggleDrawer}
+            sx={{ display: { xs: "block", sm: "block" } }}
+          >
             <ChevronLeftIcon sx={{ color: "white" }} />
           </IconButton>
         </Toolbar>
@@ -269,7 +285,7 @@ export default function Dashboard() {
       {/* Main Component */}
       {/* <GuestProfile /> */}
       {selectedItem === "My Profile" ? (
-        <GuestProfile toggleDrawer={toggleDrawer} openSideNav={open}/>
+        <GuestProfile toggleDrawer={toggleDrawer} openSideNav={open} />
       ) : (
         // ) : selectedItem === "Notifications" ? (
         //   <NotificationsComponent />

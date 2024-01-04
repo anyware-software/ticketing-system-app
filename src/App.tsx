@@ -22,6 +22,7 @@ import { setLogin } from "./state";
 import createGuest from "./services/createGuest";
 import getGuest from "./services/getGuest";
 import Dashboard from "./Components/Dashboard/Dashboard";
+import ContentLoader from "./Components/ContentLoader/ContentLoder";
 //-------------------------------------------------------------
 
 const provider = {
@@ -187,6 +188,7 @@ function App() {
             dispatch(setLogin({ user: currentUser }));
           }
         }
+
       } catch (e: any) {
         console.log(e);
         console.log("not logged in");

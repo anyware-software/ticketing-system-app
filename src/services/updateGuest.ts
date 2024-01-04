@@ -10,6 +10,7 @@ async function updateGuest(
     gender?: any,
     guest_avatar?: any,
     connections?:any,
+    images?:any[],
     deleted?:any,
     createdAt?:any,
 ) {
@@ -25,6 +26,7 @@ async function updateGuest(
         gender: gender,
         guest_avatar: guest_avatar,
         connections:connections,
+        images:images,
         deleted:deleted,
         createdAt:createdAt,
       }

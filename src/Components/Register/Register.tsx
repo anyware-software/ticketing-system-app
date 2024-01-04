@@ -135,18 +135,14 @@ export default function Register() {
               justifyContent: {xs:"center",sm:"start"},
               alignItems: "center",
               flexDirection:'column',
+              marginTop: { xs: "0vh", sm: "10vh"},
             }}
           >
-            <Box sx={{
-              display: { xs: "none", sm: "flex"},
-              height:'10vh'
-            }}>
-            </Box>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: 5,
+                gap: 2,
                 width: { xs: "90%", sm: "auto" },
               }}
             >
@@ -464,7 +460,7 @@ export default function Register() {
                 flexDirection: "column",
                 marginLeft: { xs: "0rem", sm: "10rem" },
                 justifyContent: "center",
-                marginTop: { xs: "0vh", sm: "14.25vh"},
+                marginTop: { xs: "0vh", sm: "8.5vh"},
                 flexGrow: 1,
               }}
             >

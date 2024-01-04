@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import {
   Box,
@@ -23,6 +23,7 @@ import { signInWithRedirect } from "aws-amplify/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "../../state";
 import CloseIcon from "@mui/icons-material/Close";
+import ContentLoader from "../ContentLoader/ContentLoder";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -46,20 +47,31 @@ export default function Login() {
 
   const handleFacebookLogin = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       await signInWithRedirect({ provider: "Facebook" });
-      localStorage.setItem("user","true")
+      localStorage.setItem("user", "true");
       dispatch(setLogin({ user: "" }));
-      setLoading(false)
+      setLoading(false);
       // navigate('/dashboard')
     } catch (error) {
       console.error("Error logging in with Facbook:", error);
-      setValidationWarning(true)
-      setMessage("You are Logged in with Facbook already !")
+      setValidationWarning(true);
+      setMessage("You are Logged in with Facbook already !");
       // navigate('/dashboard')
-      setLoading(false)
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser === "true") {
+      navigate("/dashboard");
+      setMessage("You are Logged in with Facbook already !");
+    }
+  }, []);
+
+  if(loading) return <ContentLoader />
+
   return (
     <>
       <Box
@@ -99,7 +111,7 @@ export default function Login() {
             boxShadow: "none",
             alignItems: { xs: "center", sm: "start" },
             justifyContent: { xs: "end", sm: "start" },
-            height: {xs:'15vh',sm:'10vh'},
+            height: { xs: "15vh", sm: "10vh" },
           }}
         >
           <Toolbar disableGutters>
@@ -107,7 +119,7 @@ export default function Login() {
               sx={{
                 mx: 5,
                 mt: 3,
-                display: "flex"
+                display: "flex",
               }}
             >
               <img
@@ -120,33 +132,39 @@ export default function Login() {
         </AppBar>
 
         <Snackbar
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            open={validationWarning}
-            autoHideDuration={3000}
-            onClose={()=>{ setValidationWarning(false)}}
-          >
-            <Alert
-            onClose={()=>{ setValidationWarning(false)}}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={validationWarning}
+          autoHideDuration={3000}
+          onClose={() => {
+            setValidationWarning(false);
+          }}
+        >
+          <Alert
+            onClose={() => {
+              setValidationWarning(false);
+            }}
             severity="warning"
-              sx={{
-                position: "fixed",
-                top: "16px",
-                right: "16px",
-              }}
-              action={
-                <IconButton
-                  size="small"
-                  aria-label="close"
-                  color="inherit"
-                  onClick={()=>{setValidationWarning(false)}}
-                >
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              }
-            >
-              {message}
-            </Alert>
-          </Snackbar>
+            sx={{
+              position: "fixed",
+              top: "16px",
+              right: "16px",
+            }}
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                  setValidationWarning(false);
+                }}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            }
+          >
+            {message}
+          </Alert>
+        </Snackbar>
 
         <Grid container spacing={2} sx={{ overflow: "hidden", flexGrow: 1 }}>
           <Grid
@@ -158,21 +176,17 @@ export default function Login() {
               zIndex: 1,
               position: "relative",
               display: "flex",
-              justifyContent: {xs:"center",sm:"start"},
+              justifyContent: { xs: "center", sm: "start" },
               alignItems: "center",
-              flexDirection:'column',
+              flexDirection: "column",
+              marginTop: { xs: "0vh", sm: "10vh"},
             }}
           >
-            <Box sx={{
-              display: { xs: "none", sm: "flex"},
-              height:'10vh'
-            }}>
-            </Box>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: 5,
+                gap: 2,
                 width: { xs: "90%", sm: "auto" },
               }}
             >
@@ -391,7 +405,7 @@ export default function Login() {
                   display: "flex",
                   justifyContent: "center",
                   gap: 2,
-                  flexDirection: { xs: "column", sm: "column", lg: "row"},
+                  flexDirection: { xs: "column", sm: "column", lg: "row" },
                 }}
               >
                 <Box
@@ -403,7 +417,7 @@ export default function Login() {
                   <Box
                     sx={{
                       display: "flex",
-                      alignItems: "end",
+                      alignItems: "center",
                       gap: 1,
                     }}
                   >
@@ -438,7 +452,7 @@ export default function Login() {
                   <Box
                     sx={{
                       display: "flex",
-                      alignItems: "end",
+                      alignItems: "center",
                       gap: 1,
                     }}
                   >
@@ -458,7 +472,7 @@ export default function Login() {
                     <Typography
                       sx={{
                         color: "white",
-                        cursor: 'pointer',
+                        cursor: "pointer",
                       }}
                       onClick={handleFacebookLogin}
                     >
@@ -523,14 +537,14 @@ export default function Login() {
             }}
           >
             <Box
-            sx={{
-              py: 1,
-            }}
-          >
-            <img src="../../../Images/anyware.png" alt="" />
-          </Box>
+              sx={{
+                py: 1,
+              }}
+            >
+              <img src="../../../Images/anyware.png" alt="" />
+            </Box>
           </Grid>
-          
+
           <Grid
             item
             xs={12}
