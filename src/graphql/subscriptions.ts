@@ -580,7 +580,7 @@ export const onCreateGuest = /* GraphQL */ `subscription OnCreateGuest($filter: 
     guest_avatar
     avg_spend
     avg_ticket_type
-    avg_ticket_number
+    numberOfTickets
     connections
     last_attended_event
     gender
@@ -589,6 +589,10 @@ export const onCreateGuest = /* GraphQL */ `subscription OnCreateGuest($filter: 
     appPassword
     birthdate
     isVerified
+    images
+    address
+    totalEvents
+    flags
     deleted
     createdAt
     createdByID
@@ -612,7 +616,7 @@ export const onUpdateGuest = /* GraphQL */ `subscription OnUpdateGuest($filter: 
     guest_avatar
     avg_spend
     avg_ticket_type
-    avg_ticket_number
+    numberOfTickets
     connections
     last_attended_event
     gender
@@ -621,6 +625,10 @@ export const onUpdateGuest = /* GraphQL */ `subscription OnUpdateGuest($filter: 
     appPassword
     birthdate
     isVerified
+    images
+    address
+    totalEvents
+    flags
     deleted
     createdAt
     createdByID
@@ -644,7 +652,7 @@ export const onDeleteGuest = /* GraphQL */ `subscription OnDeleteGuest($filter: 
     guest_avatar
     avg_spend
     avg_ticket_type
-    avg_ticket_number
+    numberOfTickets
     connections
     last_attended_event
     gender
@@ -653,6 +661,10 @@ export const onDeleteGuest = /* GraphQL */ `subscription OnDeleteGuest($filter: 
     appPassword
     birthdate
     isVerified
+    images
+    address
+    totalEvents
+    flags
     deleted
     createdAt
     createdByID
@@ -672,6 +684,7 @@ export const onCreateGuestGroup = /* GraphQL */ `subscription OnCreateGuestGroup
     id
     name
     description
+    color
     guests
     deleted
     createdAt
@@ -692,6 +705,7 @@ export const onUpdateGuestGroup = /* GraphQL */ `subscription OnUpdateGuestGroup
     id
     name
     description
+    color
     guests
     deleted
     createdAt
@@ -712,6 +726,7 @@ export const onDeleteGuestGroup = /* GraphQL */ `subscription OnDeleteGuestGroup
     id
     name
     description
+    color
     guests
     deleted
     createdAt
@@ -724,4 +739,178 @@ export const onDeleteGuestGroup = /* GraphQL */ `subscription OnDeleteGuestGroup
 ` as GeneratedSubscription<
   APITypes.OnDeleteGuestGroupSubscriptionVariables,
   APITypes.OnDeleteGuestGroupSubscription
+>;
+export const onCreateTimeline = /* GraphQL */ `subscription OnCreateTimeline($filter: ModelSubscriptionTimelineFilterInput) {
+  onCreateTimeline(filter: $filter) {
+    id
+    actionName
+    oldStatus
+    newStatus
+    bookingId
+    customerId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateTimelineSubscriptionVariables,
+  APITypes.OnCreateTimelineSubscription
+>;
+export const onUpdateTimeline = /* GraphQL */ `subscription OnUpdateTimeline($filter: ModelSubscriptionTimelineFilterInput) {
+  onUpdateTimeline(filter: $filter) {
+    id
+    actionName
+    oldStatus
+    newStatus
+    bookingId
+    customerId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateTimelineSubscriptionVariables,
+  APITypes.OnUpdateTimelineSubscription
+>;
+export const onDeleteTimeline = /* GraphQL */ `subscription OnDeleteTimeline($filter: ModelSubscriptionTimelineFilterInput) {
+  onDeleteTimeline(filter: $filter) {
+    id
+    actionName
+    oldStatus
+    newStatus
+    bookingId
+    customerId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteTimelineSubscriptionVariables,
+  APITypes.OnDeleteTimelineSubscription
+>;
+export const onCreateFlag = /* GraphQL */ `subscription OnCreateFlag($filter: ModelSubscriptionFlagFilterInput) {
+  onCreateFlag(filter: $filter) {
+    id
+    accountID
+    name
+    icon
+    color
+    customers
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateFlagSubscriptionVariables,
+  APITypes.OnCreateFlagSubscription
+>;
+export const onUpdateFlag = /* GraphQL */ `subscription OnUpdateFlag($filter: ModelSubscriptionFlagFilterInput) {
+  onUpdateFlag(filter: $filter) {
+    id
+    accountID
+    name
+    icon
+    color
+    customers
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateFlagSubscriptionVariables,
+  APITypes.OnUpdateFlagSubscription
+>;
+export const onDeleteFlag = /* GraphQL */ `subscription OnDeleteFlag($filter: ModelSubscriptionFlagFilterInput) {
+  onDeleteFlag(filter: $filter) {
+    id
+    accountID
+    name
+    icon
+    color
+    customers
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteFlagSubscriptionVariables,
+  APITypes.OnDeleteFlagSubscription
+>;
+export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
+  onCreateComment(filter: $filter) {
+    id
+    message
+    customerId
+    bookingId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateCommentSubscriptionVariables,
+  APITypes.OnCreateCommentSubscription
+>;
+export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filter: ModelSubscriptionCommentFilterInput) {
+  onUpdateComment(filter: $filter) {
+    id
+    message
+    customerId
+    bookingId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateCommentSubscriptionVariables,
+  APITypes.OnUpdateCommentSubscription
+>;
+export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filter: ModelSubscriptionCommentFilterInput) {
+  onDeleteComment(filter: $filter) {
+    id
+    message
+    customerId
+    bookingId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteCommentSubscriptionVariables,
+  APITypes.OnDeleteCommentSubscription
 >;
