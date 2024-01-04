@@ -588,7 +588,7 @@ export type CreateGuestInput = {
   guest_avatar?: string | null,
   avg_spend?: number | null,
   avg_ticket_type?: string | null,
-  avg_ticket_number?: number | null,
+  numberOfTickets?: number | null,
   connections?: string | null,
   last_attended_event?: string | null,
   gender?: string | null,
@@ -598,6 +598,9 @@ export type CreateGuestInput = {
   birthdate?: string | null,
   isVerified?: boolean | null,
   images?: Array< string | null > | null,
+  address?: string | null,
+  totalEvents?: number | null,
+  flags?: Array< string | null > | null,
   deleted?: string | null,
   createdAt?: string | null,
   createdByID: string,
@@ -613,7 +616,7 @@ export type ModelGuestConditionInput = {
   guest_avatar?: ModelStringInput | null,
   avg_spend?: ModelIntInput | null,
   avg_ticket_type?: ModelStringInput | null,
-  avg_ticket_number?: ModelIntInput | null,
+  numberOfTickets?: ModelIntInput | null,
   connections?: ModelStringInput | null,
   last_attended_event?: ModelStringInput | null,
   gender?: ModelStringInput | null,
@@ -623,6 +626,9 @@ export type ModelGuestConditionInput = {
   birthdate?: ModelStringInput | null,
   isVerified?: ModelBooleanInput | null,
   images?: ModelStringInput | null,
+  address?: ModelStringInput | null,
+  totalEvents?: ModelIntInput | null,
+  flags?: ModelIDInput | null,
   deleted?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   createdByID?: ModelStringInput | null,
@@ -643,7 +649,7 @@ export type Guest = {
   guest_avatar?: string | null,
   avg_spend?: number | null,
   avg_ticket_type?: string | null,
-  avg_ticket_number?: number | null,
+  numberOfTickets?: number | null,
   connections?: string | null,
   last_attended_event?: string | null,
   gender?: string | null,
@@ -653,6 +659,9 @@ export type Guest = {
   birthdate?: string | null,
   isVerified?: boolean | null,
   images?: Array< string | null > | null,
+  address?: string | null,
+  totalEvents?: number | null,
+  flags?: Array< string | null > | null,
   deleted?: string | null,
   createdAt: string,
   createdByID: string,
@@ -670,7 +679,7 @@ export type UpdateGuestInput = {
   guest_avatar?: string | null,
   avg_spend?: number | null,
   avg_ticket_type?: string | null,
-  avg_ticket_number?: number | null,
+  numberOfTickets?: number | null,
   connections?: string | null,
   last_attended_event?: string | null,
   gender?: string | null,
@@ -680,6 +689,9 @@ export type UpdateGuestInput = {
   birthdate?: string | null,
   isVerified?: boolean | null,
   images?: Array< string | null > | null,
+  address?: string | null,
+  totalEvents?: number | null,
+  flags?: Array< string | null > | null,
   deleted?: string | null,
   createdAt?: string | null,
   createdByID?: string | null,
@@ -694,6 +706,7 @@ export type CreateGuestGroupInput = {
   id?: string | null,
   name?: string | null,
   description?: string | null,
+  color?: string | null,
   guests?: Array< string | null > | null,
   deleted?: string | null,
   createdAt?: string | null,
@@ -704,6 +717,7 @@ export type CreateGuestGroupInput = {
 export type ModelGuestGroupConditionInput = {
   name?: ModelStringInput | null,
   description?: ModelStringInput | null,
+  color?: ModelStringInput | null,
   guests?: ModelIDInput | null,
   deleted?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
@@ -719,6 +733,7 @@ export type GuestGroup = {
   id: string,
   name?: string | null,
   description?: string | null,
+  color?: string | null,
   guests?: Array< string | null > | null,
   deleted?: string | null,
   createdAt: string,
@@ -731,6 +746,7 @@ export type UpdateGuestGroupInput = {
   id: string,
   name?: string | null,
   description?: string | null,
+  color?: string | null,
   guests?: Array< string | null > | null,
   deleted?: string | null,
   createdAt?: string | null,
@@ -799,6 +815,118 @@ export type UpdateTimelineInput = {
 };
 
 export type DeleteTimelineInput = {
+  id: string,
+};
+
+export type CreateFlagInput = {
+  id?: string | null,
+  accountID: string,
+  name: string,
+  icon: string,
+  color?: string | null,
+  customers?: Array< string | null > | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID: string,
+  createdByName: string,
+};
+
+export type ModelFlagConditionInput = {
+  accountID?: ModelStringInput | null,
+  name?: ModelStringInput | null,
+  icon?: ModelStringInput | null,
+  color?: ModelStringInput | null,
+  customers?: ModelStringInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelFlagConditionInput | null > | null,
+  or?: Array< ModelFlagConditionInput | null > | null,
+  not?: ModelFlagConditionInput | null,
+};
+
+export type Flag = {
+  __typename: "Flag",
+  id: string,
+  accountID: string,
+  name: string,
+  icon: string,
+  color?: string | null,
+  customers?: Array< string | null > | null,
+  deleted?: string | null,
+  createdAt: string,
+  createdByID: string,
+  createdByName: string,
+  updatedAt: string,
+};
+
+export type UpdateFlagInput = {
+  id: string,
+  accountID?: string | null,
+  name?: string | null,
+  icon?: string | null,
+  color?: string | null,
+  customers?: Array< string | null > | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID?: string | null,
+  createdByName?: string | null,
+};
+
+export type DeleteFlagInput = {
+  id: string,
+};
+
+export type CreateCommentInput = {
+  id?: string | null,
+  message: string,
+  customerId?: string | null,
+  bookingId?: string | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID: string,
+  createdByName: string,
+};
+
+export type ModelCommentConditionInput = {
+  message?: ModelStringInput | null,
+  customerId?: ModelStringInput | null,
+  bookingId?: ModelStringInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelCommentConditionInput | null > | null,
+  or?: Array< ModelCommentConditionInput | null > | null,
+  not?: ModelCommentConditionInput | null,
+};
+
+export type Comment = {
+  __typename: "Comment",
+  id: string,
+  message: string,
+  customerId?: string | null,
+  bookingId?: string | null,
+  deleted?: string | null,
+  createdAt: string,
+  createdByID: string,
+  createdByName: string,
+  updatedAt: string,
+};
+
+export type UpdateCommentInput = {
+  id: string,
+  message?: string | null,
+  customerId?: string | null,
+  bookingId?: string | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID?: string | null,
+  createdByName?: string | null,
+};
+
+export type DeleteCommentInput = {
   id: string,
 };
 
@@ -993,7 +1121,7 @@ export type ModelGuestFilterInput = {
   guest_avatar?: ModelStringInput | null,
   avg_spend?: ModelIntInput | null,
   avg_ticket_type?: ModelStringInput | null,
-  avg_ticket_number?: ModelIntInput | null,
+  numberOfTickets?: ModelIntInput | null,
   connections?: ModelStringInput | null,
   last_attended_event?: ModelStringInput | null,
   gender?: ModelStringInput | null,
@@ -1003,6 +1131,9 @@ export type ModelGuestFilterInput = {
   birthdate?: ModelStringInput | null,
   isVerified?: ModelBooleanInput | null,
   images?: ModelStringInput | null,
+  address?: ModelStringInput | null,
+  totalEvents?: ModelIntInput | null,
+  flags?: ModelIDInput | null,
   deleted?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   createdByID?: ModelStringInput | null,
@@ -1038,6 +1169,7 @@ export type ModelGuestGroupFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
   description?: ModelStringInput | null,
+  color?: ModelStringInput | null,
   guests?: ModelIDInput | null,
   deleted?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
@@ -1073,6 +1205,48 @@ export type ModelTimelineFilterInput = {
 export type ModelTimelineConnection = {
   __typename: "ModelTimelineConnection",
   items:  Array<Timeline | null >,
+  nextToken?: string | null,
+};
+
+export type ModelFlagFilterInput = {
+  id?: ModelIDInput | null,
+  accountID?: ModelStringInput | null,
+  name?: ModelStringInput | null,
+  icon?: ModelStringInput | null,
+  color?: ModelStringInput | null,
+  customers?: ModelStringInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelFlagFilterInput | null > | null,
+  or?: Array< ModelFlagFilterInput | null > | null,
+  not?: ModelFlagFilterInput | null,
+};
+
+export type ModelFlagConnection = {
+  __typename: "ModelFlagConnection",
+  items:  Array<Flag | null >,
+  nextToken?: string | null,
+};
+
+export type ModelCommentFilterInput = {
+  id?: ModelIDInput | null,
+  message?: ModelStringInput | null,
+  customerId?: ModelStringInput | null,
+  bookingId?: ModelStringInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelCommentFilterInput | null > | null,
+  or?: Array< ModelCommentFilterInput | null > | null,
+  not?: ModelCommentFilterInput | null,
+};
+
+export type ModelCommentConnection = {
+  __typename: "ModelCommentConnection",
+  items:  Array<Comment | null >,
   nextToken?: string | null,
 };
 
@@ -1257,7 +1431,7 @@ export type ModelSubscriptionGuestFilterInput = {
   guest_avatar?: ModelSubscriptionStringInput | null,
   avg_spend?: ModelSubscriptionIntInput | null,
   avg_ticket_type?: ModelSubscriptionStringInput | null,
-  avg_ticket_number?: ModelSubscriptionIntInput | null,
+  numberOfTickets?: ModelSubscriptionIntInput | null,
   connections?: ModelSubscriptionStringInput | null,
   last_attended_event?: ModelSubscriptionStringInput | null,
   gender?: ModelSubscriptionStringInput | null,
@@ -1267,6 +1441,9 @@ export type ModelSubscriptionGuestFilterInput = {
   birthdate?: ModelSubscriptionStringInput | null,
   isVerified?: ModelSubscriptionBooleanInput | null,
   images?: ModelSubscriptionStringInput | null,
+  address?: ModelSubscriptionStringInput | null,
+  totalEvents?: ModelSubscriptionIntInput | null,
+  flags?: ModelSubscriptionIDInput | null,
   deleted?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   createdByID?: ModelSubscriptionStringInput | null,
@@ -1279,6 +1456,7 @@ export type ModelSubscriptionGuestGroupFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
   description?: ModelSubscriptionStringInput | null,
+  color?: ModelSubscriptionStringInput | null,
   guests?: ModelSubscriptionIDInput | null,
   deleted?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
@@ -1301,6 +1479,34 @@ export type ModelSubscriptionTimelineFilterInput = {
   createdByName?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionTimelineFilterInput | null > | null,
   or?: Array< ModelSubscriptionTimelineFilterInput | null > | null,
+};
+
+export type ModelSubscriptionFlagFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  accountID?: ModelSubscriptionStringInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  icon?: ModelSubscriptionStringInput | null,
+  color?: ModelSubscriptionStringInput | null,
+  customers?: ModelSubscriptionStringInput | null,
+  deleted?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  createdByID?: ModelSubscriptionStringInput | null,
+  createdByName?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionFlagFilterInput | null > | null,
+  or?: Array< ModelSubscriptionFlagFilterInput | null > | null,
+};
+
+export type ModelSubscriptionCommentFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  message?: ModelSubscriptionStringInput | null,
+  customerId?: ModelSubscriptionStringInput | null,
+  bookingId?: ModelSubscriptionStringInput | null,
+  deleted?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  createdByID?: ModelSubscriptionStringInput | null,
+  createdByName?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionCommentFilterInput | null > | null,
+  or?: Array< ModelSubscriptionCommentFilterInput | null > | null,
 };
 
 export type CreateAccountMutationVariables = {
@@ -1911,7 +2117,7 @@ export type CreateGuestMutation = {
     guest_avatar?: string | null,
     avg_spend?: number | null,
     avg_ticket_type?: string | null,
-    avg_ticket_number?: number | null,
+    numberOfTickets?: number | null,
     connections?: string | null,
     last_attended_event?: string | null,
     gender?: string | null,
@@ -1921,6 +2127,9 @@ export type CreateGuestMutation = {
     birthdate?: string | null,
     isVerified?: boolean | null,
     images?: Array< string | null > | null,
+    address?: string | null,
+    totalEvents?: number | null,
+    flags?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -1946,7 +2155,7 @@ export type UpdateGuestMutation = {
     guest_avatar?: string | null,
     avg_spend?: number | null,
     avg_ticket_type?: string | null,
-    avg_ticket_number?: number | null,
+    numberOfTickets?: number | null,
     connections?: string | null,
     last_attended_event?: string | null,
     gender?: string | null,
@@ -1956,6 +2165,9 @@ export type UpdateGuestMutation = {
     birthdate?: string | null,
     isVerified?: boolean | null,
     images?: Array< string | null > | null,
+    address?: string | null,
+    totalEvents?: number | null,
+    flags?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -1981,7 +2193,7 @@ export type DeleteGuestMutation = {
     guest_avatar?: string | null,
     avg_spend?: number | null,
     avg_ticket_type?: string | null,
-    avg_ticket_number?: number | null,
+    numberOfTickets?: number | null,
     connections?: string | null,
     last_attended_event?: string | null,
     gender?: string | null,
@@ -1991,6 +2203,9 @@ export type DeleteGuestMutation = {
     birthdate?: string | null,
     isVerified?: boolean | null,
     images?: Array< string | null > | null,
+    address?: string | null,
+    totalEvents?: number | null,
+    flags?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -2010,6 +2225,7 @@ export type CreateGuestGroupMutation = {
     id: string,
     name?: string | null,
     description?: string | null,
+    color?: string | null,
     guests?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
@@ -2030,6 +2246,7 @@ export type UpdateGuestGroupMutation = {
     id: string,
     name?: string | null,
     description?: string | null,
+    color?: string | null,
     guests?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
@@ -2050,6 +2267,7 @@ export type DeleteGuestGroupMutation = {
     id: string,
     name?: string | null,
     description?: string | null,
+    color?: string | null,
     guests?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
@@ -2117,6 +2335,132 @@ export type DeleteTimelineMutation = {
     newStatus: string,
     bookingId?: string | null,
     customerId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateFlagMutationVariables = {
+  input: CreateFlagInput,
+  condition?: ModelFlagConditionInput | null,
+};
+
+export type CreateFlagMutation = {
+  createFlag?:  {
+    __typename: "Flag",
+    id: string,
+    accountID: string,
+    name: string,
+    icon: string,
+    color?: string | null,
+    customers?: Array< string | null > | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateFlagMutationVariables = {
+  input: UpdateFlagInput,
+  condition?: ModelFlagConditionInput | null,
+};
+
+export type UpdateFlagMutation = {
+  updateFlag?:  {
+    __typename: "Flag",
+    id: string,
+    accountID: string,
+    name: string,
+    icon: string,
+    color?: string | null,
+    customers?: Array< string | null > | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteFlagMutationVariables = {
+  input: DeleteFlagInput,
+  condition?: ModelFlagConditionInput | null,
+};
+
+export type DeleteFlagMutation = {
+  deleteFlag?:  {
+    __typename: "Flag",
+    id: string,
+    accountID: string,
+    name: string,
+    icon: string,
+    color?: string | null,
+    customers?: Array< string | null > | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateCommentMutationVariables = {
+  input: CreateCommentInput,
+  condition?: ModelCommentConditionInput | null,
+};
+
+export type CreateCommentMutation = {
+  createComment?:  {
+    __typename: "Comment",
+    id: string,
+    message: string,
+    customerId?: string | null,
+    bookingId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateCommentMutationVariables = {
+  input: UpdateCommentInput,
+  condition?: ModelCommentConditionInput | null,
+};
+
+export type UpdateCommentMutation = {
+  updateComment?:  {
+    __typename: "Comment",
+    id: string,
+    message: string,
+    customerId?: string | null,
+    bookingId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteCommentMutationVariables = {
+  input: DeleteCommentInput,
+  condition?: ModelCommentConditionInput | null,
+};
+
+export type DeleteCommentMutation = {
+  deleteComment?:  {
+    __typename: "Comment",
+    id: string,
+    message: string,
+    customerId?: string | null,
+    bookingId?: string | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -2551,7 +2895,7 @@ export type GetGuestQuery = {
     guest_avatar?: string | null,
     avg_spend?: number | null,
     avg_ticket_type?: string | null,
-    avg_ticket_number?: number | null,
+    numberOfTickets?: number | null,
     connections?: string | null,
     last_attended_event?: string | null,
     gender?: string | null,
@@ -2561,6 +2905,9 @@ export type GetGuestQuery = {
     birthdate?: string | null,
     isVerified?: boolean | null,
     images?: Array< string | null > | null,
+    address?: string | null,
+    totalEvents?: number | null,
+    flags?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -2589,7 +2936,7 @@ export type ListGuestsQuery = {
       guest_avatar?: string | null,
       avg_spend?: number | null,
       avg_ticket_type?: string | null,
-      avg_ticket_number?: number | null,
+      numberOfTickets?: number | null,
       connections?: string | null,
       last_attended_event?: string | null,
       gender?: string | null,
@@ -2599,6 +2946,9 @@ export type ListGuestsQuery = {
       birthdate?: string | null,
       isVerified?: boolean | null,
       images?: Array< string | null > | null,
+      address?: string | null,
+      totalEvents?: number | null,
+      flags?: Array< string | null > | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
@@ -2632,7 +2982,7 @@ export type ByEmailQuery = {
       guest_avatar?: string | null,
       avg_spend?: number | null,
       avg_ticket_type?: string | null,
-      avg_ticket_number?: number | null,
+      numberOfTickets?: number | null,
       connections?: string | null,
       last_attended_event?: string | null,
       gender?: string | null,
@@ -2642,6 +2992,9 @@ export type ByEmailQuery = {
       birthdate?: string | null,
       isVerified?: boolean | null,
       images?: Array< string | null > | null,
+      address?: string | null,
+      totalEvents?: number | null,
+      flags?: Array< string | null > | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
@@ -2675,7 +3028,7 @@ export type ByPhoneNumberQuery = {
       guest_avatar?: string | null,
       avg_spend?: number | null,
       avg_ticket_type?: string | null,
-      avg_ticket_number?: number | null,
+      numberOfTickets?: number | null,
       connections?: string | null,
       last_attended_event?: string | null,
       gender?: string | null,
@@ -2685,6 +3038,9 @@ export type ByPhoneNumberQuery = {
       birthdate?: string | null,
       isVerified?: boolean | null,
       images?: Array< string | null > | null,
+      address?: string | null,
+      totalEvents?: number | null,
+      flags?: Array< string | null > | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
@@ -2705,6 +3061,7 @@ export type GetGuestGroupQuery = {
     id: string,
     name?: string | null,
     description?: string | null,
+    color?: string | null,
     guests?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
@@ -2728,6 +3085,7 @@ export type ListGuestGroupsQuery = {
       id: string,
       name?: string | null,
       description?: string | null,
+      color?: string | null,
       guests?: Array< string | null > | null,
       deleted?: string | null,
       createdAt: string,
@@ -2807,6 +3165,98 @@ export type TimelineByCustomerIDQuery = {
       newStatus: string,
       bookingId?: string | null,
       customerId?: string | null,
+      deleted?: string | null,
+      createdAt: string,
+      createdByID: string,
+      createdByName: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetFlagQueryVariables = {
+  id: string,
+};
+
+export type GetFlagQuery = {
+  getFlag?:  {
+    __typename: "Flag",
+    id: string,
+    accountID: string,
+    name: string,
+    icon: string,
+    color?: string | null,
+    customers?: Array< string | null > | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListFlagsQueryVariables = {
+  filter?: ModelFlagFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListFlagsQuery = {
+  listFlags?:  {
+    __typename: "ModelFlagConnection",
+    items:  Array< {
+      __typename: "Flag",
+      id: string,
+      accountID: string,
+      name: string,
+      icon: string,
+      color?: string | null,
+      customers?: Array< string | null > | null,
+      deleted?: string | null,
+      createdAt: string,
+      createdByID: string,
+      createdByName: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetCommentQueryVariables = {
+  id: string,
+};
+
+export type GetCommentQuery = {
+  getComment?:  {
+    __typename: "Comment",
+    id: string,
+    message: string,
+    customerId?: string | null,
+    bookingId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListCommentsQueryVariables = {
+  filter?: ModelCommentFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListCommentsQuery = {
+  listComments?:  {
+    __typename: "ModelCommentConnection",
+    items:  Array< {
+      __typename: "Comment",
+      id: string,
+      message: string,
+      customerId?: string | null,
+      bookingId?: string | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
@@ -3400,7 +3850,7 @@ export type OnCreateGuestSubscription = {
     guest_avatar?: string | null,
     avg_spend?: number | null,
     avg_ticket_type?: string | null,
-    avg_ticket_number?: number | null,
+    numberOfTickets?: number | null,
     connections?: string | null,
     last_attended_event?: string | null,
     gender?: string | null,
@@ -3410,6 +3860,9 @@ export type OnCreateGuestSubscription = {
     birthdate?: string | null,
     isVerified?: boolean | null,
     images?: Array< string | null > | null,
+    address?: string | null,
+    totalEvents?: number | null,
+    flags?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -3434,7 +3887,7 @@ export type OnUpdateGuestSubscription = {
     guest_avatar?: string | null,
     avg_spend?: number | null,
     avg_ticket_type?: string | null,
-    avg_ticket_number?: number | null,
+    numberOfTickets?: number | null,
     connections?: string | null,
     last_attended_event?: string | null,
     gender?: string | null,
@@ -3444,6 +3897,9 @@ export type OnUpdateGuestSubscription = {
     birthdate?: string | null,
     isVerified?: boolean | null,
     images?: Array< string | null > | null,
+    address?: string | null,
+    totalEvents?: number | null,
+    flags?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -3468,7 +3924,7 @@ export type OnDeleteGuestSubscription = {
     guest_avatar?: string | null,
     avg_spend?: number | null,
     avg_ticket_type?: string | null,
-    avg_ticket_number?: number | null,
+    numberOfTickets?: number | null,
     connections?: string | null,
     last_attended_event?: string | null,
     gender?: string | null,
@@ -3478,6 +3934,9 @@ export type OnDeleteGuestSubscription = {
     birthdate?: string | null,
     isVerified?: boolean | null,
     images?: Array< string | null > | null,
+    address?: string | null,
+    totalEvents?: number | null,
+    flags?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -3496,6 +3955,7 @@ export type OnCreateGuestGroupSubscription = {
     id: string,
     name?: string | null,
     description?: string | null,
+    color?: string | null,
     guests?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
@@ -3515,6 +3975,7 @@ export type OnUpdateGuestGroupSubscription = {
     id: string,
     name?: string | null,
     description?: string | null,
+    color?: string | null,
     guests?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
@@ -3534,6 +3995,7 @@ export type OnDeleteGuestGroupSubscription = {
     id: string,
     name?: string | null,
     description?: string | null,
+    color?: string | null,
     guests?: Array< string | null > | null,
     deleted?: string | null,
     createdAt: string,
@@ -3598,6 +4060,126 @@ export type OnDeleteTimelineSubscription = {
     newStatus: string,
     bookingId?: string | null,
     customerId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateFlagSubscriptionVariables = {
+  filter?: ModelSubscriptionFlagFilterInput | null,
+};
+
+export type OnCreateFlagSubscription = {
+  onCreateFlag?:  {
+    __typename: "Flag",
+    id: string,
+    accountID: string,
+    name: string,
+    icon: string,
+    color?: string | null,
+    customers?: Array< string | null > | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateFlagSubscriptionVariables = {
+  filter?: ModelSubscriptionFlagFilterInput | null,
+};
+
+export type OnUpdateFlagSubscription = {
+  onUpdateFlag?:  {
+    __typename: "Flag",
+    id: string,
+    accountID: string,
+    name: string,
+    icon: string,
+    color?: string | null,
+    customers?: Array< string | null > | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteFlagSubscriptionVariables = {
+  filter?: ModelSubscriptionFlagFilterInput | null,
+};
+
+export type OnDeleteFlagSubscription = {
+  onDeleteFlag?:  {
+    __typename: "Flag",
+    id: string,
+    accountID: string,
+    name: string,
+    icon: string,
+    color?: string | null,
+    customers?: Array< string | null > | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateCommentSubscriptionVariables = {
+  filter?: ModelSubscriptionCommentFilterInput | null,
+};
+
+export type OnCreateCommentSubscription = {
+  onCreateComment?:  {
+    __typename: "Comment",
+    id: string,
+    message: string,
+    customerId?: string | null,
+    bookingId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateCommentSubscriptionVariables = {
+  filter?: ModelSubscriptionCommentFilterInput | null,
+};
+
+export type OnUpdateCommentSubscription = {
+  onUpdateComment?:  {
+    __typename: "Comment",
+    id: string,
+    message: string,
+    customerId?: string | null,
+    bookingId?: string | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteCommentSubscriptionVariables = {
+  filter?: ModelSubscriptionCommentFilterInput | null,
+};
+
+export type OnDeleteCommentSubscription = {
+  onDeleteComment?:  {
+    __typename: "Comment",
+    id: string,
+    message: string,
+    customerId?: string | null,
+    bookingId?: string | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,

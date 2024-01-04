@@ -429,7 +429,7 @@ export const getGuest = /* GraphQL */ `query GetGuest($id: ID!) {
     guest_avatar
     avg_spend
     avg_ticket_type
-    avg_ticket_number
+    numberOfTickets
     connections
     last_attended_event
     gender
@@ -439,6 +439,9 @@ export const getGuest = /* GraphQL */ `query GetGuest($id: ID!) {
     birthdate
     isVerified
     images
+    address
+    totalEvents
+    flags
     deleted
     createdAt
     createdByID
@@ -464,7 +467,7 @@ export const listGuests = /* GraphQL */ `query ListGuests(
       guest_avatar
       avg_spend
       avg_ticket_type
-      avg_ticket_number
+      numberOfTickets
       connections
       last_attended_event
       gender
@@ -474,6 +477,9 @@ export const listGuests = /* GraphQL */ `query ListGuests(
       birthdate
       isVerified
       images
+      address
+      totalEvents
+      flags
       deleted
       createdAt
       createdByID
@@ -515,7 +521,7 @@ export const ByEmail = /* GraphQL */ `query ByEmail(
       guest_avatar
       avg_spend
       avg_ticket_type
-      avg_ticket_number
+      numberOfTickets
       connections
       last_attended_event
       gender
@@ -525,6 +531,9 @@ export const ByEmail = /* GraphQL */ `query ByEmail(
       birthdate
       isVerified
       images
+      address
+      totalEvents
+      flags
       deleted
       createdAt
       createdByID
@@ -563,7 +572,7 @@ export const ByPhoneNumber = /* GraphQL */ `query ByPhoneNumber(
       guest_avatar
       avg_spend
       avg_ticket_type
-      avg_ticket_number
+      numberOfTickets
       connections
       last_attended_event
       gender
@@ -573,6 +582,9 @@ export const ByPhoneNumber = /* GraphQL */ `query ByPhoneNumber(
       birthdate
       isVerified
       images
+      address
+      totalEvents
+      flags
       deleted
       createdAt
       createdByID
@@ -593,6 +605,7 @@ export const getGuestGroup = /* GraphQL */ `query GetGuestGroup($id: ID!) {
     id
     name
     description
+    color
     guests
     deleted
     createdAt
@@ -616,6 +629,7 @@ export const listGuestGroups = /* GraphQL */ `query ListGuestGroups(
       id
       name
       description
+      color
       guests
       deleted
       createdAt
@@ -717,4 +731,90 @@ export const timelineByCustomerID = /* GraphQL */ `query TimelineByCustomerID(
 ` as GeneratedQuery<
   APITypes.TimelineByCustomerIDQueryVariables,
   APITypes.TimelineByCustomerIDQuery
+>;
+export const getFlag = /* GraphQL */ `query GetFlag($id: ID!) {
+  getFlag(id: $id) {
+    id
+    accountID
+    name
+    icon
+    color
+    customers
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<APITypes.GetFlagQueryVariables, APITypes.GetFlagQuery>;
+export const listFlags = /* GraphQL */ `query ListFlags(
+  $filter: ModelFlagFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listFlags(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      accountID
+      name
+      icon
+      color
+      customers
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<APITypes.ListFlagsQueryVariables, APITypes.ListFlagsQuery>;
+export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
+  getComment(id: $id) {
+    id
+    message
+    customerId
+    bookingId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetCommentQueryVariables,
+  APITypes.GetCommentQuery
+>;
+export const listComments = /* GraphQL */ `query ListComments(
+  $filter: ModelCommentFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      message
+      customerId
+      bookingId
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListCommentsQueryVariables,
+  APITypes.ListCommentsQuery
 >;

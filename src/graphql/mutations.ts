@@ -637,7 +637,7 @@ export const createGuest = /* GraphQL */ `mutation CreateGuest(
     guest_avatar
     avg_spend
     avg_ticket_type
-    avg_ticket_number
+    numberOfTickets
     connections
     last_attended_event
     gender
@@ -647,6 +647,9 @@ export const createGuest = /* GraphQL */ `mutation CreateGuest(
     birthdate
     isVerified
     images
+    address
+    totalEvents
+    flags
     deleted
     createdAt
     createdByID
@@ -673,7 +676,7 @@ export const updateGuest = /* GraphQL */ `mutation UpdateGuest(
     guest_avatar
     avg_spend
     avg_ticket_type
-    avg_ticket_number
+    numberOfTickets
     connections
     last_attended_event
     gender
@@ -683,6 +686,9 @@ export const updateGuest = /* GraphQL */ `mutation UpdateGuest(
     birthdate
     isVerified
     images
+    address
+    totalEvents
+    flags
     deleted
     createdAt
     createdByID
@@ -709,7 +715,7 @@ export const deleteGuest = /* GraphQL */ `mutation DeleteGuest(
     guest_avatar
     avg_spend
     avg_ticket_type
-    avg_ticket_number
+    numberOfTickets
     connections
     last_attended_event
     gender
@@ -719,6 +725,9 @@ export const deleteGuest = /* GraphQL */ `mutation DeleteGuest(
     birthdate
     isVerified
     images
+    address
+    totalEvents
+    flags
     deleted
     createdAt
     createdByID
@@ -739,6 +748,7 @@ export const createGuestGroup = /* GraphQL */ `mutation CreateGuestGroup(
     id
     name
     description
+    color
     guests
     deleted
     createdAt
@@ -760,6 +770,7 @@ export const updateGuestGroup = /* GraphQL */ `mutation UpdateGuestGroup(
     id
     name
     description
+    color
     guests
     deleted
     createdAt
@@ -781,6 +792,7 @@ export const deleteGuestGroup = /* GraphQL */ `mutation DeleteGuestGroup(
     id
     name
     description
+    color
     guests
     deleted
     createdAt
@@ -862,4 +874,136 @@ export const deleteTimeline = /* GraphQL */ `mutation DeleteTimeline(
 ` as GeneratedMutation<
   APITypes.DeleteTimelineMutationVariables,
   APITypes.DeleteTimelineMutation
+>;
+export const createFlag = /* GraphQL */ `mutation CreateFlag(
+  $input: CreateFlagInput!
+  $condition: ModelFlagConditionInput
+) {
+  createFlag(input: $input, condition: $condition) {
+    id
+    accountID
+    name
+    icon
+    color
+    customers
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateFlagMutationVariables,
+  APITypes.CreateFlagMutation
+>;
+export const updateFlag = /* GraphQL */ `mutation UpdateFlag(
+  $input: UpdateFlagInput!
+  $condition: ModelFlagConditionInput
+) {
+  updateFlag(input: $input, condition: $condition) {
+    id
+    accountID
+    name
+    icon
+    color
+    customers
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateFlagMutationVariables,
+  APITypes.UpdateFlagMutation
+>;
+export const deleteFlag = /* GraphQL */ `mutation DeleteFlag(
+  $input: DeleteFlagInput!
+  $condition: ModelFlagConditionInput
+) {
+  deleteFlag(input: $input, condition: $condition) {
+    id
+    accountID
+    name
+    icon
+    color
+    customers
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteFlagMutationVariables,
+  APITypes.DeleteFlagMutation
+>;
+export const createComment = /* GraphQL */ `mutation CreateComment(
+  $input: CreateCommentInput!
+  $condition: ModelCommentConditionInput
+) {
+  createComment(input: $input, condition: $condition) {
+    id
+    message
+    customerId
+    bookingId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateCommentMutationVariables,
+  APITypes.CreateCommentMutation
+>;
+export const updateComment = /* GraphQL */ `mutation UpdateComment(
+  $input: UpdateCommentInput!
+  $condition: ModelCommentConditionInput
+) {
+  updateComment(input: $input, condition: $condition) {
+    id
+    message
+    customerId
+    bookingId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateCommentMutationVariables,
+  APITypes.UpdateCommentMutation
+>;
+export const deleteComment = /* GraphQL */ `mutation DeleteComment(
+  $input: DeleteCommentInput!
+  $condition: ModelCommentConditionInput
+) {
+  deleteComment(input: $input, condition: $condition) {
+    id
+    message
+    customerId
+    bookingId
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteCommentMutationVariables,
+  APITypes.DeleteCommentMutation
 >;

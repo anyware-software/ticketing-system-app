@@ -13,7 +13,7 @@ const createGuest = /* GraphQL */
     guest_avatar
     avg_spend
     avg_ticket_type
-    avg_ticket_number
+    numberOfTickets
     connections
     last_attended_event
     gender
@@ -45,7 +45,7 @@ const createGuest = /* GraphQL */
     guest_avatar
     avg_spend
     avg_ticket_type
-    avg_ticket_number
+    numberOfTickets
     connections
     last_attended_event
     gender
@@ -80,7 +80,7 @@ const updateGuest = /* GraphQL */
     guest_avatar
     avg_spend
     avg_ticket_type
-    avg_ticket_number
+    numberOfTickets
     connections
     last_attended_event
     gender
@@ -116,7 +116,7 @@ const listGuests = /* GraphQL */ `query ListGuests(
       guest_avatar
       avg_spend
       avg_ticket_type
-      avg_ticket_number
+      numberOfTickets
       connections
       last_attended_event
       gender
