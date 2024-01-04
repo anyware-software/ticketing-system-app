@@ -24,6 +24,7 @@ import updateGuest from "../../services/updateGuest";
 import { setLogin } from "../../state";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import { original } from "@reduxjs/toolkit";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -296,7 +297,7 @@ export default function MobileViewTabs() {
                 "&.Mui-selected": {
                   color: "white",
                   fontWeight: "bold",
-                  fontStyle:'underline',
+                  fontStyle: "underline",
                 },
               }}
             />
@@ -315,110 +316,115 @@ export default function MobileViewTabs() {
         </Box>
         {/* info part */}
         <CustomTabPanel value={value} index={0}>
-        <Box
+          <Box
             sx={{
-              width: { xs: "90%", sm: "70%" },
+              width: { xs: "100%", sm: "80%" },
               display: { xs: "flex", sm: "none" },
               flexDirection: "column",
               marginTop: { xs: "0vh", sm: "0vh" },
             }}
           >
-            <Box sx={{
-              display: "flex",
-              flexDirection: "column",
-            }}>
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
                 flexDirection: "column",
               }}
             >
-              <Box sx={{
-                height: "10vh",
-              }}>
-                <Typography
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "column",
+                }}
+              >
+                <Box
                   sx={{
-                    color: "#848383",
-                    fontSize: 18,
-                    fontWeight: "600",
-                    wordWrap: "break-word",
+                    height: "15vh",
                   }}
                 >
-                  Email
-                </Typography>
+                  <Typography
+                    sx={{
+                      color: "#848383",
+                      fontSize: 18,
+                      fontWeight: "600",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    Email
+                  </Typography>
 
-                {/* Email Field */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  {emailEditing ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <TextField
-                        sx={{
-                          backgroundColor: "rgba(255, 255, 255, 0.31)",
-                          "input::placeholder": {
-                            color: "white",
-                          },
-                          input: {
-                            color: "white",
-                          },
-                          border: "1px solid",
-                          borderColor: "rgba(255, 255, 255, 0.63)",
-                          width: "18rem",
-                        }}
-                        value={emailText}
-                        onChange={(e) => {
-                          setEmailText(e.target.value);
-                          setEmailError(false);
-                        }}
-                        error={emailError}
-                        helperText={emailError ? "Invalid email address" : ""}
-                      />
-                      <IconButton
-                        onClick={handleSaveEmailClick}
-                        sx={{ color: "white" }}
-                      >
-                        <SaveIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={handleCancelEmailClick}
-                        sx={{ color: "white" }}
-                      >
-                        <CancelIcon />
-                      </IconButton>
-                    </div>
-                  ) : (
-                    <div>
-                      <span
+                  {/* Email Field */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {emailEditing ? (
+                      <div
                         style={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: 600,
-                          wordWrap: "break-word",
+                          display: "flex",
+                          alignItems: "center",
                         }}
                       >
-                        {originalEmailText}
-                      </span>
-                      <IconButton
-                        onClick={handleEditEmailClick}
-                        sx={{ color: "white" }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </div>
-                  )}
-                </div>
+                        <TextField
+                          sx={{
+                            backgroundColor: "rgba(255, 255, 255, 0.31)",
+                            "input::placeholder": {
+                              color: "white",
+                            },
+                            input: {
+                              color: "white",
+                            },
+                            border: "1px solid",
+                            borderColor: "rgba(255, 255, 255, 0.63)",
+                            width: "18rem",
+                          }}
+                          value={emailText}
+                          onChange={(e) => {
+                            setEmailText(e.target.value);
+                            setEmailError(false);
+                          }}
+                          error={emailError}
+                          helperText={emailError ? "Invalid email address" : ""}
+                        />
+                        <IconButton
+                          onClick={handleSaveEmailClick}
+                          sx={{ color: "white" }}
+                        >
+                          <SaveIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={handleCancelEmailClick}
+                          sx={{ color: "white" }}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                      </div>
+                    ) : (
+                      <div>
+                          <span
+                            style={{
+                              color: "white",
+                              fontSize: 18,
+                              fontWeight: 600,
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            {originalEmailText}
+                          </span>
 
-                {/* <Typography
+                        <IconButton
+                          onClick={handleEditEmailClick}
+                          sx={{ color: "white" }}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* <Typography
                   sx={{
                     color: "white",
                     fontSize: 18,
@@ -428,88 +434,92 @@ export default function MobileViewTabs() {
                 >
                   Alinader@gmail.com
                 </Typography> */}
-              </Box>
-              <Box sx={{
-                height: "10vh",
-              }}>
-                <Typography
+                </Box>
+                <Box
                   sx={{
-                    color: "#848383",
-                    fontSize: 18,
-                    fontWeight: "600",
-                    wordWrap: "break-word",
+                    height: "15vh",
                   }}
                 >
-                  Birth Date
-                </Typography>
+                  <Typography
+                    sx={{
+                      color: "#848383",
+                      fontSize: 18,
+                      fontWeight: "600",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    Birth Date
+                  </Typography>
 
-                {/* Birth Field */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  {birthEditing ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <TextField
-                        type="date"
-                        sx={{
-                          backgroundColor: "rgba(255, 255, 255, 0.31)",
-                          "input::placeholder": {
-                            color: "white",
-                          },
-                          input: {
-                            color: "white",
-                          },
-                          border: "1px solid",
-                          borderColor: "rgba(255, 255, 255, 0.63)",
-                          width: "100%",
-                        }}
-                        value={birthText}
-                        onChange={(e) => setBirthText(e.target.value)}
-                      />
-                      <IconButton
-                        onClick={handleSaveBirthClick}
-                        sx={{ color: "white" }}
-                      >
-                        <SaveIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={handleCancelBrithClick}
-                        sx={{ color: "white" }}
-                      >
-                        <CancelIcon />
-                      </IconButton>
-                    </div>
-                  ) : (
-                    <div>
-                      <span
+                  {/* Birth Field */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {birthEditing ? (
+                      <div
                         style={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: 600,
-                          wordWrap: "break-word",
+                          display: "flex",
+                          alignItems: "center",
                         }}
                       >
-                        {originalBirthText}
-                      </span>
-                      <IconButton
-                        onClick={handleEditBirthClick}
-                        sx={{ color: "white" }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </div>
-                  )}
-                </div>
+                        <TextField
+                          type="date"
+                          sx={{
+                            backgroundColor: "rgba(255, 255, 255, 0.31)",
+                            "input::placeholder": {
+                              color: "white",
+                            },
+                            input: {
+                              color: "white",
+                            },
+                            border: "1px solid",
+                            borderColor: "rgba(255, 255, 255, 0.63)",
+                            width: "100%",
+                          }}
+                          value={birthText}
+                          onChange={(e) => setBirthText(e.target.value)}
+                        />
+                        <IconButton
+                          onClick={handleSaveBirthClick}
+                          sx={{ color: "white" }}
+                        >
+                          <SaveIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={handleCancelBrithClick}
+                          sx={{ color: "white" }}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                      </div>
+                    ) : (
+                      <div>
 
-                {/* <Typography
+                          <span
+                            style={{
+                              color: "white",
+                              fontSize: 18,
+                              fontWeight: 600,
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            {originalBirthText}
+                          </span>
+
+                        <IconButton
+                          onClick={handleEditBirthClick}
+                          sx={{ color: "white" }}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* <Typography
                   sx={{
                     color: "white",
                     fontSize: 18,
@@ -519,193 +529,206 @@ export default function MobileViewTabs() {
                 >
                   12/2/1997
                 </Typography> */}
+                </Box>
               </Box>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "column",
-              }}
-            >
-              <Box sx={{
-                height: "10vh",
-              }}>
-                <Typography
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "column",
+                }}
+              >
+                <Box
                   sx={{
-                    color: "#848383",
-                    fontSize: 18,
-                    fontWeight: "600",
-                    wordWrap: "break-word",
+                    height: "15vh",
                   }}
                 >
-                  Gender
-                </Typography>
+                  <Typography
+                    sx={{
+                      color: "#848383",
+                      fontSize: 18,
+                      fontWeight: "600",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    Gender
+                  </Typography>
 
-                {/* Gender Field */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  {genderEditing ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <TextField
-                        select
-                        sx={{
-                          backgroundColor: "rgba(255, 255, 255, 0.63)",
-                          "input::placeholder": {
-                            color: "white",
-                          },
-                          input: {
-                            color: "white",
-                          },
-                          border: "1px solid",
-                          borderColor: "rgba(255, 255, 255, 0.63)",
-                          width: "100%",
-                        }}
-                        value={genderText}
-                        // value = "male"
-                        onChange={(e) => setGenderText(e.target.value)}
-                      >
-                        <MenuItem value="male">Male</MenuItem>
-                        <MenuItem value="female">Female</MenuItem>
-                      </TextField>
-                      <IconButton
-                        onClick={handleSaveGenderClick}
-                        sx={{ color: "white" }}
-                      >
-                        <SaveIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={handleCancelGenderClick}
-                        sx={{ color: "white" }}
-                      >
-                        <CancelIcon />
-                      </IconButton>
-                    </div>
-                  ) : (
-                    <div>
-                      <span
+                  {/* Gender Field */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {genderEditing ? (
+                      <div
                         style={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: 600,
-                          wordWrap: "break-word",
+                          display: "flex",
+                          alignItems: "center",
                         }}
                       >
-                        {originalGenderText}
-                      </span>
-                      <IconButton
-                        onClick={handleEditGenderClick}
-                        sx={{ color: "white" }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </div>
-                  )}
-                </div>
+                        <TextField
+                          select
+                          sx={{
+                            backgroundColor: "rgba(255, 255, 255, 0.63)",
+                            "input::placeholder": {
+                              color: "white",
+                            },
+                            input: {
+                              color: "white",
+                            },
+                            border: "1px solid",
+                            borderColor: "rgba(255, 255, 255, 0.63)",
+                            width: "100%",
+                          }}
+                          value={genderText}
+                          // value = "male"
+                          onChange={(e) => setGenderText(e.target.value)}
+                        >
+                          <MenuItem value="male">Male</MenuItem>
+                          <MenuItem value="female">Female</MenuItem>
+                        </TextField>
+                        <IconButton
+                          onClick={handleSaveGenderClick}
+                          sx={{ color: "white" }}
+                        >
+                          <SaveIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={handleCancelGenderClick}
+                          sx={{ color: "white" }}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                      </div>
+                    ) : (
+                      <div>
 
-                {/* <Typography
+                          <span
+                            style={{
+                              color: "white",
+                              fontSize: 18,
+                              fontWeight: 600,
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            {originalGenderText}
+                          </span>
+
+                        <IconButton
+                          onClick={handleEditGenderClick}
+                          sx={{ color: "white" }}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* <Typography
                   sx={{
                     color: "white",
-                    fontSize: 18,
+                    fontSize: 18,F
                     fontWeight: "600",
                     wordWrap: "break-word",
                   }}
                 >
                   Male
                 </Typography> */}
-              </Box>
-              <Box sx={{
-                height: "10vh",
-              }}>
-                <Typography
+                </Box>
+                <Box
                   sx={{
-                    color: "#848383",
-                    fontSize: 18,
-                    fontWeight: "600",
-                    wordWrap: "break-word",
+                    height: "15vh",
                   }}
                 >
-                  Mobile No.
-                </Typography>
+                  <Typography
+                    sx={{
+                      color: "#848383",
+                      fontSize: 18,
+                      fontWeight: "600",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    Mobile No.
+                  </Typography>
 
-                {/* Mobile Field */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  {mobileEditing ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <TextField
-                        type="number"
-                        sx={{
-                          backgroundColor: "rgba(255, 255, 255, 0.31)",
-                          "input::placeholder": {
-                            color: "white",
-                          },
-                          input: {
-                            color: "white",
-                          },
-                          border: "1px solid",
-                          borderColor: "rgba(255, 255, 255, 0.63)",
-                          width: "13rem",
-                        }}
-                        value={mobileText}
-                        onChange={(e) => {setMobileText(e.target.value); setMobileError(false);}}
-                        error={mobileError}
-                        helperText={mobileError ? "Phone number is not valid" : ""}
-                      />
-                      <IconButton
-                        onClick={handleSaveMobileClick}
-                        sx={{ color: "white" }}
-                      >
-                        <SaveIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={handleCancelMobileClick}
-                        sx={{ color: "white" }}
-                      >
-                        <CancelIcon />
-                      </IconButton>
-                    </div>
-                  ) : (
-                    <div>
-                      <span
+                  {/* Mobile Field */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {mobileEditing ? (
+                      <div
                         style={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: 600,
-                          wordWrap: "break-word",
+                          display: "flex",
+                          alignItems: "center",
                         }}
                       >
-                        {originalMobileText}
-                      </span>
-                      <IconButton
-                        onClick={handleEditMobileClick}
-                        sx={{ color: "white" }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </div>
-                  )}
-                </div>
+                        <TextField
+                          type="number"
+                          sx={{
+                            backgroundColor: "rgba(255, 255, 255, 0.31)",
+                            "input::placeholder": {
+                              color: "white",
+                            },
+                            input: {
+                              color: "white",
+                            },
+                            border: "1px solid",
+                            borderColor: "rgba(255, 255, 255, 0.63)",
+                            width: "13rem",
+                          }}
+                          value={mobileText}
+                          onChange={(e) => {
+                            setMobileText(e.target.value);
+                            setMobileError(false);
+                          }}
+                          error={mobileError}
+                          helperText={
+                            mobileError ? "Phone number is not valid" : ""
+                          }
+                        />
+                        <IconButton
+                          onClick={handleSaveMobileClick}
+                          sx={{ color: "white" }}
+                        >
+                          <SaveIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={handleCancelMobileClick}
+                          sx={{ color: "white" }}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                      </div>
+                    ) : (
+                      <div>
 
-                {/* <Typography
+                        <span
+                          style={{
+                            color: "white",
+                            fontSize: 18,
+                            fontWeight: 600,
+                            wordWrap: "break-word",
+                          }}
+                        >
+                          {originalMobileText}
+                        </span>
+
+                        <IconButton
+                          onClick={handleEditMobileClick}
+                          sx={{ color: "white" }}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* <Typography
                   sx={{
                     color: "white",
                     fontSize: 18,
@@ -715,8 +738,8 @@ export default function MobileViewTabs() {
                 >
                   +2010000000
                 </Typography> */}
+                </Box>
               </Box>
-            </Box>
             </Box>
           </Box>
         </CustomTabPanel>
@@ -960,18 +983,18 @@ export default function MobileViewTabs() {
                       borderRadius: "5px",
                     }}
                   >
-                     <Typography
-                    sx={{
-                      fontSize: 11,
-                      wordWrap: "break-word",
-                      color: "black",
-                    }}
-                  >
-                    Total :{" "}
-                    <span style={{ fontSize: "12px", fontWeight: "700" }}>
-                      44
-                    </span>
-                  </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: 11,
+                        wordWrap: "break-word",
+                        color: "black",
+                      }}
+                    >
+                      Total :{" "}
+                      <span style={{ fontSize: "12px", fontWeight: "700" }}>
+                        44
+                      </span>
+                    </Typography>
                   </Box>
                 </Box>
               </Box>

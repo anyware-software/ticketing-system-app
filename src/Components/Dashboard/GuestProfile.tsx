@@ -31,12 +31,22 @@ import { getUrl } from "aws-amplify/storage";
 import { dbStorage } from "../../constants/Enums";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { remove } from "aws-amplify/storage";
-import Skeleton from "@mui/material/Skeleton";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
-
+import Tooltip from "@mui/material/Tooltip";
 import { listGuests } from "../../services/getOperations";
 import { Guest } from "../../API";
+import {
+  Checkbox,
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import Skeleton from "@mui/material/Skeleton";
+
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
 const ITEM_HEIGHT = 48;
@@ -64,7 +74,6 @@ type props = {
 
 export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [friends, setFriends] = useState<null | Array<string>>(null);
   const dispatch = useDispatch();
   const open = Boolean(anchorEl);
   const [isHovered, setIsHovered] = useState(false);
@@ -74,7 +83,17 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const [avatarLoading, SetAvatarLoading] = useState(false);
+
   const user = useSelector((state: any) => state.app.user);
+
+  // useEffect(() => {
+  //   if (!user) {
+  //     setLoading(true);
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -91,7 +110,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           // console.log(response.data.data.map((item: MyObject) => item.name));
           // console.log(response.data.data.map((item: MyObject) => item.id));
           let faceBookIDs = response.data.data.map((item: MyObject) => item.id);
-          setFriends(response.data.data.map((item: MyObject) => item.name));
           let friends: Guest[] = await listGuests({ faceBookIDs });
           let connections = JSON.stringify(
             friends.map((friend) => {
@@ -342,12 +360,10 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-
     if (file) {
       try {
         const result = await uploadImage(file);
-        console.log(`${result}`);
-
+        // console.log(`${result}`);
         setSelectedImage(`${dbStorage}${result}`);
       } catch (error) {
         // Handle the error
@@ -355,9 +371,11 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
       }
     }
   };
-
+  const [validationWarning, setValidationWarning] = useState<boolean>(false);
+  const [message, setMessage] = useState<any>("");
   const uploadImage = async (file: File) => {
     try {
+      SetAvatarLoading(true);
       const result = await uploadData({
         key: `${new Date().getTime()}-${file.name.replace(/\s/g, "-")}`,
         data: file,
@@ -366,7 +384,61 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         },
       }).result;
       // console.log("Succeeded uploading image: ", result);
-
+      if (!user?.images || user.images.length < 4) {
+        try {
+          const updatedData = {
+            userID: user?.id,
+            email: user?.email,
+            name: user?.name,
+            phone_number: user?.phone_number,
+            birthdate: user?.birthdate,
+            gender: user?.gender,
+            guest_avatar: result.key,
+            connections: user?.connections,
+            images: user?.images ? [...user.images, result.key] : [result.key],
+          };
+          console.log(updatedData);
+          let UpdatedGuest = await updateGuest(
+            updatedData.userID,
+            updatedData.email,
+            updatedData.name,
+            updatedData.phone_number,
+            updatedData.birthdate,
+            updatedData.gender,
+            updatedData.guest_avatar,
+            updatedData.connections,
+            updatedData.images
+          );
+          console.log(UpdatedGuest);
+          dispatch(setLogin({ user: UpdatedGuest }));
+          SetAvatarLoading(false);
+        } catch (error) {
+          console.error("Error updating Images:", error);
+        }
+      } else {
+        console.log("you got 3 images remove one and replace it");
+        setValidationWarning(true);
+        setMessage("You need to replace one of your images to upload new one");
+      }
+      //removing images
+      // try {
+      //   await remove({ key: `${dbStorage}${user?.guest_avatar}` });
+      //   console.log("Done deleting old image :)");
+      // } catch (error) {
+      //   console.log("Error while deleting old image :", error);
+      // }
+      return result.key;
+    } catch (error) {
+      console.log("Error uploading image: ", error);
+      throw error;
+    }
+  };
+  const deleteUserPhoto = async (index: any, photo: any) => {
+    const updatedImages = [...user.images];
+    // console.log(index);
+    if (updatedImages.length !== 0) {
+      updatedImages.splice(index, 1);
+      // console.log(updatedImages);
       try {
         const updatedData = {
           userID: user?.id,
@@ -375,7 +447,9 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           phone_number: user?.phone_number,
           birthdate: user?.birthdate,
           gender: user?.gender,
-          guest_avatar: result.key,
+          guest_avatar: user?.guest_avatar,
+          connections: user?.connections,
+          images: updatedImages,
         };
         console.log(updatedData);
         let UpdatedGuest = await updateGuest(
@@ -385,26 +459,54 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           updatedData.phone_number,
           updatedData.birthdate,
           updatedData.gender,
-          updatedData.guest_avatar
+          updatedData.guest_avatar,
+          updatedData.connections,
+          updatedData.images
         );
         console.log(UpdatedGuest);
         dispatch(setLogin({ user: UpdatedGuest }));
       } catch (error) {
-        console.error("Error updating Connections:", error);
+        console.error("Error updating Images:", error);
       }
+      //removing images
       try {
-        await remove({ key: `${dbStorage}${user?.guest_avatar}` });
+        await remove({ key: `${dbStorage}${photo}` });
         console.log("Done deleting old image :)");
       } catch (error) {
         console.log("Error while deleting old image :", error);
       }
-      return result.key;
-    } catch (error) {
-      console.log("Error uploading image: ", error);
-      throw error;
     }
   };
 
+  const changeUserPhoto = async (photo: any) => {
+    try {
+      const updatedData = {
+        userID: user?.id,
+        email: user?.email,
+        name: user?.name,
+        phone_number: user?.phone_number,
+        birthdate: user?.birthdate,
+        gender: user?.gender,
+        guest_avatar: photo,
+      };
+      console.log(updatedData);
+      let UpdatedGuest = await updateGuest(
+        updatedData.userID,
+        updatedData.email,
+        updatedData.name,
+        updatedData.phone_number,
+        updatedData.birthdate,
+        updatedData.gender,
+        updatedData.guest_avatar
+      );
+      console.log(UpdatedGuest);
+      dispatch(setLogin({ user: UpdatedGuest }));
+    } catch (error) {
+      console.error("Error updating Images:", error);
+    }
+  };
+  //image part
+  //----------------------------------------------------------------
   let connections = JSON.parse(user?.connections || "[]");
 
   return (
@@ -434,8 +536,43 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         zIndex: 0,
         display: "flex",
         flexDirection: "column",
+        position: "relative",
       }}
     >
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={validationWarning}
+        autoHideDuration={5000}
+        onClose={() => {
+          setValidationWarning(false);
+        }}
+      >
+        <Alert
+          onClose={() => {
+            setValidationWarning(false);
+          }}
+          severity="warning"
+          sx={{
+            // position: "fixed",
+            top: "16px",
+            right: "56px",
+          }}
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={() => {
+                setValidationWarning(false);
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        >
+          {message}
+        </Alert>
+      </Snackbar>
       <Grid
         container
         spacing={2}
@@ -444,6 +581,8 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           flexGrow: 1,
           display: "flex",
           alignItems: "end",
+          // marginTop:'2vh'
+          marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
         }}
       >
         <Grid
@@ -458,8 +597,8 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            gap: { xs: 5, sm: 10 },
-            marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
+            gap: { xs: 1, sm: 0 },
+            // marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
           }}
         >
           <Box
@@ -483,48 +622,41 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: { xs: 0, sm: 4 },
+                gap: { xs: 0, sm: 2 },
                 flexGrow: 1,
-                marginRight: { xs: "3rem", sm: "0rem" },
+                marginRight: { xs: "4rem", sm: "0rem" },
               }}
             >
-              <div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="imageInput"
-                  style={{ display: "none" }}
-                  onChange={handleImageChange}
+              {avatarLoading ? (
+                <Skeleton
+                  variant="circular"
+                  animation="pulse"
+                  width="10rem"
+                  height="10rem"
+                  sx={{
+                    backgroundColor: "gray",
+                    display: "inline-block",
+                  }}
                 />
-                <label
-                  htmlFor="imageInput"
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                  style={{ position: "relative" }}
-                >
-                  {selectedImage ? (
-                    <img
-                      // src={selectedImage}
-                      src={`${dbStorage}${user?.guest_avatar}`}
-                      style={{
-                        width: "10rem",
-                        height: "10rem",
-                        borderRadius: "50%",
-                        marginLeft: "1rem",
-                        cursor: "pointer",
-                      }}
-                      alt="unknownUser"
-                    />
-                  ) : (
-                    <div
-                      style={{ position: "relative", display: "inline-block" }}
-                    >
+              ) : (
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="imageInput"
+                    style={{ display: "none" }}
+                    onChange={handleImageChange}
+                  />
+                  <label
+                    htmlFor="imageInput"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    style={{ position: "relative" }}
+                  >
+                    {selectedImage ? (
                       <img
-                        src={
-                          user?.guest_avatar
-                            ? `${dbStorage}${user?.guest_avatar}`
-                            : "../../../Images/unknownUser.png"
-                        }
+                        // src={selectedImage}
+                        src={`${dbStorage}${user?.guest_avatar}`}
                         style={{
                           width: "10rem",
                           height: "10rem",
@@ -534,35 +666,146 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                         }}
                         alt="unknownUser"
                       />
-                      {isHovered && (
-                        <div
+                    ) : (
+                      <div
+                        style={{
+                          position: "relative",
+                          display: "inline-block",
+                        }}
+                      >
+                        <img
+                          src={
+                            user?.guest_avatar
+                              ? `${dbStorage}${user?.guest_avatar}`
+                              : "../../../Images/unknownUser.png"
+                          }
                           style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
                             width: "10rem",
                             height: "10rem",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            backgroundColor: "rgba(0, 0, 0, 0.5)",
                             borderRadius: "50%",
-                            color: "white",
-                            fontSize: "1.5rem",
-                            opacity: 0.9,
-                            transition: "opacity 0.3s",
-                            zIndex: 1,
                             marginLeft: "1rem",
                             cursor: "pointer",
                           }}
+                          alt="unknownUser"
+                        />
+                        {isHovered && (
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                              width: "10rem",
+                              height: "10rem",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              backgroundColor: "rgba(0, 0, 0, 0.5)",
+                              borderRadius: "50%",
+                              color: "white",
+                              fontSize: "1.5rem",
+                              opacity: 0.9,
+                              transition: "opacity 0.3s",
+                              zIndex: 1,
+                              marginLeft: "1rem",
+                              cursor: "pointer",
+                            }}
+                          >
+                            Upload Photo
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </label>
+                </div>
+              )}
+
+              <Box>
+                <AvatarGroup
+                  sx={{
+                    "& .MuiAvatar-root": {
+                      width: 35,
+                      height: 35,
+                      fontSize: 10,
+                      color: "black",
+                      border: "1px solid white",
+                      backgroundColor: 'darkgrey" , borderColor',
+                    },
+                  }}
+                >
+                  {[...Array(Math.max(4, user?.images?.length || 0))].map(
+                    (_, index) => {
+                      const photo = user?.images?.[index] || "";
+                      return (
+                        <Tooltip
+                          key={index}
+                          placement="bottom"
+                          title={
+                            <>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  gap: 2,
+                                  p: 1,
+                                }}
+                              >
+                                {photo !== "" && (
+                                  <Button
+                                    onClick={() => changeUserPhoto(photo)}
+                                    sx={{
+                                      color: "white",
+                                      backgroundColor: "#EB5757",
+                                      border: 0,
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    Select Photo
+                                  </Button>
+                                )}
+                                {photo !== "" && (
+                                  <Button
+                                    onClick={() =>
+                                      deleteUserPhoto(index, photo)
+                                    }
+                                    sx={{
+                                      color: "white",
+                                      backgroundColor: "#EB5757",
+                                      border: 0,
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    Delete
+                                  </Button>
+                                )}
+                                {photo === "" && (
+                                  <Button
+                                    onClick={() => {
+                                      const inputElement =
+                                        document.getElementById(
+                                          "imageInput"
+                                        ) as HTMLInputElement;
+                                      inputElement?.click();
+                                    }}
+                                    sx={{
+                                      color: "white",
+                                      backgroundColor: "#EB5757",
+                                      border: 0,
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    Upload Photo
+                                  </Button>
+                                )}
+                              </Box>
+                            </>
+                          }
                         >
-                          Upload Photo
-                        </div>
-                      )}
-                    </div>
+                          <Avatar alt={photo || ""} src={dbStorage + photo} />
+                        </Tooltip>
+                      );
+                    }
                   )}
-                </label>
-              </div>
+                </AvatarGroup>
+              </Box>
 
               <Box
                 sx={{
@@ -592,7 +835,9 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                       user.name.charAt(0).toUpperCase() + user.name.slice(1)}
                   </Typography>
                   {user?.isVerified && (
-                    <VerifiedIcon sx={{ color: "#49adf4" }} />
+                    <Tooltip title="Verified User" placement="bottom">
+                      <VerifiedIcon sx={{ color: "#49adf4" }} />
+                    </Tooltip>
                   )}
                 </Box>
 
@@ -626,7 +871,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <AvatarGroup
-                  max={friends?.length}
+                  max={connections?.length}
                   sx={{
                     "& .MuiAvatar-root": {
                       width: 35,
@@ -723,10 +968,10 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
 
           <Box
             sx={{
-              width: { xs: "90%", sm: "70%" },
+              width: { xs: "90%", sm: "80%" },
               display: { xs: "none", sm: "flex" },
               flexDirection: "column",
-              gap: 3,
+              gap: 2,
               marginTop: { xs: "2vh", sm: "0vh" },
             }}
           >
@@ -809,29 +1054,17 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
-                      {originalEmailText ? (
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: 18,
-                            fontWeight: 600,
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          {originalEmailText}
-                        </span>
-                      ) : (
-                        <Skeleton
-                          variant="rectangular"
-                          animation="pulse"
-                          width={300}
-                          height={40}
-                          sx={{
-                            backgroundColor: "gray",
-                            display: "inline-block",
-                          }}
-                        />
-                      )}
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalEmailText}
+                      </span>
+
                       <IconButton
                         onClick={handleEditEmailClick}
                         sx={{ color: "white" }}
@@ -911,31 +1144,17 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
-                      {originalBirthText ? (
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: 18,
-                            fontWeight: 600,
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          {originalBirthText}
-                        </span>
-                      ) : (
-                        <>
-                          <Skeleton
-                            variant="rectangular"
-                            animation="pulse"
-                            width={200}
-                            height={40}
-                            sx={{
-                              backgroundColor: "gray",
-                              display: "inline-block",
-                            }}
-                          />
-                        </>
-                      )}
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalBirthText}
+                      </span>
+
                       <IconButton
                         onClick={handleEditBirthClick}
                         sx={{ color: "white" }}
@@ -1032,29 +1251,17 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
-                      {originalGenderText ? (
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: 18,
-                            fontWeight: 600,
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          {originalGenderText}
-                        </span>
-                      ) : (
-                        <Skeleton
-                          variant="rectangular"
-                          animation="pulse"
-                          width={150}
-                          height={40}
-                          sx={{
-                            backgroundColor: "gray",
-                            display: "inline-block",
-                          }}
-                        />
-                      )}
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalGenderText}
+                      </span>
+
                       <IconButton
                         onClick={handleEditGenderClick}
                         sx={{ color: "white" }}
@@ -1141,29 +1348,17 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     </div>
                   ) : (
                     <div>
-                      {originalMobileText ? (
-                        <span
-                          style={{
-                            color: "white",
-                            fontSize: 18,
-                            fontWeight: 600,
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          {originalMobileText}
-                        </span>
-                      ) : (
-                        <Skeleton
-                          variant="rectangular"
-                          animation="pulse"
-                          width={200}
-                          height={40}
-                          sx={{
-                            backgroundColor: "gray",
-                            display: "inline-block",
-                          }}
-                        />
-                      )}
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalMobileText}
+                      </span>
+
                       <IconButton
                         onClick={handleEditMobileClick}
                         sx={{ color: "white" }}
@@ -1199,10 +1394,10 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             position: "relative",
             display: { xs: "none", sm: "flex" },
             justifyContent: "center",
-            alignItems: "center",
+            alignItems: { sm: "center", lg: "start" },
             flexDirection: "column",
-            height: "90%",
-
+            // height: "90%",
+            // marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
             // gap: 10,
           }}
         >
@@ -1211,7 +1406,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
               display: "flex",
               justifyContent: "start",
               flexDirection: "column",
-              gap: 4,
+              gap: 2,
             }}
           >
             <Box>
@@ -1459,7 +1654,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 display: { xs: "flex", sm: "grid" },
                 flexDirection: { xs: "column", sm: "" },
                 gridTemplateColumns: "repeat(2, 1fr)",
-                gap: { xs: 1, sm: 2 },
+                gap: 1,
                 // justifyContent: {xs:'center',sm:""}
                 width: { xs: "90%", sm: "%" },
               }}
