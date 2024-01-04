@@ -210,18 +210,18 @@ type Guest
       { allow: private, operations: [read] }
       # allow all guest users (unauthenticated) to read guest
       { allow: public, operations: [create, update, delete, read] }
-      { allow: public, provider: iam, operations: [create, update, delete, read] }
+      {
+        allow: public
+        provider: iam
+        operations: [create, update, delete, read]
+      }
     ]
   ) {
   id: ID!
   name: String
   username: String
   email: String
-    @index(
-      name: "usersByEmail"
-      queryField: "ByEmail"
-      sortKeyFields: ["name"]
-    )
+    @index(name: "usersByEmail", queryField: "ByEmail", sortKeyFields: ["name"])
   phone_number: String
     @index(
       name: "usersByPhoneNumber"
@@ -230,9 +230,9 @@ type Guest
     )
   guestGroupID: ID
   guest_avatar: String
-  avg_spend:Int
+  avg_spend: Int
   avg_ticket_type: String
-  avg_ticket_number:Int
+  numberOfTickets: Int
   connections: AWSJSON
   last_attended_event: String
   gender: String
@@ -240,7 +240,11 @@ type Guest
   faceBookID: ID
   appPassword: String
   birthdate: String
-  isVerified : Boolean
+  isVerified: Boolean
+  images: [String]
+  address: String
+  totalEvents: Int
+  flags: [ID]
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!
@@ -257,13 +261,94 @@ type GuestGroup
       { allow: private, operations: [read] }
       # allow all guest users (unauthenticated) to read AdminGroup
       { allow: public, operations: [create, update, delete, read] }
-      { allow: public, provider: iam, operations: [create, update, delete, read] }
+      {
+        allow: public
+        provider: iam
+        operations: [create, update, delete, read]
+      }
     ]
   ) {
   id: ID!
   name: String
   description: String
+  color: String
   guests: [ID]
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type Timeline
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [read, create], provider: iam }
+      { allow: public, operations: [read, create] }
+    ]
+  ) {
+  id: ID!
+  actionName: String!
+  oldStatus: String!
+  newStatus: String!
+  bookingId: String
+  customerId: String
+    @index(
+      name: "timelineByCustomerID"
+      queryField: "timelineByCustomerID"
+      sortKeyFields: ["createdAt"]
+    )
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type Flag
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [read], provider: iam }
+    ]
+  ) {
+  id: ID!
+  accountID: String!
+  name: String!
+  icon: String!
+  color: String
+  customers: [String]
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type Comment
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [read], provider: iam }
+    ]
+  ) {
+  id: ID!
+  message: String!
+  customerId: String
+  bookingId: String
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!
