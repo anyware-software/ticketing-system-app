@@ -119,6 +119,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 name: friend.name,
                 group: friend.group,
                 phone_number: friend.phone_number,
+                guestGroupID: friend.guestGroupID,
               };
             })
           );
