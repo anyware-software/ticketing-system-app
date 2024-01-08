@@ -7,10 +7,10 @@ import reportWebVitals from "./reportWebVitals";
 import { Amplify } from "aws-amplify";
 import { Provider } from "react-redux";
 import store from "./state/store";
-import amplifyconfig from './amplifyconfiguration.json';
-// import config from "./aws-exports";
+// import amplifyconfig from './amplifyconfiguration.json';
+import config from "./aws-exports";
 
-Amplify.configure(amplifyconfig);
+Amplify.configure(config);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
