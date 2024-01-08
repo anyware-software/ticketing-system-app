@@ -634,6 +634,7 @@ export const createGuest = /* GraphQL */ `mutation CreateGuest(
     email
     phone_number
     guestGroupID
+    guestGroupName
     guest_avatar
     avg_spend
     avg_ticket_type
@@ -673,6 +674,7 @@ export const updateGuest = /* GraphQL */ `mutation UpdateGuest(
     email
     phone_number
     guestGroupID
+    guestGroupName
     guest_avatar
     avg_spend
     avg_ticket_type
@@ -712,6 +714,7 @@ export const deleteGuest = /* GraphQL */ `mutation DeleteGuest(
     email
     phone_number
     guestGroupID
+    guestGroupName
     guest_avatar
     avg_spend
     avg_ticket_type
@@ -953,9 +956,11 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
     message
     customerId
     bookingId
+    replyTo
     deleted
     createdAt
     createdByID
+    createdByImg
     createdByName
     updatedAt
     __typename
@@ -974,9 +979,11 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
     message
     customerId
     bookingId
+    replyTo
     deleted
     createdAt
     createdByID
+    createdByImg
     createdByName
     updatedAt
     __typename
@@ -995,9 +1002,11 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
     message
     customerId
     bookingId
+    replyTo
     deleted
     createdAt
     createdByID
+    createdByImg
     createdByName
     updatedAt
     __typename

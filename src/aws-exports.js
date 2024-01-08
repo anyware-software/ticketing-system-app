@@ -27,7 +27,7 @@ const awsmobile = {
             "profile",
             "aws.cognito.signin.user.admin"
         ],
-        "redirectSignIn": "http://localhost:3000/",
+        "redirectSignIn": "http://localhost:3000/dashboard/",
         "redirectSignOut": "http://localhost:3000/",
         "responseType": "code"
     },
@@ -52,7 +52,9 @@ const awsmobile = {
     },
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
-    ]
+    ],
+    "aws_user_files_s3_bucket": "ticketingsystemadmina29b1f146cd8476b9f9aefcf325132756-dev",
+    "aws_user_files_s3_bucket_region": "us-east-2"
 };
 
 
