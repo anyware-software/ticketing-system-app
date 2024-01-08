@@ -577,6 +577,7 @@ export const onCreateGuest = /* GraphQL */ `subscription OnCreateGuest($filter: 
     email
     phone_number
     guestGroupID
+    guestGroupName
     guest_avatar
     avg_spend
     avg_ticket_type
@@ -613,6 +614,7 @@ export const onUpdateGuest = /* GraphQL */ `subscription OnUpdateGuest($filter: 
     email
     phone_number
     guestGroupID
+    guestGroupName
     guest_avatar
     avg_spend
     avg_ticket_type
@@ -649,6 +651,7 @@ export const onDeleteGuest = /* GraphQL */ `subscription OnDeleteGuest($filter: 
     email
     phone_number
     guestGroupID
+    guestGroupName
     guest_avatar
     avg_spend
     avg_ticket_type
@@ -866,9 +869,11 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
     message
     customerId
     bookingId
+    replyTo
     deleted
     createdAt
     createdByID
+    createdByImg
     createdByName
     updatedAt
     __typename
@@ -884,9 +889,11 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
     message
     customerId
     bookingId
+    replyTo
     deleted
     createdAt
     createdByID
+    createdByImg
     createdByName
     updatedAt
     __typename
@@ -902,9 +909,11 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
     message
     customerId
     bookingId
+    replyTo
     deleted
     createdAt
     createdByID
+    createdByImg
     createdByName
     updatedAt
     __typename
