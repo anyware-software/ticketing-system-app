@@ -581,6 +581,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           alignItems: "end",
           // marginTop:'2vh'
           marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
+          marginLeft: { xs: "0rem", sm: "2rem", l: "4rem" },
         }}
       >
         <Grid
