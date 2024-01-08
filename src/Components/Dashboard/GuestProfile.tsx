@@ -583,6 +583,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           alignItems: "end",
           // marginTop:'2vh'
           marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
+          marginLeft: { xs: "0rem", sm: "2rem", l: "4rem" },
         }}
       >
         <Grid
@@ -624,7 +625,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 alignItems: "center",
                 gap: { xs: 0, sm: 2 },
                 flexGrow: 1,
-                marginRight: { xs: "4rem", sm: "0rem" },
+                marginRight: { xs: "6.5rem", sm: "0rem" },
               }}
             >
               {avatarLoading ? (

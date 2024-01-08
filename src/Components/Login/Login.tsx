@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "../../state";
 import CloseIcon from "@mui/icons-material/Close";
 import ContentLoader from "../ContentLoader/ContentLoder";
+import { signOut } from "aws-amplify/auth";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -62,13 +63,27 @@ export default function Login() {
     }
   };
 
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem("user");
+  //   if (storedUser === "true") {
+  //     navigate("/dashboard");
+  //     setMessage("You are Logged in with Facbook already !");
+  // }, []);
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser === "true") {
-      navigate("/dashboard");
-      setMessage("You are Logged in with Facbook already !");
-    }
+    const checkLocalStorage = async () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser === "true") {
+        navigate("/dashboard");
+        setMessage("You are Logged in with Facebook already!");
+      } 
+      if(!storedUser) {
+        await signOut();
+      }
+    };
+  
+    checkLocalStorage();
   }, []);
+  
 
   if(loading) return <ContentLoader />
 

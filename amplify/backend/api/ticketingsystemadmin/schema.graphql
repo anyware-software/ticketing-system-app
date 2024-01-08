@@ -229,6 +229,7 @@ type Guest
       sortKeyFields: ["name"]
     )
   guestGroupID: ID
+  guestGroupName: String
   guest_avatar: String
   avg_spend: Int
   avg_ticket_type: String
@@ -349,8 +350,10 @@ type Comment
   message: String!
   customerId: String
   bookingId: String
+  replyTo: ID
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!
+  createdByImg: String
   createdByName: String!
 }

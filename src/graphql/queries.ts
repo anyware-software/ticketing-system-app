@@ -426,6 +426,7 @@ export const getGuest = /* GraphQL */ `query GetGuest($id: ID!) {
     email
     phone_number
     guestGroupID
+    guestGroupName
     guest_avatar
     avg_spend
     avg_ticket_type
@@ -464,6 +465,7 @@ export const listGuests = /* GraphQL */ `query ListGuests(
       email
       phone_number
       guestGroupID
+      guestGroupName
       guest_avatar
       avg_spend
       avg_ticket_type
@@ -518,6 +520,7 @@ export const ByEmail = /* GraphQL */ `query ByEmail(
       email
       phone_number
       guestGroupID
+      guestGroupName
       guest_avatar
       avg_spend
       avg_ticket_type
@@ -569,6 +572,7 @@ export const ByPhoneNumber = /* GraphQL */ `query ByPhoneNumber(
       email
       phone_number
       guestGroupID
+      guestGroupName
       guest_avatar
       avg_spend
       avg_ticket_type
@@ -780,9 +784,11 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
     message
     customerId
     bookingId
+    replyTo
     deleted
     createdAt
     createdByID
+    createdByImg
     createdByName
     updatedAt
     __typename
@@ -803,9 +809,11 @@ export const listComments = /* GraphQL */ `query ListComments(
       message
       customerId
       bookingId
+      replyTo
       deleted
       createdAt
       createdByID
+      createdByImg
       createdByName
       updatedAt
       __typename
