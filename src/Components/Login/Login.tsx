@@ -101,6 +101,7 @@ export default function Login() {
           backgroundSize: "cover",
           backgroundPosition: "center",
           height: "100vh",
+          backgroundAttachment: 'fixed',
           "&::before": {
             content: '""',
             position: "absolute",
@@ -117,23 +118,21 @@ export default function Login() {
         }}
       >
         <AppBar
-          // position="static"
+  position="relative"
           sx={{
             zIndex: 1,
-            position: "relative",
             backgroundColor: "transparent",
             border: 0,
             boxShadow: "none",
             alignItems: { xs: "center", sm: "start" },
             justifyContent: { xs: "end", sm: "start" },
-            height: { xs: "15vh", sm: "10vh" },
+            minHeight: { xs: "15vh", sm: "10vh" },
           }}
         >
           <Toolbar disableGutters>
             <Box
               sx={{
-                mx: 5,
-                mt: 3,
+                px: 5,
                 display: "flex",
               }}
             >
@@ -181,7 +180,7 @@ export default function Login() {
           </Alert>
         </Snackbar>
 
-        <Grid container spacing={2} sx={{ overflow: "hidden", flexGrow: 1 }}>
+        <Grid container spacing={2} sx={{ flexGrow: 1 , overflow:'auto',pl:{xs:0,sm:2},pr:{xs:0,sm:5}}}>
           <Grid
             item
             xs={12}
@@ -194,15 +193,15 @@ export default function Login() {
               justifyContent: { xs: "center", sm: "start" },
               alignItems: "center",
               flexDirection: "column",
-              marginTop: { xs: "0vh", sm: "10vh"},
+              marginTop: { xs: "0vh", sm: "1vh" ,md:'5vh',lg:'10vh'},
             }}
           >
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: 2,
-                width: { xs: "90%", sm: "auto" },
+                gap: 1,
+                // width: { xs: "90%", sm: "auto" },
               }}
             >
               <Box
@@ -415,6 +414,7 @@ export default function Login() {
                   OR
                 </Typography>
               </Box>
+
               <Box
                 sx={{
                   display: "flex",
@@ -498,6 +498,7 @@ export default function Login() {
               </Box>
             </Box>
           </Grid>
+          
           <Grid
             item
             xs={12}

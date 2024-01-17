@@ -74,10 +74,9 @@ export default function Register() {
         }}
       >
         <AppBar
-          // position="static"
+          position="relative"
           sx={{
             zIndex: 1,
-            position: "relative",
             backgroundColor: "transparent",
             border: 0,
             boxShadow: "none",
@@ -91,7 +90,6 @@ export default function Register() {
             <Box
               sx={{
                 mx: 5,
-                mt: 3,
                 display: { xs: "none", sm: "flex" },
               }}
             >
@@ -122,7 +120,7 @@ export default function Register() {
           </Toolbar>
         </AppBar>
 
-        <Grid container spacing={2} sx={{ overflow: "hidden", flexGrow: 1 }}>
+        <Grid container spacing={2} sx={{ overflow: "auto", flexGrow: 1 ,pl:{xs:0,sm:2},pr:{xs:0,sm:5}}}>
           <Grid
             item
             xs={12}
@@ -135,7 +133,7 @@ export default function Register() {
               justifyContent: {xs:"center",sm:"start"},
               alignItems: "center",
               flexDirection:'column',
-              marginTop: { xs: "0vh", sm: "10vh"},
+              marginTop: { xs: "0vh", sm: "1vh" ,md:'5vh',lg:'10vh'},
             }}
           >
             <Box
