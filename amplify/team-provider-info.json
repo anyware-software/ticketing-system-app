@@ -24,7 +24,7 @@
         },
         "ticketingsystemadmin93d9a57393d9a573PreSignup": {
           "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",
-          "s3Key": "amplify-builds/ticketingsystemadmin93d9a57393d9a573PreSignup-57632b614d39614f6154-build.zip"
+          "s3Key": "amplify-builds/ticketingsystemadmin93d9a57393d9a573PreSignup-4b50474570644d374b6b-build.zip"
         },
         "ticketingGuestsData": {
           "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",

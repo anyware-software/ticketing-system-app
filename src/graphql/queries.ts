@@ -826,3 +826,148 @@ export const listComments = /* GraphQL */ `query ListComments(
   APITypes.ListCommentsQueryVariables,
   APITypes.ListCommentsQuery
 >;
+export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
+  getEvent(id: $id) {
+    id
+    name
+    description
+    startDate
+    endDate
+    location {
+      address
+      __typename
+    }
+    todoList
+    eventComments {
+      image
+      name
+      message
+      __typename
+    }
+    map
+    image
+    gallery
+    visibleTo
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<APITypes.GetEventQueryVariables, APITypes.GetEventQuery>;
+export const listEvents = /* GraphQL */ `query ListEvents(
+  $filter: ModelEventFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      description
+      startDate
+      endDate
+      todoList
+      map
+      image
+      gallery
+      visibleTo
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListEventsQueryVariables,
+  APITypes.ListEventsQuery
+>;
+export const getEventTicket = /* GraphQL */ `query GetEventTicket($id: ID!) {
+  getEventTicket(id: $id) {
+    id
+    type
+    cashlessCredit
+    description
+    waves {
+      name
+      price
+      startDate
+      endDate
+      active
+      quota
+      AutomaticShift
+      __typename
+    }
+    color
+    paymentRules
+    approvalRule
+    showAll
+    showOnHold
+    onHoldDisplayText
+    showSoldOut
+    soldOutDisplayText
+    setAvailable
+    availableAtDate
+    allowTransferred
+    transferredAprroval
+    transferredSameGender
+    eventID
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetEventTicketQueryVariables,
+  APITypes.GetEventTicketQuery
+>;
+export const listEventTickets = /* GraphQL */ `query ListEventTickets(
+  $filter: ModelEventTicketFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listEventTickets(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      type
+      cashlessCredit
+      description
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListEventTicketsQueryVariables,
+  APITypes.ListEventTicketsQuery
+>;

@@ -923,3 +923,237 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
   APITypes.OnDeleteCommentSubscriptionVariables,
   APITypes.OnDeleteCommentSubscription
 >;
+export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: ModelSubscriptionEventFilterInput) {
+  onCreateEvent(filter: $filter) {
+    id
+    name
+    description
+    startDate
+    endDate
+    location {
+      address
+      __typename
+    }
+    todoList
+    eventComments {
+      image
+      name
+      message
+      __typename
+    }
+    map
+    image
+    gallery
+    visibleTo
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateEventSubscriptionVariables,
+  APITypes.OnCreateEventSubscription
+>;
+export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: ModelSubscriptionEventFilterInput) {
+  onUpdateEvent(filter: $filter) {
+    id
+    name
+    description
+    startDate
+    endDate
+    location {
+      address
+      __typename
+    }
+    todoList
+    eventComments {
+      image
+      name
+      message
+      __typename
+    }
+    map
+    image
+    gallery
+    visibleTo
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateEventSubscriptionVariables,
+  APITypes.OnUpdateEventSubscription
+>;
+export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: ModelSubscriptionEventFilterInput) {
+  onDeleteEvent(filter: $filter) {
+    id
+    name
+    description
+    startDate
+    endDate
+    location {
+      address
+      __typename
+    }
+    todoList
+    eventComments {
+      image
+      name
+      message
+      __typename
+    }
+    map
+    image
+    gallery
+    visibleTo
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteEventSubscriptionVariables,
+  APITypes.OnDeleteEventSubscription
+>;
+export const onCreateEventTicket = /* GraphQL */ `subscription OnCreateEventTicket(
+  $filter: ModelSubscriptionEventTicketFilterInput
+) {
+  onCreateEventTicket(filter: $filter) {
+    id
+    type
+    cashlessCredit
+    description
+    waves {
+      name
+      price
+      startDate
+      endDate
+      active
+      quota
+      AutomaticShift
+      __typename
+    }
+    color
+    paymentRules
+    approvalRule
+    showAll
+    showOnHold
+    onHoldDisplayText
+    showSoldOut
+    soldOutDisplayText
+    setAvailable
+    availableAtDate
+    allowTransferred
+    transferredAprroval
+    transferredSameGender
+    eventID
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateEventTicketSubscriptionVariables,
+  APITypes.OnCreateEventTicketSubscription
+>;
+export const onUpdateEventTicket = /* GraphQL */ `subscription OnUpdateEventTicket(
+  $filter: ModelSubscriptionEventTicketFilterInput
+) {
+  onUpdateEventTicket(filter: $filter) {
+    id
+    type
+    cashlessCredit
+    description
+    waves {
+      name
+      price
+      startDate
+      endDate
+      active
+      quota
+      AutomaticShift
+      __typename
+    }
+    color
+    paymentRules
+    approvalRule
+    showAll
+    showOnHold
+    onHoldDisplayText
+    showSoldOut
+    soldOutDisplayText
+    setAvailable
+    availableAtDate
+    allowTransferred
+    transferredAprroval
+    transferredSameGender
+    eventID
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateEventTicketSubscriptionVariables,
+  APITypes.OnUpdateEventTicketSubscription
+>;
+export const onDeleteEventTicket = /* GraphQL */ `subscription OnDeleteEventTicket(
+  $filter: ModelSubscriptionEventTicketFilterInput
+) {
+  onDeleteEventTicket(filter: $filter) {
+    id
+    type
+    cashlessCredit
+    description
+    waves {
+      name
+      price
+      startDate
+      endDate
+      active
+      quota
+      AutomaticShift
+      __typename
+    }
+    color
+    paymentRules
+    approvalRule
+    showAll
+    showOnHold
+    onHoldDisplayText
+    showSoldOut
+    soldOutDisplayText
+    setAvailable
+    availableAtDate
+    allowTransferred
+    transferredAprroval
+    transferredSameGender
+    eventID
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteEventTicketSubscriptionVariables,
+  APITypes.OnDeleteEventTicketSubscription
+>;

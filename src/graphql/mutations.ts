@@ -1016,3 +1016,249 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
   APITypes.DeleteCommentMutationVariables,
   APITypes.DeleteCommentMutation
 >;
+export const createEvent = /* GraphQL */ `mutation CreateEvent(
+  $input: CreateEventInput!
+  $condition: ModelEventConditionInput
+) {
+  createEvent(input: $input, condition: $condition) {
+    id
+    name
+    description
+    startDate
+    endDate
+    location {
+      address
+      __typename
+    }
+    todoList
+    eventComments {
+      image
+      name
+      message
+      __typename
+    }
+    map
+    image
+    gallery
+    visibleTo
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateEventMutationVariables,
+  APITypes.CreateEventMutation
+>;
+export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
+  $input: UpdateEventInput!
+  $condition: ModelEventConditionInput
+) {
+  updateEvent(input: $input, condition: $condition) {
+    id
+    name
+    description
+    startDate
+    endDate
+    location {
+      address
+      __typename
+    }
+    todoList
+    eventComments {
+      image
+      name
+      message
+      __typename
+    }
+    map
+    image
+    gallery
+    visibleTo
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateEventMutationVariables,
+  APITypes.UpdateEventMutation
+>;
+export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
+  $input: DeleteEventInput!
+  $condition: ModelEventConditionInput
+) {
+  deleteEvent(input: $input, condition: $condition) {
+    id
+    name
+    description
+    startDate
+    endDate
+    location {
+      address
+      __typename
+    }
+    todoList
+    eventComments {
+      image
+      name
+      message
+      __typename
+    }
+    map
+    image
+    gallery
+    visibleTo
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteEventMutationVariables,
+  APITypes.DeleteEventMutation
+>;
+export const createEventTicket = /* GraphQL */ `mutation CreateEventTicket(
+  $input: CreateEventTicketInput!
+  $condition: ModelEventTicketConditionInput
+) {
+  createEventTicket(input: $input, condition: $condition) {
+    id
+    type
+    cashlessCredit
+    description
+    waves {
+      name
+      price
+      startDate
+      endDate
+      active
+      quota
+      AutomaticShift
+      __typename
+    }
+    color
+    paymentRules
+    approvalRule
+    showAll
+    showOnHold
+    onHoldDisplayText
+    showSoldOut
+    soldOutDisplayText
+    setAvailable
+    availableAtDate
+    allowTransferred
+    transferredAprroval
+    transferredSameGender
+    eventID
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateEventTicketMutationVariables,
+  APITypes.CreateEventTicketMutation
+>;
+export const updateEventTicket = /* GraphQL */ `mutation UpdateEventTicket(
+  $input: UpdateEventTicketInput!
+  $condition: ModelEventTicketConditionInput
+) {
+  updateEventTicket(input: $input, condition: $condition) {
+    id
+    type
+    cashlessCredit
+    description
+    waves {
+      name
+      price
+      startDate
+      endDate
+      active
+      quota
+      AutomaticShift
+      __typename
+    }
+    color
+    paymentRules
+    approvalRule
+    showAll
+    showOnHold
+    onHoldDisplayText
+    showSoldOut
+    soldOutDisplayText
+    setAvailable
+    availableAtDate
+    allowTransferred
+    transferredAprroval
+    transferredSameGender
+    eventID
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateEventTicketMutationVariables,
+  APITypes.UpdateEventTicketMutation
+>;
+export const deleteEventTicket = /* GraphQL */ `mutation DeleteEventTicket(
+  $input: DeleteEventTicketInput!
+  $condition: ModelEventTicketConditionInput
+) {
+  deleteEventTicket(input: $input, condition: $condition) {
+    id
+    type
+    cashlessCredit
+    description
+    waves {
+      name
+      price
+      startDate
+      endDate
+      active
+      quota
+      AutomaticShift
+      __typename
+    }
+    color
+    paymentRules
+    approvalRule
+    showAll
+    showOnHold
+    onHoldDisplayText
+    showSoldOut
+    soldOutDisplayText
+    setAvailable
+    availableAtDate
+    allowTransferred
+    transferredAprroval
+    transferredSameGender
+    eventID
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteEventTicketMutationVariables,
+  APITypes.DeleteEventTicketMutation
+>;
