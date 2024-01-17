@@ -129,6 +129,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "ticketingEventsOperations": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "ticketingsystemadmin"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "ticketingGuestsData": {
       "build": true,
       "dependsOn": [
@@ -165,6 +181,22 @@
         {
           "category": "function",
           "resourceName": "AdminQueries58d9dabb"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketingEventsOperations_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketingEventsOperations"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketingEventsOperations_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketingEventsOperations"
         }
       ]
     },
