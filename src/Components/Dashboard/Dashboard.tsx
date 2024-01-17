@@ -33,6 +33,7 @@ import Login from "../Login/Login";
 import { dbStorage } from "../../constants/Enums";
 import { useEffect, useState } from "react";
 import ContentLoader from "../ContentLoader/ContentLoder";
+import Events from "./Events";
 
 const drawerWidth: number = 240;
 
@@ -246,8 +247,8 @@ export default function Dashboard() {
                   : "../../../Images/unknownUser.png"
               }
               style={{
-                width: "8rem",
-                height: "8rem",
+                width: "5rem",
+                height: "5rem",
                 borderRadius: "50%",
                 marginLeft: "1rem",
                 display: open ? "block" : "none",
@@ -284,23 +285,14 @@ export default function Dashboard() {
       </Drawer>
       {/* Main Component */}
       {/* <GuestProfile /> */}
-      {selectedItem === "My Profile" ? (
-        <GuestProfile toggleDrawer={toggleDrawer} openSideNav={open} />
-      ) : (
-        // ) : selectedItem === "Notifications" ? (
-        //   <NotificationsComponent />
-        // ) : selectedItem === "Calender" ? (
-        //   <CalendarComponent />
-        // ) : selectedItem === "Bookmark" ? (
-        //   <BookmarkComponent />
-        // ) : selectedItem === "Contact Us" ? (
-        //   <ContactUsComponent />
-        // ) : selectedItem === "Setting" ? (
-        //   <SettingsComponent />
-        // ) : selectedItem === "Help & FAQs" ? (
-        //   <HelpAndFaqsComponent />
+      {selectedItem === "My Profile" && (
         <GuestProfile toggleDrawer={toggleDrawer} openSideNav={open} />
       )}
+      {selectedItem === "events" && (
+        <Events />
+      )}
+        
+      
     </Box>
   );
 }
