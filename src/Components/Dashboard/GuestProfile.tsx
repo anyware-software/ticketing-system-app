@@ -581,7 +581,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           alignItems: "end",
           // marginTop:'2vh'
           marginTop: { xs: "5vh", sm: "10vh", l: "0vh" },
-          marginLeft: { xs: "0rem", sm: "2rem", l: "4rem" },
+          marginLeft: { xs: "0rem", sm: "1rem", l: "2rem" },
         }}
       >
         <Grid
@@ -652,6 +652,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     onMouseLeave={() => setIsHovered(false)}
                     style={{ position: "relative" }}
                   >
+                <Box sx={{ position: 'relative', display: 'inline-block' }}>
                     {selectedImage ? (
                       <img
                         // src={selectedImage}
@@ -666,12 +667,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                         alt="unknownUser"
                       />
                     ) : (
-                      <div
-                        style={{
-                          position: "relative",
-                          display: "inline-block",
-                        }}
-                      >
+                      
                         <img
                           src={
                             user?.guest_avatar
@@ -684,9 +680,11 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                             borderRadius: "50%",
                             marginLeft: "1rem",
                             cursor: "pointer",
+                            position: "relative"
                           }}
                           alt="unknownUser"
                         />
+                        )}
                         {isHovered && (
                           <div
                             style={{
@@ -712,8 +710,8 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                             Upload Photo
                           </div>
                         )}
-                      </div>
-                    )}
+                      </Box>
+                    
                   </label>
                 </div>
               )}
@@ -988,7 +986,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                height: "10vh",
+                height: {sm:'12vh',xl:'10vh'},
               }}
             >
               <Box>
@@ -1180,7 +1178,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                height: "10vh",
+                height: {sm:'12vh',xl:'10vh'},
               }}
             >
               <Box>
