@@ -12,23 +12,23 @@ Amplify Params - DO NOT EDIT */
 const fetch = require("node-fetch");
 const { operationIdEnum } = require("./constants/enum");
 
-const { getEvent, listEvents } = require("./constants/queries");
+const { getEvent, listEvents, byEventID } = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
 const GRAPHQL_API_KEY =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIKEYOUTPUT;
 
-  function formatDateToYYYYMMDDHHMMSS(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hour = String(date.getHours()).padStart(2, "0");
-    const minute = String(date.getMinutes()).padStart(2, "0");
-    const second = String(date.getSeconds()).padStart(2, "0");
+function formatDateToYYYYMMDDHHMMSS(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hour = String(date.getHours()).padStart(2, "0");
+  const minute = String(date.getMinutes()).padStart(2, "0");
+  const second = String(date.getSeconds()).padStart(2, "0");
 
-    return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-  }
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+}
 exports.handler = async (event) => {
   try {
     let requestBody;
@@ -42,12 +42,7 @@ exports.handler = async (event) => {
     const eventID = requestBody.eventID;
     let variables, query;
 
-    if (operationId === operationIdEnum.getEvent) {
-      variables = {
-        id: eventID,
-      };
-      query = getEvent;
-    } else if (operationId === operationIdEnum.listEvents) {
+    if (operationId === operationIdEnum.listEvents) {
       variables = {
         filter: {
           deleted: {
@@ -82,7 +77,51 @@ exports.handler = async (event) => {
 
     let items = [];
     if (operationId === operationIdEnum.getEvent) {
-      items = responseBody.data.getEvent;
+      console.log("starter=d");
+      const eventVariables = {
+        id: eventID,
+      };
+      const eventQuery = getEvent;
+      const eventOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": GRAPHQL_API_KEY,
+        },
+        body: JSON.stringify({ query: eventQuery, variables: eventVariables }),
+      };
+      const eventPromise = fetch(GRAPHQL_ENDPOINT, eventOptions);
+
+      const ticketsVariables = {
+        eventID: eventID,
+      };
+      const ticketsQuery = byEventID;
+      const ticketstOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": GRAPHQL_API_KEY,
+        },
+        body: JSON.stringify({
+          query: ticketsQuery,
+          variables: ticketsVariables,
+        }),
+      };
+      const ticketsPromise = fetch(GRAPHQL_ENDPOINT, ticketstOptions);
+      console.log("after promise");
+      const [eventResponse, ticketResponse] = await Promise.all([
+        eventPromise,
+        ticketsPromise,
+      ]);
+
+      const [event, tickets] = await Promise.all([
+        eventResponse.json(),
+        ticketResponse.json(),
+      ]);
+      items = {
+        event: event.data.getEvent,
+        tickets: tickets.data.byEventID,
+      };
     } else if (operationId === operationIdEnum.listEvents) {
       items = responseBody.data.listEvents;
     }

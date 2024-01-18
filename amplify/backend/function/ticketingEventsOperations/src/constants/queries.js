@@ -20,6 +20,10 @@ const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
     image
     gallery
     visibleTo
+    tickets {
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -29,7 +33,6 @@ const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
   }
 }
 `
-
 const listEvents = /* GraphQL */ `query ListEvents(
   $filter: ModelEventFilterInput
   $limit: Int
@@ -59,8 +62,54 @@ const listEvents = /* GraphQL */ `query ListEvents(
   }
 }
 `
-
+const byEventID = /* GraphQL */ `query ByEventID(
+  $eventID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelEventTicketFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  byEventID(
+    eventID: $eventID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      type
+      cashlessCredit
+      description
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+`
   module.exports = {
     getEvent,
     listEvents,
+    byEventID,
   };

@@ -945,6 +945,10 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
     image
     gallery
     visibleTo
+    tickets {
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -979,6 +983,10 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
     image
     gallery
     visibleTo
+    tickets {
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -1013,6 +1021,10 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
     image
     gallery
     visibleTo
+    tickets {
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -1062,6 +1074,7 @@ export const onCreateEventTicket = /* GraphQL */ `subscription OnCreateEventTick
     createdByID
     createdByName
     updatedAt
+    eventTicketsId
     __typename
   }
 }
@@ -1106,6 +1119,7 @@ export const onUpdateEventTicket = /* GraphQL */ `subscription OnUpdateEventTick
     createdByID
     createdByName
     updatedAt
+    eventTicketsId
     __typename
   }
 }
@@ -1150,6 +1164,7 @@ export const onDeleteEventTicket = /* GraphQL */ `subscription OnDeleteEventTick
     createdByID
     createdByName
     updatedAt
+    eventTicketsId
     __typename
   }
 }

@@ -382,6 +382,7 @@ type Event
   image: String
   gallery: [String]
   visibleTo: String
+  tickets: [EventTicket] @hasMany
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!
@@ -434,7 +435,7 @@ type EventTicket
   allowTransferred: Boolean
   transferredAprroval: Boolean
   transferredSameGender: Boolean
-  eventID: ID!
+  eventID: ID! @index(name: "byEventID", queryField: "byEventID")
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!

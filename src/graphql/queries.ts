@@ -848,6 +848,10 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
     image
     gallery
     visibleTo
+    tickets {
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -924,6 +928,7 @@ export const getEventTicket = /* GraphQL */ `query GetEventTicket($id: ID!) {
     createdByID
     createdByName
     updatedAt
+    eventTicketsId
     __typename
   }
 }
@@ -961,6 +966,7 @@ export const listEventTickets = /* GraphQL */ `query ListEventTickets(
       createdByID
       createdByName
       updatedAt
+      eventTicketsId
       __typename
     }
     nextToken
@@ -971,3 +977,49 @@ export const listEventTickets = /* GraphQL */ `query ListEventTickets(
   APITypes.ListEventTicketsQueryVariables,
   APITypes.ListEventTicketsQuery
 >;
+export const byEventID = /* GraphQL */ `query ByEventID(
+  $eventID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelEventTicketFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  byEventID(
+    eventID: $eventID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      type
+      cashlessCredit
+      description
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<APITypes.ByEventIDQueryVariables, APITypes.ByEventIDQuery>;

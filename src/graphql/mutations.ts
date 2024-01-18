@@ -1041,6 +1041,10 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
     image
     gallery
     visibleTo
+    tickets {
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -1078,6 +1082,10 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
     image
     gallery
     visibleTo
+    tickets {
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -1115,6 +1123,10 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
     image
     gallery
     visibleTo
+    tickets {
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -1165,6 +1177,7 @@ export const createEventTicket = /* GraphQL */ `mutation CreateEventTicket(
     createdByID
     createdByName
     updatedAt
+    eventTicketsId
     __typename
   }
 }
@@ -1210,6 +1223,7 @@ export const updateEventTicket = /* GraphQL */ `mutation UpdateEventTicket(
     createdByID
     createdByName
     updatedAt
+    eventTicketsId
     __typename
   }
 }
@@ -1255,6 +1269,7 @@ export const deleteEventTicket = /* GraphQL */ `mutation DeleteEventTicket(
     createdByID
     createdByName
     updatedAt
+    eventTicketsId
     __typename
   }
 }

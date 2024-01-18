@@ -32,7 +32,7 @@
         },
         "ticketingEventsOperations": {
           "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",
-          "s3Key": "amplify-builds/ticketingEventsOperations-444945344e4d57446348-build.zip"
+          "s3Key": "amplify-builds/ticketingEventsOperations-695948413156614b5850-build.zip"
         }
       },
       "api": {
