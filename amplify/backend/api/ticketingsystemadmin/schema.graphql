@@ -367,7 +367,7 @@ type Event
       # allow all authenticated users to read attachments
       { allow: private, operations: [read] }
       # allow all guest users (unauthenticated) to read attachments
-      { allow: public, operations: [read], provider: iam }
+      { allow: public, operations: [create, update, delete, read] }
     ]
   ) {
   id: ID!
@@ -450,3 +450,4 @@ type Wave {
   quota: Int
   AutomaticShift: Boolean
 }
+
