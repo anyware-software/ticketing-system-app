@@ -942,6 +942,278 @@ export type DeleteCommentInput = {
   id: string,
 };
 
+export type CreateEventInput = {
+  id?: string | null,
+  name?: string | null,
+  description?: string | null,
+  startDate?: string | null,
+  endDate?: string | null,
+  location?: LocationInput | null,
+  todoList?: Array< string | null > | null,
+  eventComments?: Array< EventCommentsInput | null > | null,
+  map?: string | null,
+  image?: string | null,
+  gallery?: Array< string | null > | null,
+  visibleTo?: string | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID: string,
+  createdByName: string,
+};
+
+export type LocationInput = {
+  address?: string | null,
+  coordinates?: CoordinatesInput | null,
+};
+
+export type CoordinatesInput = {
+  lat?: number | null,
+  lng?: number | null,
+};
+
+export type EventCommentsInput = {
+  image?: string | null,
+  name?: string | null,
+  message?: string | null,
+};
+
+export type ModelEventConditionInput = {
+  name?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  startDate?: ModelStringInput | null,
+  endDate?: ModelStringInput | null,
+  todoList?: ModelStringInput | null,
+  map?: ModelStringInput | null,
+  image?: ModelStringInput | null,
+  gallery?: ModelStringInput | null,
+  visibleTo?: ModelStringInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelEventConditionInput | null > | null,
+  or?: Array< ModelEventConditionInput | null > | null,
+  not?: ModelEventConditionInput | null,
+};
+
+export type Event = {
+  __typename: "Event",
+  id: string,
+  name?: string | null,
+  description?: string | null,
+  startDate?: string | null,
+  endDate?: string | null,
+  location?: Location | null,
+  todoList?: Array< string | null > | null,
+  eventComments?:  Array<EventComments | null > | null,
+  map?: string | null,
+  image?: string | null,
+  gallery?: Array< string | null > | null,
+  visibleTo?: string | null,
+  tickets?: ModelEventTicketConnection | null,
+  deleted?: string | null,
+  createdAt: string,
+  createdByID: string,
+  createdByName: string,
+  updatedAt: string,
+};
+
+export type Location = {
+  __typename: "Location",
+  address?: string | null,
+  coordinates?: Coordinates | null,
+};
+
+export type Coordinates = {
+  __typename: "Coordinates",
+  lat?: number | null,
+  lng?: number | null,
+};
+
+export type EventComments = {
+  __typename: "EventComments",
+  image?: string | null,
+  name?: string | null,
+  message?: string | null,
+};
+
+export type ModelEventTicketConnection = {
+  __typename: "ModelEventTicketConnection",
+  items:  Array<EventTicket | null >,
+  nextToken?: string | null,
+};
+
+export type EventTicket = {
+  __typename: "EventTicket",
+  id: string,
+  type: string,
+  cashlessCredit?: number | null,
+  description?: string | null,
+  waves?:  Array<Wave | null > | null,
+  color?: string | null,
+  paymentRules?: string | null,
+  approvalRule?: string | null,
+  showAll?: boolean | null,
+  showOnHold?: boolean | null,
+  onHoldDisplayText?: string | null,
+  showSoldOut?: boolean | null,
+  soldOutDisplayText?: string | null,
+  setAvailable?: boolean | null,
+  availableAtDate?: string | null,
+  allowTransferred?: boolean | null,
+  transferredAprroval?: boolean | null,
+  transferredSameGender?: boolean | null,
+  eventID: string,
+  deleted?: string | null,
+  createdAt: string,
+  createdByID: string,
+  createdByName: string,
+  updatedAt: string,
+  eventTicketsId?: string | null,
+};
+
+export type Wave = {
+  __typename: "Wave",
+  name: string,
+  price: number,
+  startDate?: string | null,
+  endDate?: string | null,
+  active?: boolean | null,
+  quota?: number | null,
+  AutomaticShift?: boolean | null,
+};
+
+export type UpdateEventInput = {
+  id: string,
+  name?: string | null,
+  description?: string | null,
+  startDate?: string | null,
+  endDate?: string | null,
+  location?: LocationInput | null,
+  todoList?: Array< string | null > | null,
+  eventComments?: Array< EventCommentsInput | null > | null,
+  map?: string | null,
+  image?: string | null,
+  gallery?: Array< string | null > | null,
+  visibleTo?: string | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID?: string | null,
+  createdByName?: string | null,
+};
+
+export type DeleteEventInput = {
+  id: string,
+};
+
+export type CreateEventTicketInput = {
+  id?: string | null,
+  type: string,
+  cashlessCredit?: number | null,
+  description?: string | null,
+  waves?: Array< WaveInput | null > | null,
+  color?: string | null,
+  paymentRules?: string | null,
+  approvalRule?: string | null,
+  showAll?: boolean | null,
+  showOnHold?: boolean | null,
+  onHoldDisplayText?: string | null,
+  showSoldOut?: boolean | null,
+  soldOutDisplayText?: string | null,
+  setAvailable?: boolean | null,
+  availableAtDate?: string | null,
+  allowTransferred?: boolean | null,
+  transferredAprroval?: boolean | null,
+  transferredSameGender?: boolean | null,
+  eventID: string,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID: string,
+  createdByName: string,
+  eventTicketsId?: string | null,
+};
+
+export type WaveInput = {
+  name: string,
+  price: number,
+  startDate?: string | null,
+  endDate?: string | null,
+  active?: boolean | null,
+  quota?: number | null,
+  AutomaticShift?: boolean | null,
+};
+
+export type ModelEventTicketConditionInput = {
+  type?: ModelStringInput | null,
+  cashlessCredit?: ModelFloatInput | null,
+  description?: ModelStringInput | null,
+  color?: ModelStringInput | null,
+  paymentRules?: ModelStringInput | null,
+  approvalRule?: ModelStringInput | null,
+  showAll?: ModelBooleanInput | null,
+  showOnHold?: ModelBooleanInput | null,
+  onHoldDisplayText?: ModelStringInput | null,
+  showSoldOut?: ModelBooleanInput | null,
+  soldOutDisplayText?: ModelStringInput | null,
+  setAvailable?: ModelBooleanInput | null,
+  availableAtDate?: ModelStringInput | null,
+  allowTransferred?: ModelBooleanInput | null,
+  transferredAprroval?: ModelBooleanInput | null,
+  transferredSameGender?: ModelBooleanInput | null,
+  eventID?: ModelIDInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelEventTicketConditionInput | null > | null,
+  or?: Array< ModelEventTicketConditionInput | null > | null,
+  not?: ModelEventTicketConditionInput | null,
+  eventTicketsId?: ModelIDInput | null,
+};
+
+export type ModelFloatInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateEventTicketInput = {
+  id: string,
+  type?: string | null,
+  cashlessCredit?: number | null,
+  description?: string | null,
+  waves?: Array< WaveInput | null > | null,
+  color?: string | null,
+  paymentRules?: string | null,
+  approvalRule?: string | null,
+  showAll?: boolean | null,
+  showOnHold?: boolean | null,
+  onHoldDisplayText?: string | null,
+  showSoldOut?: boolean | null,
+  soldOutDisplayText?: string | null,
+  setAvailable?: boolean | null,
+  availableAtDate?: string | null,
+  allowTransferred?: boolean | null,
+  transferredAprroval?: boolean | null,
+  transferredSameGender?: boolean | null,
+  eventID?: string | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID?: string | null,
+  createdByName?: string | null,
+  eventTicketsId?: string | null,
+};
+
+export type DeleteEventTicketInput = {
+  id: string,
+};
+
 export type ModelAccountFilterInput = {
   id?: ModelIDInput | null,
   domain?: ModelStringInput | null,
@@ -1265,6 +1537,61 @@ export type ModelCommentConnection = {
   nextToken?: string | null,
 };
 
+export type ModelEventFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  startDate?: ModelStringInput | null,
+  endDate?: ModelStringInput | null,
+  todoList?: ModelStringInput | null,
+  map?: ModelStringInput | null,
+  image?: ModelStringInput | null,
+  gallery?: ModelStringInput | null,
+  visibleTo?: ModelStringInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelEventFilterInput | null > | null,
+  or?: Array< ModelEventFilterInput | null > | null,
+  not?: ModelEventFilterInput | null,
+};
+
+export type ModelEventConnection = {
+  __typename: "ModelEventConnection",
+  items:  Array<Event | null >,
+  nextToken?: string | null,
+};
+
+export type ModelEventTicketFilterInput = {
+  id?: ModelIDInput | null,
+  type?: ModelStringInput | null,
+  cashlessCredit?: ModelFloatInput | null,
+  description?: ModelStringInput | null,
+  color?: ModelStringInput | null,
+  paymentRules?: ModelStringInput | null,
+  approvalRule?: ModelStringInput | null,
+  showAll?: ModelBooleanInput | null,
+  showOnHold?: ModelBooleanInput | null,
+  onHoldDisplayText?: ModelStringInput | null,
+  showSoldOut?: ModelBooleanInput | null,
+  soldOutDisplayText?: ModelStringInput | null,
+  setAvailable?: ModelBooleanInput | null,
+  availableAtDate?: ModelStringInput | null,
+  allowTransferred?: ModelBooleanInput | null,
+  transferredAprroval?: ModelBooleanInput | null,
+  transferredSameGender?: ModelBooleanInput | null,
+  eventID?: ModelIDInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelEventTicketFilterInput | null > | null,
+  or?: Array< ModelEventTicketFilterInput | null > | null,
+  not?: ModelEventTicketFilterInput | null,
+  eventTicketsId?: ModelIDInput | null,
+};
+
 export type ModelSubscriptionAccountFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   domain?: ModelSubscriptionStringInput | null,
@@ -1525,6 +1852,64 @@ export type ModelSubscriptionCommentFilterInput = {
   createdByName?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionCommentFilterInput | null > | null,
   or?: Array< ModelSubscriptionCommentFilterInput | null > | null,
+};
+
+export type ModelSubscriptionEventFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  name?: ModelSubscriptionStringInput | null,
+  description?: ModelSubscriptionStringInput | null,
+  startDate?: ModelSubscriptionStringInput | null,
+  endDate?: ModelSubscriptionStringInput | null,
+  todoList?: ModelSubscriptionStringInput | null,
+  map?: ModelSubscriptionStringInput | null,
+  image?: ModelSubscriptionStringInput | null,
+  gallery?: ModelSubscriptionStringInput | null,
+  visibleTo?: ModelSubscriptionStringInput | null,
+  deleted?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  createdByID?: ModelSubscriptionStringInput | null,
+  createdByName?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionEventFilterInput | null > | null,
+  or?: Array< ModelSubscriptionEventFilterInput | null > | null,
+};
+
+export type ModelSubscriptionEventTicketFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  type?: ModelSubscriptionStringInput | null,
+  cashlessCredit?: ModelSubscriptionFloatInput | null,
+  description?: ModelSubscriptionStringInput | null,
+  color?: ModelSubscriptionStringInput | null,
+  paymentRules?: ModelSubscriptionStringInput | null,
+  approvalRule?: ModelSubscriptionStringInput | null,
+  showAll?: ModelSubscriptionBooleanInput | null,
+  showOnHold?: ModelSubscriptionBooleanInput | null,
+  onHoldDisplayText?: ModelSubscriptionStringInput | null,
+  showSoldOut?: ModelSubscriptionBooleanInput | null,
+  soldOutDisplayText?: ModelSubscriptionStringInput | null,
+  setAvailable?: ModelSubscriptionBooleanInput | null,
+  availableAtDate?: ModelSubscriptionStringInput | null,
+  allowTransferred?: ModelSubscriptionBooleanInput | null,
+  transferredAprroval?: ModelSubscriptionBooleanInput | null,
+  transferredSameGender?: ModelSubscriptionBooleanInput | null,
+  eventID?: ModelSubscriptionIDInput | null,
+  deleted?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  createdByID?: ModelSubscriptionStringInput | null,
+  createdByName?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionEventTicketFilterInput | null > | null,
+  or?: Array< ModelSubscriptionEventTicketFilterInput | null > | null,
+};
+
+export type ModelSubscriptionFloatInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  in?: Array< number | null > | null,
+  notIn?: Array< number | null > | null,
 };
 
 export type CreateAccountMutationVariables = {
@@ -2496,6 +2881,261 @@ export type DeleteCommentMutation = {
   } | null,
 };
 
+export type CreateEventMutationVariables = {
+  input: CreateEventInput,
+  condition?: ModelEventConditionInput | null,
+};
+
+export type CreateEventMutation = {
+  createEvent?:  {
+    __typename: "Event",
+    id: string,
+    name?: string | null,
+    description?: string | null,
+    startDate?: string | null,
+    endDate?: string | null,
+    location?:  {
+      __typename: "Location",
+      address?: string | null,
+    } | null,
+    todoList?: Array< string | null > | null,
+    eventComments?:  Array< {
+      __typename: "EventComments",
+      image?: string | null,
+      name?: string | null,
+      message?: string | null,
+    } | null > | null,
+    map?: string | null,
+    image?: string | null,
+    gallery?: Array< string | null > | null,
+    visibleTo?: string | null,
+    tickets?:  {
+      __typename: "ModelEventTicketConnection",
+      nextToken?: string | null,
+    } | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateEventMutationVariables = {
+  input: UpdateEventInput,
+  condition?: ModelEventConditionInput | null,
+};
+
+export type UpdateEventMutation = {
+  updateEvent?:  {
+    __typename: "Event",
+    id: string,
+    name?: string | null,
+    description?: string | null,
+    startDate?: string | null,
+    endDate?: string | null,
+    location?:  {
+      __typename: "Location",
+      address?: string | null,
+    } | null,
+    todoList?: Array< string | null > | null,
+    eventComments?:  Array< {
+      __typename: "EventComments",
+      image?: string | null,
+      name?: string | null,
+      message?: string | null,
+    } | null > | null,
+    map?: string | null,
+    image?: string | null,
+    gallery?: Array< string | null > | null,
+    visibleTo?: string | null,
+    tickets?:  {
+      __typename: "ModelEventTicketConnection",
+      nextToken?: string | null,
+    } | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteEventMutationVariables = {
+  input: DeleteEventInput,
+  condition?: ModelEventConditionInput | null,
+};
+
+export type DeleteEventMutation = {
+  deleteEvent?:  {
+    __typename: "Event",
+    id: string,
+    name?: string | null,
+    description?: string | null,
+    startDate?: string | null,
+    endDate?: string | null,
+    location?:  {
+      __typename: "Location",
+      address?: string | null,
+    } | null,
+    todoList?: Array< string | null > | null,
+    eventComments?:  Array< {
+      __typename: "EventComments",
+      image?: string | null,
+      name?: string | null,
+      message?: string | null,
+    } | null > | null,
+    map?: string | null,
+    image?: string | null,
+    gallery?: Array< string | null > | null,
+    visibleTo?: string | null,
+    tickets?:  {
+      __typename: "ModelEventTicketConnection",
+      nextToken?: string | null,
+    } | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateEventTicketMutationVariables = {
+  input: CreateEventTicketInput,
+  condition?: ModelEventTicketConditionInput | null,
+};
+
+export type CreateEventTicketMutation = {
+  createEventTicket?:  {
+    __typename: "EventTicket",
+    id: string,
+    type: string,
+    cashlessCredit?: number | null,
+    description?: string | null,
+    waves?:  Array< {
+      __typename: "Wave",
+      name: string,
+      price: number,
+      startDate?: string | null,
+      endDate?: string | null,
+      active?: boolean | null,
+      quota?: number | null,
+      AutomaticShift?: boolean | null,
+    } | null > | null,
+    color?: string | null,
+    paymentRules?: string | null,
+    approvalRule?: string | null,
+    showAll?: boolean | null,
+    showOnHold?: boolean | null,
+    onHoldDisplayText?: string | null,
+    showSoldOut?: boolean | null,
+    soldOutDisplayText?: string | null,
+    setAvailable?: boolean | null,
+    availableAtDate?: string | null,
+    allowTransferred?: boolean | null,
+    transferredAprroval?: boolean | null,
+    transferredSameGender?: boolean | null,
+    eventID: string,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+    eventTicketsId?: string | null,
+  } | null,
+};
+
+export type UpdateEventTicketMutationVariables = {
+  input: UpdateEventTicketInput,
+  condition?: ModelEventTicketConditionInput | null,
+};
+
+export type UpdateEventTicketMutation = {
+  updateEventTicket?:  {
+    __typename: "EventTicket",
+    id: string,
+    type: string,
+    cashlessCredit?: number | null,
+    description?: string | null,
+    waves?:  Array< {
+      __typename: "Wave",
+      name: string,
+      price: number,
+      startDate?: string | null,
+      endDate?: string | null,
+      active?: boolean | null,
+      quota?: number | null,
+      AutomaticShift?: boolean | null,
+    } | null > | null,
+    color?: string | null,
+    paymentRules?: string | null,
+    approvalRule?: string | null,
+    showAll?: boolean | null,
+    showOnHold?: boolean | null,
+    onHoldDisplayText?: string | null,
+    showSoldOut?: boolean | null,
+    soldOutDisplayText?: string | null,
+    setAvailable?: boolean | null,
+    availableAtDate?: string | null,
+    allowTransferred?: boolean | null,
+    transferredAprroval?: boolean | null,
+    transferredSameGender?: boolean | null,
+    eventID: string,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+    eventTicketsId?: string | null,
+  } | null,
+};
+
+export type DeleteEventTicketMutationVariables = {
+  input: DeleteEventTicketInput,
+  condition?: ModelEventTicketConditionInput | null,
+};
+
+export type DeleteEventTicketMutation = {
+  deleteEventTicket?:  {
+    __typename: "EventTicket",
+    id: string,
+    type: string,
+    cashlessCredit?: number | null,
+    description?: string | null,
+    waves?:  Array< {
+      __typename: "Wave",
+      name: string,
+      price: number,
+      startDate?: string | null,
+      endDate?: string | null,
+      active?: boolean | null,
+      quota?: number | null,
+      AutomaticShift?: boolean | null,
+    } | null > | null,
+    color?: string | null,
+    paymentRules?: string | null,
+    approvalRule?: string | null,
+    showAll?: boolean | null,
+    showOnHold?: boolean | null,
+    onHoldDisplayText?: string | null,
+    showSoldOut?: boolean | null,
+    soldOutDisplayText?: string | null,
+    setAvailable?: boolean | null,
+    availableAtDate?: string | null,
+    allowTransferred?: boolean | null,
+    transferredAprroval?: boolean | null,
+    transferredSameGender?: boolean | null,
+    eventID: string,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+    eventTicketsId?: string | null,
+  } | null,
+};
+
 export type GetAccountQueryVariables = {
   id: string,
 };
@@ -3297,6 +3937,202 @@ export type ListCommentsQuery = {
       createdByImg?: string | null,
       createdByName: string,
       updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetEventQueryVariables = {
+  id: string,
+};
+
+export type GetEventQuery = {
+  getEvent?:  {
+    __typename: "Event",
+    id: string,
+    name?: string | null,
+    description?: string | null,
+    startDate?: string | null,
+    endDate?: string | null,
+    location?:  {
+      __typename: "Location",
+      address?: string | null,
+    } | null,
+    todoList?: Array< string | null > | null,
+    eventComments?:  Array< {
+      __typename: "EventComments",
+      image?: string | null,
+      name?: string | null,
+      message?: string | null,
+    } | null > | null,
+    map?: string | null,
+    image?: string | null,
+    gallery?: Array< string | null > | null,
+    visibleTo?: string | null,
+    tickets?:  {
+      __typename: "ModelEventTicketConnection",
+      nextToken?: string | null,
+    } | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListEventsQueryVariables = {
+  filter?: ModelEventFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListEventsQuery = {
+  listEvents?:  {
+    __typename: "ModelEventConnection",
+    items:  Array< {
+      __typename: "Event",
+      id: string,
+      name?: string | null,
+      description?: string | null,
+      startDate?: string | null,
+      endDate?: string | null,
+      todoList?: Array< string | null > | null,
+      map?: string | null,
+      image?: string | null,
+      gallery?: Array< string | null > | null,
+      visibleTo?: string | null,
+      deleted?: string | null,
+      createdAt: string,
+      createdByID: string,
+      createdByName: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetEventTicketQueryVariables = {
+  id: string,
+};
+
+export type GetEventTicketQuery = {
+  getEventTicket?:  {
+    __typename: "EventTicket",
+    id: string,
+    type: string,
+    cashlessCredit?: number | null,
+    description?: string | null,
+    waves?:  Array< {
+      __typename: "Wave",
+      name: string,
+      price: number,
+      startDate?: string | null,
+      endDate?: string | null,
+      active?: boolean | null,
+      quota?: number | null,
+      AutomaticShift?: boolean | null,
+    } | null > | null,
+    color?: string | null,
+    paymentRules?: string | null,
+    approvalRule?: string | null,
+    showAll?: boolean | null,
+    showOnHold?: boolean | null,
+    onHoldDisplayText?: string | null,
+    showSoldOut?: boolean | null,
+    soldOutDisplayText?: string | null,
+    setAvailable?: boolean | null,
+    availableAtDate?: string | null,
+    allowTransferred?: boolean | null,
+    transferredAprroval?: boolean | null,
+    transferredSameGender?: boolean | null,
+    eventID: string,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+    eventTicketsId?: string | null,
+  } | null,
+};
+
+export type ListEventTicketsQueryVariables = {
+  filter?: ModelEventTicketFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListEventTicketsQuery = {
+  listEventTickets?:  {
+    __typename: "ModelEventTicketConnection",
+    items:  Array< {
+      __typename: "EventTicket",
+      id: string,
+      type: string,
+      cashlessCredit?: number | null,
+      description?: string | null,
+      color?: string | null,
+      paymentRules?: string | null,
+      approvalRule?: string | null,
+      showAll?: boolean | null,
+      showOnHold?: boolean | null,
+      onHoldDisplayText?: string | null,
+      showSoldOut?: boolean | null,
+      soldOutDisplayText?: string | null,
+      setAvailable?: boolean | null,
+      availableAtDate?: string | null,
+      allowTransferred?: boolean | null,
+      transferredAprroval?: boolean | null,
+      transferredSameGender?: boolean | null,
+      eventID: string,
+      deleted?: string | null,
+      createdAt: string,
+      createdByID: string,
+      createdByName: string,
+      updatedAt: string,
+      eventTicketsId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ByEventIDQueryVariables = {
+  eventID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelEventTicketFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ByEventIDQuery = {
+  byEventID?:  {
+    __typename: "ModelEventTicketConnection",
+    items:  Array< {
+      __typename: "EventTicket",
+      id: string,
+      type: string,
+      cashlessCredit?: number | null,
+      description?: string | null,
+      color?: string | null,
+      paymentRules?: string | null,
+      approvalRule?: string | null,
+      showAll?: boolean | null,
+      showOnHold?: boolean | null,
+      onHoldDisplayText?: string | null,
+      showSoldOut?: boolean | null,
+      soldOutDisplayText?: string | null,
+      setAvailable?: boolean | null,
+      availableAtDate?: string | null,
+      allowTransferred?: boolean | null,
+      transferredAprroval?: boolean | null,
+      transferredSameGender?: boolean | null,
+      eventID: string,
+      deleted?: string | null,
+      createdAt: string,
+      createdByID: string,
+      createdByName: string,
+      updatedAt: string,
+      eventTicketsId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -4229,5 +5065,254 @@ export type OnDeleteCommentSubscription = {
     createdByImg?: string | null,
     createdByName: string,
     updatedAt: string,
+  } | null,
+};
+
+export type OnCreateEventSubscriptionVariables = {
+  filter?: ModelSubscriptionEventFilterInput | null,
+};
+
+export type OnCreateEventSubscription = {
+  onCreateEvent?:  {
+    __typename: "Event",
+    id: string,
+    name?: string | null,
+    description?: string | null,
+    startDate?: string | null,
+    endDate?: string | null,
+    location?:  {
+      __typename: "Location",
+      address?: string | null,
+    } | null,
+    todoList?: Array< string | null > | null,
+    eventComments?:  Array< {
+      __typename: "EventComments",
+      image?: string | null,
+      name?: string | null,
+      message?: string | null,
+    } | null > | null,
+    map?: string | null,
+    image?: string | null,
+    gallery?: Array< string | null > | null,
+    visibleTo?: string | null,
+    tickets?:  {
+      __typename: "ModelEventTicketConnection",
+      nextToken?: string | null,
+    } | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateEventSubscriptionVariables = {
+  filter?: ModelSubscriptionEventFilterInput | null,
+};
+
+export type OnUpdateEventSubscription = {
+  onUpdateEvent?:  {
+    __typename: "Event",
+    id: string,
+    name?: string | null,
+    description?: string | null,
+    startDate?: string | null,
+    endDate?: string | null,
+    location?:  {
+      __typename: "Location",
+      address?: string | null,
+    } | null,
+    todoList?: Array< string | null > | null,
+    eventComments?:  Array< {
+      __typename: "EventComments",
+      image?: string | null,
+      name?: string | null,
+      message?: string | null,
+    } | null > | null,
+    map?: string | null,
+    image?: string | null,
+    gallery?: Array< string | null > | null,
+    visibleTo?: string | null,
+    tickets?:  {
+      __typename: "ModelEventTicketConnection",
+      nextToken?: string | null,
+    } | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteEventSubscriptionVariables = {
+  filter?: ModelSubscriptionEventFilterInput | null,
+};
+
+export type OnDeleteEventSubscription = {
+  onDeleteEvent?:  {
+    __typename: "Event",
+    id: string,
+    name?: string | null,
+    description?: string | null,
+    startDate?: string | null,
+    endDate?: string | null,
+    location?:  {
+      __typename: "Location",
+      address?: string | null,
+    } | null,
+    todoList?: Array< string | null > | null,
+    eventComments?:  Array< {
+      __typename: "EventComments",
+      image?: string | null,
+      name?: string | null,
+      message?: string | null,
+    } | null > | null,
+    map?: string | null,
+    image?: string | null,
+    gallery?: Array< string | null > | null,
+    visibleTo?: string | null,
+    tickets?:  {
+      __typename: "ModelEventTicketConnection",
+      nextToken?: string | null,
+    } | null,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateEventTicketSubscriptionVariables = {
+  filter?: ModelSubscriptionEventTicketFilterInput | null,
+};
+
+export type OnCreateEventTicketSubscription = {
+  onCreateEventTicket?:  {
+    __typename: "EventTicket",
+    id: string,
+    type: string,
+    cashlessCredit?: number | null,
+    description?: string | null,
+    waves?:  Array< {
+      __typename: "Wave",
+      name: string,
+      price: number,
+      startDate?: string | null,
+      endDate?: string | null,
+      active?: boolean | null,
+      quota?: number | null,
+      AutomaticShift?: boolean | null,
+    } | null > | null,
+    color?: string | null,
+    paymentRules?: string | null,
+    approvalRule?: string | null,
+    showAll?: boolean | null,
+    showOnHold?: boolean | null,
+    onHoldDisplayText?: string | null,
+    showSoldOut?: boolean | null,
+    soldOutDisplayText?: string | null,
+    setAvailable?: boolean | null,
+    availableAtDate?: string | null,
+    allowTransferred?: boolean | null,
+    transferredAprroval?: boolean | null,
+    transferredSameGender?: boolean | null,
+    eventID: string,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+    eventTicketsId?: string | null,
+  } | null,
+};
+
+export type OnUpdateEventTicketSubscriptionVariables = {
+  filter?: ModelSubscriptionEventTicketFilterInput | null,
+};
+
+export type OnUpdateEventTicketSubscription = {
+  onUpdateEventTicket?:  {
+    __typename: "EventTicket",
+    id: string,
+    type: string,
+    cashlessCredit?: number | null,
+    description?: string | null,
+    waves?:  Array< {
+      __typename: "Wave",
+      name: string,
+      price: number,
+      startDate?: string | null,
+      endDate?: string | null,
+      active?: boolean | null,
+      quota?: number | null,
+      AutomaticShift?: boolean | null,
+    } | null > | null,
+    color?: string | null,
+    paymentRules?: string | null,
+    approvalRule?: string | null,
+    showAll?: boolean | null,
+    showOnHold?: boolean | null,
+    onHoldDisplayText?: string | null,
+    showSoldOut?: boolean | null,
+    soldOutDisplayText?: string | null,
+    setAvailable?: boolean | null,
+    availableAtDate?: string | null,
+    allowTransferred?: boolean | null,
+    transferredAprroval?: boolean | null,
+    transferredSameGender?: boolean | null,
+    eventID: string,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+    eventTicketsId?: string | null,
+  } | null,
+};
+
+export type OnDeleteEventTicketSubscriptionVariables = {
+  filter?: ModelSubscriptionEventTicketFilterInput | null,
+};
+
+export type OnDeleteEventTicketSubscription = {
+  onDeleteEventTicket?:  {
+    __typename: "EventTicket",
+    id: string,
+    type: string,
+    cashlessCredit?: number | null,
+    description?: string | null,
+    waves?:  Array< {
+      __typename: "Wave",
+      name: string,
+      price: number,
+      startDate?: string | null,
+      endDate?: string | null,
+      active?: boolean | null,
+      quota?: number | null,
+      AutomaticShift?: boolean | null,
+    } | null > | null,
+    color?: string | null,
+    paymentRules?: string | null,
+    approvalRule?: string | null,
+    showAll?: boolean | null,
+    showOnHold?: boolean | null,
+    onHoldDisplayText?: string | null,
+    showSoldOut?: boolean | null,
+    soldOutDisplayText?: string | null,
+    setAvailable?: boolean | null,
+    availableAtDate?: string | null,
+    allowTransferred?: boolean | null,
+    transferredAprroval?: boolean | null,
+    transferredSameGender?: boolean | null,
+    eventID: string,
+    deleted?: string | null,
+    createdAt: string,
+    createdByID: string,
+    createdByName: string,
+    updatedAt: string,
+    eventTicketsId?: string | null,
   } | null,
 };

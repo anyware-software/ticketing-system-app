@@ -35,6 +35,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "ticketingEventsOperations": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "ticketingGuestsData": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

@@ -21,6 +21,7 @@ import { setLogin } from "../../state";
 import { signOut } from "aws-amplify/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import FestivalIcon from '@mui/icons-material/Festival';
 
 interface MainListItemsProps {
   onItemSelected: (item: string) => void;
@@ -55,88 +56,99 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
     <React.Fragment>
       <ListItemButton
         selected={selectedItem === "My Profile"}
-        sx={{ my: 1 }}
+     
         onClick={() => handleItemClick("My Profile")}
       >
         <ListItemIcon>
-          <PersonOutlineOutlinedIcon sx={{ color: "white" }} />
+          <PersonOutlineOutlinedIcon sx={{ color: selectedItem === "My Profile" ? "rgba(240, 99, 90, 1)" : "white" }}/>
         </ListItemIcon>
         <ListItemText primary="My Profile" />
       </ListItemButton>
 
       <ListItemButton
+        selected={selectedItem === "events"}
+       
+        onClick={() => handleItemClick("events")}
+      >
+        <ListItemIcon>
+          <FestivalIcon sx={{ color: selectedItem === "events" ? "rgba(240, 99, 90, 1)" : "white" }} />
+        </ListItemIcon>
+        <ListItemText primary="events" />
+      </ListItemButton>
+
+      <ListItemButton
         selected={selectedItem === "Notifications"}
-        sx={{ my: 1 }}
+       
         onClick={() => handleItemClick("Notifications")}
       >
         <ListItemIcon>
-          <ChatBubbleOutlineOutlinedIcon sx={{ color: "white" }} />
+          <ChatBubbleOutlineOutlinedIcon sx={{ color: selectedItem === "Notifications" ? "rgba(240, 99, 90, 1)" : "white" }} />
         </ListItemIcon>
         <ListItemText primary="Notifications" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Calender"}
-        sx={{ my: 1 }}
+        
         onClick={() => handleItemClick("Calender")}
       >
         <ListItemIcon>
-          <TodayOutlinedIcon sx={{ color: "white" }} />
+          <TodayOutlinedIcon sx={{ color: selectedItem === "Calender" ? "rgba(240, 99, 90, 1)" : "white" }} />
         </ListItemIcon>
         <ListItemText primary="Calender" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Bookmark"}
-        sx={{ my: 1 }}
+       
         onClick={() => handleItemClick("Bookmark")}
       >
         <ListItemIcon>
-          <TurnedInNotOutlinedIcon sx={{ color: "white" }} />
+          <TurnedInNotOutlinedIcon sx={{ color: selectedItem === "Bookmark" ? "rgba(240, 99, 90, 1)" : "white" }} />
         </ListItemIcon>
         <ListItemText primary="Bookmark" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Contact US"}
-        sx={{ my: 1 }}
+       
         onClick={() => handleItemClick("Contact US")}
       >
         <ListItemIcon>
-          <LocalPostOfficeOutlinedIcon sx={{ color: "white" }} />
+          <LocalPostOfficeOutlinedIcon sx={{ color: selectedItem === "Contact US" ? "rgba(240, 99, 90, 1)" : "white" }} />
         </ListItemIcon>
         <ListItemText primary="Contact US" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Setting"}
-        sx={{ my: 1 }}
+       
         onClick={() => handleItemClick("Setting")}
       >
         <ListItemIcon>
-          <SettingsOutlinedIcon sx={{ color: "white" }} />
+          <SettingsOutlinedIcon sx={{ color: selectedItem === "Setting" ? "rgba(240, 99, 90, 1)" : "white" }} />
         </ListItemIcon>
         <ListItemText primary="Setting" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Help & FAQs"}
-        sx={{ my: 1 }}
+       
         onClick={() => handleItemClick("Help & FAQs")}
       >
         <ListItemIcon>
-          <HelpOutlineOutlinedIcon sx={{ color: "white" }} />
+          <HelpOutlineOutlinedIcon sx={{ color: selectedItem === "Help & FAQs" ? "rgba(240, 99, 90, 1)" : "white" }} />
         </ListItemIcon>
         <ListItemText primary="Help & FAQs" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Sign Out"}
-        sx={{ my: 1 }}
+        
         onClick={() => handleItemClick("Sign Out")}
       >
         <ListItemIcon>
-          <LoginIcon sx={{ color: "white" }} />
+          <LoginIcon sx={{ color: selectedItem === "Sign Out" ? "rgba(240, 99, 90, 1)" : "white" }} />
         </ListItemIcon>
         <ListItemText primary="Sign Out" />
       </ListItemButton>

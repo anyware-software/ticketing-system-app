@@ -357,3 +357,98 @@ type Comment
   createdByImg: String
   createdByName: String!
 }
+
+type Event
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [create, update, delete, read] }
+    ]
+  ) {
+  id: ID!
+  name: String
+  description: String
+  startDate: String
+  endDate: String
+  location: Location
+  todoList: [String]
+  eventComments: [EventComments]
+  map: String
+  image: String
+  gallery: [String]
+  visibleTo: String
+  tickets: [EventTicket] @hasMany
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type Location {
+  address: String
+  coordinates: Coordinates
+}
+
+type Coordinates {
+  lat: Float
+  lng: Float
+}
+
+type EventComments {
+  image: String
+  name: String
+  message: String
+}
+
+type EventTicket
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  type: String!
+  cashlessCredit: Float
+  description: String
+  waves: [Wave]
+  color: String
+  paymentRules: String
+  approvalRule: String
+  showAll: Boolean
+  showOnHold: Boolean
+  onHoldDisplayText: String
+  showSoldOut: Boolean
+  soldOutDisplayText: String
+  setAvailable: Boolean
+  availableAtDate: String
+  allowTransferred: Boolean
+  transferredAprroval: Boolean
+  transferredSameGender: Boolean
+  eventID: ID! @index(name: "byEventID", queryField: "byEventID")
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
+
+type Wave {
+  name: String!
+  price: Float!
+  startDate: String
+  endDate: String
+  active: Boolean
+  quota: Int
+  AutomaticShift: Boolean
+}
+

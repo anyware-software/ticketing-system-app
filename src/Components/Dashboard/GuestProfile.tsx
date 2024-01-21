@@ -146,7 +146,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 updatedData.guest_avatar,
                 updatedData.connections
               );
-              console.log(UpdatedGuest);
+              // console.log(UpdatedGuest);
 
               // dispatch(setLogin({ user: UpdatedGuest }));
             } catch (error) {
