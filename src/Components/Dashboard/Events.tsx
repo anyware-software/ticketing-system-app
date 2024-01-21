@@ -85,21 +85,27 @@ export default function Events() {
   // console.log(events[0].id);
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handlePrevImage = () => {
+    setIsTransitioning(true);
     setSelectedImageIndex((prevIndex) =>
-    prevIndex === 0 ? currentEvent.gallery.length - 4 : prevIndex - 1
-  );
+      prevIndex === 0 ? currentEvent.gallery.length - 4 : prevIndex - 1
+    );
+    setTimeout(() => setIsTransitioning(false), 500);
   };
 
   const handleNextImage = () => {
+    setIsTransitioning(true);
     setSelectedImageIndex((prevIndex) =>
-    prevIndex === currentEvent.gallery.length - 4 ? 0 : prevIndex + 1
-  );
+      prevIndex === currentEvent.gallery.length - 4 ? 0 : prevIndex + 1
+    );
+    setTimeout(() => setIsTransitioning(false), 500);
   };
 
   // console.log(currentEvent);
   // console.log(currentEventTicket);
+  // console.log(isTransitioning);
 
   if (loading)
     return (
@@ -196,6 +202,8 @@ export default function Events() {
                       sx={{
                         display: "flex",
                         gap: 1,
+                        transition: "opacity 0.5s ease, transform 1s ease",
+                        opacity: isTransitioning ? 0.5 : 1,
                       }}
                     >
                       {/* {currentEvent?.gallery?.map((image, index) => (
@@ -214,37 +222,47 @@ export default function Events() {
                           }}
                         />
                       ))} */}
-                      {currentEvent?.gallery?.slice(selectedImageIndex, selectedImageIndex + 4).map((image, index) => (
-    <img
-      key={index}
-      src={
-        image
-          ? `${dbStorage}${image}`
-          : "../../../Images/event.png"
-      }
-      alt={`Event ${index + 1}`}
-      style={{
-        width: "8rem",
-        height: "5rem",
-        borderRadius: "5px",
-      }}
-    />
-  ))}
+                      {currentEvent?.gallery
+                        ?.slice(selectedImageIndex, selectedImageIndex + 4)
+                        .map((image, index) => (
+                          <img
+                            key={index}
+                            src={
+                              image
+                                ? `${dbStorage}${image}`
+                                : "../../../Images/event.png"
+                            }
+                            alt={`Event ${index + 1}`}
+                            style={{
+                              width: "8rem",
+                              height: "5rem",
+                              borderRadius: "5px",
+                            }}
+                          />
+                        ))}
+                        <IconButton onClick={handleNextImage} sx={{ color: "white" }}>
+                    <ArrowForwardIosIcon />
+                  </IconButton>
                     </Box>
-                    <Typography sx={{ color: "white" }}>
+                    <Typography sx={{ color: "white" , fontSize:'20px' , fontWeight:'700' }}>
                       {currentEvent.name}
                     </Typography>
-                    <Typography sx={{ color: "white" }}>
+                    <Typography sx={{ color: "rgba(255, 255, 255, 0.67)" , fontSize:'12px'  }}>
                       {currentEvent.description}
                     </Typography>
+                    <Box>
+                    <Typography sx={{ color: "rgba(255, 255, 255, 0.67)" , fontSize:'12px'  }}>
+                      Starting from
+                    </Typography>
+                    </Box>
                   </Box>
                   {/* Navigation arrows */}
-                  <IconButton onClick={handlePrevImage} sx={{ color: "white" }}>
+                  {/* <IconButton onClick={handlePrevImage} sx={{ color: "white" }}>
                     <ArrowBackIosNewIcon />
                   </IconButton>
                   <IconButton onClick={handleNextImage} sx={{ color: "white" }}>
                     <ArrowForwardIosIcon />
-                  </IconButton>
+                  </IconButton> */}
                 </Box>
               </Box>
             )}
