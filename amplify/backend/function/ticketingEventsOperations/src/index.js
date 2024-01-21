@@ -77,7 +77,6 @@ exports.handler = async (event) => {
 
     let items = [];
     if (operationId === operationIdEnum.getEvent) {
-      console.log("starter=d");
       const eventVariables = {
         id: eventID,
       };
@@ -108,7 +107,6 @@ exports.handler = async (event) => {
         }),
       };
       const ticketsPromise = fetch(GRAPHQL_ENDPOINT, ticketstOptions);
-      console.log("after promise");
       const [eventResponse, ticketResponse] = await Promise.all([
         eventPromise,
         ticketsPromise,
