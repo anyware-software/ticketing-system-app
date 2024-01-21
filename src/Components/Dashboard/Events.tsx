@@ -21,7 +21,7 @@ interface Event {
 export default function Events() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
-  const [currentEventId, setCurrentEventsId] = useState('');
+  const [currentEventId, setCurrentEventsId] = useState("");
   const [currentEvent, setCurrentEvent] = useState<Event>({
     id: "",
     name: "",
@@ -29,28 +29,28 @@ export default function Events() {
     gallery: [],
     description: "",
   });
+  const [currentEventTicket, setCurrentEventTicket] = useState([]);
 
   // const getListEvents = async () => {
   //   let events = await listEvents();
   //   // console.log(events.items);
   //   setEvents(events.items);
   // };
-  
+
   const getListEvents = async () => {
     try {
       let events = await listEvents();
-      const upCommingEvents = events.items.map((event:any) => ({
+      const upCommingEvents = events.items.map((event: any) => ({
         ...event,
         startDate: new Date(event.startDate),
       }));
-      upCommingEvents.sort((a:any, b:any) => a.startDate - b.startDate);
+      upCommingEvents.sort((a: any, b: any) => a.startDate - b.startDate);
       setEvents(upCommingEvents);
-      setCurrentEventsId(upCommingEvents[0].id)
+      setCurrentEventsId(upCommingEvents[0].id);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
   };
-  
 
   useEffect(() => {
     const getCurrentEvent = async () => {
@@ -58,7 +58,8 @@ export default function Events() {
         try {
           let currentEvent = await getEvent(currentEventId);
           console.log(currentEvent);
-          setCurrentEvent(currentEvent)
+          setCurrentEvent(currentEvent.event);
+          setCurrentEventTicket(currentEvent.tickets.items);
         } catch (error) {
           console.error("Error getting event:", error);
         }
@@ -68,10 +69,9 @@ export default function Events() {
     };
     getCurrentEvent();
   }, [currentEventId]);
-  
 
   useEffect(() => {
-    getListEvents();    
+    getListEvents();
   }, []);
 
   useEffect(() => {
@@ -83,28 +83,23 @@ export default function Events() {
   }, [currentEvent.id]);
 
   // console.log(events[0].id);
-  
-  // const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  
-  // const handlePrevImage = () => {
-  //   setSelectedImageIndex((prevIndex) =>
-  //     prevIndex === 0 ? Math.floor(events[selectedImageIndex].gallery.length / 4) : prevIndex - 1
-  //   );
-  // };
-  
-  // const handleNextImage = () => {
-  //   setSelectedImageIndex((prevIndex) => {
-  //     const currentEvent = events[prevIndex];
-  //     if (currentEvent && currentEvent.gallery) {
-  //       const totalImages = currentEvent.gallery.length;
-  //       return prevIndex === Math.floor(totalImages / 4) ? 0 : prevIndex + 1;
-  //     } else {
-  //       return prevIndex;
-  //     }
-  //   });
-  // };
-  
-  console.log(currentEvent);
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const handlePrevImage = () => {
+    setSelectedImageIndex((prevIndex) =>
+    prevIndex === 0 ? currentEvent.gallery.length - 4 : prevIndex - 1
+  );
+  };
+
+  const handleNextImage = () => {
+    setSelectedImageIndex((prevIndex) =>
+    prevIndex === currentEvent.gallery.length - 4 ? 0 : prevIndex + 1
+  );
+  };
+
+  // console.log(currentEvent);
+  // console.log(currentEventTicket);
 
   if (loading)
     return (
@@ -167,10 +162,9 @@ export default function Events() {
               position: "relative",
             }}
           >
-            {events.map((event) => (
+            {currentEvent && (
               <Box>
                 <Box
-                  key={event.id}
                   sx={{
                     display: "flex",
                     gap: 7,
@@ -179,11 +173,11 @@ export default function Events() {
                   <Box>
                     <img
                       src={
-                        event.image
-                          ? `${dbStorage}${event.image}`
+                        currentEvent.image
+                          ? `${dbStorage}${currentEvent.image}`
                           : "../../../Images/event.png"
                       }
-                      alt={event.name}
+                      alt={currentEvent.name}
                       style={{
                         width: "15rem",
                         height: "15rem",
@@ -204,7 +198,7 @@ export default function Events() {
                         gap: 1,
                       }}
                     >
-                      {event?.gallery?.map((image, index) => (
+                      {/* {currentEvent?.gallery?.map((image, index) => (
                         <img
                           key={index}
                           src={
@@ -213,70 +207,47 @@ export default function Events() {
                               : "../../../Images/event.png"
                           }
                           alt={`Event ${index + 1}`}
-                          style={{ width: "8rem", height: "5rem" , borderRadius:'5px' }}
-                        />
-                      ))}
-
-                      {/* {event?.gallery?.map((image, galleryIndex) => (
-                        <img
-                          key={galleryIndex}
-                          src={
-                            image
-                              ? `${dbStorage}${image}`
-                              : "../../../Images/event.png"
-                          }
-                          alt={`Event ${galleryIndex + 1}`}
                           style={{
                             width: "8rem",
                             height: "5rem",
                             borderRadius: "5px",
-                            display:
-                              galleryIndex === selectedImageIndex
-                                ? "block"
-                                : "none",
                           }}
                         />
                       ))} */}
-
-                      {/* {event?.gallery?.map((image, galleryIndex) => (
-                        <img
-                          key={galleryIndex}
-                          src={
-                            image
-                              ? `${dbStorage}${image}`
-                              : "../../../Images/event.png"
-                          }
-                          alt={`Event ${galleryIndex + 1}`}
-                          style={{
-                            width: "8rem",
-                            height: "5rem",
-                            borderRadius: "5px",
-                            display:
-                              galleryIndex >= selectedImageIndex * 4 &&
-                              galleryIndex < (selectedImageIndex + 1) * 4
-                                ? "block"
-                                : "none",
-                          }}
-                        />
-                      ))} */}
+                      {currentEvent?.gallery?.slice(selectedImageIndex, selectedImageIndex + 4).map((image, index) => (
+    <img
+      key={index}
+      src={
+        image
+          ? `${dbStorage}${image}`
+          : "../../../Images/event.png"
+      }
+      alt={`Event ${index + 1}`}
+      style={{
+        width: "8rem",
+        height: "5rem",
+        borderRadius: "5px",
+      }}
+    />
+  ))}
                     </Box>
                     <Typography sx={{ color: "white" }}>
-                      {event.name}
+                      {currentEvent.name}
                     </Typography>
                     <Typography sx={{ color: "white" }}>
-                      {event.description}
+                      {currentEvent.description}
                     </Typography>
                   </Box>
                   {/* Navigation arrows */}
-                  {/* <IconButton onClick={handlePrevImage} sx={{ color: "white" }}>
+                  <IconButton onClick={handlePrevImage} sx={{ color: "white" }}>
                     <ArrowBackIosNewIcon />
                   </IconButton>
                   <IconButton onClick={handleNextImage} sx={{ color: "white" }}>
                     <ArrowForwardIosIcon />
-                  </IconButton> */}
+                  </IconButton>
                 </Box>
               </Box>
-            ))}
+            )}
           </Grid>
         </Grid>
       </Box>
