@@ -113,12 +113,12 @@ export default function Events() {
   }, []);
 
   useEffect(() => {
-    if (currentEvent.id === "") {
+    if (!events) {
       setLoading(true);
     } else {
       setLoading(false);
     }
-  }, [currentEvent.id]);
+  }, [events]);
 
   const handlePrevImage = () => {
     setIsTransitioning(true);
@@ -154,6 +154,17 @@ export default function Events() {
   console.log(currentEventTicket);
 
   if (loading)
+    return (
+      <Box
+        sx={{
+          width: "100%",
+        }}
+      >
+        <ContentLoader />
+      </Box>
+    );
+
+    if (currentEvent.id === "")
     return (
       <Box
         sx={{
