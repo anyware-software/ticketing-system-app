@@ -6,7 +6,7 @@ const ContentLoader: FC = (): JSX.Element => (
     sx={{ display: "flex", justifyContent: "center", backgroundColor: "black" , height: "100vh" , alignItems: "center"}}
   >
     {/* <CircularProgress size={64} thickness={1} sx={{ color: "#EE726A" }} /> */}
-    <Typography variant="h1" color="initial">No Events For Now</Typography>
+    <Typography variant="h1" sx={{color:'white'}}>No Events For Now</Typography>
   </Box>
 );
 

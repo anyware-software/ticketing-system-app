@@ -20,7 +20,7 @@ async function updateGuest(
     const operationId = 3;
     const userAttributes={
         email:email,
-        name:name,
+        name:name.toLowerCase(),
         phone_number:phone_number,
         birthdate: birthdate,
         gender: gender,

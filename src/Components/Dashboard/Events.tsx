@@ -12,7 +12,11 @@ import getEvent from "../../services/getEvent";
 import Button from "@mui/material/Button";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import { current } from "@reduxjs/toolkit";
+import NoEvent from "../NoEvent/NoEvent";
+import Divider from "@mui/material/Divider";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import ManIcon from "@mui/icons-material/Man";
 // import type { Event } from '../../API';
 
 interface Event {
@@ -36,6 +40,7 @@ interface EventTickets {
   type: string;
   description: string;
   cashlessCredit: number;
+  color: string;
   waves: {
     AutomaticShift: boolean;
     active: boolean;
@@ -53,8 +58,10 @@ export default function Events() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [currentEventId, setCurrentEventsId] = useState("");
+  const [waveCounts, setWaveCounts] = useState<{ [key: string]: number }>({});
   const [startingFrom, setStartingFrom] = useState(0);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [ticketChosen, setTicketChosen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<Event>({
     id: "",
     name: "",
@@ -113,12 +120,12 @@ export default function Events() {
   }, []);
 
   useEffect(() => {
-    if (!events) {
+    if (currentEvent.id === "") {
       setLoading(true);
     } else {
       setLoading(false);
     }
-  }, [events]);
+  }, [currentEvent.id]);
 
   const handlePrevImage = () => {
     setIsTransitioning(true);
@@ -153,6 +160,41 @@ export default function Events() {
 
   console.log(currentEventTicket);
 
+  const handleIncrement = (ticketId: string, waveName: string) => {
+    const countKey = `${ticketId}-${waveName}`;
+    setWaveCounts((prevCounts) => ({
+      ...prevCounts,
+      [countKey]: (prevCounts[countKey] || 0) + 1,
+    }));
+  };
+
+  const handleDecrement = (ticketId: string, waveName: string) => {
+    const countKey = `${ticketId}-${waveName}`;
+    setWaveCounts((prevCounts) => ({
+      ...prevCounts,
+      [countKey]: Math.max((prevCounts[countKey] || 0) - 1, 0),
+    }));
+  };
+
+  const totalTickets = Object.keys(waveCounts).reduce((total, countKey) => {
+    const count = waveCounts[countKey];
+    return total + count;
+  }, 0);
+
+  const selectedWaves = Object.keys(waveCounts)
+  .filter((countKey) => waveCounts[countKey] > 0)
+  .map((countKey) => {
+    const parts = countKey.split("-");
+    const ticketId = parts.slice(0, -1).join("-");
+    const waveName = parts[parts.length - 1];
+
+    return {
+      ticketId,
+      waveName,
+      count: waveCounts[countKey],
+    };
+  });
+  
   if (loading)
     return (
       <Box
@@ -164,14 +206,14 @@ export default function Events() {
       </Box>
     );
 
-    if (currentEvent.id === "")
+  if (currentEventId === "")
     return (
       <Box
         sx={{
           width: "100%",
         }}
       >
-        <ContentLoader />
+        <NoEvent />
       </Box>
     );
 
@@ -429,21 +471,24 @@ export default function Events() {
                     >
                       <LocationOnIcon sx={{ color: "white" }} />
                       <Box>
+                        {currentEvent?.location?.address && (
+                          <Typography
+                            sx={{
+                              color: "rgba(255, 255, 255, 0.67)",
+                              fontSize: "15px",
+                            }}
+                          >
+                            {currentEvent?.location?.address.split(",")[1]}
+                          </Typography>
+                        )}
+
                         <Typography
                           sx={{
                             color: "rgba(255, 255, 255, 0.67)",
                             fontSize: "15px",
                           }}
                         >
-                          {currentEvent.location.address.split(",")[1]}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "rgba(255, 255, 255, 0.67)",
-                            fontSize: "15px",
-                          }}
-                        >
-                          {currentEvent.location.address}
+                          {currentEvent?.location?.address}
                         </Typography>
                       </Box>
                     </Box>
@@ -464,6 +509,19 @@ export default function Events() {
             item
             xs={12}
             sm={12}
+            lg={12}
+            sx={{
+              zIndex: 1,
+              position: "relative",
+            }}
+          >
+            <Divider sx={{ backgroundColor: "white", my: 3 }} />
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            sm={12}
             lg={8}
             sx={{
               zIndex: 1,
@@ -477,7 +535,7 @@ export default function Events() {
                     sx={{
                       width: "100%",
                       height: ".75rem",
-                      backgroundColor: "yellow",
+                      backgroundColor: ticket?.color || "gold",
                     }}
                   />
                   <Box
@@ -535,13 +593,76 @@ export default function Events() {
                         key={index}
                         sx={{
                           p: 2,
+                          pl:5,
+                          mt:2,
                           border: "1px solid",
                           borderColor: "rgba(195.43, 172.63, 172.63, 0.40)",
                           borderRadius: "5px",
-                          display:"flex",
-                          justifyContent:"space-between",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          overflow: "hidden",
+                          position: "relative",
                         }}
                       >
+                        {wave.quota === 0 && (
+                           <Box
+                           sx={{
+                             width: 100,
+                             height: 100,
+                             overflow: "hidden",
+                             position: "absolute",
+                             top: 0,
+                             left: 0,
+                           }}
+                         >
+                           <Box
+                             sx={{
+                               position: "absolute",
+                               zIndex: -1,
+                               content: '""',
+                               display: "block",
+                               border: "5px solid #d82e2e",
+                               top: 0,
+                               right: 0,
+                             }}
+                           />
+                           <Box
+                             sx={{
+                               position: "absolute",
+                               zIndex: -1,
+                               content: '""',
+                               display: "block",
+                               border: "5px solid #d82e2e",
+                               bottom: 0,
+                               left: 0,
+                             }}
+                           />
+                           <Typography
+                             sx={{
+                               position: "absolute",
+                               display: "block",
+                               width: 225,
+                               padding: "5px 0",
+                               backgroundColor: "#d82e2e",
+                               boxShadow: "0 5px 10px rgba(0, 0, 0, .1)",
+                               color: "#fff",
+                               fontWeight: 700,
+                               fontSize: 8,
+                               lineHeight: 1,
+                               fontFamily: "Lato, sans-serif",
+                               textShadow: "0 1px 1px rgba(0, 0, 0, .2)",
+                               textTransform: "uppercase",
+                               textAlign: "center",
+                               right: -25,
+                               top: 20,
+                               transform: "rotate(-45deg)",
+                               pl:2.5
+                             }}
+                           >
+                             Sold Out
+                           </Typography>
+                        </Box>
+                        )}
                         <Typography
                           sx={{
                             color: "white",
@@ -550,19 +671,87 @@ export default function Events() {
                         >
                           {wave.name}
                         </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            textTransform: "capitalize",
-                          }}
-                        >
-                          EGP {wave.price}
-                        </Typography>
+                        <Box sx={{ display: "flex", alignItems: "center" ,gap:.5 }}>
+                          <Typography
+                            sx={{
+                              color: "white",
+                              textTransform: "capitalize",
+                            }}
+                          >
+                            EGP {wave.price}
+                          </Typography>
+                          {wave.quota > 0 && (
+                            <>
+                              <ManIcon sx={{ color: "white" }} />
+                              <RemoveCircleIcon
+                                sx={{ color: "rgba(217, 217, 217, 0.53)" }}
+                                onClick={() =>
+                                  handleDecrement(ticket.id, wave.name)
+                                }
+                              />
+                              <Typography sx={{ color: "white" }}>
+                                {waveCounts[`${ticket.id}-${wave.name}`] || 0}
+                              </Typography>
+
+                              <AddCircleIcon
+                                sx={{ color: "rgba(217, 217, 217, 0.53)" }}
+                                onClick={() =>
+                                  handleIncrement(ticket.id, wave.name)
+                                }
+                              />
+                            </>
+                          )}
+                        </Box>
                       </Box>
                     ))}
                   </Box>
                 </Box>
               ))}
+            </Box>
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            lg={4}
+            sx={{
+              zIndex: 1,
+              position: "relative",
+            }}
+          >
+            <Box
+              sx={{
+                height: "80%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "end",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "rgba(255, 255, 255, 0.68)",
+                }}
+              >
+                Total {totalTickets} Tickets
+              </Typography>
+              <Button
+                variant="contained"
+                sx={{
+                  color: "white",
+                  backgroundColor: "rgba(240, 99, 90, 1)",
+                  px: 10,
+                  py: 1,
+                }}
+                onClick={() => {
+                  console.log("Selected Waves:", selectedWaves);
+                  setTicketChosen(true)
+                }}
+              >
+                Book Now
+              </Button>
             </Box>
           </Grid>
         </Grid>
