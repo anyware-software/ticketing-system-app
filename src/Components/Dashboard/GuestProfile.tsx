@@ -207,6 +207,66 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   //Email Edit
   //----------------------------------------------------------------
   //---------------------------------------------------------------
+  //Address Edit
+  const [addressEditing, setAddressEditing] = useState(false);
+  const [addressText, setAddressText] = useState(user?.address || "");
+  const [originalAddressText, setOriginalAddressText] = useState(user?.address);
+  const [addressError, setAddressError] = useState(false);
+
+  const handleEditAddressClick = () => {
+    setAddressEditing(true);
+  };
+  const handleSaveAddressClick = async () => {
+    try {
+      if (!addressText) {
+        setAddressError(true);
+        return;
+      }
+      const updatedData = {
+        userID: user?.id,
+        email: user?.email,
+        name: user?.name,
+        phone_number: user?.phone_number,
+        birthdate: user?.birthdate,
+        gender: user?.gender,
+        guest_avatar: user?.guest_avatar,
+        connections: user?.connections,
+        images: user?.images,
+        address: addressText,
+      };
+      let UpdatedGuest = await updateGuest(
+        updatedData.userID,
+        updatedData.email,
+        updatedData.name,
+        updatedData.phone_number,
+        updatedData.birthdate,
+        updatedData.gender,
+        updatedData.guest_avatar,
+        updatedData.connections,
+        updatedData.images,
+        updatedData.address
+      );
+      dispatch(setLogin({ user: UpdatedGuest }));
+      setOriginalAddressText(addressText);
+      setAddressEditing(false);
+      setAddressError(false);
+    } catch (error) {
+      console.error("Error updating Address:", error);
+    }
+  };
+  const handleCancelAddressClick = () => {
+    setAddressText(originalAddressText);
+    setAddressEditing(false);
+    setAddressError(false);
+  };
+  useEffect(() => {
+    if (!user) return;
+    setAddressText(user.address);
+    setOriginalAddressText(user.address);
+  }, [user]);
+  //Address Edit
+  //----------------------------------------------------------------
+  //---------------------------------------------------------------
   //Birth Date Edit
   const [birthEditing, setBirthEditing] = useState(false);
   const [birthText, setBirthText] = useState(user?.birthdate || "");
@@ -216,16 +276,16 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
     setBirthEditing(true);
   };
 
-  const isDateValid = (dateString : any) => {
+  const isDateValid = (dateString: any) => {
     const currentDate = new Date();
     const selectedDate = new Date(dateString);
-    
+
     return !isNaN(selectedDate.getTime()) && selectedDate <= currentDate;
   };
 
   const handleSaveBirthClick = async () => {
     if (!isDateValid(birthText)) {
-      console.error('Invalid or future date selected.');
+      console.error("Invalid or future date selected.");
       setBirthDateError(true);
       return;
     }
@@ -670,22 +730,21 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                     onMouseLeave={() => setIsHovered(false)}
                     style={{ position: "relative" }}
                   >
-                <Box sx={{ position: 'relative', display: 'inline-block' }}>
-                    {selectedImage ? (
-                      <img
-                        // src={selectedImage}
-                        src={`${dbStorage}${user?.guest_avatar}`}
-                        style={{
-                          width: "10rem",
-                          height: "10rem",
-                          borderRadius: "50%",
-                          marginLeft: "1rem",
-                          cursor: "pointer",
-                        }}
-                        alt="unknownUser"
-                      />
-                    ) : (
-                      
+                    <Box sx={{ position: "relative", display: "inline-block" }}>
+                      {selectedImage ? (
+                        <img
+                          // src={selectedImage}
+                          src={`${dbStorage}${user?.guest_avatar}`}
+                          style={{
+                            width: "10rem",
+                            height: "10rem",
+                            borderRadius: "50%",
+                            marginLeft: "1rem",
+                            cursor: "pointer",
+                          }}
+                          alt="unknownUser"
+                        />
+                      ) : (
                         <img
                           src={
                             user?.guest_avatar
@@ -698,38 +757,37 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                             borderRadius: "50%",
                             marginLeft: "1rem",
                             cursor: "pointer",
-                            position: "relative"
+                            position: "relative",
                           }}
                           alt="unknownUser"
                         />
-                        )}
-                        {isHovered && (
-                          <div
-                            style={{
-                              position: "absolute",
-                              top: 0,
-                              left: 0,
-                              width: "10rem",
-                              height: "10rem",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              backgroundColor: "rgba(0, 0, 0, 0.5)",
-                              borderRadius: "50%",
-                              color: "white",
-                              fontSize: "1.5rem",
-                              opacity: 0.9,
-                              transition: "opacity 0.3s",
-                              zIndex: 1,
-                              marginLeft: "1rem",
-                              cursor: "pointer",
-                            }}
-                          >
-                            Upload Photo
-                          </div>
-                        )}
-                      </Box>
-                    
+                      )}
+                      {isHovered && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "10rem",
+                            height: "10rem",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "rgba(0, 0, 0, 0.5)",
+                            borderRadius: "50%",
+                            color: "white",
+                            fontSize: "1.5rem",
+                            opacity: 0.9,
+                            transition: "opacity 0.3s",
+                            zIndex: 1,
+                            marginLeft: "1rem",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Upload Photo
+                        </div>
+                      )}
+                    </Box>
                   </label>
                 </div>
               )}
@@ -1004,7 +1062,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                height: {sm:'12vh',xl:'10vh'},
+                height: { sm: "12vh", xl: "10vh" },
               }}
             >
               <Box>
@@ -1148,7 +1206,9 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                           setBirthDateError(false);
                         }}
                         error={birthDateError}
-                        helperText={birthDateError ? "Invalid Birth Date address" : ""}
+                        helperText={
+                          birthDateError ? "Invalid Birth Date address" : ""
+                        }
                       />
                       <IconButton
                         onClick={handleSaveBirthClick}
@@ -1202,7 +1262,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                height: {sm:'12vh',xl:'10vh'},
+                height: { sm: "12vh", xl: "10vh" },
               }}
             >
               <Box>
@@ -1400,6 +1460,97 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 >
                   +2010000000
                 </Typography> */}
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                height: { sm: "12vh", xl: "10vh" },
+              }}
+            >
+              <Box>
+                <Typography
+                  sx={{
+                    color: "#848383",
+                    fontSize: 18,
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  Address
+                </Typography>
+
+                {/* Address Field */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {addressEditing ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TextField
+                        sx={{
+                          backgroundColor: "rgba(255, 255, 255, 0.31)",
+                          "input::placeholder": {
+                            color: "white",
+                          },
+                          input: {
+                            color: "white",
+                          },
+                          border: "1px solid",
+                          borderColor: "rgba(255, 255, 255, 0.63)",
+                          width: "18rem",
+                        }}
+                        value={addressText}
+                        onChange={(e) => {
+                          setAddressText(e.target.value);
+                          setAddressError(false);
+                        }}
+                        error={addressError}
+                        helperText={addressError ? "Invalid Address" : ""}
+                      />
+                      <IconButton
+                        onClick={handleSaveAddressClick}
+                        sx={{ color: "white" }}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={handleCancelAddressClick}
+                        sx={{ color: "white" }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        style={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: 600,
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        {originalAddressText}
+                      </span>
+
+                      <IconButton
+                        onClick={handleEditAddressClick}
+                        sx={{ color: "white" }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </div>
+                  )}
+                </div>
               </Box>
             </Box>
           </Box>

@@ -133,7 +133,6 @@ export default function MobileViewTabs() {
   const [addressText, setAddressText] = useState(user?.address || "");
   const [originalAddressText, setOriginalAddressText] = useState(user?.address);
   const [addressError, setAddressError] = useState(false);
-console.log(addressText);
 
   const handleEditAddressClick = () => {
     setAddressEditing(true);
