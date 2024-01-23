@@ -161,8 +161,6 @@ export default function Events() {
     setIsOverlayOpen(!isOverlayOpen);
   };
 
-  
-
   const handleIncrement = (
     ticketId: string,
     ticketType: string,
@@ -211,7 +209,7 @@ export default function Events() {
       };
     });
 
-    // console.log(selectedWaves);
+  // console.log(selectedWaves);
   if (loading)
     return (
       <Box
@@ -545,6 +543,7 @@ export default function Events() {
               position: "relative",
             }}
           >
+            
             <Box sx={{ display: "flex", gap: 1 }}>
               {currentEventTicket.map((ticket) => (
                 <Box key={ticket.id} sx={{ flex: 1, mx: 1 }}>
@@ -730,7 +729,7 @@ export default function Events() {
                                     ticket.id,
                                     ticket.type,
                                     wave.name,
-                                    wave.price,
+                                    wave.price
                                   )
                                 }
                               />
@@ -790,72 +789,90 @@ export default function Events() {
             </Box>
           </Grid>
 
-          {/* <Grid
-  item
-  xs={12}
-  sm={12}
-  lg={12}
-  sx={{
-    zIndex: 1,
-    position: "relative",
-  }}
->
-  <Box sx={{backgroundColor:'gray'}}>
-    {selectedWaves.map((wave) => (
-      <Box key={`${wave.ticketId}`}>
-        {Array.from({ length: wave.count }, (_, index) => (
-          <Box key={`${wave.ticketId}-${wave.waveName}-${index}`}>
-            <TextField
-              label={`Name`}
-              placeholder={`Enter ${wave.waveName} name`}
-            />
-            <TextField
-              label={`Phone`}
-              placeholder={`Enter ${wave.waveName} phone`}
-            />
-          </Box>
-        ))}
-      </Box>
-    ))}
-  </Box>
-</Grid> */}
-
-<Grid
-  item
-  xs={12}
-  sm={12}
-  lg={12}
-  sx={{
-    zIndex: 1,
-    position: "relative",
-  }}
->
-  <Box sx={{ backgroundColor: 'gray' }}>
-    {selectedWaves.map((wave) => (
-      <Box key={`${wave.ticketId}`}>
-        <Typography sx={{ color: 'white', mb: 2 }}>
-          {wave.ticketName}
-        </Typography>
-        {Array.from({ length: wave.count }, (_, index) => (
-          <Box key={`${wave.ticketId}-${wave.waveName}-${index}`} sx={{ mb: 2 }}>
-            <TextField
-              label={`Name`}
-              placeholder={`Enter ${wave.waveName} name`}
-              fullWidth
-            />
-            <TextField
-              label={`Phone`}
-              placeholder={`Enter ${wave.waveName} phone`}
-              fullWidth
-            />
-          </Box>
-        ))}
-      </Box>
-    ))}
-  </Box>
-</Grid>
-
-
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            lg={12}
+            sx={{
+              zIndex: 1,
+              position: "relative",
+            }}
+          >
+            <Box>
+              {selectedWaves.map((wave) => (
+                <Box key={`${wave.ticketId}`}>
+                  <Typography
+                    sx={{
+                      color: "white",
+                      mb: 2,
+                      textTransform: "capitalize",
+                      fontSize: "25px",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {wave.ticketName} - {wave.waveName}
+                  </Typography>
+                  {Array.from({ length: wave.count }, (_, index) => (
+                    <Box
+                      key={`${wave.ticketId}-${wave.waveName}-${index}`}
+                      sx={{ mb: 2 }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: 2,
+                        }}
+                      >
+                        <TextField
+                          placeholder={`Enter Your Friend's Name`}
+                          focused={false}
+                          autoComplete="false"
+                          sx={{
+                            backgroundColor: "rgba(51, 51, 51, 1)",
+                            "input::placeholder": {
+                              color: "white",
+                            },
+                            input: {
+                              color: "white",
+                            },
+                            border: "1px solid",
+                            borderColor: "gray",
+                            width: { xs: "auto", sm: "18rem" },
+                            borderRadius: "10px",
+                            ".MuiInputBase-root": {
+                              borderRadius: "10px",
+                            },
+                          }}
+                        />
+                        <TextField
+                          placeholder={`Enter Your Friend's Phone`}
+                          focused={false}
+                          autoComplete="false"
+                          sx={{
+                            backgroundColor: "rgba(51, 51, 51, 1)",
+                            "input::placeholder": {
+                              color: "white",
+                            },
+                            input: {
+                              color: "white",
+                            },
+                            border: "1px solid",
+                            borderColor: "gray",
+                            width: { xs: "auto", sm: "18rem" },
+                            borderRadius: "10px",
+                            ".MuiInputBase-root": {
+                              borderRadius: "10px",
+                            },
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              ))}
+            </Box>
+          </Grid>
         </Grid>
       </Box>
     </>
