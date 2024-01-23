@@ -73,6 +73,7 @@ exports.handler = async (event) => {
           guest_avatar: userAttributes.guest_avatar,
           connections: userAttributes.connections,
           images:userAttributes.images,
+          address:userAttributes.address,
           deleted: userAttributes.deleted,
           createdAt: userAttributes.createdAt,
         },

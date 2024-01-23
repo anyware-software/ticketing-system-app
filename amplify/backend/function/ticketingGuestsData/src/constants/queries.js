@@ -65,8 +65,7 @@ const createGuest = /* GraphQL */
 }
 `;
 
-const updateGuest = /* GraphQL */ 
-`mutation UpdateGuest(
+const updateGuest = /* GraphQL */ `mutation UpdateGuest(
   $input: UpdateGuestInput!
   $condition: ModelGuestConditionInput
 ) {
@@ -77,6 +76,7 @@ const updateGuest = /* GraphQL */
     email
     phone_number
     guestGroupID
+    guestGroupName
     guest_avatar
     avg_spend
     avg_ticket_type
@@ -90,6 +90,9 @@ const updateGuest = /* GraphQL */
     birthdate
     isVerified
     images
+    address
+    totalEvents
+    flags
     deleted
     createdAt
     createdByID
