@@ -658,6 +658,8 @@ export const getTimeline = /* GraphQL */ `query GetTimeline($id: ID!) {
     newStatus
     bookingId
     customerId
+    type
+    description
     deleted
     createdAt
     createdByID
@@ -683,6 +685,8 @@ export const listTimelines = /* GraphQL */ `query ListTimelines(
       newStatus
       bookingId
       customerId
+      type
+      description
       deleted
       createdAt
       createdByID
@@ -721,6 +725,8 @@ export const timelineByCustomerID = /* GraphQL */ `query TimelineByCustomerID(
       newStatus
       bookingId
       customerId
+      type
+      description
       deleted
       createdAt
       createdByID

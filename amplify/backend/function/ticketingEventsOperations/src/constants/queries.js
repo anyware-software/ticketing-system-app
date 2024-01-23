@@ -7,6 +7,11 @@ const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
     endDate
     location {
       address
+      coordinates {
+        lat
+        lng
+        __typename
+      }
       __typename
     }
     todoList
@@ -81,6 +86,16 @@ const byEventID = /* GraphQL */ `query ByEventID(
       type
       cashlessCredit
       description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
       color
       paymentRules
       approvalRule

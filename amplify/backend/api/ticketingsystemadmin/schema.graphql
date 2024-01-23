@@ -304,6 +304,8 @@ type Timeline
       queryField: "timelineByCustomerID"
       sortKeyFields: ["createdAt"]
     )
+  type: String
+  description: String
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!
@@ -451,4 +453,3 @@ type Wave {
   quota: Int
   AutomaticShift: Boolean
 }
-

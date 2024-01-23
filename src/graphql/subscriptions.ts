@@ -751,6 +751,8 @@ export const onCreateTimeline = /* GraphQL */ `subscription OnCreateTimeline($fi
     newStatus
     bookingId
     customerId
+    type
+    description
     deleted
     createdAt
     createdByID
@@ -771,6 +773,8 @@ export const onUpdateTimeline = /* GraphQL */ `subscription OnUpdateTimeline($fi
     newStatus
     bookingId
     customerId
+    type
+    description
     deleted
     createdAt
     createdByID
@@ -791,6 +795,8 @@ export const onDeleteTimeline = /* GraphQL */ `subscription OnDeleteTimeline($fi
     newStatus
     bookingId
     customerId
+    type
+    description
     deleted
     createdAt
     createdByID

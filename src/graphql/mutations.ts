@@ -820,6 +820,8 @@ export const createTimeline = /* GraphQL */ `mutation CreateTimeline(
     newStatus
     bookingId
     customerId
+    type
+    description
     deleted
     createdAt
     createdByID
@@ -843,6 +845,8 @@ export const updateTimeline = /* GraphQL */ `mutation UpdateTimeline(
     newStatus
     bookingId
     customerId
+    type
+    description
     deleted
     createdAt
     createdByID
@@ -866,6 +870,8 @@ export const deleteTimeline = /* GraphQL */ `mutation DeleteTimeline(
     newStatus
     bookingId
     customerId
+    type
+    description
     deleted
     createdAt
     createdByID

@@ -12,7 +12,7 @@ async function createGuest(
     const operationId = 1;
     const userAttributes={
       email:user.email,
-      name:user.name?user.name:"user",
+      name:user.name?user.name.toLowerCase():"user",
       phone_number:user.phone_number?(user.phone_number.substring(2,user?.phone_number.length+1)):"00",
       group:group,
       faceBookID:faceBookID,
