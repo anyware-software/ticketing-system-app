@@ -11,9 +11,9 @@ async function updateGuest(
     guest_avatar?: any,
     connections?:any,
     images?:any[],
+    address?:any,
     deleted?:any,
     createdAt?:any,
-    address?:any,
 ) {
   // console.log(userID,email ,birthdate );
   
@@ -21,16 +21,16 @@ async function updateGuest(
     const operationId = 3;
     const userAttributes={
         email:email,
-        name:name.toLowerCase(),
+        name:name,
         phone_number:phone_number,
         birthdate: birthdate,
         gender: gender,
         guest_avatar: guest_avatar,
         connections:connections,
         images:images,
+        address:address,
         deleted:deleted,
         createdAt:createdAt,
-        address:address,
       }
     
     const requestBody = {

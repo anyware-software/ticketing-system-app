@@ -28,7 +28,7 @@
         },
         "ticketingGuestsData": {
           "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",
-          "s3Key": "amplify-builds/ticketingGuestsData-4f654f586a63596a5166-build.zip"
+          "s3Key": "amplify-builds/ticketingGuestsData-5369792f42653646576f-build.zip"
         },
         "ticketingEventsOperations": {
           "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",

@@ -33,8 +33,7 @@ const createGuest = /* GraphQL */
 }
 `;
 
- const getGuest = /* GraphQL */ 
- `query GetGuest($id: ID!) {
+const getGuest = /* GraphQL */ `query GetGuest($id: ID!) {
   getGuest(id: $id) {
     id
     name
@@ -42,6 +41,7 @@ const createGuest = /* GraphQL */
     email
     phone_number
     guestGroupID
+    guestGroupName
     guest_avatar
     avg_spend
     avg_ticket_type
@@ -55,6 +55,9 @@ const createGuest = /* GraphQL */
     birthdate
     isVerified
     images
+    address
+    totalEvents
+    flags
     deleted
     createdAt
     createdByID
@@ -63,7 +66,7 @@ const createGuest = /* GraphQL */
     __typename
   }
 }
-`;
+`
 
 const updateGuest = /* GraphQL */ `mutation UpdateGuest(
   $input: UpdateGuestInput!
