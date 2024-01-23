@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import listEvents from "../../services/listEvents";
@@ -18,6 +18,9 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import ManIcon from "@mui/icons-material/Man";
 import TextField from "@mui/material/TextField";
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import { GOOGLE_MAPS_LIBRARIES } from './Library';
+import axios from "axios";
 
 // import type { Event } from '../../API';
 
@@ -84,6 +87,66 @@ export default function Events() {
   const [currentEventTicket, setCurrentEventTicket] = useState<EventTickets[]>(
     []
   );
+
+  // const [mapCenter, setMapCenter] = useState<any>({
+  //   lat: currentEvent.location.coordinates.lat,
+  //   lng: currentEvent.location.coordinates.lng,
+  // });
+  const [marker, setMarker] = useState<any>(null);
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyAf2_iJNX-BrrTVjg288Vhr7miH_aotx8E",
+    libraries: GOOGLE_MAPS_LIBRARIES,
+  });
+
+  // let mapCenter = {
+  //   lat: currentEvent.location.coordinates.lat,
+  //   lng: currentEvent.location.coordinates.lng,
+  // };
+  const mapCenter = useMemo(() => {
+    return {
+      lat: (currentEvent.location.coordinates.lat),
+      lng: (currentEvent.location.coordinates.lng),
+    };
+  }, [currentEvent.location.coordinates.lat, currentEvent.location.coordinates.lng]);
+
+  // console.log(mapCenter);
+
+  const containerStyle = {
+    width: "100%",
+    height: "40rem",
+  };
+  const [zoom, setZoom] = useState(15);
+
+  useEffect(() => {
+    if (mapCenter.lat > 0) {
+      setZoom(18);
+    }
+  }, [mapCenter]);
+
+  const onLoad = React.useCallback(
+    function callback(map: any) {
+      // if (mapCenter.lat !== 0 && mapCenter.lng !== 0) {
+      //   map.panTo(mapCenter);
+      // }
+      map.panTo(mapCenter);
+    },
+    [mapCenter]
+  );
+
+  const handleOnClick = async (e: any) => {
+    setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+    const latitude = e.latLng.lat();
+    const longitude = e.latLng.lng();
+
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAf2_iJNX-BrrTVjg288Vhr7miH_aotx8E`,
+      );
+    } catch (error) {
+      console.error('Error during reverse geocoding request:', error);
+    }
+  };
 
   const getListEvents = async () => {
     try {
@@ -532,6 +595,33 @@ export default function Events() {
           >
             <Divider sx={{ backgroundColor: "white", my: 3 }} />
           </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            lg={12}
+            sx={{
+              zIndex: 1,
+              position: "relative",
+            }}
+          >
+            {isLoaded && (
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={mapCenter}
+                zoom={zoom}
+                onLoad={onLoad}
+                onClick={(e) => {
+                  handleOnClick(e);
+                }}
+              >
+                 {marker && (
+                <Marker position={{ lat: mapCenter.lat, lng: mapCenter.lng }} />
+                )}
+                <Marker position={{ lat: mapCenter.lat, lng: mapCenter.lng }} />
+              </GoogleMap>
+            )}
+          </Grid>
 
           <Grid
             item
@@ -543,7 +633,6 @@ export default function Events() {
               position: "relative",
             }}
           >
-            
             <Box sx={{ display: "flex", gap: 1 }}>
               {currentEventTicket.map((ticket) => (
                 <Box key={ticket.id} sx={{ flex: 1, mx: 1 }}>
