@@ -132,12 +132,28 @@ export default function MobileViewTabs() {
   const [birthEditing, setBirthEditing] = useState(false);
   const [birthText, setBirthText] = useState(user?.birthdate || "");
   const [originalBirthText, setOriginalBirthText] = useState(user?.birthdate);
+  const [birthDateError, setBirthDateError] = useState(false);
   const handleEditBirthClick = () => {
     setBirthEditing(true);
   };
+
+  const isDateValid = (dateString : any) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(dateString);
+    
+    return !isNaN(selectedDate.getTime()) && selectedDate <= currentDate;
+  };
+
   const handleSaveBirthClick = async () => {
     // setOriginalBirthText(birthText);
     // setBirthEditing(false);
+
+    if (!isDateValid(birthText)) {
+      console.error('Invalid or future date selected.');
+      setBirthDateError(true);
+      return;
+    }
+
     try {
       const updatedData = {
         userID: user?.id,
@@ -156,6 +172,7 @@ export default function MobileViewTabs() {
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalBirthText(birthText);
       setBirthEditing(false);
+      setBirthDateError(false);
     } catch (error) {
       console.error("Error updating BirthDate:", error);
     }
@@ -163,6 +180,7 @@ export default function MobileViewTabs() {
   const handleCancelBrithClick = () => {
     setBirthText(originalBirthText);
     setBirthEditing(false);
+    setBirthDateError(false);
   };
   useEffect(() => {
     if (!user) return;
@@ -480,7 +498,12 @@ export default function MobileViewTabs() {
                             width: "100%",
                           }}
                           value={birthText}
-                          onChange={(e) => setBirthText(e.target.value)}
+                          onChange={(e) => {
+                            setBirthText(e.target.value);
+                            setBirthDateError(false);
+                          }}
+                          error={birthDateError}
+                        helperText={birthDateError ? "Invalid Birth Date address" : ""}
                         />
                         <IconButton
                           onClick={handleSaveBirthClick}
