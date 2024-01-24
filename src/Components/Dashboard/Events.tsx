@@ -1060,6 +1060,7 @@ export default function Events() {
                 gap: 2,
               }}
             >
+              {ticketChosen !== "noTickets" && (
               <FormControlLabel
                 value={isSpecial}
                 control={
@@ -1089,6 +1090,7 @@ export default function Events() {
                   ...checkBoxStyles,
                 }}
               />
+              )}
               <Typography
                 sx={{
                   color: "rgba(255, 255, 255, 0.68)",

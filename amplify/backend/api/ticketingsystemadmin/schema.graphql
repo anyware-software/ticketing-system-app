@@ -471,6 +471,8 @@ type Booking
   guest: Guest @hasOne
   mainGuest: Guest @hasOne
   event: Event @hasOne
+  eventTicket: EventTicket @hasOne
+  wave: String
   isMainGuest: Boolean
   orderId: String
   updatedBy: String

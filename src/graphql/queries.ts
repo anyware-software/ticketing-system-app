@@ -59,6 +59,22 @@ export const listAccounts = /* GraphQL */ `query ListAccounts(
   listAccounts(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      logo {
+        id
+        mediaID
+        fileUrl
+        filename
+        filetype
+        fileSize
+        alternativeText
+        caption
+        description
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
       domain
       siteTitle
       guestsCount
@@ -841,6 +857,11 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
     endDate
     location {
       address
+      coordinates {
+        lat
+        lng
+        __typename
+      }
       __typename
     }
     todoList
@@ -855,6 +876,33 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
     gallery
     visibleTo
     tickets {
+      items {
+        id
+        type
+        cashlessCredit
+        description
+        color
+        paymentRules
+        approvalRule
+        showAll
+        showOnHold
+        onHoldDisplayText
+        showSoldOut
+        soldOutDisplayText
+        setAvailable
+        availableAtDate
+        allowTransferred
+        transferredAprroval
+        transferredSameGender
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventTicketsId
+        __typename
+      }
       nextToken
       __typename
     }
@@ -879,11 +927,25 @@ export const listEvents = /* GraphQL */ `query ListEvents(
       description
       startDate
       endDate
+      location {
+        address
+        __typename
+      }
       todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
       map
       image
       gallery
       visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
@@ -953,6 +1015,16 @@ export const listEventTickets = /* GraphQL */ `query ListEventTickets(
       type
       cashlessCredit
       description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
       color
       paymentRules
       approvalRule
@@ -1002,6 +1074,16 @@ export const byEventID = /* GraphQL */ `query ByEventID(
       type
       cashlessCredit
       description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
       color
       paymentRules
       approvalRule
@@ -1101,11 +1183,25 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
       description
       startDate
       endDate
+      location {
+        address
+        __typename
+      }
       todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
       map
       image
       gallery
       visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
@@ -1113,6 +1209,44 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
       updatedAt
       __typename
     }
+    eventTicket {
+      id
+      type
+      cashlessCredit
+      description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    wave
     isMainGuest
     orderId
     updatedBy
@@ -1126,6 +1260,7 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
     bookingGuestId
     bookingMainGuestId
     bookingEventId
+    bookingEventTicketId
     __typename
   }
 }
@@ -1142,6 +1277,114 @@ export const listBookings = /* GraphQL */ `query ListBookings(
     items {
       id
       status
+      guest {
+        id
+        name
+        username
+        email
+        phone_number
+        guestGroupID
+        guestGroupName
+        guest_avatar
+        avg_spend
+        avg_ticket_type
+        numberOfTickets
+        connections
+        last_attended_event
+        gender
+        group
+        faceBookID
+        appPassword
+        birthdate
+        isVerified
+        images
+        address
+        totalEvents
+        flags
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
+      mainGuest {
+        id
+        name
+        username
+        email
+        phone_number
+        guestGroupID
+        guestGroupName
+        guest_avatar
+        avg_spend
+        avg_ticket_type
+        numberOfTickets
+        connections
+        last_attended_event
+        gender
+        group
+        faceBookID
+        appPassword
+        birthdate
+        isVerified
+        images
+        address
+        totalEvents
+        flags
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
+      event {
+        id
+        name
+        description
+        startDate
+        endDate
+        todoList
+        map
+        image
+        gallery
+        visibleTo
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
+      eventTicket {
+        id
+        type
+        cashlessCredit
+        description
+        color
+        paymentRules
+        approvalRule
+        showAll
+        showOnHold
+        onHoldDisplayText
+        showSoldOut
+        soldOutDisplayText
+        setAvailable
+        availableAtDate
+        allowTransferred
+        transferredAprroval
+        transferredSameGender
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventTicketsId
+        __typename
+      }
+      wave
       isMainGuest
       orderId
       updatedBy
@@ -1155,6 +1398,7 @@ export const listBookings = /* GraphQL */ `query ListBookings(
       bookingGuestId
       bookingMainGuestId
       bookingEventId
+      bookingEventTicketId
       __typename
     }
     nextToken

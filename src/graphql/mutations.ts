@@ -1034,6 +1034,11 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
     endDate
     location {
       address
+      coordinates {
+        lat
+        lng
+        __typename
+      }
       __typename
     }
     todoList
@@ -1048,6 +1053,33 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
     gallery
     visibleTo
     tickets {
+      items {
+        id
+        type
+        cashlessCredit
+        description
+        color
+        paymentRules
+        approvalRule
+        showAll
+        showOnHold
+        onHoldDisplayText
+        showSoldOut
+        soldOutDisplayText
+        setAvailable
+        availableAtDate
+        allowTransferred
+        transferredAprroval
+        transferredSameGender
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventTicketsId
+        __typename
+      }
       nextToken
       __typename
     }
@@ -1075,6 +1107,11 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
     endDate
     location {
       address
+      coordinates {
+        lat
+        lng
+        __typename
+      }
       __typename
     }
     todoList
@@ -1089,6 +1126,33 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
     gallery
     visibleTo
     tickets {
+      items {
+        id
+        type
+        cashlessCredit
+        description
+        color
+        paymentRules
+        approvalRule
+        showAll
+        showOnHold
+        onHoldDisplayText
+        showSoldOut
+        soldOutDisplayText
+        setAvailable
+        availableAtDate
+        allowTransferred
+        transferredAprroval
+        transferredSameGender
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventTicketsId
+        __typename
+      }
       nextToken
       __typename
     }
@@ -1116,6 +1180,11 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
     endDate
     location {
       address
+      coordinates {
+        lat
+        lng
+        __typename
+      }
       __typename
     }
     todoList
@@ -1130,6 +1199,33 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
     gallery
     visibleTo
     tickets {
+      items {
+        id
+        type
+        cashlessCredit
+        description
+        color
+        paymentRules
+        approvalRule
+        showAll
+        showOnHold
+        onHoldDisplayText
+        showSoldOut
+        soldOutDisplayText
+        setAvailable
+        availableAtDate
+        allowTransferred
+        transferredAprroval
+        transferredSameGender
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventTicketsId
+        __typename
+      }
       nextToken
       __typename
     }
@@ -1358,11 +1454,25 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
       description
       startDate
       endDate
+      location {
+        address
+        __typename
+      }
       todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
       map
       image
       gallery
       visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
@@ -1370,6 +1480,44 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
       updatedAt
       __typename
     }
+    eventTicket {
+      id
+      type
+      cashlessCredit
+      description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    wave
     isMainGuest
     orderId
     updatedBy
@@ -1383,6 +1531,7 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
     bookingGuestId
     bookingMainGuestId
     bookingEventId
+    bookingEventTicketId
     __typename
   }
 }
@@ -1465,11 +1614,25 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
       description
       startDate
       endDate
+      location {
+        address
+        __typename
+      }
       todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
       map
       image
       gallery
       visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
@@ -1477,6 +1640,44 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
       updatedAt
       __typename
     }
+    eventTicket {
+      id
+      type
+      cashlessCredit
+      description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    wave
     isMainGuest
     orderId
     updatedBy
@@ -1490,6 +1691,7 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
     bookingGuestId
     bookingMainGuestId
     bookingEventId
+    bookingEventTicketId
     __typename
   }
 }
@@ -1572,11 +1774,25 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
       description
       startDate
       endDate
+      location {
+        address
+        __typename
+      }
       todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
       map
       image
       gallery
       visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
@@ -1584,6 +1800,44 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
       updatedAt
       __typename
     }
+    eventTicket {
+      id
+      type
+      cashlessCredit
+      description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    wave
     isMainGuest
     orderId
     updatedBy
@@ -1597,6 +1851,7 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
     bookingGuestId
     bookingMainGuestId
     bookingEventId
+    bookingEventTicketId
     __typename
   }
 }
