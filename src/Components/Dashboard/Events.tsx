@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import listEvents from "../../services/listEvents";
@@ -61,6 +61,13 @@ interface EventTickets {
     quota: number;
     startDate: string;
   }[];
+}
+
+interface BookingRequest {
+  name: string;
+  phone: string;
+  ticketType: string;
+  waveName: string;
 }
 
 export default function Events() {
@@ -314,8 +321,30 @@ export default function Events() {
       };
     });
 
-  // console.log(selectedWaves);
-  // console.log(mapCenter);
+  // const [bookingRequests, setBookingRequests] = useState<BookingRequest[]>([]);
+  // console.log(bookingRequests);
+  
+  const [formData, setFormData] = useState<{ [key: string]: { name: string; phone: string } }>({});
+  const handleInputChange = (
+    ticketId: string,
+    waveName: string,
+    index: number,
+    field: 'name' | 'phone',
+    value: string
+  ) => {
+    const key = `${ticketId}-${waveName}-${index}`;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [key]: {
+        ...prevFormData[key],
+        [field]: value,
+      },
+    }));
+  };
+console.log(formData);
+
+    
+
   if (loading)
     return (
       <Box
@@ -971,9 +1000,19 @@ export default function Events() {
                                       }}
                                     >
                                       <TextField
-                                        placeholder={`Enter ${wave.waveName}'s Name`}
+                          id={`${wave.ticketId}-${wave.waveName}-${index}-name`}
+                          placeholder={`Enter ${wave.waveName}'s Name`}
                                         focused={false}
                                         autoComplete="false"
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                          handleInputChange(
+                                            wave.ticketId,
+                                            wave.waveName,
+                                            index,
+                                            'name',
+                                            e.target.value
+                                          )
+                                        }
                                         sx={{
                                           minWidth: "25rem",
                                           backgroundColor:
@@ -994,9 +1033,19 @@ export default function Events() {
                                         }}
                                       />
                                       <TextField
-                                        placeholder={`Enter ${wave.waveName}'s Phone`}
+                          id={`${wave.ticketId}-${wave.waveName}-${index}-phone`}
+                          placeholder={`Enter ${wave.waveName}'s Phone`}
                                         focused={false}
                                         autoComplete="false"
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                          handleInputChange(
+                                            wave.ticketId,
+                                            wave.waveName,
+                                            index,
+                                            'phone',
+                                            e.target.value
+                                          )
+                                        }
                                         sx={{
                                           minWidth: "25rem",
                                           backgroundColor:
