@@ -19,7 +19,7 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import ManIcon from "@mui/icons-material/Man";
 import TextField from "@mui/material/TextField";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
-import { GOOGLE_MAPS_LIBRARIES } from './Library';
+import { GOOGLE_MAPS_LIBRARIES } from "./Library";
 import axios from "axios";
 
 // import type { Event } from '../../API';
@@ -67,6 +67,7 @@ export default function Events() {
   const [waveCounts, setWaveCounts] = useState<{ [key: string]: number }>({});
   const [startingFrom, setStartingFrom] = useState(0);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [isGoogleMapOverlayOpen, setIsGoogleMapOverlayOpen] = useState(false);
   const [ticketChosen, setTicketChosen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<Event>({
     id: "",
@@ -103,14 +104,17 @@ export default function Events() {
   //   lat: currentEvent.location.coordinates.lat,
   //   lng: currentEvent.location.coordinates.lng,
   // };
-  const mapCenter = useMemo(() => {
-    return {
-      lat: (currentEvent.location.coordinates.lat),
-      lng: (currentEvent.location.coordinates.lng),
-    };
-  }, [currentEvent.location.coordinates.lat, currentEvent.location.coordinates.lng]);
+  // const mapCenter = useMemo(() => {
+  //   return {
+  //     lat: (currentEvent.location.coordinates.lat),
+  //     lng: (currentEvent.location.coordinates.lng),
+  //   };
+  // }, [currentEvent.location.coordinates.lat, currentEvent.location.coordinates.lng]);
 
-  // console.log(mapCenter);
+  const [mapCenter, setMapCenter] = useState<any>({
+    lat: currentEvent?.location?.coordinates?.lat,
+    lng: currentEvent?.location?.coordinates?.lng,
+  });
 
   const containerStyle = {
     width: "100%",
@@ -119,10 +123,16 @@ export default function Events() {
   const [zoom, setZoom] = useState(15);
 
   useEffect(() => {
+    if (currentEvent) {
+      setMapCenter({
+        lat: currentEvent?.location?.coordinates?.lat || 0,
+        lng: currentEvent?.location?.coordinates?.lng || 0,
+      });
+    }
     if (mapCenter.lat > 0) {
       setZoom(18);
     }
-  }, [mapCenter]);
+  }, [currentEvent]);
 
   const onLoad = React.useCallback(
     function callback(map: any) {
@@ -141,10 +151,10 @@ export default function Events() {
 
     try {
       const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAf2_iJNX-BrrTVjg288Vhr7miH_aotx8E`,
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAf2_iJNX-BrrTVjg288Vhr7miH_aotx8E`
       );
     } catch (error) {
-      console.error('Error during reverse geocoding request:', error);
+      console.error("Error during reverse geocoding request:", error);
     }
   };
 
@@ -223,6 +233,9 @@ export default function Events() {
   const toggleOverlay = () => {
     setIsOverlayOpen(!isOverlayOpen);
   };
+  const toggleGoogleMapOverlay = () => {
+    setIsGoogleMapOverlayOpen(!isGoogleMapOverlayOpen);
+  };
 
   const handleIncrement = (
     ticketId: string,
@@ -273,6 +286,7 @@ export default function Events() {
     });
 
   // console.log(selectedWaves);
+  // console.log(mapCenter);
   if (loading)
     return (
       <Box
@@ -459,7 +473,7 @@ export default function Events() {
                               width: "100%",
                               height: "100%",
                               backgroundColor: "rgba(0, 0, 0, 0.8)",
-                              zIndex: 2,
+                              zIndex: 10,
                               display: "flex",
                               justifyContent: "center",
                               alignItems: "center",
@@ -548,7 +562,48 @@ export default function Events() {
                       }}
                     >
                       <LocationOnIcon sx={{ color: "white" }} />
-                      <Box>
+                      {isGoogleMapOverlayOpen && (
+                        <Box
+                          sx={{
+                            position: "fixed",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "rgba(0, 0, 0, 0.8)",
+                            zIndex: 2,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                          onClick={toggleGoogleMapOverlay}
+                        >
+                          <Box>
+                            {isLoaded && (
+                              <GoogleMap
+                                mapContainerStyle={containerStyle}
+                                center={mapCenter}
+                                zoom={zoom}
+                                onLoad={onLoad}
+                                onClick={(e) => {
+                                  handleOnClick(e);
+                                }}
+                              >
+                                {marker && (
+                                  <Marker
+                                    position={{
+                                      lat: mapCenter?.lat,
+                                      lng: mapCenter?.lng,
+                                    }}
+                                  />
+                                )}
+                                {/* <Marker position={{ lat: mapCenter.lat, lng: mapCenter.lng }} /> */}
+                              </GoogleMap>
+                            )}
+                          </Box>
+                        </Box>
+                      )}
+                      <Box onClick={toggleGoogleMapOverlay}>
                         {currentEvent?.location?.address && (
                           <Typography
                             sx={{
@@ -595,33 +650,8 @@ export default function Events() {
           >
             <Divider sx={{ backgroundColor: "white", my: 3 }} />
           </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            lg={12}
-            sx={{
-              zIndex: 1,
-              position: "relative",
-            }}
-          >
-            {isLoaded && (
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={mapCenter}
-                zoom={zoom}
-                onLoad={onLoad}
-                onClick={(e) => {
-                  handleOnClick(e);
-                }}
-              >
-                 {marker && (
-                <Marker position={{ lat: mapCenter.lat, lng: mapCenter.lng }} />
-                )}
-                <Marker position={{ lat: mapCenter.lat, lng: mapCenter.lng }} />
-              </GoogleMap>
-            )}
-          </Grid>
+
+          
 
           <Grid
             item
