@@ -1029,3 +1029,139 @@ export const byEventID = /* GraphQL */ `query ByEventID(
   }
 }
 ` as GeneratedQuery<APITypes.ByEventIDQueryVariables, APITypes.ByEventIDQuery>;
+export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
+  getBooking(id: $id) {
+    id
+    status
+    guest {
+      id
+      name
+      username
+      email
+      phone_number
+      guestGroupID
+      guestGroupName
+      guest_avatar
+      avg_spend
+      avg_ticket_type
+      numberOfTickets
+      connections
+      last_attended_event
+      gender
+      group
+      faceBookID
+      appPassword
+      birthdate
+      isVerified
+      images
+      address
+      totalEvents
+      flags
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    mainGuest {
+      id
+      name
+      username
+      email
+      phone_number
+      guestGroupID
+      guestGroupName
+      guest_avatar
+      avg_spend
+      avg_ticket_type
+      numberOfTickets
+      connections
+      last_attended_event
+      gender
+      group
+      faceBookID
+      appPassword
+      birthdate
+      isVerified
+      images
+      address
+      totalEvents
+      flags
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    event {
+      id
+      name
+      description
+      startDate
+      endDate
+      todoList
+      map
+      image
+      gallery
+      visibleTo
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    isMainGuest
+    orderId
+    updatedBy
+    updatedByName
+    updatedAt
+    specialNeed
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    bookingGuestId
+    bookingMainGuestId
+    bookingEventId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetBookingQueryVariables,
+  APITypes.GetBookingQuery
+>;
+export const listBookings = /* GraphQL */ `query ListBookings(
+  $filter: ModelBookingFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listBookings(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      status
+      isMainGuest
+      orderId
+      updatedBy
+      updatedByName
+      updatedAt
+      specialNeed
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      bookingGuestId
+      bookingMainGuestId
+      bookingEventId
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListBookingsQueryVariables,
+  APITypes.ListBookingsQuery
+>;

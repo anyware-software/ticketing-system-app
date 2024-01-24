@@ -1283,3 +1283,324 @@ export const deleteEventTicket = /* GraphQL */ `mutation DeleteEventTicket(
   APITypes.DeleteEventTicketMutationVariables,
   APITypes.DeleteEventTicketMutation
 >;
+export const createBooking = /* GraphQL */ `mutation CreateBooking(
+  $input: CreateBookingInput!
+  $condition: ModelBookingConditionInput
+) {
+  createBooking(input: $input, condition: $condition) {
+    id
+    status
+    guest {
+      id
+      name
+      username
+      email
+      phone_number
+      guestGroupID
+      guestGroupName
+      guest_avatar
+      avg_spend
+      avg_ticket_type
+      numberOfTickets
+      connections
+      last_attended_event
+      gender
+      group
+      faceBookID
+      appPassword
+      birthdate
+      isVerified
+      images
+      address
+      totalEvents
+      flags
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    mainGuest {
+      id
+      name
+      username
+      email
+      phone_number
+      guestGroupID
+      guestGroupName
+      guest_avatar
+      avg_spend
+      avg_ticket_type
+      numberOfTickets
+      connections
+      last_attended_event
+      gender
+      group
+      faceBookID
+      appPassword
+      birthdate
+      isVerified
+      images
+      address
+      totalEvents
+      flags
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    event {
+      id
+      name
+      description
+      startDate
+      endDate
+      todoList
+      map
+      image
+      gallery
+      visibleTo
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    isMainGuest
+    orderId
+    updatedBy
+    updatedByName
+    updatedAt
+    specialNeed
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    bookingGuestId
+    bookingMainGuestId
+    bookingEventId
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateBookingMutationVariables,
+  APITypes.CreateBookingMutation
+>;
+export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
+  $input: UpdateBookingInput!
+  $condition: ModelBookingConditionInput
+) {
+  updateBooking(input: $input, condition: $condition) {
+    id
+    status
+    guest {
+      id
+      name
+      username
+      email
+      phone_number
+      guestGroupID
+      guestGroupName
+      guest_avatar
+      avg_spend
+      avg_ticket_type
+      numberOfTickets
+      connections
+      last_attended_event
+      gender
+      group
+      faceBookID
+      appPassword
+      birthdate
+      isVerified
+      images
+      address
+      totalEvents
+      flags
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    mainGuest {
+      id
+      name
+      username
+      email
+      phone_number
+      guestGroupID
+      guestGroupName
+      guest_avatar
+      avg_spend
+      avg_ticket_type
+      numberOfTickets
+      connections
+      last_attended_event
+      gender
+      group
+      faceBookID
+      appPassword
+      birthdate
+      isVerified
+      images
+      address
+      totalEvents
+      flags
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    event {
+      id
+      name
+      description
+      startDate
+      endDate
+      todoList
+      map
+      image
+      gallery
+      visibleTo
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    isMainGuest
+    orderId
+    updatedBy
+    updatedByName
+    updatedAt
+    specialNeed
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    bookingGuestId
+    bookingMainGuestId
+    bookingEventId
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateBookingMutationVariables,
+  APITypes.UpdateBookingMutation
+>;
+export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
+  $input: DeleteBookingInput!
+  $condition: ModelBookingConditionInput
+) {
+  deleteBooking(input: $input, condition: $condition) {
+    id
+    status
+    guest {
+      id
+      name
+      username
+      email
+      phone_number
+      guestGroupID
+      guestGroupName
+      guest_avatar
+      avg_spend
+      avg_ticket_type
+      numberOfTickets
+      connections
+      last_attended_event
+      gender
+      group
+      faceBookID
+      appPassword
+      birthdate
+      isVerified
+      images
+      address
+      totalEvents
+      flags
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    mainGuest {
+      id
+      name
+      username
+      email
+      phone_number
+      guestGroupID
+      guestGroupName
+      guest_avatar
+      avg_spend
+      avg_ticket_type
+      numberOfTickets
+      connections
+      last_attended_event
+      gender
+      group
+      faceBookID
+      appPassword
+      birthdate
+      isVerified
+      images
+      address
+      totalEvents
+      flags
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    event {
+      id
+      name
+      description
+      startDate
+      endDate
+      todoList
+      map
+      image
+      gallery
+      visibleTo
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    isMainGuest
+    orderId
+    updatedBy
+    updatedByName
+    updatedAt
+    specialNeed
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    bookingGuestId
+    bookingMainGuestId
+    bookingEventId
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteBookingMutationVariables,
+  APITypes.DeleteBookingMutation
+>;

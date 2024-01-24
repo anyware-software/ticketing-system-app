@@ -453,3 +453,32 @@ type Wave {
   quota: Int
   AutomaticShift: Boolean
 }
+
+type Booking
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  status: String
+  guest: Guest @hasOne
+  mainGuest: Guest @hasOne
+  event: Event @hasOne
+  isMainGuest: Boolean
+  orderId: String
+  updatedBy: String
+  updatedByName: String
+  updatedAt: String
+  specialNeed: Boolean
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+}
