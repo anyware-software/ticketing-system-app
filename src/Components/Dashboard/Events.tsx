@@ -117,8 +117,8 @@ export default function Events() {
   });
 
   const containerStyle = {
-    width: "100%",
-    height: "40rem",
+    width: "80rem",
+    height: "75vh",
   };
   const [zoom, setZoom] = useState(15);
 
@@ -355,7 +355,6 @@ export default function Events() {
             sm={12}
             lg={12}
             sx={{
-              zIndex: 1,
               position: "relative",
             }}
           >
@@ -473,7 +472,7 @@ export default function Events() {
                               width: "100%",
                               height: "100%",
                               backgroundColor: "rgba(0, 0, 0, 0.8)",
-                              zIndex: 10,
+                              zIndex: 2,
                               display: "flex",
                               justifyContent: "center",
                               alignItems: "center",
@@ -492,7 +491,6 @@ export default function Events() {
                             />
                           </Box>
                         )}
-                        {/* Button to toggle overlay */}
                         <Button
                           variant="text"
                           startIcon={<LocationOnIcon />}
@@ -603,7 +601,10 @@ export default function Events() {
                           </Box>
                         </Box>
                       )}
-                      <Box onClick={toggleGoogleMapOverlay}>
+                      <Box
+                        onClick={toggleGoogleMapOverlay}
+                        sx={{ cursor: "pointer" }}
+                      >
                         {currentEvent?.location?.address && (
                           <Typography
                             sx={{
@@ -644,14 +645,11 @@ export default function Events() {
             sm={12}
             lg={12}
             sx={{
-              zIndex: 1,
               position: "relative",
             }}
           >
             <Divider sx={{ backgroundColor: "white", my: 3 }} />
           </Grid>
-
-          
 
           <Grid
             item
@@ -659,7 +657,6 @@ export default function Events() {
             sm={12}
             lg={8}
             sx={{
-              zIndex: 1,
               position: "relative",
             }}
           >
@@ -869,7 +866,6 @@ export default function Events() {
             sm={12}
             lg={4}
             sx={{
-              zIndex: 1,
               position: "relative",
             }}
           >
@@ -914,7 +910,6 @@ export default function Events() {
             sm={12}
             lg={12}
             sx={{
-              zIndex: 1,
               position: "relative",
             }}
           >
