@@ -22,6 +22,10 @@ import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import { GOOGLE_MAPS_LIBRARIES } from "./Library";
 import axios from "axios";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 // import type { Event } from '../../API';
 
 interface Event {
@@ -67,8 +71,9 @@ export default function Events() {
   const [waveCounts, setWaveCounts] = useState<{ [key: string]: number }>({});
   const [startingFrom, setStartingFrom] = useState(0);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [isSpecial, setIsSpecial] = useState(false);
   const [isGoogleMapOverlayOpen, setIsGoogleMapOverlayOpen] = useState(false);
-  const [ticketChosen, setTicketChosen] = useState(false);
+  const [ticketChosen, setTicketChosen] = useState("noTickets");
   const [currentEvent, setCurrentEvent] = useState<Event>({
     id: "",
     name: "",
@@ -156,6 +161,16 @@ export default function Events() {
     } catch (error) {
       console.error("Error during reverse geocoding request:", error);
     }
+  };
+  let checkBoxStyles = {
+    justifyContent: "space-between",
+    backgroundColor:'rgba(0, 0, 0, 1)',
+    marginLeft: "0",
+    border: "1px solid #ffffff50",
+    padding: "5px 20px",
+    borderRadius: "12px",
+    width: "22.5rem",
+    color:'white',
   };
 
   const getListEvents = async () => {
@@ -298,7 +313,7 @@ export default function Events() {
       };
     });
 
-  console.log(selectedWaves);
+  // console.log(selectedWaves);
   // console.log(mapCenter);
   if (loading)
     return (
@@ -681,11 +696,11 @@ export default function Events() {
               }}
             >
               {ticketChosen && (
-              <IconButton onClick={() => setTicketChosen(false)}>
-                <ArrowBackIosIcon sx={{ color: "white", fontSize: "30px" }} />
-              </IconButton>
+                <IconButton onClick={() => setTicketChosen("noTickets")}>
+                  <ArrowBackIosIcon sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }} />
+                </IconButton>
               )}
-              {!ticketChosen && (
+              {ticketChosen === "noTickets" && (
                 <Box sx={{ display: "flex", gap: 1 }}>
                   {currentEventTicket.map((ticket) => (
                     <Box key={ticket.id} sx={{ flex: 1, mx: 1 }}>
@@ -885,7 +900,7 @@ export default function Events() {
                   ))}
                 </Box>
               )}
-              {ticketChosen && (
+              {ticketChosen === "tickets" && (
                 <Box sx={{ display: "flex", gap: 1 }}>
                   {currentEventTicket.map((ticket) => {
                     const wavesForTicket = selectedWaves.filter(
@@ -957,6 +972,7 @@ export default function Events() {
                                         focused={false}
                                         autoComplete="false"
                                         sx={{
+                                          minWidth: "25rem",
                                           backgroundColor:
                                             "rgba(51, 51, 51, 1)",
                                           "input::placeholder": {
@@ -979,6 +995,7 @@ export default function Events() {
                                         focused={false}
                                         autoComplete="false"
                                         sx={{
+                                          minWidth: "25rem",
                                           backgroundColor:
                                             "rgba(51, 51, 51, 1)",
                                           "input::placeholder": {
@@ -1008,6 +1025,16 @@ export default function Events() {
                   })}
                 </Box>
               )}
+              {ticketChosen === "guests" && (
+                <Typography sx={{ color: "white" }} variant="h4">
+                  Guests That Will Attend
+                </Typography>
+              )}
+              {ticketChosen === "book" && (
+                <Typography sx={{ color: "white" }} variant="h4">
+                  Booking In Progress
+                </Typography>
+              )}
             </Box>
           </Grid>
 
@@ -1030,6 +1057,29 @@ export default function Events() {
                 gap: 2,
               }}
             >
+              <FormControlLabel
+                value={isSpecial}
+                control={
+                  <Checkbox
+                  icon={<RadioButtonUncheckedIcon />}
+                  checkedIcon={<RadioButtonCheckedIcon />}
+
+                    checked={isSpecial}
+                    onChange={() => setIsSpecial(!isSpecial)}
+                    sx={{
+                      color: 'white',
+                      '&.Mui-checked': {
+                        color: 'white',
+                      },
+                    }}
+                  />
+                }
+                label="Request assistance for special needs"
+                labelPlacement="start"
+                sx={{
+                  ...checkBoxStyles,
+                }}
+              />
               <Typography
                 sx={{
                   color: "rgba(255, 255, 255, 0.68)",
@@ -1048,16 +1098,28 @@ export default function Events() {
                 onClick={() => {
                   const tickets = selectedWaves.some((wave) => wave.count > 0);
                   if (tickets) {
-                    console.log("Selected Waves:", selectedWaves);
-                    setTicketChosen(true);
+                    // console.log("Selected Waves:", selectedWaves);
+                    setTicketChosen("tickets");
                   } else {
                     console.log(
                       "Please select at least one ticket before booking."
                     );
                   }
+                  if (ticketChosen === "tickets") {
+                    console.log("aaaaa");
+                    setTicketChosen("guests");
+                  }
+                  if (ticketChosen === "guests") {
+                    console.log("bbbbbb");
+                    setTicketChosen("book");
+                  }
+                  if (ticketChosen === "book") {
+                    console.log("cccccc");
+                    setTicketChosen("noTickets");
+                  }
                 }}
               >
-                Book Now
+                {ticketChosen === "book" ? "Go Home" : "Book Now"}
               </Button>
             </Box>
           </Grid>
