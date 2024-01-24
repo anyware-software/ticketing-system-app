@@ -233,10 +233,19 @@ export default function Events() {
   const toggleOverlay = () => {
     setIsOverlayOpen(!isOverlayOpen);
   };
+  
+  const handleImageClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    e.stopPropagation();
+  };
   const toggleGoogleMapOverlay = () => {
     setIsGoogleMapOverlayOpen(!isGoogleMapOverlayOpen);
   };
-
+  const handleOverlayClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+    // Check if the click occurred outside the map overlay
+    if (e.target === e.currentTarget) {
+      toggleGoogleMapOverlay();
+    }
+  }
   const handleIncrement = (
     ticketId: string,
     ticketType: string,
@@ -488,6 +497,7 @@ export default function Events() {
                                 maxHeight: "90%",
                                 borderRadius: "10px",
                               }}
+                              onClick={handleImageClick}
                             />
                           </Box>
                         )}
@@ -574,7 +584,7 @@ export default function Events() {
                             justifyContent: "center",
                             alignItems: "center",
                           }}
-                          onClick={toggleGoogleMapOverlay}
+                          onClick={handleOverlayClick}
                         >
                           <Box>
                             {isLoaded && (
