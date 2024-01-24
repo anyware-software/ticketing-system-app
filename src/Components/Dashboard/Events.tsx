@@ -21,7 +21,7 @@ import TextField from "@mui/material/TextField";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import { GOOGLE_MAPS_LIBRARIES } from "./Library";
 import axios from "axios";
-
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 // import type { Event } from '../../API';
 
 interface Event {
@@ -233,19 +233,23 @@ export default function Events() {
   const toggleOverlay = () => {
     setIsOverlayOpen(!isOverlayOpen);
   };
-  
-  const handleImageClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+
+  const handleImageClick = (
+    e: React.MouseEvent<HTMLImageElement, MouseEvent>
+  ) => {
     e.stopPropagation();
   };
   const toggleGoogleMapOverlay = () => {
     setIsGoogleMapOverlayOpen(!isGoogleMapOverlayOpen);
   };
-  const handleOverlayClick = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+  const handleOverlayClick = (
+    e: React.MouseEvent<HTMLImageElement, MouseEvent>
+  ) => {
     // Check if the click occurred outside the map overlay
     if (e.target === e.currentTarget) {
       toggleGoogleMapOverlay();
     }
-  }
+  };
   const handleIncrement = (
     ticketId: string,
     ticketType: string,
@@ -294,7 +298,7 @@ export default function Events() {
       };
     });
 
-  // console.log(selectedWaves);
+  console.log(selectedWaves);
   // console.log(mapCenter);
   if (loading)
     return (
@@ -670,203 +674,340 @@ export default function Events() {
               position: "relative",
             }}
           >
-            <Box sx={{ display: "flex", gap: 1 }}>
-              {currentEventTicket.map((ticket) => (
-                <Box key={ticket.id} sx={{ flex: 1, mx: 1 }}>
-                  <Box
-                    sx={{
-                      width: "100%",
-                      height: ".75rem",
-                      backgroundColor: ticket?.color || "gold",
-                    }}
-                  />
-                  <Box
-                    sx={{
-                      p: 3,
-                      backgroundColor: "rgba(0, 0, 0, 1)",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "end",
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          color: "rgba(255, 255, 255, 0.68)",
-                          fontSize: "12px",
-                        }}
-                      >
-                        Ticket Benefit: {ticket.cashlessCredit}
-                      </Typography>
-                    </Box>
-                    <Typography
-                      sx={{
-                        color: "white",
-                        textTransform: "uppercase",
-                        fontWeight: "700",
-                        fontSize: "20px",
-                      }}
-                    >
-                      {ticket.type}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "rgba(255, 255, 255, 0.68)",
-                        fontWeight: "400",
-                        fontSize: "15px",
-                        my: 1,
-                      }}
-                    >
-                      Description:
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "rgba(255, 255, 255, 0.68)",
-                        fontWeight: "400",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {ticket.description}
-                    </Typography>
-                    {ticket.waves.map((wave, index) => (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "start",
+              }}
+            >
+              {ticketChosen && (
+              <IconButton onClick={() => setTicketChosen(false)}>
+                <ArrowBackIosIcon sx={{ color: "white", fontSize: "30px" }} />
+              </IconButton>
+              )}
+              {!ticketChosen && (
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  {currentEventTicket.map((ticket) => (
+                    <Box key={ticket.id} sx={{ flex: 1, mx: 1 }}>
                       <Box
-                        key={index}
                         sx={{
-                          p: 2,
-                          pl: 5,
-                          mt: 2,
-                          border: "1px solid",
-                          borderColor: "rgba(195.43, 172.63, 172.63, 0.40)",
-                          borderRadius: "5px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          overflow: "hidden",
-                          position: "relative",
+                          width: "100%",
+                          height: ".75rem",
+                          backgroundColor: ticket?.color || "gold",
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          p: 3,
+                          backgroundColor: "rgba(0, 0, 0, 1)",
                         }}
                       >
-                        {wave.quota === 0 && (
-                          <Box
-                            sx={{
-                              width: 100,
-                              height: 100,
-                              overflow: "hidden",
-                              position: "absolute",
-                              top: 0,
-                              left: 0,
-                            }}
-                          >
-                            <Box
-                              sx={{
-                                position: "absolute",
-                                zIndex: -1,
-                                content: '""',
-                                display: "block",
-                                border: "5px solid #d82e2e",
-                                top: 0,
-                                right: 0,
-                              }}
-                            />
-                            <Box
-                              sx={{
-                                position: "absolute",
-                                zIndex: -1,
-                                content: '""',
-                                display: "block",
-                                border: "5px solid #d82e2e",
-                                bottom: 0,
-                                left: 0,
-                              }}
-                            />
-                            <Typography
-                              sx={{
-                                position: "absolute",
-                                display: "block",
-                                width: 225,
-                                padding: "5px 0",
-                                backgroundColor: "#d82e2e",
-                                boxShadow: "0 5px 10px rgba(0, 0, 0, .1)",
-                                color: "#fff",
-                                fontWeight: 700,
-                                fontSize: 8,
-                                lineHeight: 1,
-                                fontFamily: "Lato, sans-serif",
-                                textShadow: "0 1px 1px rgba(0, 0, 0, .2)",
-                                textTransform: "uppercase",
-                                textAlign: "center",
-                                right: -25,
-                                top: 20,
-                                transform: "rotate(-45deg)",
-                                pl: 2.5,
-                              }}
-                            >
-                              Sold Out
-                            </Typography>
-                          </Box>
-                        )}
-                        <Typography
-                          sx={{
-                            color: "white",
-                            textTransform: "capitalize",
-                          }}
-                        >
-                          {wave.name}
-                        </Typography>
                         <Box
                           sx={{
                             display: "flex",
-                            alignItems: "center",
-                            gap: 0.5,
+                            justifyContent: "end",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              color: "rgba(255, 255, 255, 0.68)",
+                              fontSize: "12px",
+                            }}
+                          >
+                            Ticket Benefit: {ticket.cashlessCredit}
+                          </Typography>
+                        </Box>
+                        <Typography
+                          sx={{
+                            color: "white",
+                            textTransform: "uppercase",
+                            fontWeight: "700",
+                            fontSize: "20px",
+                          }}
+                        >
+                          {ticket.type}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "rgba(255, 255, 255, 0.68)",
+                            fontWeight: "400",
+                            fontSize: "15px",
+                            my: 1,
+                          }}
+                        >
+                          Description:
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "rgba(255, 255, 255, 0.68)",
+                            fontWeight: "400",
+                            fontSize: "12px",
+                          }}
+                        >
+                          {ticket.description}
+                        </Typography>
+                        {ticket.waves.map((wave, index) => (
+                          <Box
+                            key={index}
+                            sx={{
+                              p: 2,
+                              pl: 5,
+                              mt: 2,
+                              border: "1px solid",
+                              borderColor: "rgba(195.43, 172.63, 172.63, 0.40)",
+                              borderRadius: "5px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              overflow: "hidden",
+                              position: "relative",
+                            }}
+                          >
+                            {wave.quota === 0 && (
+                              <Box
+                                sx={{
+                                  width: 100,
+                                  height: 100,
+                                  overflow: "hidden",
+                                  position: "absolute",
+                                  top: 0,
+                                  left: 0,
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    position: "absolute",
+                                    zIndex: -1,
+                                    content: '""',
+                                    display: "block",
+                                    border: "5px solid #d82e2e",
+                                    top: 0,
+                                    right: 0,
+                                  }}
+                                />
+                                <Box
+                                  sx={{
+                                    position: "absolute",
+                                    zIndex: -1,
+                                    content: '""',
+                                    display: "block",
+                                    border: "5px solid #d82e2e",
+                                    bottom: 0,
+                                    left: 0,
+                                  }}
+                                />
+                                <Typography
+                                  sx={{
+                                    position: "absolute",
+                                    display: "block",
+                                    width: 225,
+                                    padding: "5px 0",
+                                    backgroundColor: "#d82e2e",
+                                    boxShadow: "0 5px 10px rgba(0, 0, 0, .1)",
+                                    color: "#fff",
+                                    fontWeight: 700,
+                                    fontSize: 8,
+                                    lineHeight: 1,
+                                    fontFamily: "Lato, sans-serif",
+                                    textShadow: "0 1px 1px rgba(0, 0, 0, .2)",
+                                    textTransform: "uppercase",
+                                    textAlign: "center",
+                                    right: -25,
+                                    top: 20,
+                                    transform: "rotate(-45deg)",
+                                    pl: 2.5,
+                                  }}
+                                >
+                                  Sold Out
+                                </Typography>
+                              </Box>
+                            )}
+                            <Typography
+                              sx={{
+                                color: "white",
+                                textTransform: "capitalize",
+                              }}
+                            >
+                              {wave.name}
+                            </Typography>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 0.5,
+                              }}
+                            >
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  textTransform: "capitalize",
+                                }}
+                              >
+                                EGP {wave.price}
+                              </Typography>
+                              {wave.quota > 0 && (
+                                <>
+                                  <ManIcon sx={{ color: "white" }} />
+                                  <RemoveCircleIcon
+                                    sx={{ color: "rgba(217, 217, 217, 0.53)" }}
+                                    onClick={() =>
+                                      handleDecrement(
+                                        ticket.id,
+                                        ticket.type,
+                                        wave.name,
+                                        wave.price
+                                      )
+                                    }
+                                  />
+                                  <Typography sx={{ color: "white" }}>
+                                    {waveCounts[
+                                      `${ticket.id}-${ticket.type}-${wave.name}-${wave.price}`
+                                    ] || 0}
+                                  </Typography>
+
+                                  <AddCircleIcon
+                                    sx={{ color: "rgba(217, 217, 217, 0.53)" }}
+                                    onClick={() =>
+                                      handleIncrement(
+                                        ticket.id,
+                                        ticket.type,
+                                        wave.name,
+                                        wave.price
+                                      )
+                                    }
+                                  />
+                                </>
+                              )}
+                            </Box>
+                          </Box>
+                        ))}
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              )}
+              {ticketChosen && (
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  {currentEventTicket.map((ticket) => {
+                    const wavesForTicket = selectedWaves.filter(
+                      (wave) => wave.ticketId === ticket.id
+                    );
+                    if (
+                      wavesForTicket.length === 0 ||
+                      wavesForTicket.every((wave) => wave.count === 0)
+                    ) {
+                      return null;
+                    }
+                    return (
+                      <Box key={ticket.id} sx={{ flex: 1, mx: 1 }}>
+                        <Box
+                          sx={{
+                            width: "100%",
+                            height: ".75rem",
+                            backgroundColor: ticket?.color || "gold",
+                          }}
+                        />
+                        <Box
+                          sx={{
+                            p: 3,
+                            backgroundColor: "rgba(0, 0, 0, 1)",
                           }}
                         >
                           <Typography
                             sx={{
                               color: "white",
+                              mb: 2,
                               textTransform: "capitalize",
+                              fontSize: "25px",
+                              fontWeight: 700,
                             }}
                           >
-                            EGP {wave.price}
+                            {ticket.type}
                           </Typography>
-                          {wave.quota > 0 && (
-                            <>
-                              <ManIcon sx={{ color: "white" }} />
-                              <RemoveCircleIcon
-                                sx={{ color: "rgba(217, 217, 217, 0.53)" }}
-                                onClick={() =>
-                                  handleDecrement(
-                                    ticket.id,
-                                    ticket.type,
-                                    wave.name,
-                                    wave.price
-                                  )
-                                }
-                              />
-                              <Typography sx={{ color: "white" }}>
-                                {waveCounts[
-                                  `${ticket.id}-${ticket.type}-${wave.name}-${wave.price}`
-                                ] || 0}
+                          {wavesForTicket.map((wave) => (
+                            <Box key={wave.ticketId}>
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  mb: 2,
+                                  textTransform: "capitalize",
+                                  fontSize: "20px",
+                                  fontWeight: 500,
+                                }}
+                              >
+                                {wave.waveName}
                               </Typography>
-
-                              <AddCircleIcon
-                                sx={{ color: "rgba(217, 217, 217, 0.53)" }}
-                                onClick={() =>
-                                  handleIncrement(
-                                    ticket.id,
-                                    ticket.type,
-                                    wave.name,
-                                    wave.price
-                                  )
-                                }
-                              />
-                            </>
-                          )}
+                              {Array.from(
+                                { length: wave.count },
+                                (_, index) => (
+                                  <Box
+                                    key={`${wave.ticketId}-${wave.waveName}-${index}`}
+                                    sx={{
+                                      mb: 2,
+                                    }}
+                                  >
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: 2,
+                                      }}
+                                    >
+                                      <TextField
+                                        placeholder={`Enter ${wave.waveName}'s Name`}
+                                        focused={false}
+                                        autoComplete="false"
+                                        sx={{
+                                          backgroundColor:
+                                            "rgba(51, 51, 51, 1)",
+                                          "input::placeholder": {
+                                            color: "white",
+                                          },
+                                          input: {
+                                            color: "white",
+                                          },
+                                          border: "1px solid",
+                                          borderColor: "gray",
+                                          width: { xs: "auto", sm: "18rem" },
+                                          borderRadius: "10px",
+                                          ".MuiInputBase-root": {
+                                            borderRadius: "10px",
+                                          },
+                                        }}
+                                      />
+                                      <TextField
+                                        placeholder={`Enter ${wave.waveName}'s Phone`}
+                                        focused={false}
+                                        autoComplete="false"
+                                        sx={{
+                                          backgroundColor:
+                                            "rgba(51, 51, 51, 1)",
+                                          "input::placeholder": {
+                                            color: "white",
+                                          },
+                                          input: {
+                                            color: "white",
+                                          },
+                                          border: "1px solid",
+                                          borderColor: "gray",
+                                          width: { xs: "auto", sm: "18rem" },
+                                          borderRadius: "10px",
+                                          ".MuiInputBase-root": {
+                                            borderRadius: "10px",
+                                          },
+                                        }}
+                                      />
+                                    </Box>
+                                  </Box>
+                                )
+                              )}
+                            </Box>
+                          ))}
                         </Box>
                       </Box>
-                    ))}
-                  </Box>
+                    );
+                  })}
                 </Box>
-              ))}
+              )}
             </Box>
           </Grid>
 
@@ -905,96 +1046,19 @@ export default function Events() {
                   py: 1,
                 }}
                 onClick={() => {
-                  console.log("Selected Waves:", selectedWaves);
-                  setTicketChosen(true);
+                  const tickets = selectedWaves.some((wave) => wave.count > 0);
+                  if (tickets) {
+                    console.log("Selected Waves:", selectedWaves);
+                    setTicketChosen(true);
+                  } else {
+                    console.log(
+                      "Please select at least one ticket before booking."
+                    );
+                  }
                 }}
               >
                 Book Now
               </Button>
-            </Box>
-          </Grid>
-
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            lg={12}
-            sx={{
-              position: "relative",
-            }}
-          >
-            <Box>
-              {selectedWaves.map((wave) => (
-                <Box key={`${wave.ticketId}`}>
-                  <Typography
-                    sx={{
-                      color: "white",
-                      mb: 2,
-                      textTransform: "capitalize",
-                      fontSize: "25px",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {wave.ticketName} - {wave.waveName}
-                  </Typography>
-                  {Array.from({ length: wave.count }, (_, index) => (
-                    <Box
-                      key={`${wave.ticketId}-${wave.waveName}-${index}`}
-                      sx={{ mb: 2 }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          gap: 2,
-                        }}
-                      >
-                        <TextField
-                          placeholder={`Enter Your Friend's Name`}
-                          focused={false}
-                          autoComplete="false"
-                          sx={{
-                            backgroundColor: "rgba(51, 51, 51, 1)",
-                            "input::placeholder": {
-                              color: "white",
-                            },
-                            input: {
-                              color: "white",
-                            },
-                            border: "1px solid",
-                            borderColor: "gray",
-                            width: { xs: "auto", sm: "18rem" },
-                            borderRadius: "10px",
-                            ".MuiInputBase-root": {
-                              borderRadius: "10px",
-                            },
-                          }}
-                        />
-                        <TextField
-                          placeholder={`Enter Your Friend's Phone`}
-                          focused={false}
-                          autoComplete="false"
-                          sx={{
-                            backgroundColor: "rgba(51, 51, 51, 1)",
-                            "input::placeholder": {
-                              color: "white",
-                            },
-                            input: {
-                              color: "white",
-                            },
-                            border: "1px solid",
-                            borderColor: "gray",
-                            width: { xs: "auto", sm: "18rem" },
-                            borderRadius: "10px",
-                            ".MuiInputBase-root": {
-                              borderRadius: "10px",
-                            },
-                          }}
-                        />
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
-              ))}
             </Box>
           </Grid>
         </Grid>
