@@ -24,8 +24,9 @@ import axios from "axios";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import AccessibleIcon from "@mui/icons-material/Accessible";
 // import type { Event } from '../../API';
 
 interface Event {
@@ -164,13 +165,13 @@ export default function Events() {
   };
   let checkBoxStyles = {
     justifyContent: "space-between",
-    backgroundColor:'rgba(0, 0, 0, 1)',
+    backgroundColor: "rgba(0, 0, 0, 1)",
     marginLeft: "0",
     border: "1px solid #ffffff50",
-    padding: "5px 20px",
+    padding: "5px 10px",
     borderRadius: "12px",
-    width: "22.5rem",
-    color:'white',
+    width: "23rem",
+    color: "white",
   };
 
   const getListEvents = async () => {
@@ -697,7 +698,9 @@ export default function Events() {
             >
               {ticketChosen && (
                 <IconButton onClick={() => setTicketChosen("noTickets")}>
-                  <ArrowBackIosIcon sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }} />
+                  <ArrowBackIosIcon
+                    sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
+                  />
                 </IconButton>
               )}
               {ticketChosen === "noTickets" && (
@@ -1061,20 +1064,26 @@ export default function Events() {
                 value={isSpecial}
                 control={
                   <Checkbox
-                  icon={<RadioButtonUncheckedIcon />}
-                  checkedIcon={<RadioButtonCheckedIcon />}
-
+                    icon={<RadioButtonUncheckedIcon />}
+                    checkedIcon={<RadioButtonCheckedIcon />}
                     checked={isSpecial}
                     onChange={() => setIsSpecial(!isSpecial)}
                     sx={{
-                      color: 'white',
-                      '&.Mui-checked': {
-                        color: 'white',
+                      color: "white",
+                      "&.Mui-checked": {
+                        color: "white",
                       },
                     }}
                   />
                 }
-                label="Request assistance for special needs"
+                label={
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <AccessibleIcon
+                      sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
+                    />
+                    Request assistance for special needs
+                  </Box>
+                }
                 labelPlacement="start"
                 sx={{
                   ...checkBoxStyles,
