@@ -344,6 +344,7 @@ export default function Events() {
   }>({});
   const [phones, setPhones] = useState<string[]>([]);
   const [validGuests, setValidGuests] = useState<Guest[]>([]);
+  const [notValidGuests, setNotValidGuests] = useState<any[]>([]);
 
   const handleInputChange = (
     ticketId: string,
@@ -384,17 +385,29 @@ export default function Events() {
 
   const fetchEventGuests = async () => {
     if (phones.length > 0) {
-      const guests: any[] = [];
+      const validGuests: Guest[] = [];
+      const notValidGuests: any[] = [];
 
       for (const phone of phones) {
         let guest: any[] = await getGuestByPhone(phone);
-        guests.push(guest[0]);
+
+        if (guest.length !== 0) {
+          validGuests.push(guest[0]);
+        } else {
+          notValidGuests.push(
+            Object.values(bookingRequests).find(
+              (entry) => entry.phone === phone
+            )
+          );
+        }
       }
-      // console.log(guests);
-      setValidGuests(guests);
+
+      setValidGuests(validGuests);
+      setNotValidGuests(notValidGuests);
     }
   };
-  console.log(validGuests);
+
+  console.log(notValidGuests);
   if (loading)
     return (
       <Box
@@ -1211,45 +1224,49 @@ export default function Events() {
                             );
                             return wavesForTicket.map((wave) => (
                               <Box key={wave.customKey}>
-                                <Box sx={{
-                                  display: 'flex',
-                                  justifyContent: 'end',
-                                  gap:1,
-                                }}>
                                 <Box
                                   sx={{
-                                    backgroundColor: wave.ticketColor || "gold",
-                                    borderRadius: "10px",
-                                    color: "black",
-                                    // py: 0.25,
-                                    px: 1,
                                     display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    textTransform:'uppercase',
-                                    fontWeight:700,
-                                    fontSize:13,
+                                    justifyContent: "end",
+                                    gap: 1,
                                   }}
                                 >
-                                  {wave.ticketType}
-                                </Box>
-                                <Box
-                                  sx={{
-                                    backgroundColor: wave.ticketColor || "gold",
-                                    borderRadius: "10px",
-                                    color: "black",
-                                    // py: 0.25,
-                                    px: 1,
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    textTransform:'uppercase',
-                                    fontWeight:700,
-                                    fontSize:13,
-                                  }}
-                                >
-                                  {wave.waveName}
-                                </Box>
+                                  <Box
+                                    sx={{
+                                      backgroundColor:
+                                        wave.ticketColor || "gold",
+                                      borderRadius: "10px",
+                                      color: "black",
+                                      // py: 0.25,
+                                      px: 1,
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      textTransform: "uppercase",
+                                      fontWeight: 700,
+                                      fontSize: 13,
+                                    }}
+                                  >
+                                    {wave.ticketType}
+                                  </Box>
+                                  <Box
+                                    sx={{
+                                      backgroundColor:
+                                        wave.ticketColor || "gold",
+                                      borderRadius: "10px",
+                                      color: "black",
+                                      // py: 0.25,
+                                      px: 1,
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      textTransform: "uppercase",
+                                      fontWeight: 700,
+                                      fontSize: 13,
+                                    }}
+                                  >
+                                    {wave.waveName}
+                                  </Box>
                                 </Box>
                                 <Box
                                   sx={{
@@ -1259,7 +1276,7 @@ export default function Events() {
                                     justifyContent: "end",
                                     alignItems: "center",
                                     fontSize: "12px",
-                                    mt:1,
+                                    mt: 1,
                                   }}
                                 >
                                   {new Date(
@@ -1273,6 +1290,88 @@ export default function Events() {
                               </Box>
                             ));
                           })}
+                        </Box>
+                      ))}
+                    {notValidGuests.length > 0 &&
+                      notValidGuests.map((notValidGuest) => (
+                        <Box
+                          key={notValidGuest.customKey}
+                          sx={{
+                            backgroundColor: "rgba(51, 51, 51, 1)",
+                            display: "flex",
+                            alignItems: "center",
+                            p: 1,
+                            borderRadius: "10px",
+                            gap: 15,
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <Avatar
+                              alt=""
+                              src={``}
+                              sx={{ width: 56, height: 56 }}
+                            />
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  textTransform: "capitalize",
+                                }}
+                              >
+                                {notValidGuest.name}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  textTransform: "capitalize",
+                                }}
+                              >
+                                {notValidGuest.phone}
+                              </Typography>
+                            </Box>
+                          </Box>
+                          <Box sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "end",
+                            p:1,
+                            gap:0.5,
+                          }}>
+                          <Button
+                            variant="contained"
+                            sx={{ backgroundColor: "rgba(240, 99, 90, 1)" }}
+                          >
+                            Invite To Ultar !
+                          </Button>
+                          <Typography
+                            sx={{
+                              color: "rgba(164, 164, 164, 1)",
+                              fontSize:'12px',
+                            }}
+                          >
+                            You Need to Invite Your Friend to ULTER First
+                          </Typography>
+                          </Box>
+                          {/* <Box>
+                          <Typography sx={{ color: "white" }}>
+                            {notValidGuest.name}
+                          </Typography>
+                          <Typography sx={{ color: "white" }}>
+                            {notValidGuest.phone}
+                          </Typography>
+                          </Box> */}
                         </Box>
                       ))}
                   </Box>
