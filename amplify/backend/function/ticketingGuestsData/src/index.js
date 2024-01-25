@@ -63,8 +63,12 @@ exports.handler = async (event) => {
       };
       query = getGuest;
     } else if (operationId === operationIdEnum.getGuestByPhone) {
+      let filter = {
+        deleted: { eq: "0" },
+      };
       variables = {
         phone_number: phoneNumber,
+        filter,
       };
       query = ByPhoneNumber;
     } else if (operationId === operationIdEnum.updateGuest) {

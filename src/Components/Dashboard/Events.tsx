@@ -27,6 +27,8 @@ import Checkbox from "@mui/material/Checkbox";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import AccessibleIcon from "@mui/icons-material/Accessible";
+import getGuestByPhone from "../../services/getGuestByPhone";
+import Avatar from "@mui/material/Avatar";
 // import type { Event } from '../../API';
 
 interface Event {
@@ -52,6 +54,7 @@ interface EventTickets {
   cashlessCredit: number;
   color: string;
   price: number;
+  startDate: string;
   waves: {
     AutomaticShift: boolean;
     active: boolean;
@@ -68,6 +71,13 @@ interface BookingRequest {
   phone: string;
   ticketType: string;
   waveName: string;
+}
+
+interface Guest {
+  id: string;
+  name: string;
+  guest_avatar: string;
+  phone_number: string;
 }
 
 export default function Events() {
@@ -322,26 +332,69 @@ export default function Events() {
     });
 
   const [bookingRequests, setBookingRequests] = useState<{
-    [key: string]: { name: string; phone: string };
+    [key: string]: {
+      name: string;
+      phone: string;
+      ticketId: string;
+      customKey: string;
+      ticketType: string;
+      ticketColor: string;
+      waveName: string;
+    };
   }>({});
+  const [phones, setPhones] = useState<string[]>([]);
+  const [validGuests, setValidGuests] = useState<Guest[]>([]);
+
   const handleInputChange = (
     ticketId: string,
     waveName: string,
+    ticketType: string,
+    ticketColor: string,
     index: number,
     field: "name" | "phone",
     value: string
   ) => {
     const key = `${ticketId}-${waveName}-${index}`;
+    const parts = key.split("-");
+    const extractedTicketId = parts.slice(0, -2).join("-");
+    const extractedWaveName = parts[parts.length - 2];
+
     setBookingRequests((prevFormData) => ({
       ...prevFormData,
       [key]: {
         ...prevFormData[key],
+        customKey: key,
+        ticketId: extractedTicketId,
+        waveName: extractedWaveName,
+        ticketType: ticketType,
+        ticketColor: ticketColor,
         [field]: value,
       },
     }));
   };
-  // console.log(bookingRequests);
 
+  useEffect(() => {
+    const guestsPhone = () => {
+      const phones = Object.values(bookingRequests).map((entry) => entry.phone);
+      setPhones(phones);
+    };
+    guestsPhone();
+  }, [bookingRequests]);
+  // console.log(phones);
+
+  const fetchEventGuests = async () => {
+    if (phones.length > 0) {
+      const guests: any[] = [];
+
+      for (const phone of phones) {
+        let guest: any[] = await getGuestByPhone(phone);
+        guests.push(guest[0]);
+      }
+      // console.log(guests);
+      setValidGuests(guests);
+    }
+  };
+  console.log(validGuests);
   if (loading)
     return (
       <Box
@@ -1007,6 +1060,8 @@ export default function Events() {
                                           handleInputChange(
                                             wave.ticketId,
                                             wave.waveName,
+                                            ticket.type,
+                                            ticket.color,
                                             index,
                                             "name",
                                             e.target.value
@@ -1042,6 +1097,8 @@ export default function Events() {
                                           handleInputChange(
                                             wave.ticketId,
                                             wave.waveName,
+                                            ticket.type,
+                                            ticket.color,
                                             index,
                                             "phone",
                                             e.target.value
@@ -1079,10 +1136,149 @@ export default function Events() {
                 </Box>
               )}
               {ticketChosen === "guests" && (
-                <Typography sx={{ color: "white" }} variant="h4">
-                  Guests That Will Attend
-                </Typography>
+                <Box sx={{ display: "flex", gap: 1, flexDirection: "column" }}>
+                  <Typography
+                    sx={{ color: "white", fontSize: "25px", fontWeight: 700 }}
+                  >
+                    Review Guests
+                  </Typography>
+                  <Box
+                    sx={{
+                      backgroundColor: "black",
+                      p: 3,
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 2,
+                    }}
+                  >
+                    {validGuests.length > 0 &&
+                      validGuests.map((guest: Guest) => (
+                        <Box
+                          key={guest.id}
+                          sx={{
+                            backgroundColor: "rgba(51, 51, 51, 1)",
+                            display: "flex",
+                            alignItems: "center",
+                            p: 1,
+                            borderRadius: "10px",
+                            gap: 15,
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <Avatar
+                              alt=""
+                              src={`${dbStorage}${guest.guest_avatar}`}
+                              sx={{ width: 56, height: 56 }}
+                            />
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  textTransform: "capitalize",
+                                }}
+                              >
+                                {guest.name}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  textTransform: "capitalize",
+                                }}
+                              >
+                                {guest.phone_number}
+                              </Typography>
+                            </Box>
+                          </Box>
+                          {currentEventTicket.map((ticket) => {
+                            const wavesForTicket = Object.values(
+                              bookingRequests
+                            ).filter(
+                              (wave) =>
+                                wave.ticketId === ticket.id &&
+                                wave.phone === guest.phone_number
+                            );
+                            return wavesForTicket.map((wave) => (
+                              <Box key={wave.customKey}>
+                                <Box sx={{
+                                  display: 'flex',
+                                  justifyContent: 'end',
+                                  gap:1,
+                                }}>
+                                <Box
+                                  sx={{
+                                    backgroundColor: wave.ticketColor || "gold",
+                                    borderRadius: "10px",
+                                    color: "black",
+                                    // py: 0.25,
+                                    px: 1,
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    textTransform:'uppercase',
+                                    fontWeight:700,
+                                    fontSize:13,
+                                  }}
+                                >
+                                  {wave.ticketType}
+                                </Box>
+                                <Box
+                                  sx={{
+                                    backgroundColor: wave.ticketColor || "gold",
+                                    borderRadius: "10px",
+                                    color: "black",
+                                    // py: 0.25,
+                                    px: 1,
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    textTransform:'uppercase',
+                                    fontWeight:700,
+                                    fontSize:13,
+                                  }}
+                                >
+                                  {wave.waveName}
+                                </Box>
+                                </Box>
+                                <Box
+                                  sx={{
+                                    borderRadius: "10px",
+                                    color: "rgba(164, 164, 164, 1)",
+                                    display: "flex",
+                                    justifyContent: "end",
+                                    alignItems: "center",
+                                    fontSize: "12px",
+                                    mt:1,
+                                  }}
+                                >
+                                  {new Date(
+                                    currentEvent.startDate
+                                  ).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  })}
+                                </Box>
+                              </Box>
+                            ));
+                          })}
+                        </Box>
+                      ))}
+                  </Box>
+                </Box>
               )}
+
               {ticketChosen === "book" && (
                 <Typography sx={{ color: "white" }} variant="h4">
                   Booking In Progress
@@ -1167,11 +1363,12 @@ export default function Events() {
                     );
                   }
                   if (ticketChosen === "tickets") {
-                    console.log("aaaaa");
+                    // console.log("aaaaa");
+                    fetchEventGuests();
                     setTicketChosen("guests");
                   }
                   if (ticketChosen === "guests") {
-                    console.log("bbbbbb");
+                    // console.log("bbbbbb");
                     setTicketChosen("book");
                   }
                   if (ticketChosen === "book") {
