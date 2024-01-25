@@ -15,6 +15,7 @@ const {
   getGuest,
   updateGuest,
   listGuests,
+  ByPhoneNumber,
 } = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
@@ -33,6 +34,7 @@ exports.handler = async (event) => {
     console.log({ requestBody });
     const operationId = requestBody.operationId;
     const userID = requestBody.userID;
+    const phoneNumber = requestBody.phoneNumber;
     const userAttributes = requestBody.userAttributes;
     const faceBookIDs = requestBody.faceBookIDs;
     let variables, query;
@@ -60,6 +62,11 @@ exports.handler = async (event) => {
         id: userID,
       };
       query = getGuest;
+    } else if (operationId === operationIdEnum.getGuestByPhone) {
+      variables = {
+        phone_number: phoneNumber,
+      };
+      query = ByPhoneNumber;
     } else if (operationId === operationIdEnum.updateGuest) {
       console.log(operationIdEnum.updateGuest);
       variables = {
@@ -123,7 +130,10 @@ exports.handler = async (event) => {
       items = responseBody.data.updateGuest;
     } else if (operationId === operationIdEnum.listGuests) {
       items = responseBody.data.listGuests.items;
+    } else if (operationId === operationIdEnum.getGuestByPhone) {
+      items = responseBody.data.ByPhoneNumber.items;
     }
+    
     return {
       statusCode: 200,
       body: JSON.stringify(items),

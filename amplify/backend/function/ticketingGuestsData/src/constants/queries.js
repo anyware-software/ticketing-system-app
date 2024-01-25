@@ -144,10 +144,63 @@ const listGuests = /* GraphQL */ `query ListGuests(
   }
 }
 `
+const ByPhoneNumber = /* GraphQL */ `query ByPhoneNumber(
+  $phone_number: String!
+  $name: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelGuestFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  ByPhoneNumber(
+    phone_number: $phone_number
+    name: $name
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      name
+      username
+      email
+      phone_number
+      guestGroupID
+      guestGroupName
+      guest_avatar
+      avg_spend
+      avg_ticket_type
+      numberOfTickets
+      connections
+      last_attended_event
+      gender
+      group
+      faceBookID
+      appPassword
+      birthdate
+      isVerified
+      images
+      address
+      totalEvents
+      flags
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+`
 
   module.exports = {
     createGuest,
     getGuest,
     updateGuest,
-    listGuests
+    listGuests,
+    ByPhoneNumber,
   };

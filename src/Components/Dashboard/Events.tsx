@@ -321,19 +321,18 @@ export default function Events() {
       };
     });
 
-  // const [bookingRequests, setBookingRequests] = useState<BookingRequest[]>([]);
-  // console.log(bookingRequests);
-  
-  const [formData, setFormData] = useState<{ [key: string]: { name: string; phone: string } }>({});
+  const [bookingRequests, setBookingRequests] = useState<{
+    [key: string]: { name: string; phone: string };
+  }>({});
   const handleInputChange = (
     ticketId: string,
     waveName: string,
     index: number,
-    field: 'name' | 'phone',
+    field: "name" | "phone",
     value: string
   ) => {
     const key = `${ticketId}-${waveName}-${index}`;
-    setFormData((prevFormData) => ({
+    setBookingRequests((prevFormData) => ({
       ...prevFormData,
       [key]: {
         ...prevFormData[key],
@@ -341,9 +340,7 @@ export default function Events() {
       },
     }));
   };
-console.log(formData);
-
-    
+  // console.log(bookingRequests);
 
   if (loading)
     return (
@@ -1000,16 +997,18 @@ console.log(formData);
                                       }}
                                     >
                                       <TextField
-                          id={`${wave.ticketId}-${wave.waveName}-${index}-name`}
-                          placeholder={`Enter ${wave.waveName}'s Name`}
+                                        id={`${wave.ticketId}-${wave.waveName}-${index}-name`}
+                                        placeholder={`Enter ${wave.waveName}'s Name`}
                                         focused={false}
                                         autoComplete="false"
-                                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                        onChange={(
+                                          e: ChangeEvent<HTMLInputElement>
+                                        ) =>
                                           handleInputChange(
                                             wave.ticketId,
                                             wave.waveName,
                                             index,
-                                            'name',
+                                            "name",
                                             e.target.value
                                           )
                                         }
@@ -1033,16 +1032,18 @@ console.log(formData);
                                         }}
                                       />
                                       <TextField
-                          id={`${wave.ticketId}-${wave.waveName}-${index}-phone`}
-                          placeholder={`Enter ${wave.waveName}'s Phone`}
+                                        id={`${wave.ticketId}-${wave.waveName}-${index}-phone`}
+                                        placeholder={`Enter ${wave.waveName}'s Phone`}
                                         focused={false}
                                         autoComplete="false"
-                                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                        onChange={(
+                                          e: ChangeEvent<HTMLInputElement>
+                                        ) =>
                                           handleInputChange(
                                             wave.ticketId,
                                             wave.waveName,
                                             index,
-                                            'phone',
+                                            "phone",
                                             e.target.value
                                           )
                                         }
@@ -1110,35 +1111,35 @@ console.log(formData);
               }}
             >
               {ticketChosen !== "noTickets" && (
-              <FormControlLabel
-                value={isSpecial}
-                control={
-                  <Checkbox
-                    icon={<RadioButtonUncheckedIcon />}
-                    checkedIcon={<RadioButtonCheckedIcon />}
-                    checked={isSpecial}
-                    onChange={() => setIsSpecial(!isSpecial)}
-                    sx={{
-                      color: "white",
-                      "&.Mui-checked": {
+                <FormControlLabel
+                  value={isSpecial}
+                  control={
+                    <Checkbox
+                      icon={<RadioButtonUncheckedIcon />}
+                      checkedIcon={<RadioButtonCheckedIcon />}
+                      checked={isSpecial}
+                      onChange={() => setIsSpecial(!isSpecial)}
+                      sx={{
                         color: "white",
-                      },
-                    }}
-                  />
-                }
-                label={
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <AccessibleIcon
-                      sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
+                        "&.Mui-checked": {
+                          color: "white",
+                        },
+                      }}
                     />
-                    Request assistance for special needs
-                  </Box>
-                }
-                labelPlacement="start"
-                sx={{
-                  ...checkBoxStyles,
-                }}
-              />
+                  }
+                  label={
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <AccessibleIcon
+                        sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
+                      />
+                      Request assistance for special needs
+                    </Box>
+                  }
+                  labelPlacement="start"
+                  sx={{
+                    ...checkBoxStyles,
+                  }}
+                />
               )}
               <Typography
                 sx={{
