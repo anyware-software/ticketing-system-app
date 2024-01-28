@@ -12,7 +12,7 @@ Amplify Params - DO NOT EDIT */
 const fetch = require("node-fetch");
 const { operationIdEnum } = require("./constants/enum");
 
-const { getEvent, listEvents, byEventID } = require("./constants/queries");
+const { getEvent, listEvents, byEventID , createBooking } = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
@@ -41,6 +41,7 @@ exports.handler = async (event) => {
     const operationId = requestBody.operationId;
     const eventID = requestBody.eventID;
     let variables, query;
+    const bookAttributes = requestBody.bookAttributes;
 
     if (operationId === operationIdEnum.listEvents) {
       variables = {
@@ -54,6 +55,26 @@ exports.handler = async (event) => {
         },
       };
       query = listEvents;
+    }else if (operationId === operationIdEnum.bookEvent) {
+      const createInput = {
+        status: bookAttributes.status,
+        bookingGuestId: bookAttributes.bookingGuestId,
+        bookingMainGuestId: bookAttributes.bookingMainGuestId,
+        bookingEventId: bookAttributes.bookingEventId,
+        bookingEventTicketId: bookAttributes.bookingEventTicketId,
+        wave: bookAttributes.wave,
+        isMainGuest: bookAttributes.isMainGuest,
+        orderId: bookAttributes.orderId,
+        specialNeed: bookAttributes.specialNeed,
+        deleted: "0",
+        createdAt: bookAttributes.createdAt,
+        createdByID: bookAttributes.createdByID,
+        createdByName: bookAttributes.createdByName,
+      };
+      variables = {
+        input: createInput,
+      };
+      query = createBooking;
     }
 
     let responseBody = {};
@@ -122,6 +143,8 @@ exports.handler = async (event) => {
       };
     } else if (operationId === operationIdEnum.listEvents) {
       items = responseBody.data.listEvents;
+    } else if (operationId === operationIdEnum.bookEvent) {
+      items = responseBody.data.createBooking;
     }
     return {
       statusCode: 200,

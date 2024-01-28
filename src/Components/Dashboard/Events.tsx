@@ -1468,6 +1468,7 @@ export default function Events() {
                   }
                   if (ticketChosen === "guests") {
                     // console.log("bbbbbb");
+                    
                     setTicketChosen("book");
                   }
                   if (ticketChosen === "book") {
