@@ -264,14 +264,15 @@ const createBooking = /* GraphQL */ `mutation CreateBooking(
     wave
     isMainGuest
     orderId
-    updatedBy
-    updatedByName
-    updatedAt
+    statusUpdatedByID
+    statusUpdatedByName
+    statusUpdatedAt
     specialNeed
     deleted
     createdAt
     createdByID
     createdByName
+    updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
