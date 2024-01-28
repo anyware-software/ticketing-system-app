@@ -1249,14 +1249,15 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
     wave
     isMainGuest
     orderId
-    updatedBy
-    updatedByName
-    updatedAt
+    statusUpdatedByID
+    statusUpdatedByName
+    statusUpdatedAt
     specialNeed
     deleted
     createdAt
     createdByID
     createdByName
+    updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
@@ -1387,14 +1388,15 @@ export const listBookings = /* GraphQL */ `query ListBookings(
       wave
       isMainGuest
       orderId
-      updatedBy
-      updatedByName
-      updatedAt
+      statusUpdatedByID
+      statusUpdatedByName
+      statusUpdatedAt
       specialNeed
       deleted
       createdAt
       createdByID
       createdByName
+      updatedAt
       bookingGuestId
       bookingMainGuestId
       bookingEventId

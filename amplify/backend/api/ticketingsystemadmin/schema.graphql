@@ -475,9 +475,9 @@ type Booking
   wave: String
   isMainGuest: Boolean
   orderId: String
-  updatedBy: String
-  updatedByName: String
-  updatedAt: String
+  statusUpdatedByID: String
+  statusUpdatedByName: String
+  statusUpdatedAt: String
   specialNeed: Boolean
   deleted: String @default(value: "0")
   createdAt: String!

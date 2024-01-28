@@ -2,9 +2,7 @@
   "body": {
     "operationId": 3,
     "bookAttributes": {
-      "bookingGuestId":"e274cbf6-31a9-4249-934d-ca9a8a3af622",
-      
-      "status": "pending",
+      "status": "bending",
       "createdAt": "test",
       "createdByID": "test",
       "createdByName": "test"

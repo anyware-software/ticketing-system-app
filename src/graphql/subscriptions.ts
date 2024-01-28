@@ -1412,14 +1412,15 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
     wave
     isMainGuest
     orderId
-    updatedBy
-    updatedByName
-    updatedAt
+    statusUpdatedByID
+    statusUpdatedByName
+    statusUpdatedAt
     specialNeed
     deleted
     createdAt
     createdByID
     createdByName
+    updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
@@ -1569,14 +1570,15 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
     wave
     isMainGuest
     orderId
-    updatedBy
-    updatedByName
-    updatedAt
+    statusUpdatedByID
+    statusUpdatedByName
+    statusUpdatedAt
     specialNeed
     deleted
     createdAt
     createdByID
     createdByName
+    updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
@@ -1726,14 +1728,15 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
     wave
     isMainGuest
     orderId
-    updatedBy
-    updatedByName
-    updatedAt
+    statusUpdatedByID
+    statusUpdatedByName
+    statusUpdatedAt
     specialNeed
     deleted
     createdAt
     createdByID
     createdByName
+    updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId

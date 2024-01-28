@@ -1520,14 +1520,15 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
     wave
     isMainGuest
     orderId
-    updatedBy
-    updatedByName
-    updatedAt
+    statusUpdatedByID
+    statusUpdatedByName
+    statusUpdatedAt
     specialNeed
     deleted
     createdAt
     createdByID
     createdByName
+    updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
@@ -1680,14 +1681,15 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
     wave
     isMainGuest
     orderId
-    updatedBy
-    updatedByName
-    updatedAt
+    statusUpdatedByID
+    statusUpdatedByName
+    statusUpdatedAt
     specialNeed
     deleted
     createdAt
     createdByID
     createdByName
+    updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
@@ -1840,14 +1842,15 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
     wave
     isMainGuest
     orderId
-    updatedBy
-    updatedByName
-    updatedAt
+    statusUpdatedByID
+    statusUpdatedByName
+    statusUpdatedAt
     specialNeed
     deleted
     createdAt
     createdByID
     createdByName
+    updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
