@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import listEvents from "../../services/listEvents";
-import { dbStorage } from "../../constants/Enums";
+import { BookingStatus, dbStorage } from "../../constants/Enums";
 import ContentLoader from "../ContentLoader/ContentLoder";
 import Typography from "@mui/material/Typography";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -29,6 +29,8 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import getGuestByPhone from "../../services/getGuestByPhone";
 import Avatar from "@mui/material/Avatar";
+import createBooking from "../../services/createBooking";
+import { useSelector } from "react-redux";
 // import type { Event } from '../../API';
 
 interface Event {
@@ -92,6 +94,7 @@ export default function Events() {
   const [isSpecial, setIsSpecial] = useState(false);
   const [isGoogleMapOverlayOpen, setIsGoogleMapOverlayOpen] = useState(false);
   const [ticketChosen, setTicketChosen] = useState("noTickets");
+  const user = useSelector((state: any) => state.app.user);
   const [currentEvent, setCurrentEvent] = useState<Event>({
     id: "",
     name: "",
@@ -345,6 +348,7 @@ export default function Events() {
   const [phones, setPhones] = useState<string[]>([]);
   const [validGuests, setValidGuests] = useState<Guest[]>([]);
   const [notValidGuests, setNotValidGuests] = useState<any[]>([]);
+  const [mainGuest, setMainGuest] = useState<Guest | null>(null);
 
   const handleInputChange = (
     ticketId: string,
@@ -385,14 +389,19 @@ export default function Events() {
 
   const fetchEventGuests = async () => {
     if (phones.length > 0) {
+      let mainGuest: Guest | null = null;
       const validGuests: Guest[] = [];
       const notValidGuests: any[] = [];
 
       for (const phone of phones) {
         let guest: any[] = await getGuestByPhone(phone);
-
         if (guest.length !== 0) {
-          validGuests.push(guest[0]);
+          if (guest[0].id === user.id) {
+            mainGuest = guest[0];
+            // validGuests.push(guest[0]);
+          } else {
+            validGuests.push(guest[0]);
+          }
         } else {
           notValidGuests.push(
             Object.values(bookingRequests).find(
@@ -401,13 +410,81 @@ export default function Events() {
           );
         }
       }
-
       setValidGuests(validGuests);
       setNotValidGuests(notValidGuests);
+      setMainGuest(mainGuest);
     }
   };
+  const generateOrderId = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const idLength = 7;
+    let randomId = '';
+  
+    for (let i = 0; i < idLength; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomId += characters.charAt(randomIndex);
+    }
+  
+    return randomId;
+  };
 
-  console.log(notValidGuests);
+  const createEventBooking = async () => {
+    const orderId = generateOrderId();
+    const mainGuestPhone = mainGuest ? mainGuest.phone_number : null;
+    const eventForMainGuest = Object.values(bookingRequests).find(
+      (entry) => entry.phone === mainGuestPhone
+    );
+    await createBooking(
+      user,
+      BookingStatus.PENDING,
+      user.id,
+      mainGuest?.id,
+      currentEvent.id,
+      eventForMainGuest?.ticketId,
+      true,
+      eventForMainGuest?.waveName,
+      orderId,
+      isSpecial,
+    );
+
+    validGuests.forEach(async (validGuest) => {
+      const eventForValidGuest = Object.values(bookingRequests).find(
+        (entry) => entry.phone === validGuest.phone_number
+      );
+        await createBooking(
+        user,
+        BookingStatus.PENDING,
+        user.id,
+        validGuest.id,
+        currentEvent.id,
+        eventForValidGuest?.ticketId,
+        false,
+        eventForValidGuest?.waveName,
+        orderId,
+        isSpecial
+      );
+    });
+    notValidGuests.forEach(async (notValidGuest) => {
+      const eventForNotValidGuest = Object.values(bookingRequests).find(
+        (entry) => entry.phone === notValidGuest.phone_number
+      );
+        await createBooking(
+        user,
+        BookingStatus.NOT_REGISTERED,
+        user.id,
+        undefined,
+        currentEvent.id,
+        eventForNotValidGuest?.ticketId,
+        true,
+        eventForNotValidGuest?.waveName,
+        orderId,
+        isSpecial
+      );
+    });
+  };
+
+  // console.log(bookingRequests);
+
   if (loading)
     return (
       <Box
@@ -1164,6 +1241,133 @@ export default function Events() {
                       gap: 2,
                     }}
                   >
+                     {mainGuest && (
+                        <Box
+                          key={mainGuest.id}
+                          sx={{
+                            backgroundColor: "rgba(51, 51, 51, 1)",
+                            display: "flex",
+                            alignItems: "center",
+                            p: 1,
+                            borderRadius: "10px",
+                            gap: 15,
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <Avatar
+                              alt=""
+                              src={`${dbStorage}${mainGuest.guest_avatar}`}
+                              sx={{ width: 56, height: 56 }}
+                            />
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  textTransform: "capitalize",
+                                }}
+                              >
+                                {mainGuest.name}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  textTransform: "capitalize",
+                                }}
+                              >
+                                {mainGuest.phone_number}
+                              </Typography>
+                            </Box>
+                          </Box>
+                          {currentEventTicket.map((ticket) => {
+                            const wavesForTicket = Object.values(
+                              bookingRequests
+                            ).filter(
+                              (wave) =>
+                                wave.ticketId === ticket.id &&
+                                wave.phone === mainGuest.phone_number
+                            );
+                            return wavesForTicket.map((wave) => (
+                              <Box key={wave.customKey}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "end",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      backgroundColor:
+                                        wave.ticketColor || "gold",
+                                      borderRadius: "10px",
+                                      color: "black",
+                                      // py: 0.25,
+                                      px: 1,
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      textTransform: "uppercase",
+                                      fontWeight: 700,
+                                      fontSize: 13,
+                                    }}
+                                  >
+                                    {wave.ticketType}
+                                  </Box>
+                                  <Box
+                                    sx={{
+                                      backgroundColor:
+                                        wave.ticketColor || "gold",
+                                      borderRadius: "10px",
+                                      color: "black",
+                                      // py: 0.25,
+                                      px: 1,
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      textTransform: "uppercase",
+                                      fontWeight: 700,
+                                      fontSize: 13,
+                                    }}
+                                  >
+                                    {wave.waveName}
+                                  </Box>
+                                </Box>
+                                <Box
+                                  sx={{
+                                    borderRadius: "10px",
+                                    color: "rgba(164, 164, 164, 1)",
+                                    display: "flex",
+                                    justifyContent: "end",
+                                    alignItems: "center",
+                                    fontSize: "12px",
+                                    mt: 1,
+                                  }}
+                                >
+                                  {new Date(
+                                    currentEvent.startDate
+                                  ).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  })}
+                                </Box>
+                              </Box>
+                            ));
+                          })}
+                        </Box>
+                      )}
                     {validGuests.length > 0 &&
                       validGuests.map((guest: Guest) => (
                         <Box
@@ -1342,27 +1546,29 @@ export default function Events() {
                               </Typography>
                             </Box>
                           </Box>
-                          <Box sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "end",
-                            p:1,
-                            gap:0.5,
-                          }}>
-                          <Button
-                            variant="contained"
-                            sx={{ backgroundColor: "rgba(240, 99, 90, 1)" }}
-                          >
-                            Invite To Ultar !
-                          </Button>
-                          <Typography
+                          <Box
                             sx={{
-                              color: "rgba(164, 164, 164, 1)",
-                              fontSize:'12px',
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "end",
+                              p: 1,
+                              gap: 0.5,
                             }}
                           >
-                            You Need to Invite Your Friend to ULTER First
-                          </Typography>
+                            <Button
+                              variant="contained"
+                              sx={{ backgroundColor: "rgba(240, 99, 90, 1)" }}
+                            >
+                              Invite To Ultar !
+                            </Button>
+                            <Typography
+                              sx={{
+                                color: "rgba(164, 164, 164, 1)",
+                                fontSize: "12px",
+                              }}
+                            >
+                              You Need to Invite Your Friend to ULTER First
+                            </Typography>
                           </Box>
                           {/* <Box>
                           <Typography sx={{ color: "white" }}>
@@ -1377,7 +1583,6 @@ export default function Events() {
                   </Box>
                 </Box>
               )}
-
               {ticketChosen === "book" && (
                 <Typography sx={{ color: "white" }} variant="h4">
                   Booking In Progress
@@ -1468,7 +1673,7 @@ export default function Events() {
                   }
                   if (ticketChosen === "guests") {
                     // console.log("bbbbbb");
-                    
+                    createEventBooking();
                     setTicketChosen("book");
                   }
                   if (ticketChosen === "book") {

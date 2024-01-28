@@ -7,3 +7,11 @@ export const EventEndPoints = "https://l77jmcjaqqwf7gzd44mjquxpoy0josbx.lambda-u
 
 export const dbStorage = 
   "https://ticketingsystemadmina29b1f146cd8476b9f9aefcf325132756-dev.s3.us-east-2.amazonaws.com/public/"
+
+  export enum BookingStatus {
+    APPROVED = 'approved',
+    REGJECTED = 'rejected',
+    PENDING = 'pending',
+    PARTIALLY_APPROVED = 'partially approved',
+    NOT_REGISTERED = 'not registered',
+  }

@@ -5,14 +5,16 @@ async function createBooking(
   user: any,
   status: string,
   bookingMainGuestId: string,
-  bookingGuestId: string,
-  bookingEventId: string,
-  bookingEventTicketId: string,
-  isMainGuest: Boolean,
-  wave: string,
-  orderId: String,
-  specialNeed: Boolean,
+  bookingGuestId?: string,
+  bookingEventId?: string,
+  bookingEventTicketId?: string,
+  isMainGuest?: Boolean,
+  wave?: string,
+  orderId?: String,
+  specialNeed?: Boolean,
 ) {
+  // console.log(user, status, bookingMainGuestId, bookingGuestId, bookingEventId, bookingEventTicketId, isMainGuest, wave, orderId, specialNeed);
+
   try {
     const operationId = 3;
     const bookAttributes = {
@@ -26,8 +28,8 @@ async function createBooking(
       orderId: orderId,
       specialNeed: specialNeed,
       createdAt: new Date(),
-      createdByID: user.sub,
-      createdByName: user.email,
+      createdByID: user.id,
+      createdByName: user.name,
     }
 
     const requestBody = {
