@@ -36,7 +36,7 @@ import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
 import Skeleton from "@mui/material/Skeleton";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SaveIcon from "@mui/icons-material/Save";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
 // import type { Event } from '../../API';
 
 interface Event {
@@ -1676,7 +1676,7 @@ export default function Events() {
                     <Skeleton
                       variant="rectangular"
                       width={450}
-                      height={500}
+                      height={300}
                       sx={{ bgcolor: "gray" }}
                     />
                   )}
@@ -1731,15 +1731,26 @@ export default function Events() {
                   <Box
                     sx={{
                       position: "absolute",
-                      top: "-25px",
+                      top: "-4rem",
                       left: "50%",
                       transform: "translateX(-50%)",
-                      width: "50px",
-                      height: "50px",
+                      width: "8rem",
+                      height: "8rem",
                       borderRadius: "50%",
                       backgroundColor: "rgba(210, 197, 197, 1)",
+                      border: "3px solid white",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
-                  ></Box>
+                  >
+                    <PendingActionsIcon
+                      sx={{
+                        color: "#F0635A",
+                        fontSize: "4rem",
+                      }}
+                    />
+                  </Box>
                 </Box>
               )}
             </Box>
