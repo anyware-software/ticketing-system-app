@@ -75,17 +75,16 @@ export default function Login() {
       if (storedUser === "true") {
         navigate("/dashboard");
         setMessage("You are Logged in with Facebook already!");
-      } 
-      if(!storedUser) {
+      }
+      if (!storedUser) {
         await signOut();
       }
     };
-  
+
     checkLocalStorage();
   }, []);
-  
 
-  if(loading) return <ContentLoader />
+  if (loading) return <ContentLoader />;
 
   return (
     <>
@@ -101,7 +100,7 @@ export default function Login() {
           backgroundSize: "cover",
           backgroundPosition: "center",
           height: "100vh",
-          backgroundAttachment: 'fixed',
+          backgroundAttachment: "fixed",
           "&::before": {
             content: '""',
             position: "absolute",
@@ -118,7 +117,7 @@ export default function Login() {
         }}
       >
         <AppBar
-  position="relative"
+          position="relative"
           sx={{
             zIndex: 1,
             backgroundColor: "transparent",
@@ -180,7 +179,16 @@ export default function Login() {
           </Alert>
         </Snackbar>
 
-        <Grid container spacing={2} sx={{ flexGrow: 1 , overflow:'auto',pl:{xs:0,sm:2},pr:{xs:0,sm:5}}}>
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            flexGrow: 1,
+            overflow: "auto",
+            pl: { xs: 0, sm: 2 },
+            pr: { xs: 0, sm: 5 },
+          }}
+        >
           <Grid
             item
             xs={12}
@@ -193,7 +201,7 @@ export default function Login() {
               justifyContent: { xs: "center", sm: "start" },
               alignItems: "center",
               flexDirection: "column",
-              marginTop: { xs: "0vh", sm: "1vh" ,md:'5vh',lg:'10vh'},
+              marginTop: { xs: "0vh", sm: "1vh", md: "5vh", lg: "10vh" },
             }}
           >
             <Box
@@ -498,7 +506,7 @@ export default function Login() {
               </Box>
             </Box>
           </Grid>
-          
+
           <Grid
             item
             xs={12}
