@@ -524,7 +524,14 @@ export default function Events() {
     // return true;
   };
 
-  // console.log(bookingRequests);
+  const isDateBetween = (startDate:any, endDate:any) => {
+    const currentDate = new Date();
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+  
+    return currentDate >= startDateObj && currentDate <= endDateObj;
+  };
+  // console.log(currentEventTicket);
 
   if (loading)
     return (
@@ -1024,6 +1031,7 @@ export default function Events() {
                           {ticket.description}
                         </Typography>
                         {ticket.waves.map((wave, index) => (
+                           isDateBetween(wave?.startDate, wave?.endDate) && (
                           <Box
                             key={index}
                             sx={{
@@ -1156,6 +1164,7 @@ export default function Events() {
                               )}
                             </Box>
                           </Box>
+                           )
                         ))}
                       </Box>
                     </Box>
