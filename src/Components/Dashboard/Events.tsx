@@ -205,9 +205,9 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
     backgroundColor: "rgba(0, 0, 0, 1)",
     marginLeft: "0",
     border: "1px solid #ffffff50",
-    padding: "5px 10px",
+    padding: {xs:'0',sm:"5px 10px"},
     borderRadius: "12px",
-    width: "23rem",
+    width: {xs:"22rem",sm:"23rem"},
     color: "white",
   };
 
@@ -820,9 +820,11 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                   >
                     {currentEvent.description}
                   </Typography>
-                  <Box sx={{
-                    mt:{xs:2,sm:0}
-                  }}>
+                  <Box
+                    sx={{
+                      mt: { xs: 2, sm: 0 },
+                    }}
+                  >
                     <Typography
                       sx={{
                         color: "rgba(255, 255, 255, 0.67)",
@@ -894,8 +896,8 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection:{xs:'column', sm:'row'},
-                      gap: {xs:2,sm:10},
+                      flexDirection: { xs: "column", sm: "row" },
+                      gap: { xs: 2, sm: 10 },
                     }}
                   >
                     <Box
@@ -911,7 +913,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                           sx={{
                             color: "rgba(255, 255, 255, 0.67)",
                             fontSize: "15px",
-                            display:{xs:'none',sm:'block'},
+                            display: { xs: "none", sm: "block" },
                           }}
                         >
                           {new Date(currentEvent.startDate).toLocaleDateString(
@@ -927,7 +929,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                           sx={{
                             color: "rgba(255, 255, 255, 0.67)",
                             fontSize: "15px",
-                            display:{xs:'none',sm:'block'},
+                            display: { xs: "none", sm: "block" },
                           }}
                         >
                           {new Date(currentEvent.startDate).toLocaleDateString(
@@ -943,7 +945,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                           sx={{
                             color: "rgba(255, 255, 255, 0.67)",
                             fontSize: "15px",
-                            display:{xs:'block',sm:'none'},
+                            display: { xs: "block", sm: "none" },
                           }}
                         >
                           {new Date(currentEvent.startDate).toLocaleDateString(
@@ -1019,7 +1021,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                             sx={{
                               color: "rgba(255, 255, 255, 0.67)",
                               fontSize: "15px",
-                              display:{xs:'none',sm:'block'},
+                              display: { xs: "none", sm: "block" },
                             }}
                           >
                             {currentEvent?.location?.address.split(",")[1]}
@@ -1030,7 +1032,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                           sx={{
                             color: "rgba(255, 255, 255, 0.67)",
                             fontSize: "15px",
-                            display:{xs:'none',sm:'block'},
+                            display: { xs: "none", sm: "block" },
                           }}
                         >
                           {currentEvent?.location?.address}
@@ -1039,8 +1041,8 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                           sx={{
                             color: "rgba(255, 255, 255, 0.67)",
                             fontSize: "15px",
-                            display:{xs:'block',sm:'none'},
-                            textDecoration:{xs:'underline',sm:'normal'},
+                            display: { xs: "block", sm: "none" },
+                            textDecoration: { xs: "underline", sm: "normal" },
                           }}
                         >
                           Directions
@@ -1052,7 +1054,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
 
                 <Box
                   sx={{
-                    display: {xs:'none',sm:"flex"},
+                    display: { xs: "none", sm: "flex" },
                     alignItems: "start",
                     gap: 2,
                   }}
@@ -1087,35 +1089,80 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
           >
             <Box
               sx={{
-                display: "flex",
-                alignItems: "start",
+                display: { xs: "flex", sm: "none" },
+                mx:1,
+                gap:6,
+                justifyContent: ticketChosen === "noTickets" ? "center" : undefined,
               }}
             >
-              {ticketChosen && (
+              {ticketChosen !== "noTickets" && (
                 <IconButton
-                onClick={() => {
-                  if (ticketChosen === 'tickets') {
-                    setTicketChosen("noTickets");
-                  }
-                  if (ticketChosen === 'guests') {
-                    setBookingRequests({})
-                    setTicketChosen("tickets");
-                  }
-                  if (ticketChosen === 'book') {
-                    setBookingRequests({})
-                    setTicketChosen("guests");
-                  }
-                  if (ticketChosen === 'tickets') {
-                    setBookingRequests({})
-                    setTicketChosen("noTickets");
-                  }
+                  onClick={() => {
+                    if (ticketChosen === "tickets") {
+                      setTicketChosen("noTickets");
+                    }
+                    if (ticketChosen === "guests") {
+                      setBookingRequests({});
+                      setTicketChosen("tickets");
+                    }
+                    if (ticketChosen === "book") {
+                      setTicketChosen("guests");
+                    }
+                  }}
+                >
+                  <ArrowBackIosIcon
+                    sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
+                  />
+                </IconButton>
+              )}
+              <Typography
+                sx={{
+                  color: "white",
+                  fontSize: "18px",
+                  textAlign: "center",
+                  width: "50%",
+                  fontWeight: 700,
                 }}
               >
-                <ArrowBackIosIcon
-                  sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
-                />
-              </IconButton>
-              
+                {ticketChosen === "noTickets" && `${currentEvent.name}`}
+                {ticketChosen === "tickets" && "Add Accompanied Guests"}
+                {ticketChosen === "guests" && "Review Guests"}
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                p: { xs: 2, sm: 0 },
+              }}
+            >
+              {ticketChosen !== "noTickets" && (
+                <IconButton
+                  sx={{
+                    display: { xs: "none", sm: "block" },
+                  }}
+                  onClick={() => {
+                    if (ticketChosen === "tickets") {
+                      setTicketChosen("noTickets");
+                    }
+                    if (ticketChosen === "guests") {
+                      setBookingRequests({});
+                      setTicketChosen("tickets");
+                    }
+                    if (ticketChosen === "book") {
+                      setBookingRequests({});
+                      setTicketChosen("guests");
+                    }
+                    if (ticketChosen === "tickets") {
+                      setBookingRequests({});
+                      setTicketChosen("noTickets");
+                    }
+                  }}
+                >
+                  <ArrowBackIosIcon
+                    sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
+                  />
+                </IconButton>
               )}
               {ticketChosen === "noTickets" && (
                 <Box
@@ -1341,7 +1388,18 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                 </Box>
               )}
               {ticketChosen === "tickets" && (
-                <Box sx={{ display: "flex", gap: 1 }}>
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: {
+                      xs: "repeat(1, 1fr)",
+                      sm: "repeat(1, 1fr)",
+                      md: "repeat(2, 1fr)",
+                      lg: "repeat(3, 1fr)",
+                    },
+                    gap: 1,
+                  }}
+                >
                   {currentEventTicket.map((ticket) => {
                     const wavesForTicket = selectedWaves.filter(
                       (wave) => wave.ticketId === ticket.id
@@ -1353,7 +1411,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                       return null;
                     }
                     return (
-                      <Box key={ticket.id} sx={{ flex: 1, mx: 1 }}>
+                      <Box key={ticket.id}>
                         <Box
                           sx={{
                             width: "100%",
@@ -1409,7 +1467,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                                     >
                                       <TextField
                                         id={`${wave.ticketId}-${wave.waveName}-${index}-name`}
-                                        placeholder={`Enter ${wave.waveName}'s Name`}
+                                        placeholder={`Enter Friend's Name`}
                                         focused={false}
                                         autoComplete="false"
                                         onChange={(
@@ -1426,7 +1484,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                                           )
                                         }
                                         sx={{
-                                          minWidth: "20rem",
+                                          minWidth: "18rem",
                                           backgroundColor:
                                             "rgba(51, 51, 51, 1)",
                                           "input::placeholder": {
@@ -1445,7 +1503,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                                       />
                                       <TextField
                                         id={`${wave.ticketId}-${wave.waveName}-${index}-phone`}
-                                        placeholder={`Enter ${wave.waveName}'s Phone`}
+                                        placeholder={`Enter Friend's Phone`}
                                         focused={false}
                                         autoComplete="false"
                                         onChange={(
@@ -1462,7 +1520,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                                           )
                                         }
                                         sx={{
-                                          minWidth: "20rem",
+                                          minWidth: "18rem",
                                           backgroundColor:
                                             "rgba(51, 51, 51, 1)",
                                           "input::placeholder": {
@@ -1494,7 +1552,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
               {ticketChosen === "guests" && (
                 <Box sx={{ display: "flex", gap: 1, flexDirection: "column" }}>
                   <Typography
-                    sx={{ color: "white", fontSize: "25px", fontWeight: 700 }}
+                    sx={{ color: "white", fontSize: "25px", fontWeight: 700 , display:{xs:'none',sm:'block'} }}
                   >
                     Review Guests
                   </Typography>
@@ -1502,7 +1560,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                     <Box
                       sx={{
                         backgroundColor: "black",
-                        p: 3,
+                        p: {xs:0,sm:3},
                         display: "flex",
                         flexDirection: "column",
                         gap: 2,
@@ -1517,7 +1575,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                             alignItems: "center",
                             p: 1,
                             borderRadius: "10px",
-                            gap: 15,
+                            gap: 3,
                             justifyContent: "space-between",
                           }}
                         >
@@ -1645,7 +1703,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                               alignItems: "center",
                               p: 1,
                               borderRadius: "10px",
-                              gap: 15,
+                              gap: 3,
                               justifyContent: "space-between",
                             }}
                           >
@@ -1773,7 +1831,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                               alignItems: "center",
                               p: 1,
                               borderRadius: "10px",
-                              gap: 15,
+                              gap: 3,
                               justifyContent: "space-between",
                             }}
                           >
@@ -1863,7 +1921,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                   <Box
                     sx={{
                       backgroundColor: "rgba(73, 73, 73, 1)",
-                      width: "25rem",
+                      width: {xs:'21.5rem',sm:"25rem"},
                       height: "50vh",
                       position: "relative",
                       borderTopLeftRadius: "20px",
@@ -1943,13 +2001,12 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
           >
             <Box
               sx={{
-                height: "80%",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "end",
+                justifyContent: "center",
                 alignItems: "center",
                 gap: 2,
-                mt:3
+                my: 3,
               }}
             >
               {ticketChosen !== "noTickets" && (
