@@ -12,7 +12,12 @@ Amplify Params - DO NOT EDIT */
 const fetch = require("node-fetch");
 const { operationIdEnum } = require("./constants/enum");
 
-const { getEvent, listEvents, byEventID , createBooking } = require("./constants/queries");
+const {
+  getEvent,
+  listEvents,
+  byEventID,
+  createBooking,
+} = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
@@ -55,7 +60,7 @@ exports.handler = async (event) => {
         },
       };
       query = listEvents;
-    }else if (operationId === operationIdEnum.bookEvent) {
+    } else if (operationId === operationIdEnum.bookEvent) {
       const createInput = {
         status: bookAttributes.status,
         bookingGuestId: bookAttributes.bookingGuestId,
@@ -75,6 +80,65 @@ exports.handler = async (event) => {
         input: createInput,
       };
       query = createBooking;
+    } else if (operationId === operationIdEnum.sendSmsMessage) {
+      try {
+        console.log({ event: JSON.stringify(event) });
+        const phone = requestBody.queryStringParameters.phone;
+        const message = requestBody.queryStringParameters.message;
+        console.log("phone: " + phone + "message: " + message);
+
+        const token = await GetToken();
+
+        console.log("token: " + token);
+
+        let headers = {
+          accept: "application/json",
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
+          "Access-Control-Allow-Headers": "*",
+          Authorization: `Bearer ${token}`,
+        };
+
+        let senderName = "ANYWARE";
+
+        var raw = JSON.stringify({
+          senderName,
+          messageType: "text",
+          acknowledgement: 0,
+          flashing: 0,
+          messageText: message,
+          recipients: phone,
+        });
+
+        console.log({ requestBody: raw });
+
+        var requestOptions = {
+          method: "POST",
+          headers: headers,
+          body: raw,
+          redirect: "follow",
+        };
+
+        let requestResponse = await fetch(
+          "https://apis.cequens.com/sms/v1/messages",
+          requestOptions
+        )
+          .then((response) => {
+            return JSON.stringify(response);
+          })
+          .then((result) => console.log(result))
+
+          .catch((error) => {
+            console.log("error", error);
+            return JSON.stringify(error);
+          });
+
+        return requestResponse;
+      } catch (err) {
+        console.log(err);
+        return JSON.stringify(err);
+      }
     }
 
     let responseBody = {};
@@ -157,5 +221,29 @@ exports.handler = async (event) => {
       statusCode: 500,
       body: JSON.stringify({ message: "Error retrieving Data", errorMessage }),
     };
+  }
+};
+const GetToken = async () => {
+  const options = {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      apiKey: "c4dc5e38-cd68-49ec-b1f4-868ff0e2da67",
+      userName: "Anyware",
+    }),
+  };
+  try {
+    const response = await fetch(
+      "https://apis.cequens.com/auth/v1/tokens/",
+      options
+    );
+    const data = await response.json();
+
+    return data.data.access_token;
+  } catch (err) {
+    console.log({ error: err });
   }
 };

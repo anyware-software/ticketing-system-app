@@ -40,6 +40,7 @@ import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import TurnedInNotIcon from "@mui/icons-material/TurnedInNot";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import sendSms from "../../services/sendSMS";
 // import type { Event } from '../../API';
 
 interface Event {
@@ -205,9 +206,9 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
     backgroundColor: "rgba(0, 0, 0, 1)",
     marginLeft: "0",
     border: "1px solid #ffffff50",
-    padding: {xs:'0',sm:"5px 10px"},
+    padding: { xs: "0", sm: "5px 10px" },
     borderRadius: "12px",
-    width: {xs:"22rem",sm:"23rem"},
+    width: { xs: "22rem", sm: "23rem" },
     color: "white",
   };
 
@@ -452,6 +453,14 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
       randomId += characters.charAt(randomIndex);
     }
     return randomId;
+  };
+
+  const sendSmsToUser = async (phone: string, message: string) => {
+    try {
+      await sendSms(phone, message);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const createEventBooking = async () => {
@@ -1090,9 +1099,10 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
             <Box
               sx={{
                 display: { xs: "flex", sm: "none" },
-                mx:1,
-                gap:6,
-                justifyContent: ticketChosen === "noTickets" ? "center" : undefined,
+                mx: 1,
+                gap: 6,
+                justifyContent:
+                  ticketChosen === "noTickets" ? "center" : undefined,
               }}
             >
               {ticketChosen !== "noTickets" && (
@@ -1552,7 +1562,12 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
               {ticketChosen === "guests" && (
                 <Box sx={{ display: "flex", gap: 1, flexDirection: "column" }}>
                   <Typography
-                    sx={{ color: "white", fontSize: "25px", fontWeight: 700 , display:{xs:'none',sm:'block'} }}
+                    sx={{
+                      color: "white",
+                      fontSize: "25px",
+                      fontWeight: 700,
+                      display: { xs: "none", sm: "block" },
+                    }}
                   >
                     Review Guests
                   </Typography>
@@ -1560,7 +1575,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                     <Box
                       sx={{
                         backgroundColor: "black",
-                        p: {xs:0,sm:3},
+                        p: { xs: 0, sm: 3 },
                         display: "flex",
                         flexDirection: "column",
                         gap: 2,
@@ -1883,6 +1898,9 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                               <Button
                                 variant="contained"
                                 sx={{ backgroundColor: "rgba(240, 99, 90, 1)" }}
+                                onClick={() => {
+                                  sendSmsToUser(notValidGuest.phone,"Test2222")
+                                }}
                               >
                                 Invite To Ultar !
                               </Button>
@@ -1921,7 +1939,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                   <Box
                     sx={{
                       backgroundColor: "rgba(73, 73, 73, 1)",
-                      width: {xs:'21.5rem',sm:"25rem"},
+                      width: { xs: "21.5rem", sm: "25rem" },
                       height: "50vh",
                       position: "relative",
                       borderTopLeftRadius: "20px",
@@ -2092,7 +2110,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                     setTicketChosen("book");
                   }
                   if (ticketChosen === "book") {
-                    console.log("cccccc");
+                    // console.log("cccccc");
                     setTicketChosen("noTickets");
                   }
                 }}

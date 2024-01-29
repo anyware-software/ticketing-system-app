@@ -1,11 +1,9 @@
 {
   "body": {
-    "operationId": 3,
-    "bookAttributes": {
-      "status": "bending",
-      "createdAt": "test",
-      "createdByID": "test",
-      "createdByName": "test"
+    "operationId": 4,
+    "queryStringParameters": {
+      "phone": "01060520295",
+      "message": "Teeeeessssst"
     }
   }
 }
