@@ -37,6 +37,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import Skeleton from "@mui/material/Skeleton";
 import LoadingButton from "@mui/lab/LoadingButton";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
+import TurnedInNotIcon from "@mui/icons-material/TurnedInNot";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 // import type { Event } from '../../API';
 
 interface Event {
@@ -88,7 +91,12 @@ interface Guest {
   phone_number: string;
 }
 
-export default function Events() {
+type props = {
+  toggleDrawer: any;
+  openSideNav: boolean;
+};
+
+export default function Events({ toggleDrawer, openSideNav }: props) {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -524,11 +532,11 @@ export default function Events() {
     // return true;
   };
 
-  const isDateBetween = (startDate:any, endDate:any) => {
+  const isDateBetween = (startDate: any, endDate: any) => {
     const currentDate = new Date();
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
-  
+
     return currentDate >= startDateObj && currentDate <= endDateObj;
   };
   // console.log(currentEventTicket);
@@ -637,10 +645,9 @@ export default function Events() {
 
         <Grid
           container
-          spacing={2}
           sx={{
-            px: 12,
-            mt: 12,
+            px: { xs: 0, lg: 12 },
+            mt: { xs: 0, lg: 12 },
             overflow: "auto",
           }}
         >
@@ -657,24 +664,81 @@ export default function Events() {
               <Box
                 sx={{
                   display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
                   gap: 7,
                 }}
               >
-                <Box>
-                  <img
-                    src={
-                      currentEvent.image
-                        ? `${dbStorage}${currentEvent.image}`
-                        : "../../../Images/event.png"
-                    }
-                    alt={currentEvent.name}
-                    style={{
-                      width: "15rem",
-                      height: "15rem",
+                <Box
+                  sx={{
+                    display: { xs: "flex", sm: "block" },
+                    justifyContent: "start",
+                  }}
+                >
+                  <Box
+                    component="div"
+                    sx={{
+                      position: "relative",
+                      width: { xs: "23.5rem", sm: "15rem" },
+                      height: { xs: "18rem", sm: "15rem" },
                       borderRadius: "10px",
+                      overflow: "hidden",
                     }}
-                  />
+                  >
+                    <Box
+                      component="img"
+                      src={
+                        currentEvent.image
+                          ? `${dbStorage}${currentEvent.image}`
+                          : "../../../Images/event.png"
+                      }
+                      alt={currentEvent.name}
+                      sx={{
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "10px",
+                      }}
+                    />
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        backgroundImage: {
+                          xs: "linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, .2) 100%)",
+                        },
+                        borderRadius: "10px",
+                        display: { xs: "flex", sm: "none" },
+                        alignItems: "start",
+                        // justifyContent: "space-around",
+                        pt: 5,
+                        gap:6,
+                      }}
+                    >
+                      <IconButton
+                        onClick={toggleDrawer}
+                        sx={{ display: { xs: "block", sm: "none" } }}
+                      >
+                        <ChevronLeftIcon
+                          sx={{ color: "white", fontSize: "40px" }}
+                        />
+                      </IconButton>
+                      <Typography 
+                        sx={{
+                          color: "white",
+                          fontSize: "18px",
+                          textAlign: "center",
+                          width: "50%",
+                        }}
+                      >
+                        {currentEvent.name}
+                      </Typography>
+                      
+                    </Box>
+                  </Box>
                 </Box>
+
                 <Box
                   sx={{
                     display: "flex",
@@ -924,6 +988,16 @@ export default function Events() {
                     </Box>
                   </Box>
                 </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "start",
+                    gap: 2,
+                  }}
+                >
+                  <ShareOutlinedIcon sx={{ color: "white" }} />
+                  <TurnedInNotIcon sx={{ color: "white" }} />
+                </Box>
                 {/* Navigation arrows */}
                 {/* <IconButton onClick={handlePrevImage} sx={{ color: "white" }}>
                     <ArrowBackIosNewIcon />
@@ -951,7 +1025,7 @@ export default function Events() {
             item
             xs={12}
             sm={12}
-            lg={8}
+            lg={12}
             sx={{
               position: "relative",
             }}
@@ -970,9 +1044,20 @@ export default function Events() {
                 </IconButton>
               )}
               {ticketChosen === "noTickets" && (
-                <Box sx={{ display: "flex", gap: 1 }}>
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: {
+                      xs: "repeat(1, 1fr)",
+                      sm: "repeat(1, 1fr)",
+                      md: "repeat(2, 1fr)",
+                      lg: "repeat(3, 1fr)",
+                    },
+                    gap: 1,
+                  }}
+                >
                   {currentEventTicket.map((ticket) => (
-                    <Box key={ticket.id} sx={{ flex: 1, mx: 1 }}>
+                    <Box key={ticket.id}>
                       <Box
                         sx={{
                           width: "100%",
@@ -1030,142 +1115,152 @@ export default function Events() {
                         >
                           {ticket.description}
                         </Typography>
-                        {ticket.waves.map((wave, index) => (
-                           isDateBetween(wave?.startDate, wave?.endDate) && (
-                          <Box
-                            key={index}
-                            sx={{
-                              p: 2,
-                              pl: 5,
-                              mt: 2,
-                              border: "1px solid",
-                              borderColor: "rgba(195.43, 172.63, 172.63, 0.40)",
-                              borderRadius: "5px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              overflow: "hidden",
-                              position: "relative",
-                            }}
-                          >
-                            {wave.quota === 0 && (
+                        {ticket.waves.map(
+                          (wave, index) =>
+                            isDateBetween(wave?.startDate, wave?.endDate) &&
+                            wave.startDate &&
+                            wave.endDate && (
                               <Box
+                                key={index}
                                 sx={{
-                                  width: 100,
-                                  height: 100,
+                                  p: 2,
+                                  pl: 5,
+                                  mt: 2,
+                                  border: "1px solid",
+                                  borderColor:
+                                    "rgba(195.43, 172.63, 172.63, 0.40)",
+                                  borderRadius: "5px",
+                                  display: "flex",
+                                  justifyContent: "space-between",
                                   overflow: "hidden",
-                                  position: "absolute",
-                                  top: 0,
-                                  left: 0,
+                                  position: "relative",
                                 }}
                               >
-                                <Box
-                                  sx={{
-                                    position: "absolute",
-                                    zIndex: -1,
-                                    content: '""',
-                                    display: "block",
-                                    border: "5px solid #d82e2e",
-                                    top: 0,
-                                    right: 0,
-                                  }}
-                                />
-                                <Box
-                                  sx={{
-                                    position: "absolute",
-                                    zIndex: -1,
-                                    content: '""',
-                                    display: "block",
-                                    border: "5px solid #d82e2e",
-                                    bottom: 0,
-                                    left: 0,
-                                  }}
-                                />
+                                {wave.quota === 0 && (
+                                  <Box
+                                    sx={{
+                                      width: 100,
+                                      height: 100,
+                                      overflow: "hidden",
+                                      position: "absolute",
+                                      top: 0,
+                                      left: 0,
+                                    }}
+                                  >
+                                    <Box
+                                      sx={{
+                                        position: "absolute",
+                                        zIndex: -1,
+                                        content: '""',
+                                        display: "block",
+                                        border: "5px solid #d82e2e",
+                                        top: 0,
+                                        right: 0,
+                                      }}
+                                    />
+                                    <Box
+                                      sx={{
+                                        position: "absolute",
+                                        zIndex: -1,
+                                        content: '""',
+                                        display: "block",
+                                        border: "5px solid #d82e2e",
+                                        bottom: 0,
+                                        left: 0,
+                                      }}
+                                    />
+                                    <Typography
+                                      sx={{
+                                        position: "absolute",
+                                        display: "block",
+                                        width: 225,
+                                        padding: "5px 0",
+                                        backgroundColor: "#d82e2e",
+                                        boxShadow:
+                                          "0 5px 10px rgba(0, 0, 0, .1)",
+                                        color: "#fff",
+                                        fontWeight: 700,
+                                        fontSize: 8,
+                                        lineHeight: 1,
+                                        fontFamily: "Lato, sans-serif",
+                                        textShadow:
+                                          "0 1px 1px rgba(0, 0, 0, .2)",
+                                        textTransform: "uppercase",
+                                        textAlign: "center",
+                                        right: -25,
+                                        top: 20,
+                                        transform: "rotate(-45deg)",
+                                        pl: 2.5,
+                                      }}
+                                    >
+                                      Sold Out
+                                    </Typography>
+                                  </Box>
+                                )}
                                 <Typography
                                   sx={{
-                                    position: "absolute",
-                                    display: "block",
-                                    width: 225,
-                                    padding: "5px 0",
-                                    backgroundColor: "#d82e2e",
-                                    boxShadow: "0 5px 10px rgba(0, 0, 0, .1)",
-                                    color: "#fff",
-                                    fontWeight: 700,
-                                    fontSize: 8,
-                                    lineHeight: 1,
-                                    fontFamily: "Lato, sans-serif",
-                                    textShadow: "0 1px 1px rgba(0, 0, 0, .2)",
-                                    textTransform: "uppercase",
-                                    textAlign: "center",
-                                    right: -25,
-                                    top: 20,
-                                    transform: "rotate(-45deg)",
-                                    pl: 2.5,
+                                    color: "white",
+                                    textTransform: "capitalize",
                                   }}
                                 >
-                                  Sold Out
+                                  {wave.name}
                                 </Typography>
-                              </Box>
-                            )}
-                            <Typography
-                              sx={{
-                                color: "white",
-                                textTransform: "capitalize",
-                              }}
-                            >
-                              {wave.name}
-                            </Typography>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 0.5,
-                              }}
-                            >
-                              <Typography
-                                sx={{
-                                  color: "white",
-                                  textTransform: "capitalize",
-                                }}
-                              >
-                                EGP {wave.price}
-                              </Typography>
-                              {wave.quota > 0 && (
-                                <>
-                                  <ManIcon sx={{ color: "white" }} />
-                                  <RemoveCircleIcon
-                                    sx={{ color: "rgba(217, 217, 217, 0.53)" }}
-                                    onClick={() =>
-                                      handleDecrement(
-                                        ticket.id,
-                                        ticket.type,
-                                        wave.name,
-                                        wave.price
-                                      )
-                                    }
-                                  />
-                                  <Typography sx={{ color: "white" }}>
-                                    {waveCounts[
-                                      `${ticket.id}-${ticket.type}-${wave.name}-${wave.price}`
-                                    ] || 0}
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 0.5,
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      color: "white",
+                                      textTransform: "capitalize",
+                                    }}
+                                  >
+                                    EGP {wave.price}
                                   </Typography>
+                                  {wave.quota > 0 && (
+                                    <>
+                                      <ManIcon sx={{ color: "white" }} />
+                                      <RemoveCircleIcon
+                                        sx={{
+                                          color: "rgba(217, 217, 217, 0.53)",
+                                        }}
+                                        onClick={() =>
+                                          handleDecrement(
+                                            ticket.id,
+                                            ticket.type,
+                                            wave.name,
+                                            wave.price
+                                          )
+                                        }
+                                      />
+                                      <Typography sx={{ color: "white" }}>
+                                        {waveCounts[
+                                          `${ticket.id}-${ticket.type}-${wave.name}-${wave.price}`
+                                        ] || 0}
+                                      </Typography>
 
-                                  <AddCircleIcon
-                                    sx={{ color: "rgba(217, 217, 217, 0.53)" }}
-                                    onClick={() =>
-                                      handleIncrement(
-                                        ticket.id,
-                                        ticket.type,
-                                        wave.name,
-                                        wave.price
-                                      )
-                                    }
-                                  />
-                                </>
-                              )}
-                            </Box>
-                          </Box>
-                           )
-                        ))}
+                                      <AddCircleIcon
+                                        sx={{
+                                          color: "rgba(217, 217, 217, 0.53)",
+                                        }}
+                                        onClick={() =>
+                                          handleIncrement(
+                                            ticket.id,
+                                            ticket.type,
+                                            wave.name,
+                                            wave.price
+                                          )
+                                        }
+                                      />
+                                    </>
+                                  )}
+                                </Box>
+                              </Box>
+                            )
+                        )}
                       </Box>
                     </Box>
                   ))}
@@ -1257,7 +1352,7 @@ export default function Events() {
                                           )
                                         }
                                         sx={{
-                                          minWidth: "25rem",
+                                          minWidth: "20rem",
                                           backgroundColor:
                                             "rgba(51, 51, 51, 1)",
                                           "input::placeholder": {
@@ -1268,7 +1363,6 @@ export default function Events() {
                                           },
                                           border: "1px solid",
                                           borderColor: "gray",
-                                          width: { xs: "auto", sm: "18rem" },
                                           borderRadius: "10px",
                                           ".MuiInputBase-root": {
                                             borderRadius: "10px",
@@ -1294,7 +1388,7 @@ export default function Events() {
                                           )
                                         }
                                         sx={{
-                                          minWidth: "25rem",
+                                          minWidth: "20rem",
                                           backgroundColor:
                                             "rgba(51, 51, 51, 1)",
                                           "input::placeholder": {
@@ -1305,7 +1399,6 @@ export default function Events() {
                                           },
                                           border: "1px solid",
                                           borderColor: "gray",
-                                          width: { xs: "auto", sm: "18rem" },
                                           borderRadius: "10px",
                                           ".MuiInputBase-root": {
                                             borderRadius: "10px",
@@ -1769,7 +1862,7 @@ export default function Events() {
             item
             xs={12}
             sm={12}
-            lg={4}
+            lg={12}
             sx={{
               position: "relative",
             }}

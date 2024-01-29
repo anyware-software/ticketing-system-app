@@ -289,7 +289,7 @@ export default function Dashboard() {
         <GuestProfile toggleDrawer={toggleDrawer} openSideNav={open} />
       )}
       {selectedItem === "events" && (
-        <Events />
+        <Events toggleDrawer={toggleDrawer} openSideNav={open} />
       )}
         
       
