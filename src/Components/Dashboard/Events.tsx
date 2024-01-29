@@ -529,7 +529,6 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         return true;
       }
     }
-    // return true;
   };
 
   const isDateBetween = (startDate: any, endDate: any) => {
@@ -583,8 +582,9 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
             sm: 'url("../../Images/main-bg.png")',
             md: 'url("../../Images/main-bg.png")',
             xl: 'url("../../Images/main-bg.png")',
-            xs: 'url("../../Images/mobile-main-bg.png")',
+            // xs: 'url("../../Images/mobile-main-bg.png")',
           },
+          backgroundColor: { xs: "black" },
           backgroundSize: "cover",
           backgroundPosition: "center",
           flexGrow: 1,
@@ -665,7 +665,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                 sx={{
                   display: "flex",
                   flexDirection: { xs: "column", sm: "row" },
-                  gap: 7,
+                  gap: { xs: 0, sm: 7 },
                 }}
               >
                 <Box
@@ -713,7 +713,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                         alignItems: "start",
                         // justifyContent: "space-around",
                         pt: 5,
-                        gap:6,
+                        gap: 5,
                       }}
                     >
                       <IconButton
@@ -724,17 +724,17 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                           sx={{ color: "white", fontSize: "40px" }}
                         />
                       </IconButton>
-                      <Typography 
+                      <Typography
                         sx={{
                           color: "white",
                           fontSize: "18px",
                           textAlign: "center",
                           width: "50%",
+                          fontWeight: 700,
                         }}
                       >
                         {currentEvent.name}
                       </Typography>
-                      
                     </Box>
                   </Box>
                 </Box>
@@ -744,16 +744,20 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                     display: "flex",
                     flexDirection: "column",
                     gap: 1,
+                    p: { xs: 3, sm: 0 },
                   }}
                 >
                   <Box
                     sx={{
-                      display: "flex",
+                      display: { xs: "none", sm: "flex" },
                       gap: 1,
                       transition: "opacity 0.5s ease, transform 1s ease",
                       opacity: isTransitioning ? 0.5 : 1,
                     }}
                   >
+                    {/* <IconButton onClick={handlePrevImage} sx={{ color: "white" }}>
+                    <ArrowBackIosNewIcon />
+                  </IconButton> */}
                     {currentEvent?.gallery
                       ?.slice(selectedImageIndex, selectedImageIndex + 4)
                       .map((image, index) => (
@@ -779,15 +783,35 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                       <ArrowForwardIosIcon />
                     </IconButton>
                   </Box>
-                  <Typography
+
+                  <Box
                     sx={{
-                      color: "white",
-                      fontSize: "20px",
-                      fontWeight: "700",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                     }}
                   >
-                    {currentEvent.name}
-                  </Typography>
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: "20px",
+                        fontWeight: "700",
+                        width: { xs: "60%", sm: "100%" },
+                      }}
+                    >
+                      {currentEvent.name}
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: { xs: "flex", sm: "none" },
+                        alignItems: "start",
+                        gap: 2,
+                      }}
+                    >
+                      <ShareOutlinedIcon sx={{ color: "white" }} />
+                      <TurnedInNotIcon sx={{ color: "white" }} />
+                    </Box>
+                  </Box>
                   <Typography
                     sx={{
                       color: "rgba(255, 255, 255, 0.67)",
@@ -796,7 +820,9 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                   >
                     {currentEvent.description}
                   </Typography>
-                  <Box>
+                  <Box sx={{
+                    mt:{xs:2,sm:0}
+                  }}>
                     <Typography
                       sx={{
                         color: "rgba(255, 255, 255, 0.67)",
@@ -864,10 +890,12 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                       </Box>
                     </Box>
                   </Box>
+
                   <Box
                     sx={{
                       display: "flex",
-                      gap: 10,
+                      flexDirection:{xs:'column', sm:'row'},
+                      gap: {xs:2,sm:10},
                     }}
                   >
                     <Box
@@ -883,6 +911,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                           sx={{
                             color: "rgba(255, 255, 255, 0.67)",
                             fontSize: "15px",
+                            display:{xs:'none',sm:'block'},
                           }}
                         >
                           {new Date(currentEvent.startDate).toLocaleDateString(
@@ -898,11 +927,31 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                           sx={{
                             color: "rgba(255, 255, 255, 0.67)",
                             fontSize: "15px",
+                            display:{xs:'none',sm:'block'},
                           }}
                         >
                           {new Date(currentEvent.startDate).toLocaleDateString(
                             "en-US",
                             {
+                              weekday: "long",
+                              hour: "numeric",
+                              minute: "numeric",
+                            }
+                          )}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "rgba(255, 255, 255, 0.67)",
+                            fontSize: "15px",
+                            display:{xs:'block',sm:'none'},
+                          }}
+                        >
+                          {new Date(currentEvent.startDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
                               weekday: "long",
                               hour: "numeric",
                               minute: "numeric",
@@ -970,6 +1019,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                             sx={{
                               color: "rgba(255, 255, 255, 0.67)",
                               fontSize: "15px",
+                              display:{xs:'none',sm:'block'},
                             }}
                           >
                             {currentEvent?.location?.address.split(",")[1]}
@@ -980,17 +1030,29 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                           sx={{
                             color: "rgba(255, 255, 255, 0.67)",
                             fontSize: "15px",
+                            display:{xs:'none',sm:'block'},
                           }}
                         >
                           {currentEvent?.location?.address}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "rgba(255, 255, 255, 0.67)",
+                            fontSize: "15px",
+                            display:{xs:'block',sm:'none'},
+                            textDecoration:{xs:'underline',sm:'normal'},
+                          }}
+                        >
+                          Directions
                         </Typography>
                       </Box>
                     </Box>
                   </Box>
                 </Box>
+
                 <Box
                   sx={{
-                    display: "flex",
+                    display: {xs:'none',sm:"flex"},
                     alignItems: "start",
                     gap: 2,
                   }}
@@ -998,13 +1060,6 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                   <ShareOutlinedIcon sx={{ color: "white" }} />
                   <TurnedInNotIcon sx={{ color: "white" }} />
                 </Box>
-                {/* Navigation arrows */}
-                {/* <IconButton onClick={handlePrevImage} sx={{ color: "white" }}>
-                    <ArrowBackIosNewIcon />
-                  </IconButton>
-                  <IconButton onClick={handleNextImage} sx={{ color: "white" }}>
-                    <ArrowForwardIosIcon />
-                  </IconButton> */}
               </Box>
             )}
           </Grid>
@@ -1037,11 +1092,30 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
               }}
             >
               {ticketChosen && (
-                <IconButton onClick={() => setTicketChosen("noTickets")}>
-                  <ArrowBackIosIcon
-                    sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
-                  />
-                </IconButton>
+                <IconButton
+                onClick={() => {
+                  if (ticketChosen === 'tickets') {
+                    setTicketChosen("noTickets");
+                  }
+                  if (ticketChosen === 'guests') {
+                    setBookingRequests({})
+                    setTicketChosen("tickets");
+                  }
+                  if (ticketChosen === 'book') {
+                    setBookingRequests({})
+                    setTicketChosen("guests");
+                  }
+                  if (ticketChosen === 'tickets') {
+                    setBookingRequests({})
+                    setTicketChosen("noTickets");
+                  }
+                }}
+              >
+                <ArrowBackIosIcon
+                  sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
+                />
+              </IconButton>
+              
               )}
               {ticketChosen === "noTickets" && (
                 <Box
@@ -1875,6 +1949,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                 justifyContent: "end",
                 alignItems: "center",
                 gap: 2,
+                mt:3
               }}
             >
               {ticketChosen !== "noTickets" && (
@@ -1931,6 +2006,10 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                     // console.log("Selected Waves:", selectedWaves);
                     setTicketChosen("tickets");
                   } else {
+                    setValidationWarning(true);
+                    setMessage(
+                      "Please select at least one ticket before booking."
+                    );
                     console.log(
                       "Please select at least one ticket before booking."
                     );
