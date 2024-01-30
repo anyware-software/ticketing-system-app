@@ -463,30 +463,36 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
   };
 
   const createEventBooking = async () => {
-    const orderId = generateOrderId();
-    setOrderId(orderId);
     const mainGuestPhone = mainGuest ? mainGuest.phone_number : null;
     const eventForMainGuest = Object.values(bookingRequests).find(
       (entry) => entry.phone === mainGuestPhone
     );
-    await createBooking(
-      user,
-      BookingStatus.PENDING,
-      user.id,
-      mainGuest?.id,
-      currentEvent.id,
-      eventForMainGuest?.ticketId,
-      true,
-      eventForMainGuest?.waveName,
-      orderId,
-      isSpecial,
-      user.phone_number
-    );
+    if (eventForMainGuest) {
+      console.log("Yeaaaaaaaa");
+      const orderId = generateOrderId();
+      setOrderId(orderId);
+      const bookingRequest = await createBooking(
+        user,
+        BookingStatus.PENDING,
+        user.id,
+        mainGuest?.id,
+        currentEvent.id,
+        eventForMainGuest?.ticketId,
+        true,
+        eventForMainGuest?.waveName,
+        orderId,
+        isSpecial,
+        user.phone_number
+      );
+      console.log(bookingRequest);
+    } else {
+      return;
+    }
     validGuests.forEach(async (validGuest) => {
       const eventForValidGuest = Object.values(bookingRequests).find(
         (entry) => entry.phone === validGuest.phone_number
       );
-      await createBooking(
+      const bookingRequest = await createBooking(
         user,
         BookingStatus.PENDING,
         user.id,
@@ -497,8 +503,9 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         eventForValidGuest?.waveName,
         orderId,
         isSpecial,
-        validGuest.phone_number,
+        validGuest.phone_number
       );
+      console.log(bookingRequest);
     });
     notValidGuests.forEach(async (notValidGuest) => {
       const eventForNotValidGuest = Object.values(bookingRequests).find(
@@ -511,13 +518,13 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         undefined,
         currentEvent.id,
         eventForNotValidGuest?.ticketId,
-        true,
+        false,
         eventForNotValidGuest?.waveName,
         orderId,
         isSpecial,
-        eventForNotValidGuest?.phone,
+        notValidGuest?.phone
       );
-      console.log(bookingRequest.id);
+      console.log(bookingRequest);
     });
   };
   const isPhoneValid = (phoneNumber: string): boolean => {
@@ -550,7 +557,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
 
     return currentDate >= startDateObj && currentDate <= endDateObj;
   };
-  // console.log(currentEventTicket);
+  // console.log(user);
 
   if (loading)
     return (
@@ -1902,7 +1909,10 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                                 variant="contained"
                                 sx={{ backgroundColor: "rgba(240, 99, 90, 1)" }}
                                 onClick={() => {
-                                  sendSmsToUser(notValidGuest.phone,"http://localhost:3000/login")
+                                  sendSmsToUser(
+                                    notValidGuest.phone,
+                                    "http://localhost:3000/login"
+                                  );
                                 }}
                               >
                                 Invite To Ultar !
@@ -2107,10 +2117,16 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                       );
                     }
                   }
-                  if (ticketChosen === "guests") {
+                  if (ticketChosen === "guests" && orderId) {
                     // console.log("bbbbbb");
                     createEventBooking();
                     setTicketChosen("book");
+                  } else {
+                    setTicketChosen("tickets");
+                    setValidationWarning(true);
+                    setMessage(
+                      "Please fill in Your name and phone number First"
+                    );
                   }
                   if (ticketChosen === "book") {
                     // console.log("cccccc");
