@@ -80,8 +80,19 @@ export default function Login() {
         await signOut();
       }
     };
-
     checkLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookingID = urlParams.get("id");
+    console.log(bookingID);
+    
+    if (bookingID) {
+      const eventBooking = bookingID;
+      localStorage.setItem("eventBooking", eventBooking);
+      handleFacebookLogin();
+    }
   }, []);
 
   if (loading) return <ContentLoader />;

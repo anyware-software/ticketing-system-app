@@ -17,6 +17,8 @@ const {
   listEvents,
   byEventID,
   createBooking,
+  getBooking,
+  updateBooking,
 } = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
@@ -47,6 +49,7 @@ exports.handler = async (event) => {
     const eventID = requestBody.eventID;
     let variables, query;
     const bookAttributes = requestBody.bookAttributes;
+    const eventBookingID = requestBody.eventBookingID;
 
     if (operationId === operationIdEnum.listEvents) {
       variables = {
@@ -81,6 +84,32 @@ exports.handler = async (event) => {
         input: createInput,
       };
       query = createBooking;
+    } else if (operationId === operationIdEnum.getBooking) {
+      variables = {
+        id: eventBookingID,
+      };
+      query = getBooking;
+    } else if (operationId === operationIdEnum.updateBooking) {
+      variables = {
+        input: {
+          id: eventBookingID,
+          status: bookAttributes.status,
+          bookingGuestId: bookAttributes.bookingGuestId,
+          bookingMainGuestId: bookAttributes.bookingMainGuestId,
+          bookingEventId: bookAttributes.bookingEventId,
+          bookingEventTicketId: bookAttributes.bookingEventTicketId,
+          wave: bookAttributes.wave,
+          isMainGuest: bookAttributes.isMainGuest,
+          orderId: bookAttributes.orderId,
+          specialNeed: bookAttributes.specialNeed,
+          phone_number: bookAttributes.phone_number,
+          deleted: "0",
+          createdAt: bookAttributes.createdAt,
+          createdByID: bookAttributes.createdByID,
+          createdByName: bookAttributes.createdByName,
+        },
+      };
+      query = updateBooking;
     } else if (operationId === operationIdEnum.sendSmsMessage) {
       try {
         console.log({ event: JSON.stringify(event) });
@@ -210,6 +239,10 @@ exports.handler = async (event) => {
       items = responseBody.data.listEvents;
     } else if (operationId === operationIdEnum.bookEvent) {
       items = responseBody.data.createBooking;
+    } else if (operationId === operationIdEnum.getBooking) {
+      items = responseBody.data.getBooking;
+    } else if (operationId === operationIdEnum.updateBooking) {
+      items = responseBody.data.updateBooking;
     }
     return {
       statusCode: 200,

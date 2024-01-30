@@ -1,9 +1,9 @@
 {
   "body": {
-    "operationId": 4,
-    "queryStringParameters": {
-      "phone": "01060520295",
-      "message": "Teeeeessssst"
+    "operationId": 6,
+    "eventBookingID":"72299f99-04db-4495-8491-920c04ce4b60",
+    "bookAttributes":{
+      "orderId":"ABC123"
     }
   }
 }

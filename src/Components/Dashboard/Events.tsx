@@ -366,6 +366,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
   const [phones, setPhones] = useState<string[]>([]);
   const [validGuests, setValidGuests] = useState<Guest[]>([]);
   const [notValidGuests, setNotValidGuests] = useState<any[]>([]);
+  const [notValidGuestsBooking, setNotValidGuestsBooking] = useState<any[]>([]);
   const [mainGuest, setMainGuest] = useState<Guest | null>(null);
   const [bookedGuests, setBookedGuests] = useState(false);
 
@@ -470,7 +471,6 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
       (entry) => entry.phone === mainGuestPhone
     );
     if (eventForMainGuest) {
-      console.log("Yeaaaaaaaa");
       const bookingRequest = await createBooking(
         user,
         BookingStatus.PENDING,
@@ -484,7 +484,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         isSpecial,
         user.phone_number
       );
-      console.log(bookingRequest);
+      // console.log(bookingRequest);
       setTicketChosen("book");
     } else {
       setTicketChosen("tickets");
@@ -509,13 +509,12 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         isSpecial,
         validGuest.phone_number
       );
-      console.log(bookingRequest);
+      // console.log(bookingRequest);
     });
     notValidGuests.forEach(async (notValidGuest) => {
       const eventForNotValidGuest = Object.values(bookingRequests).find(
         (entry) => entry.phone === notValidGuest.phone
       );
-      console.log(eventForNotValidGuest);
       const bookingRequest = await createBooking(
         user,
         BookingStatus.NOT_REGISTERED,
@@ -529,7 +528,15 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         isSpecial,
         notValidGuest?.phone
       );
-      console.log(bookingRequest);
+      // console.log(bookingRequest);
+      sendSmsToUser(
+        notValidGuest.phone,
+        `Hay ${notValidGuest.name} ${user.name} is inviting you to ULTER : http://localhost:3000/login/?id=${bookingRequest.id}`
+      );
+      setNotValidGuestsBooking((prevNotValidGuestsBooking) => [
+        ...prevNotValidGuestsBooking,
+        bookingRequest,
+      ]);
     });
   };
   const isPhoneValid = (phoneNumber: string): boolean => {
@@ -565,7 +572,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
 
     return currentDate >= startDateObj && currentDate <= endDateObj;
   };
-  // console.log(notValidGuests);
+  // console.log(notValidGuestsBooking);
 
   if (loading)
     return (
@@ -1134,6 +1141,8 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                       setTicketChosen("tickets");
                     }
                     if (ticketChosen === "book") {
+                      // setBookingRequests({});
+                      setNotValidGuestsBooking([]);
                       setTicketChosen("guests");
                     }
                   }}
@@ -1178,12 +1187,9 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                       setTicketChosen("tickets");
                     }
                     if (ticketChosen === "book") {
-                      setBookingRequests({});
+                      // setBookingRequests({});
+                      setNotValidGuestsBooking([]);
                       setTicketChosen("guests");
-                    }
-                    if (ticketChosen === "tickets") {
-                      setBookingRequests({});
-                      setTicketChosen("noTickets");
                     }
                   }}
                 >
@@ -1913,25 +1919,33 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                                 gap: 0.5,
                               }}
                             >
-                              <Button
+                              {/* <Button
                                 variant="contained"
                                 sx={{ backgroundColor: "rgba(240, 99, 90, 1)" }}
                                 onClick={() => {
-                                  sendSmsToUser(
-                                    notValidGuest.phone,
-                                    "http://localhost:3000/login"
-                                  );
+                                  notValidGuestsBooking.forEach((booking) => {
+                                    if (
+                                      booking.phone_number ===
+                                      notValidGuest.phone
+                                    ) {
+                                      sendSmsToUser(
+                                        notValidGuest.phone,
+                                        `test/?id=${booking.id}`
+                                      );
+                                    }
+                                  });
                                 }}
                               >
                                 Invite To Ultar !
-                              </Button>
+                              </Button> */}
                               <Typography
                                 sx={{
                                   color: "rgba(164, 164, 164, 1)",
                                   fontSize: "12px",
                                 }}
                               >
-                                You Need to Invite Your Friend to ULTER First
+                                Message will be sent to you friend to join ULTER
+                                First
                               </Typography>
                             </Box>
                             {/* <Box>
@@ -2131,6 +2145,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                   }
                   if (ticketChosen === "book") {
                     // console.log("cccccc");
+                    setNotValidGuestsBooking([]);
                     setTicketChosen("noTickets");
                   }
                 }}
