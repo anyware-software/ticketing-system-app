@@ -513,8 +513,9 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
     });
     notValidGuests.forEach(async (notValidGuest) => {
       const eventForNotValidGuest = Object.values(bookingRequests).find(
-        (entry) => entry.phone === notValidGuest.phone_number
+        (entry) => entry.phone === notValidGuest.phone
       );
+      console.log(eventForNotValidGuest);
       const bookingRequest = await createBooking(
         user,
         BookingStatus.NOT_REGISTERED,
@@ -564,7 +565,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
 
     return currentDate >= startDateObj && currentDate <= endDateObj;
   };
-  // console.log(user);
+  // console.log(notValidGuests);
 
   if (loading)
     return (
