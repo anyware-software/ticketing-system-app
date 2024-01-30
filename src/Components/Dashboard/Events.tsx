@@ -463,14 +463,14 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
   };
 
   const createEventBooking = async () => {
+    const orderId = generateOrderId();
+    setOrderId(orderId);
     const mainGuestPhone = mainGuest ? mainGuest.phone_number : null;
     const eventForMainGuest = Object.values(bookingRequests).find(
       (entry) => entry.phone === mainGuestPhone
     );
     if (eventForMainGuest) {
       console.log("Yeaaaaaaaa");
-      const orderId = generateOrderId();
-      setOrderId(orderId);
       const bookingRequest = await createBooking(
         user,
         BookingStatus.PENDING,
@@ -485,7 +485,11 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         user.phone_number
       );
       console.log(bookingRequest);
+      setTicketChosen("book");
     } else {
+      setTicketChosen("tickets");
+      setValidationWarning(true);
+      setMessage("Please fill in Your name and phone number First");
       return;
     }
     validGuests.forEach(async (validGuest) => {
@@ -532,13 +536,16 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
     return phoneRegex.test(phoneNumber);
   };
   const isFormValid = () => {
+    const uniquePhones = new Set();
     for (const key in bookingRequests) {
       const { name, phone } = bookingRequests[key];
-      console.log(name);
-      console.log(phone);
       if (!name || !phone || !isPhoneValid(phone)) {
         return false;
       }
+      if (uniquePhones.has(phone)) {
+        return false;
+      }
+      uniquePhones.add(phone);
     }
     for (const key in bookingRequests) {
       const { name, phone } = bookingRequests[key];
@@ -781,7 +788,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                       ?.slice(selectedImageIndex, selectedImageIndex + 4)
                       .map((image, index) => (
                         <img
-                          key={index}
+                          key={`${image}${index}`}
                           src={
                             image
                               ? `${dbStorage}${image}`
@@ -1262,7 +1269,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                             wave.startDate &&
                             wave.endDate && (
                               <Box
-                                key={index}
+                                key={`${wave.name}${index}`}
                                 sx={{
                                   p: 2,
                                   pl: 5,
@@ -2120,15 +2127,6 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                   if (ticketChosen === "guests") {
                     // console.log("bbbbbb");
                     createEventBooking();
-                    if(ticketChosen === "guests" && orderId){
-                      setTicketChosen("book");
-                    } else {
-                      setTicketChosen("tickets");
-                      setValidationWarning(true);
-                      setMessage(
-                        "Please fill in Your name and phone number First"
-                      );
-                    }
                   }
                   if (ticketChosen === "book") {
                     // console.log("cccccc");
