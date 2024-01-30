@@ -425,7 +425,6 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         if (guest.length !== 0) {
           if (guest[0].id === user.id) {
             mainGuest = guest[0];
-            // validGuests.push(guest[0]);
           } else {
             validGuests.push(guest[0]);
           }
@@ -503,7 +502,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
       const eventForNotValidGuest = Object.values(bookingRequests).find(
         (entry) => entry.phone === notValidGuest.phone_number
       );
-      await createBooking(
+      const bookingRequest = await createBooking(
         user,
         BookingStatus.NOT_REGISTERED,
         user.id,
@@ -515,6 +514,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         orderId,
         isSpecial
       );
+      console.log(bookingRequest.id);
     });
   };
   const isPhoneValid = (phoneNumber: string): boolean => {
@@ -1899,7 +1899,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                                 variant="contained"
                                 sx={{ backgroundColor: "rgba(240, 99, 90, 1)" }}
                                 onClick={() => {
-                                  sendSmsToUser(notValidGuest.phone,"Test2222")
+                                  sendSmsToUser(notValidGuest.phone,"http://localhost:3000/login")
                                 }}
                               >
                                 Invite To Ultar !

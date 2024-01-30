@@ -463,7 +463,7 @@ type Booking
       # allow all authenticated users to read attachments
       { allow: private, operations: [read] }
       # allow all guest users (unauthenticated) to read attachments
-      { allow: public, operations: [create, read] }
+      { allow: public, operations: [create, update, delete, read] }
     ]
   ) {
   id: ID!
@@ -479,6 +479,7 @@ type Booking
   statusUpdatedByName: String
   statusUpdatedAt: String
   specialNeed: Boolean
+  phone_number: String
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!

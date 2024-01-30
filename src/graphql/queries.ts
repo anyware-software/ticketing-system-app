@@ -1253,6 +1253,7 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
     statusUpdatedByName
     statusUpdatedAt
     specialNeed
+    phone_number
     deleted
     createdAt
     createdByID
@@ -1392,6 +1393,7 @@ export const listBookings = /* GraphQL */ `query ListBookings(
       statusUpdatedByName
       statusUpdatedAt
       specialNeed
+      phone_number
       deleted
       createdAt
       createdByID

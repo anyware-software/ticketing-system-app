@@ -1416,6 +1416,7 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
     statusUpdatedByName
     statusUpdatedAt
     specialNeed
+    phone_number
     deleted
     createdAt
     createdByID
@@ -1574,6 +1575,7 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
     statusUpdatedByName
     statusUpdatedAt
     specialNeed
+    phone_number
     deleted
     createdAt
     createdByID
@@ -1732,6 +1734,7 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
     statusUpdatedByName
     statusUpdatedAt
     specialNeed
+    phone_number
     deleted
     createdAt
     createdByID
