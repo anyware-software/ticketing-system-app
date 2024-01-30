@@ -21,14 +21,14 @@ import axios from "axios";
 import { fetchUserAttributes } from "aws-amplify/auth";
 import TextField from "@mui/material/TextField";
 import EditIcon from "@mui/icons-material/Edit";
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import CancelIcon from "@mui/icons-material/Cancel";
 import updateGuest from "../../services/updateGuest";
 import { setLogin } from "../../state";
 // import { Storage } from "aws-amplify";
 import { uploadData } from "aws-amplify/storage";
 import { getUrl } from "aws-amplify/storage";
-import { dbStorage } from "../../constants/Enums";
+import { BookingStatus, dbStorage } from "../../constants/Enums";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { remove } from "aws-amplify/storage";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -46,6 +46,8 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Skeleton from "@mui/material/Skeleton";
+import getBooking from "../../services/getBooking";
+import updateBooking from "../../services/updateBooking";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -87,13 +89,23 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
 
   const user = useSelector((state: any) => state.app.user);
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     setLoading(true);
-  //   } else {
-  //     setLoading(false);
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    const handdleUpdateBooking = async () => {
+      const storedBookingId = localStorage.getItem("eventBooking");
+      console.log(storedBookingId);
+      if (storedBookingId) {
+        const booking = await getBooking(storedBookingId);
+        console.log(booking);
+        await updateBooking({
+          eventBookingID: booking,
+          bookingGuestId: user.id,
+          status: BookingStatus.PENDING,
+        });
+        localStorage.removeItem("eventBooking");
+      }
+    };
+    handdleUpdateBooking();
+  }, []);
 
   useEffect(() => {
     if (!user) return;
