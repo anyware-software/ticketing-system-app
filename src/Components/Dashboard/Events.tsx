@@ -479,7 +479,8 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
       true,
       eventForMainGuest?.waveName,
       orderId,
-      isSpecial
+      isSpecial,
+      user.phone_number
     );
     validGuests.forEach(async (validGuest) => {
       const eventForValidGuest = Object.values(bookingRequests).find(
@@ -495,7 +496,8 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         false,
         eventForValidGuest?.waveName,
         orderId,
-        isSpecial
+        isSpecial,
+        validGuest.phone_number,
       );
     });
     notValidGuests.forEach(async (notValidGuest) => {
@@ -512,7 +514,8 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         true,
         eventForNotValidGuest?.waveName,
         orderId,
-        isSpecial
+        isSpecial,
+        eventForNotValidGuest?.phone,
       );
       console.log(bookingRequest.id);
     });

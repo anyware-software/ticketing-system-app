@@ -18,7 +18,7 @@ import axios from "axios";
 import { fetchUserAttributes } from "aws-amplify/auth";
 import TextField from "@mui/material/TextField";
 import EditIcon from "@mui/icons-material/Edit";
-import SaveIcon from "@mui/icons-material/Save";
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import CancelIcon from "@mui/icons-material/Cancel";
 import updateGuest from "../../services/updateGuest";
 import { setLogin } from "../../state";
@@ -48,7 +48,7 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 1 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -417,7 +417,7 @@ export default function MobileViewTabs() {
               >
                 <Box
                   sx={{
-                    height: "15vh",
+                    height: "11vh",
                   }}
                 >
                   <Typography
@@ -453,10 +453,11 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
+                              padding:'10px',
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
-                            width: "18rem",
+                            width: "15rem",
                           }}
                           value={emailText}
                           onChange={(e) => {
@@ -470,7 +471,7 @@ export default function MobileViewTabs() {
                           onClick={handleSaveEmailClick}
                           sx={{ color: "white" }}
                         >
-                          <SaveIcon />
+                          <CheckOutlinedIcon />
                         </IconButton>
                         <IconButton
                           onClick={handleCancelEmailClick}
@@ -515,7 +516,7 @@ export default function MobileViewTabs() {
                 </Box>
                 <Box
                   sx={{
-                    height: "15vh",
+                    height: "11vh",
                   }}
                 >
                   <Typography
@@ -552,6 +553,7 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
+                              padding:'10px',
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -571,7 +573,7 @@ export default function MobileViewTabs() {
                           onClick={handleSaveBirthClick}
                           sx={{ color: "white" }}
                         >
-                          <SaveIcon />
+                          <CheckOutlinedIcon />
                         </IconButton>
                         <IconButton
                           onClick={handleCancelBrithClick}
@@ -624,7 +626,7 @@ export default function MobileViewTabs() {
               >
                 <Box
                   sx={{
-                    height: "15vh",
+                    height: "11vh",
                   }}
                 >
                   <Typography
@@ -655,12 +657,13 @@ export default function MobileViewTabs() {
                         <TextField
                           select
                           sx={{
-                            backgroundColor: "rgba(255, 255, 255, 0.63)",
+                            backgroundColor: "rgba(255, 255, 255, 0.31)",
                             "input::placeholder": {
                               color: "white",
                             },
-                            input: {
+                            ".MuiSelect-select": {
                               color: "white",
+                              padding:'10px',
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -677,7 +680,7 @@ export default function MobileViewTabs() {
                           onClick={handleSaveGenderClick}
                           sx={{ color: "white" }}
                         >
-                          <SaveIcon />
+                          <CheckOutlinedIcon />
                         </IconButton>
                         <IconButton
                           onClick={handleCancelGenderClick}
@@ -722,7 +725,7 @@ export default function MobileViewTabs() {
                 </Box>
                 <Box
                   sx={{
-                    height: "15vh",
+                    height: "11vh",
                   }}
                 >
                   <Typography
@@ -759,6 +762,7 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
+                              padding:'10px',
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -778,7 +782,7 @@ export default function MobileViewTabs() {
                           onClick={handleSaveMobileClick}
                           sx={{ color: "white" }}
                         >
-                          <SaveIcon />
+                          <CheckOutlinedIcon />
                         </IconButton>
                         <IconButton
                           onClick={handleCancelMobileClick}
@@ -867,10 +871,11 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
+                              padding:'10px',
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
-                            width: "18rem",
+                            width: "15rem",
                           }}
                           value={addressText}
                           onChange={(e) => {
@@ -884,7 +889,7 @@ export default function MobileViewTabs() {
                           onClick={handleSaveAddressClick}
                           sx={{ color: "white" }}
                         >
-                          <SaveIcon />
+                          <CheckOutlinedIcon />
                         </IconButton>
                         <IconButton
                           onClick={handleCancelAddressClick}

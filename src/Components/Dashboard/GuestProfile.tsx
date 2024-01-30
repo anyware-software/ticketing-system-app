@@ -21,7 +21,7 @@ import axios from "axios";
 import { fetchUserAttributes } from "aws-amplify/auth";
 import TextField from "@mui/material/TextField";
 import EditIcon from "@mui/icons-material/Edit";
-import SaveIcon from "@mui/icons-material/Save";
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import CancelIcon from "@mui/icons-material/Cancel";
 import updateGuest from "../../services/updateGuest";
 import { setLogin } from "../../state";
@@ -1116,7 +1116,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                         onClick={handleSaveEmailClick}
                         sx={{ color: "white" }}
                       >
-                        <SaveIcon />
+                        <CheckOutlinedIcon />
                       </IconButton>
                       <IconButton
                         onClick={handleCancelEmailClick}
@@ -1214,7 +1214,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                         onClick={handleSaveBirthClick}
                         sx={{ color: "white" }}
                       >
-                        <SaveIcon />
+                        <CheckOutlinedIcon />
                       </IconButton>
                       <IconButton
                         onClick={handleCancelBrithClick}
@@ -1321,7 +1321,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                         onClick={handleSaveGenderClick}
                         sx={{ color: "white" }}
                       >
-                        <SaveIcon />
+                        <CheckOutlinedIcon />
                       </IconButton>
                       <IconButton
                         onClick={handleCancelGenderClick}
@@ -1418,7 +1418,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                         onClick={handleSaveMobileClick}
                         sx={{ color: "white" }}
                       >
-                        <SaveIcon />
+                        <CheckOutlinedIcon />
                       </IconButton>
                       <IconButton
                         onClick={handleCancelMobileClick}
@@ -1520,7 +1520,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                         onClick={handleSaveAddressClick}
                         sx={{ color: "white" }}
                       >
-                        <SaveIcon />
+                        <CheckOutlinedIcon />
                       </IconButton>
                       <IconButton
                         onClick={handleCancelAddressClick}

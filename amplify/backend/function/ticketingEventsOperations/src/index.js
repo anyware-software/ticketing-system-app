@@ -71,6 +71,7 @@ exports.handler = async (event) => {
         isMainGuest: bookAttributes.isMainGuest,
         orderId: bookAttributes.orderId,
         specialNeed: bookAttributes.specialNeed,
+        phone_number: bookAttributes.phoneNumber,
         deleted: "0",
         createdAt: bookAttributes.createdAt,
         createdByID: bookAttributes.createdByID,
