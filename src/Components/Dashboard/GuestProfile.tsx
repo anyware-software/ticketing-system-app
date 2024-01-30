@@ -102,6 +102,8 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           status: BookingStatus.PENDING,
         });
         localStorage.removeItem("eventBooking");
+      }else{
+        localStorage.removeItem("eventBooking");
       }
     };
     handdleUpdateBooking();
