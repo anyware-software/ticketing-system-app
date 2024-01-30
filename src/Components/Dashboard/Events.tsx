@@ -2117,16 +2117,18 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                       );
                     }
                   }
-                  if (ticketChosen === "guests" && orderId) {
+                  if (ticketChosen === "guests") {
                     // console.log("bbbbbb");
                     createEventBooking();
-                    setTicketChosen("book");
-                  } else {
-                    setTicketChosen("tickets");
-                    setValidationWarning(true);
-                    setMessage(
-                      "Please fill in Your name and phone number First"
-                    );
+                    if(ticketChosen === "guests" && orderId){
+                      setTicketChosen("book");
+                    } else {
+                      setTicketChosen("tickets");
+                      setValidationWarning(true);
+                      setMessage(
+                        "Please fill in Your name and phone number First"
+                      );
+                    }
                   }
                   if (ticketChosen === "book") {
                     // console.log("cccccc");
