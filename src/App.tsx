@@ -62,8 +62,6 @@ function App() {
         const identitiesString = loggedInUser.identities;
         const identitiesArray = JSON.parse(identitiesString);
         const userId = identitiesArray[0].userId;
-
-        console.log(userId);
         if (loggedInUser) {
           let group: any = null;
           let faceBookID: any = null;
@@ -77,13 +75,12 @@ function App() {
             group = "Cognito";
           }
           let currentUser = await getGuest(loggedInUser.sub);
-          console.log(currentUser);
           if (!currentUser) {
-            console.log("case1");
+            // console.log("case1");
             let newUser = await createGuest(loggedInUser, group, faceBookID);
             dispatch(setLogin({ user: newUser }));
           } else {
-            console.log("case2");
+            // console.log("case2");
             dispatch(setLogin({ user: currentUser }));
           }
         }

@@ -25,7 +25,6 @@ import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import CancelIcon from "@mui/icons-material/Cancel";
 import updateGuest from "../../services/updateGuest";
 import { setLogin } from "../../state";
-// import { Storage } from "aws-amplify";
 import { uploadData } from "aws-amplify/storage";
 import { getUrl } from "aws-amplify/storage";
 import { BookingStatus, dbStorage } from "../../constants/Enums";
@@ -57,17 +56,6 @@ interface MyObject {
   name: string;
   id: string;
 }
-
-// const initialState = {
-//   image: null,
-// };
-
-// interface FormData {
-//   image: any;
-// }
-// interface FormDataProps {
-//   image?: string | undefined | null;
-// }
 
 type props = {
   toggleDrawer: any;
@@ -117,16 +105,12 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
     if (!user) return;
     async function getFriends() {
       const userdata = await fetchUserAttributes();
-      // console.log(userdata);
       const accessToken = userdata.profile;
       axios
         .get(
           `https://graph.facebook.com/me/friends?access_token=${accessToken}`
         )
         .then(async (response) => {
-          // console.log("User Friends : ");
-          // console.log(response.data.data.map((item: MyObject) => item.name));
-          // console.log(response.data.data.map((item: MyObject) => item.id));
           let faceBookIDs = response.data.data.map((item: MyObject) => item.id);
           let friends: Guest[] = await listGuests({ faceBookIDs });
           let connections = JSON.stringify(
@@ -152,20 +136,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 guest_avatar: user?.guest_avatar,
                 connections,
               });
-
-              // let UpdatedGuest = await updateGuest(
-              //   updatedData.userID,
-              //   updatedData.email,
-              //   updatedData.name,
-              //   updatedData.phone_number,
-              //   updatedData.birthdate,
-              //   updatedData.gender,
-              //   updatedData.guest_avatar,
-              //   updatedData.connections
-              // );
-              // console.log(UpdatedGuest);
-
-              // dispatch(setLogin({ user: UpdatedGuest }));
             } catch (error) {
               console.error("Error updating Connections:", error);
             }
@@ -199,10 +169,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         userID: user?.id,
         email: emailText,
       });
-      // let UpdatedGuest = await updateGuest(
-      //   updatedData.userID,
-      //   updatedData.email
-      // );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalEmailText(emailText);
       setEmailEditing(false);
@@ -251,18 +217,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         images: user?.images,
         address: addressText,
       });
-      // let UpdatedGuest = await updateGuest(
-      //   updatedData.userID,
-      //   updatedData.email,
-      //   updatedData.name,
-      //   updatedData.phone_number,
-      //   updatedData.birthdate,
-      //   updatedData.gender,
-      //   updatedData.guest_avatar,
-      //   updatedData.connections,
-      //   updatedData.images,
-      //   updatedData.address
-      // );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalAddressText(addressText);
       setAddressEditing(false);
@@ -316,13 +270,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         phone_number: user?.phone_number,
         birthdate: birthText,
       });
-      // let UpdatedGuest = await updateGuest(
-      //   updatedData.userID,
-      //   updatedData.email,
-      //   updatedData.name,
-      //   updatedData.phone_number,
-      //   updatedData.birthdate
-      // );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalBirthText(birthText);
       setBirthEditing(false);
@@ -351,10 +298,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   const handleEditGenderClick = () => {
     setGenderEditing(true);
   };
-  // const handleSaveGenderClick = () => {
-  //   setOriginalGenderText(genderText);
-  //   setGenderEditing(false);
-  // };
   const handleSaveGenderClick = async () => {
     try {
       let UpdatedGuest = await updateGuest({
@@ -365,14 +308,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         birthdate: user?.birthdate,
         gender: genderText,
       });
-      // let UpdatedGuest = await updateGuest(
-      //   updatedData.userID,
-      //   updatedData.email,
-      //   updatedData.name,
-      //   updatedData.phone_number,
-      //   updatedData.birthdate,
-      //   updatedData.gender
-      // );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalGenderText(genderText);
       setGenderEditing(false);
@@ -420,14 +355,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         birthdate: user?.birthdate,
         gender: user?.gender,
       });
-      // let UpdatedGuest = await updateGuest(
-      //   updatedData.userID,
-      //   updatedData.email,
-      //   updatedData.name,
-      //   updatedData.phone_number,
-      //   updatedData.birthdate,
-      //   updatedData.gender
-      // );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalMobileText(genderText);
       setMobileError(false);
@@ -490,18 +417,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             connections: user?.connections,
             images: user?.images ? [...user.images, result.key] : [result.key],
           });
-          // console.log(updatedData);
-          // let UpdatedGuest = await updateGuest(
-          //   updatedData.userID,
-          //   updatedData.email,
-          //   updatedData.name,
-          //   updatedData.phone_number,
-          //   updatedData.birthdate,
-          //   updatedData.gender,
-          //   updatedData.guest_avatar,
-          //   updatedData.connections,
-          //   updatedData.images
-          // );
           console.log(UpdatedGuest);
           dispatch(setLogin({ user: UpdatedGuest }));
           SetAvatarLoading(false);
@@ -513,13 +428,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         setValidationWarning(true);
         setMessage("You need to replace one of your images to upload new one");
       }
-      //removing images
-      // try {
-      //   await remove({ key: `${dbStorage}${user?.guest_avatar}` });
-      //   console.log("Done deleting old image :)");
-      // } catch (error) {
-      //   console.log("Error while deleting old image :", error);
-      // }
       return result.key;
     } catch (error) {
       console.log("Error uploading image: ", error);
@@ -544,18 +452,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
           connections: user?.connections,
           images: updatedImages,
         });
-        // console.log(updatedData);
-        // let UpdatedGuest = await updateGuest(
-        //   updatedData.userID,
-        //   updatedData.email,
-        //   updatedData.name,
-        //   updatedData.phone_number,
-        //   updatedData.birthdate,
-        //   updatedData.gender,
-        //   updatedData.guest_avatar,
-        //   updatedData.connections,
-        //   updatedData.images
-        // );
         console.log(UpdatedGuest);
         dispatch(setLogin({ user: UpdatedGuest }));
       } catch (error) {
@@ -582,16 +478,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
         gender: user?.gender,
         guest_avatar: photo,
       });
-      // console.log(updatedData);
-      // let UpdatedGuest = await updateGuest(
-      //   updatedData.userID,
-      //   updatedData.email,
-      //   updatedData.name,
-      //   updatedData.phone_number,
-      //   updatedData.birthdate,
-      //   updatedData.gender,
-      //   updatedData.guest_avatar
-      // );
       console.log(UpdatedGuest);
       dispatch(setLogin({ user: UpdatedGuest }));
     } catch (error) {

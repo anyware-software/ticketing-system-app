@@ -20,7 +20,7 @@ export const appSlice:any = createSlice({
     setLogin: (state , action) => {
       const { user } = action.payload;
       state.user = user;
-      console.log(user);
+      // console.log(user);
     },
   },
 });

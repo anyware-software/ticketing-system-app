@@ -238,8 +238,6 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         } catch (error) {
           console.error("Error getting event:", error);
         }
-      } else {
-        console.log("Error: currentEventId is not set");
       }
     };
     getCurrentEvent();

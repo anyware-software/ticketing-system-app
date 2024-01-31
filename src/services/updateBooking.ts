@@ -36,7 +36,6 @@ async function updateBooking({
       eventBookingID,
       bookAttributes: bookAttributes,
     };
-    console.log(requestBody);
     const options = {
       method: "POST",
       headers: {
@@ -44,7 +43,7 @@ async function updateBooking({
       },
       body: JSON.stringify(requestBody),
     };
-    const response = await axios.post(EventEndPoints, requestBody);    
+    const response = await axios.post(EventEndPoints, requestBody);
     return response.data;
   } catch (error) {
     console.error("Error creating user :", error);

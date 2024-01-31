@@ -18,7 +18,7 @@ import axios from "axios";
 import { fetchUserAttributes } from "aws-amplify/auth";
 import TextField from "@mui/material/TextField";
 import EditIcon from "@mui/icons-material/Edit";
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import CancelIcon from "@mui/icons-material/Cancel";
 import updateGuest from "../../services/updateGuest";
 import { setLogin } from "../../state";
@@ -81,7 +81,7 @@ export default function MobileViewTabs() {
 
   useEffect(() => {
     const handdleUpdateBooking = async () => {
-      if (user) {        
+      if (user) {
         const storedBookingId = localStorage.getItem("eventBooking");
         if (storedBookingId) {
           const booking = await getBooking(storedBookingId);
@@ -480,7 +480,7 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
-                              padding:'10px',
+                              padding: "10px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -580,7 +580,7 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
-                              padding:'10px',
+                              padding: "10px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -690,7 +690,7 @@ export default function MobileViewTabs() {
                             },
                             ".MuiSelect-select": {
                               color: "white",
-                              padding:'10px',
+                              padding: "10px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -789,7 +789,7 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
-                              padding:'10px',
+                              padding: "10px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -898,7 +898,7 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
-                              padding:'10px',
+                              padding: "10px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
