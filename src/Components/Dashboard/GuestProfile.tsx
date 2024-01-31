@@ -96,6 +96,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
       if (storedBookingId) {
         const booking = await getBooking(storedBookingId);
         console.log(booking);
+        console.log(user.id);
         await updateBooking({
           eventBookingID: booking,
           bookingGuestId: user.id,

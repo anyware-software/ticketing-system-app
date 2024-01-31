@@ -91,7 +91,7 @@ export default function Login() {
     if (bookingID) {
       const eventBooking = bookingID;
       localStorage.setItem("eventBooking", eventBooking);
-      handleFacebookLogin();
+      // handleFacebookLogin();
     }
   }, []);
 
