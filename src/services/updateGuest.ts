@@ -1,20 +1,20 @@
 import { EndPoints} from "../constants/Enums";
 import axios from "axios";
 
-async function updateGuest(
-    userID:any,
-    email?:any,
-    name?:any,
-    phone_number?:any,
-    birthdate?: any,
-    gender?: any,
-    guest_avatar?: any,
-    connections?:any,
-    images?:any[],
-    address?:any,
-    deleted?:any,
-    createdAt?:any,
-) {
+async function updateGuest({
+    userID,
+    email,
+    name,
+    phone_number,
+    birthdate,
+    gender,
+    guest_avatar,
+    connections,
+    images,
+    address,
+    deleted,
+    createdAt,
+} :any) {
   // console.log(userID,email ,birthdate );
   
   try {

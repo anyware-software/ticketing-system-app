@@ -25,6 +25,9 @@ import { setLogin } from "../../state";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { original } from "@reduxjs/toolkit";
+import { BookingStatus } from "../../constants/Enums";
+import updateBooking from "../../services/updateBooking";
+import getBooking from "../../services/getBooking";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -75,6 +78,30 @@ export default function MobileViewTabs() {
 
   const [value, setValue] = React.useState(0);
 
+  useEffect(() => {
+    const handdleUpdateBooking = async () => {
+      const storedBookingId = localStorage.getItem("eventBooking");
+      console.log(storedBookingId);
+      if (storedBookingId) {
+        const booking = await getBooking(storedBookingId);
+        await updateGuest({
+          phone_number:booking.phone_number
+        })
+        // console.log(booking);
+        // console.log(user.id);
+        await updateBooking({
+          eventBookingID: storedBookingId,
+          bookingGuestId: user.id,
+          status: BookingStatus.PENDING,
+        });
+        localStorage.removeItem("eventBooking");
+      } else {
+        localStorage.removeItem("eventBooking");
+      }
+    };
+    handdleUpdateBooking();
+  }, []);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -99,14 +126,14 @@ export default function MobileViewTabs() {
         setEmailError(true);
         return;
       }
-      const updatedData = {
+      let UpdatedGuest = await updateGuest({
         userID: user?.id,
         email: emailText,
-      };
-      let UpdatedGuest = await updateGuest(
-        updatedData.userID,
-        updatedData.email
-      );
+      });
+      // let UpdatedGuest = await updateGuest(
+      //   updatedData.userID,
+      //   updatedData.email
+      // );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalEmailText(emailText);
       setEmailEditing(false);
@@ -143,7 +170,7 @@ export default function MobileViewTabs() {
         setAddressError(true);
         return;
       }
-      const updatedData = {
+      let UpdatedGuest = await updateGuest({
         userID: user?.id,
         email: user?.email,
         name: user?.name,
@@ -154,19 +181,19 @@ export default function MobileViewTabs() {
         connections: user?.connections,
         images: user?.images,
         address: addressText,
-      };
-      let UpdatedGuest = await updateGuest(
-        updatedData.userID,
-        updatedData.email,
-        updatedData.name,
-        updatedData.phone_number,
-        updatedData.birthdate,
-        updatedData.gender,
-        updatedData.guest_avatar,
-        updatedData.connections,
-        updatedData.images,
-        updatedData.address
-      );
+      });
+      // let UpdatedGuest = await updateGuest(
+      //   updatedData.userID,
+      //   updatedData.email,
+      //   updatedData.name,
+      //   updatedData.phone_number,
+      //   updatedData.birthdate,
+      //   updatedData.gender,
+      //   updatedData.guest_avatar,
+      //   updatedData.connections,
+      //   updatedData.images,
+      //   updatedData.address
+      // );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalAddressText(addressText);
       setAddressEditing(false);
@@ -215,20 +242,20 @@ export default function MobileViewTabs() {
     }
 
     try {
-      const updatedData = {
+      let UpdatedGuest = await updateGuest({
         userID: user?.id,
         email: user?.email,
         name: user?.name,
         phone_number: user?.phone_number,
         birthdate: birthText,
-      };
-      let UpdatedGuest = await updateGuest(
-        updatedData.userID,
-        updatedData.email,
-        updatedData.name,
-        updatedData.phone_number,
-        updatedData.birthdate
-      );
+      });
+      // let UpdatedGuest = await updateGuest(
+      //   updatedData.userID,
+      //   updatedData.email,
+      //   updatedData.name,
+      //   updatedData.phone_number,
+      //   updatedData.birthdate
+      // );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalBirthText(birthText);
       setBirthEditing(false);
@@ -263,22 +290,22 @@ export default function MobileViewTabs() {
   // };
   const handleSaveGenderClick = async () => {
     try {
-      const updatedData = {
+      let UpdatedGuest = await updateGuest({
         userID: user?.id,
         email: user?.email,
         name: user?.name,
         phone_number: user?.phone_number,
         birthdate: user?.birthdate,
         gender: genderText,
-      };
-      let UpdatedGuest = await updateGuest(
-        updatedData.userID,
-        updatedData.email,
-        updatedData.name,
-        updatedData.phone_number,
-        updatedData.birthdate,
-        updatedData.gender
-      );
+      });
+      // let UpdatedGuest = await updateGuest(
+      //   updatedData.userID,
+      //   updatedData.email,
+      //   updatedData.name,
+      //   updatedData.phone_number,
+      //   updatedData.birthdate,
+      //   updatedData.gender
+      // );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalGenderText(genderText);
       setGenderEditing(false);
@@ -318,22 +345,22 @@ export default function MobileViewTabs() {
         setMobileError(true);
         return;
       }
-      const updatedData = {
+      let UpdatedGuest = await updateGuest({
         userID: user?.id,
         email: user?.email,
         name: user?.name,
         phone_number: mobileText,
         birthdate: user?.birthdate,
         gender: user?.gender,
-      };
-      let UpdatedGuest = await updateGuest(
-        updatedData.userID,
-        updatedData.email,
-        updatedData.name,
-        updatedData.phone_number,
-        updatedData.birthdate,
-        updatedData.gender
-      );
+      });
+      // let UpdatedGuest = await updateGuest(
+      //   updatedData.userID,
+      //   updatedData.email,
+      //   updatedData.name,
+      //   updatedData.phone_number,
+      //   updatedData.birthdate,
+      //   updatedData.gender
+      // );
       dispatch(setLogin({ user: UpdatedGuest }));
       setOriginalMobileText(genderText);
       setMobileError(false);
