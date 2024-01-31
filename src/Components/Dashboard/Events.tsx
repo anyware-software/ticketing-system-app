@@ -10,7 +10,6 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import IconButton from "@mui/material/IconButton";
 import getEvent from "../../services/getEvent";
 import Button from "@mui/material/Button";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import NoEvent from "../NoEvent/NoEvent";
 import Divider from "@mui/material/Divider";
@@ -41,6 +40,8 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import TurnedInNotIcon from "@mui/icons-material/TurnedInNot";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import sendSms from "../../services/sendSMS";
+import EventMapOverlay from "./Event Components/EventMapOverlay";
+import EventLocationOverlay from "./Event Components/EventLocationOverlay";
 // import type { Event } from '../../API';
 
 interface Event {
@@ -105,9 +106,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
   const [currentEventId, setCurrentEventsId] = useState("");
   const [waveCounts, setWaveCounts] = useState<{ [key: string]: number }>({});
   const [startingFrom, setStartingFrom] = useState(0);
-  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [isSpecial, setIsSpecial] = useState(false);
-  const [isGoogleMapOverlayOpen, setIsGoogleMapOverlayOpen] = useState(false);
   const [ticketChosen, setTicketChosen] = useState("noTickets");
   const [orderId, setOrderId] = useState("");
   const user = useSelector((state: any) => state.app.user);
@@ -133,74 +132,6 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
     []
   );
 
-  // const [mapCenter, setMapCenter] = useState<any>({
-  //   lat: currentEvent.location.coordinates.lat,
-  //   lng: currentEvent.location.coordinates.lng,
-  // });
-  const [marker, setMarker] = useState<any>(null);
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: "AIzaSyAf2_iJNX-BrrTVjg288Vhr7miH_aotx8E",
-    libraries: GOOGLE_MAPS_LIBRARIES,
-  });
-
-  // let mapCenter = {
-  //   lat: currentEvent.location.coordinates.lat,
-  //   lng: currentEvent.location.coordinates.lng,
-  // };
-  // const mapCenter = useMemo(() => {
-  //   return {
-  //     lat: (currentEvent.location.coordinates.lat),
-  //     lng: (currentEvent.location.coordinates.lng),
-  //   };
-  // }, [currentEvent.location.coordinates.lat, currentEvent.location.coordinates.lng]);
-
-  const [mapCenter, setMapCenter] = useState<any>({
-    lat: currentEvent?.location?.coordinates?.lat,
-    lng: currentEvent?.location?.coordinates?.lng,
-  });
-
-  const containerStyle = {
-    width: "80rem",
-    height: "75vh",
-  };
-  const [zoom, setZoom] = useState(15);
-
-  useEffect(() => {
-    if (currentEvent) {
-      setMapCenter({
-        lat: currentEvent?.location?.coordinates?.lat || 0,
-        lng: currentEvent?.location?.coordinates?.lng || 0,
-      });
-    }
-    if (mapCenter.lat > 0) {
-      setZoom(18);
-    }
-  }, [currentEvent]);
-
-  const onLoad = React.useCallback(
-    function callback(map: any) {
-      // if (mapCenter.lat !== 0 && mapCenter.lng !== 0) {
-      //   map.panTo(mapCenter);
-      // }
-      map.panTo(mapCenter);
-    },
-    [mapCenter]
-  );
-
-  const handleOnClick = async (e: any) => {
-    setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng() });
-    const latitude = e.latLng.lat();
-    const longitude = e.latLng.lng();
-
-    try {
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAf2_iJNX-BrrTVjg288Vhr7miH_aotx8E`
-      );
-    } catch (error) {
-      console.error("Error during reverse geocoding request:", error);
-    }
-  };
   let checkBoxStyles = {
     justifyContent: "space-between",
     backgroundColor: "rgba(0, 0, 0, 1)",
@@ -282,26 +213,6 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
     }
   }, [currentEventTicket]);
 
-  const toggleOverlay = () => {
-    setIsOverlayOpen(!isOverlayOpen);
-  };
-
-  const handleImageClick = (
-    e: React.MouseEvent<HTMLImageElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-  };
-  const toggleGoogleMapOverlay = () => {
-    setIsGoogleMapOverlayOpen(!isGoogleMapOverlayOpen);
-  };
-  const handleOverlayClick = (
-    e: React.MouseEvent<HTMLImageElement, MouseEvent>
-  ) => {
-    // Check if the click occurred outside the map overlay
-    if (e.target === e.currentTarget) {
-      toggleGoogleMapOverlay();
-    }
-  };
   const handleIncrement = (
     ticketId: string,
     ticketType: string,
@@ -678,8 +589,9 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
         <Grid
           container
           sx={{
-            px: { xs: 0, lg: 12 },
-            mt: { xs: 0, lg: 12 },
+            px: { xs: 0, sm: 10, md: 10, lg: 12 },
+            mt: { xs: 0, sm: 12, md: 12, lg: 12 },
+            // m:{xs:0,sm:10,md:10,lg:0},
             overflow: "auto",
           }}
         >
@@ -696,22 +608,37 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: { xs: "column", sm: "row" },
-                  gap: { xs: 0, sm: 7 },
+                  flexDirection: {
+                    xs: "column",
+                    sm: "column",
+                    md: "column",
+                    lg: "row",
+                  },
+                  gap: { xs: 0, sm: 2, md: 5 },
                 }}
               >
                 <Box
                   sx={{
-                    display: { xs: "flex", sm: "block" },
-                    justifyContent: "start",
+                    display: "flex",
+                    justifyContent: "center",
                   }}
                 >
                   <Box
                     component="div"
                     sx={{
                       position: "relative",
-                      width: { xs: "23.5rem", sm: "15rem" },
-                      height: { xs: "18rem", sm: "15rem" },
+                      width: {
+                        xs: "23.5rem",
+                        sm: "20rem",
+                        md: "20rem",
+                        lg: "15rem",
+                      },
+                      height: {
+                        xs: "18rem",
+                        sm: "20rem",
+                        md: "20rem",
+                        lg: "15rem",
+                      },
                       borderRadius: "10px",
                       overflow: "hidden",
                     }}
@@ -881,55 +808,15 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                       >
                         EGP {startingFrom}
                       </Typography>
-                      <Box>
-                        {isOverlayOpen && (
-                          <Box
-                            sx={{
-                              position: "fixed",
-                              top: 0,
-                              left: 0,
-                              width: "100%",
-                              height: "100%",
-                              backgroundColor: "rgba(0, 0, 0, 0.8)",
-                              zIndex: 2,
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                            onClick={toggleOverlay}
-                          >
-                            <Box
-                              component="img"
-                              src={`${dbStorage}${currentEvent.map}`}
-                              alt="Event Map"
-                              sx={{
-                                maxWidth: "90%",
-                                maxHeight: "90%",
-                                borderRadius: "10px",
-                              }}
-                              onClick={handleImageClick}
-                            />
-                          </Box>
-                        )}
-                        <Button
-                          variant="text"
-                          startIcon={<LocationOnIcon />}
-                          onClick={toggleOverlay}
-                          sx={{
-                            color: "rgba(173, 173, 173, 1)",
-                          }}
-                        >
-                          View Event Map
-                        </Button>
-                      </Box>
+                      <EventMapOverlay currentEvent={currentEvent} />
                     </Box>
                   </Box>
 
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection: { xs: "column", sm: "row" },
-                      gap: { xs: 2, sm: 10 },
+                      flexDirection: { xs: "column", sm: "column", md: "row" },
+                      gap: { xs: 2, sm: 2, md: 10 },
                     }}
                   >
                     <Box
@@ -994,93 +881,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
                         </Typography>
                       </Box>
                     </Box>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 2,
-                      }}
-                    >
-                      <LocationOnIcon sx={{ color: "white" }} />
-                      {isGoogleMapOverlayOpen && (
-                        <Box
-                          sx={{
-                            position: "fixed",
-                            top: 0,
-                            left: 0,
-                            width: "100%",
-                            height: "100%",
-                            backgroundColor: "rgba(0, 0, 0, 0.8)",
-                            zIndex: 2,
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                          onClick={handleOverlayClick}
-                        >
-                          <Box>
-                            {isLoaded && (
-                              <GoogleMap
-                                mapContainerStyle={containerStyle}
-                                center={mapCenter}
-                                zoom={zoom}
-                                onLoad={onLoad}
-                                onClick={(e) => {
-                                  handleOnClick(e);
-                                }}
-                              >
-                                {marker && (
-                                  <Marker
-                                    position={{
-                                      lat: mapCenter?.lat,
-                                      lng: mapCenter?.lng,
-                                    }}
-                                  />
-                                )}
-                                {/* <Marker position={{ lat: mapCenter.lat, lng: mapCenter.lng }} /> */}
-                              </GoogleMap>
-                            )}
-                          </Box>
-                        </Box>
-                      )}
-                      <Box
-                        onClick={toggleGoogleMapOverlay}
-                        sx={{ cursor: "pointer" }}
-                      >
-                        {currentEvent?.location?.address && (
-                          <Typography
-                            sx={{
-                              color: "rgba(255, 255, 255, 0.67)",
-                              fontSize: "15px",
-                              display: { xs: "none", sm: "block" },
-                            }}
-                          >
-                            {currentEvent?.location?.address.split(",")[1]}
-                          </Typography>
-                        )}
-
-                        <Typography
-                          sx={{
-                            color: "rgba(255, 255, 255, 0.67)",
-                            fontSize: "15px",
-                            display: { xs: "none", sm: "block" },
-                          }}
-                        >
-                          {currentEvent?.location?.address}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "rgba(255, 255, 255, 0.67)",
-                            fontSize: "15px",
-                            display: { xs: "block", sm: "none" },
-                            textDecoration: { xs: "underline", sm: "normal" },
-                          }}
-                        >
-                          Directions
-                        </Typography>
-                      </Box>
-                    </Box>
+                    <EventLocationOverlay currentEvent={currentEvent} />
                   </Box>
                 </Box>
 
