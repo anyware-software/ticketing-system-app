@@ -3,6 +3,7 @@ import { EventEndPoints } from "../constants/Enums";
 
 async function updateBooking({
   eventBookingID,
+  user,
   status,
   bookingMainGuestId,
   bookingGuestId,
@@ -29,6 +30,9 @@ async function updateBooking({
       orderId: orderId,
       specialNeed: specialNeed,
       phone_number: phone_number,
+      createdAt: new Date(),
+      createdByID: user.id,
+      createdByName: user.name,
     };
 
     const requestBody = {

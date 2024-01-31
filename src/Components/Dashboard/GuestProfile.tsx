@@ -94,11 +94,11 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
       const storedBookingId = localStorage.getItem("eventBooking");
       console.log(storedBookingId);
       if (storedBookingId) {
-        const booking = await getBooking(storedBookingId);
-        console.log(booking);
-        console.log(user.id);
+        // const booking = await getBooking(storedBookingId);
+        // console.log(booking);
+        // console.log(user.id);
         await updateBooking({
-          eventBookingID: booking,
+          eventBookingID: storedBookingId,
           bookingGuestId: user.id,
           status: BookingStatus.PENDING,
         });
