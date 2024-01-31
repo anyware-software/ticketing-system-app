@@ -22,7 +22,6 @@ async function getBooking(
     return response.data;
   } catch (error) {
     console.error("Error getting user :", error);
-    throw error;
   }
 }
 

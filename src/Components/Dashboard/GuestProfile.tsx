@@ -91,23 +91,23 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
 
   useEffect(() => {
     const handdleUpdateBooking = async () => {
-      const storedBookingId = localStorage.getItem("eventBooking");
-      console.log(storedBookingId);
-      if (storedBookingId) {
-        const booking = await getBooking(storedBookingId);
-        await updateGuest({
-          phone_number:booking.phone_number
-        })
-        // console.log(booking);
-        // console.log(user.id);
-        await updateBooking({
-          eventBookingID: storedBookingId,
-          bookingGuestId: user.id,
-          status: BookingStatus.PENDING,
-        });
-        localStorage.removeItem("eventBooking");
-      } else {
-        localStorage.removeItem("eventBooking");
+      if (user) {
+        const storedBookingId = localStorage.getItem("eventBooking");
+        if (storedBookingId) {
+          const booking = await getBooking(storedBookingId);
+          await updateGuest({
+            userID: user?.id,
+            phone_number: booking.phone_number,
+          });
+          await updateBooking({
+            eventBookingID: storedBookingId,
+            bookingGuestId: user?.id,
+            status: BookingStatus.PENDING,
+          });
+          localStorage.removeItem("eventBooking");
+        } else {
+          localStorage.removeItem("eventBooking");
+        }
       }
     };
     handdleUpdateBooking();
@@ -147,7 +147,6 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 userID: user?.id,
                 email: user?.email,
                 name: user?.name,
-                phone_number: user?.phone_number,
                 birthdate: user?.birthdate,
                 gender: user?.gender,
                 guest_avatar: user?.guest_avatar,

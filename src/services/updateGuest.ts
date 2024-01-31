@@ -20,17 +20,17 @@ async function updateGuest({
   try {
     const operationId = 3;
     const userAttributes={
-        email:email,
-        name:name,
-        phone_number:phone_number,
-        birthdate: birthdate,
-        gender: gender,
-        guest_avatar: guest_avatar,
-        connections:connections,
-        images:images,
-        address:address,
-        deleted:deleted,
-        createdAt:createdAt,
+        email,
+        name,
+        phone_number,
+        birthdate,
+        gender,
+        guest_avatar,
+        connections,
+        images,
+        address,
+        deleted,
+        createdAt,
       }
     
     const requestBody = {
@@ -45,11 +45,15 @@ async function updateGuest({
       },
       body: JSON.stringify(requestBody),
     };
+    
     const response = await axios.post(EndPoints.getData, requestBody);
+    console.log(requestBody);
+    console.log(response);
+    
+    
     return response.data;
   } catch (error) {
     console.error("Error updating user :", error);
-    throw error;
   }
 }
 

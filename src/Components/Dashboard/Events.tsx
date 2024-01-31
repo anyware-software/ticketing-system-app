@@ -531,7 +531,7 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
       // console.log(bookingRequest);
       sendSmsToUser(
         notValidGuest.phone,
-        `Hay ${notValidGuest.name} ${user.name} is inviting you to ULTER : https://ticketing-system-app-eight.vercel.app/login/?id=${bookingRequest.id}`
+        `Hi ${notValidGuest.name} ${user.name} is inviting you to ULTER : http://localhost:3000/login/?id=${bookingRequest.id}`
       );
       setNotValidGuestsBooking((prevNotValidGuestsBooking) => [
         ...prevNotValidGuestsBooking,

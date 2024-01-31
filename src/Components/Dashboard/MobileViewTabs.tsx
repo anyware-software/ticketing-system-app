@@ -77,26 +77,27 @@ export default function MobileViewTabs() {
   };
 
   const [value, setValue] = React.useState(0);
+  const user = useSelector((state: any) => state.app.user);
 
   useEffect(() => {
     const handdleUpdateBooking = async () => {
-      const storedBookingId = localStorage.getItem("eventBooking");
-      console.log(storedBookingId);
-      if (storedBookingId) {
-        const booking = await getBooking(storedBookingId);
-        await updateGuest({
-          phone_number:booking.phone_number
-        })
-        // console.log(booking);
-        // console.log(user.id);
-        await updateBooking({
-          eventBookingID: storedBookingId,
-          bookingGuestId: user.id,
-          status: BookingStatus.PENDING,
-        });
-        localStorage.removeItem("eventBooking");
-      } else {
-        localStorage.removeItem("eventBooking");
+      if (user) {        
+        const storedBookingId = localStorage.getItem("eventBooking");
+        if (storedBookingId) {
+          const booking = await getBooking(storedBookingId);
+          await updateGuest({
+            userID: user?.id,
+            phone_number: booking.phone_number,
+          });
+          await updateBooking({
+            eventBookingID: storedBookingId,
+            bookingGuestId: user?.id,
+            status: BookingStatus.PENDING,
+          });
+          localStorage.removeItem("eventBooking");
+        } else {
+          localStorage.removeItem("eventBooking");
+        }
       }
     };
     handdleUpdateBooking();
@@ -106,7 +107,6 @@ export default function MobileViewTabs() {
     setValue(newValue);
   };
 
-  const user = useSelector((state: any) => state.app.user);
   const dispatch = useDispatch();
 
   //---------------------------------------------------------------
