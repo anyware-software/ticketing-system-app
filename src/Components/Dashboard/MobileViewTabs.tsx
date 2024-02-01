@@ -25,9 +25,14 @@ import { setLogin } from "../../state";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { original } from "@reduxjs/toolkit";
-import { BookingStatus } from "../../constants/Enums";
+import { BookingStatus, dbStorage } from "../../constants/Enums";
 import updateBooking from "../../services/updateBooking";
 import getBooking from "../../services/getBooking";
+import { Booking } from "../../API";
+import listGuestBooking from "../../services/listGuestBookings";
+import listAccompaniedGuests from "../../services/listAccompaniedGuests";
+import CircularProgress from "@mui/material/CircularProgress";
+
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -68,6 +73,8 @@ function a11yProps(index: number) {
 
 export default function MobileViewTabs() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [currentBookings, setCurrentBookings] = useState<Booking>();
+  const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -103,6 +110,33 @@ export default function MobileViewTabs() {
     handdleUpdateBooking();
   }, []);
 
+  useEffect(() => {
+    async function getGuestBookingEvents() {
+      const booking = await listGuestBooking({ bookingGuestid: user.id });
+      const sortedBookings = booking.items.sort((a: any, b: any) => {
+        const startDateA = new Date(a.event.startDate).getTime();
+        const startDateB = new Date(b.event.startDate).getTime();
+        return startDateA - startDateB;
+      });
+      setCurrentBookings(sortedBookings[0]);
+    }
+    getGuestBookingEvents();
+  }, [user]);
+
+  useEffect(() => {
+    async function getGuestCompanions() {
+      if (!user) return;
+      if (!currentBookings) return;
+      const friends = await listAccompaniedGuests({
+        bookingMainGuestId: user.id,
+        bookingEventId: currentBookings?.event?.id,
+      });
+      setCurrentCompanions(friends.items);
+    }
+    getGuestCompanions();
+  }, [currentBookings, user]);
+
+  
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -969,6 +1003,7 @@ export default function MobileViewTabs() {
               // gap: 10,
             }}
           >
+            {currentBookings && currentCompanions.length > 0 ? (
             <Box
               sx={{
                 display: "flex",
@@ -990,9 +1025,15 @@ export default function MobileViewTabs() {
                   justifyContent: "space-between",
                 }}
               >
-                <Box>
-                  <img src="../../../Images/eventAvatar.png" alt="" />
-                </Box>
+               <Box
+                  component="img"
+                  src={`${dbStorage}${currentBookings?.event?.image}`}
+                  alt=""
+                  sx={{
+                    height: "6rem",
+                    width: "6rem",
+                  }}
+                />
 
                 <Box
                   sx={{
@@ -1048,7 +1089,15 @@ export default function MobileViewTabs() {
                               wordWrap: "break-word",
                             }}
                           >
-                            14 December, 2021
+                            {currentBookings?.event?.startDate
+                              ? new Date(
+                                  currentBookings.event.startDate
+                                ).toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })
+                              : "N/A"}
                           </Typography>
                         </Box>
                         <Box>
@@ -1060,7 +1109,25 @@ export default function MobileViewTabs() {
                               wordWrap: "break-word",
                             }}
                           >
-                            Tuesday, 4:00PM - 9:00PM
+                           {currentBookings?.event?.startDate
+                              ? new Date(
+                                  currentBookings.event.startDate
+                                ).toLocaleDateString("en-US", {
+                                  weekday: "long",
+                                  hour: "numeric",
+                                  minute: "numeric",
+                                })
+                              : "N/A"}{" "}
+                            -{" "}
+                            {currentBookings?.event?.endDate
+                              ? new Date(
+                                  currentBookings.event.endDate
+                                ).toLocaleDateString("en-US", {
+                                  weekday: "long",
+                                  hour: "numeric",
+                                  minute: "numeric",
+                                })
+                              : "N/A"}
                           </Typography>
                         </Box>
                       </Box>
@@ -1091,7 +1158,11 @@ export default function MobileViewTabs() {
                               wordWrap: "break-word",
                             }}
                           >
-                            Gala Convention Center
+                            {
+                              currentBookings?.event?.location?.address?.split(
+                                ","
+                              )[1]
+                            }
                           </Typography>
                         </Box>
                         <Box>
@@ -1103,7 +1174,7 @@ export default function MobileViewTabs() {
                               wordWrap: "break-word",
                             }}
                           >
-                            36 Guild Street London, UK
+                            {currentBookings?.event?.location?.address}
                           </Typography>
                         </Box>
                       </Box>
@@ -1151,8 +1222,8 @@ export default function MobileViewTabs() {
                     gap: 2,
                   }}
                 >
-                  <AvatarGroup
-                    total={44}
+                 <AvatarGroup
+                    total={currentCompanions.length}
                     sx={{
                       "& .MuiAvatar-root": {
                         width: 35,
@@ -1164,22 +1235,12 @@ export default function MobileViewTabs() {
                       },
                     }}
                   >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
-                    />
-                    <Avatar
-                      alt="Travis Howard"
-                      src="/static/images/avatar/2.jpg"
-                    />
-                    <Avatar
-                      alt="Agnes Walker"
-                      src="/static/images/avatar/4.jpg"
-                    />
-                    <Avatar
-                      alt="Trevor Henderson"
-                      src="/static/images/avatar/5.jpg"
-                    />
+                    {currentCompanions.map((companion) => (
+                      <Avatar
+                        key={companion.bookingGuestId}
+                        src={`${dbStorage}${companion.guest?.guest_avatar}`}
+                      />
+                    ))}
                   </AvatarGroup>
 
                   <Box
@@ -1201,7 +1262,7 @@ export default function MobileViewTabs() {
                     >
                       Total :{" "}
                       <span style={{ fontSize: "12px", fontWeight: "700" }}>
-                        44
+                        {currentCompanions.length}
                       </span>
                     </Typography>
                   </Box>
@@ -1217,672 +1278,118 @@ export default function MobileViewTabs() {
                   // justifyContent: {xs:'center',sm:""}
                 }}
               >
-                {/* Friend Attends */}
-                <Box
-                  sx={{
-                    backgroundColor: "#333333",
-                    display: "flex",
-                    borderRadius: "5px",
-                    p: 1.5,
-                    paddingRight: 0,
-                    justifyContent: "space-between",
-                  }}
-                >
+                {currentCompanions.map((companion) => (
                   <Box
+                    key={companion.bookingGuestId}
                     sx={{
+                      backgroundColor: "#333333",
                       display: "flex",
-                      gap: 1,
+                      borderRadius: "5px",
+                      p: 1.5,
+                      paddingRight: 0,
+                      justifyContent: "space-between",
                     }}
                   >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
-                    />
-
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: 1,
+                      }}
+                    >
+                      <Avatar
+                        key={companion.bookingGuestId}
+                        src={`${dbStorage}${companion.guest?.guest_avatar}`}
+                      />
+                      <Box>
+                        <Typography
+                          sx={{
+                            color: "white",
+                            fontSize: 14,
+                            fontWeight: "500",
+                            wordWrap: "break-word",
+                          }}
+                        >
+                          {companion.guest?.name}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "#A4A4A4",
+                            fontSize: 11,
+                            fontWeight: "400",
+                            wordWrap: "break-word",
+                          }}
+                        >
+                          {companion?.event?.startDate
+                            ? new Date(
+                                companion.event.startDate
+                              ).toLocaleDateString("en-US", {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                              })
+                            : "N/A"}
+                        </Typography>
+                      </Box>
+                    </Box>
                     <Box>
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          fontWeight: "500",
-                          wordWrap: "break-word",
+                      <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={open ? "long-menu" : undefined}
+                        aria-expanded={open ? "true" : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                      >
+                        <MoreVertIcon sx={{ color: "white" }} />
+                      </IconButton>
+                      <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                          "aria-labelledby": "long-button",
+                        }}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        PaperProps={{
+                          style: {
+                            maxHeight: ITEM_HEIGHT * 4.5,
+                            width: "20ch",
+                          },
                         }}
                       >
-                        Ahmed Selim
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#A4A4A4",
-                          fontSize: 11,
-                          fontWeight: "400",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        6 Sep 2023, 9:00 pm
-                      </Typography>
+                        {options.map((option) => (
+                          <MenuItem
+                            key={option}
+                            selected={option === "Pyxis"}
+                            onClick={handleClose}
+                          >
+                            {option}
+                          </MenuItem>
+                        ))}
+                      </Menu>
                     </Box>
                   </Box>
-                  <Box>
-                    <IconButton
-                      aria-label="more"
-                      id="long-button"
-                      aria-controls={open ? "long-menu" : undefined}
-                      aria-expanded={open ? "true" : undefined}
-                      aria-haspopup="true"
-                      onClick={handleClick}
-                    >
-                      <MoreVertIcon sx={{ color: "white" }} />
-                    </IconButton>
-                    <Menu
-                      id="long-menu"
-                      MenuListProps={{
-                        "aria-labelledby": "long-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      PaperProps={{
-                        style: {
-                          maxHeight: ITEM_HEIGHT * 4.5,
-                          width: "20ch",
-                        },
-                      }}
-                    >
-                      {options.map((option) => (
-                        <MenuItem
-                          key={option}
-                          selected={option === "Pyxis"}
-                          onClick={handleClose}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  </Box>
-                </Box>
-                {/* Friend Attends */}
-                <Box
-                  sx={{
-                    backgroundColor: "#333333",
-                    display: "flex",
-                    borderRadius: "5px",
-                    p: 1.5,
-                    paddingRight: 0,
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 1,
-                    }}
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
-                    />
-
-                    <Box>
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          fontWeight: "500",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        Ahmed Selim
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#A4A4A4",
-                          fontSize: 11,
-                          fontWeight: "400",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        6 Sep 2023, 9:00 pm
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <IconButton
-                      aria-label="more"
-                      id="long-button"
-                      aria-controls={open ? "long-menu" : undefined}
-                      aria-expanded={open ? "true" : undefined}
-                      aria-haspopup="true"
-                      onClick={handleClick}
-                    >
-                      <MoreVertIcon sx={{ color: "white" }} />
-                    </IconButton>
-                    <Menu
-                      id="long-menu"
-                      MenuListProps={{
-                        "aria-labelledby": "long-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      PaperProps={{
-                        style: {
-                          maxHeight: ITEM_HEIGHT * 4.5,
-                          width: "20ch",
-                        },
-                      }}
-                    >
-                      {options.map((option) => (
-                        <MenuItem
-                          key={option}
-                          selected={option === "Pyxis"}
-                          onClick={handleClose}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  </Box>
-                </Box>
-                {/* Friend Attends */}
-                <Box
-                  sx={{
-                    backgroundColor: "#333333",
-                    display: "flex",
-                    borderRadius: "5px",
-                    p: 1.5,
-                    paddingRight: 0,
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 1,
-                    }}
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
-                    />
-
-                    <Box>
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          fontWeight: "500",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        Ahmed Selim
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#A4A4A4",
-                          fontSize: 11,
-                          fontWeight: "400",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        6 Sep 2023, 9:00 pm
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <IconButton
-                      aria-label="more"
-                      id="long-button"
-                      aria-controls={open ? "long-menu" : undefined}
-                      aria-expanded={open ? "true" : undefined}
-                      aria-haspopup="true"
-                      onClick={handleClick}
-                    >
-                      <MoreVertIcon sx={{ color: "white" }} />
-                    </IconButton>
-                    <Menu
-                      id="long-menu"
-                      MenuListProps={{
-                        "aria-labelledby": "long-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      PaperProps={{
-                        style: {
-                          maxHeight: ITEM_HEIGHT * 4.5,
-                          width: "20ch",
-                        },
-                      }}
-                    >
-                      {options.map((option) => (
-                        <MenuItem
-                          key={option}
-                          selected={option === "Pyxis"}
-                          onClick={handleClose}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  </Box>
-                </Box>
-                {/* Friend Attends */}
-                <Box
-                  sx={{
-                    backgroundColor: "#333333",
-                    display: "flex",
-                    borderRadius: "5px",
-                    p: 1.5,
-                    paddingRight: 0,
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 1,
-                    }}
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
-                    />
-
-                    <Box>
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          fontWeight: "500",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        Ahmed Selim
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#A4A4A4",
-                          fontSize: 11,
-                          fontWeight: "400",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        6 Sep 2023, 9:00 pm
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <IconButton
-                      aria-label="more"
-                      id="long-button"
-                      aria-controls={open ? "long-menu" : undefined}
-                      aria-expanded={open ? "true" : undefined}
-                      aria-haspopup="true"
-                      onClick={handleClick}
-                    >
-                      <MoreVertIcon sx={{ color: "white" }} />
-                    </IconButton>
-                    <Menu
-                      id="long-menu"
-                      MenuListProps={{
-                        "aria-labelledby": "long-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      PaperProps={{
-                        style: {
-                          maxHeight: ITEM_HEIGHT * 4.5,
-                          width: "20ch",
-                        },
-                      }}
-                    >
-                      {options.map((option) => (
-                        <MenuItem
-                          key={option}
-                          selected={option === "Pyxis"}
-                          onClick={handleClose}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  </Box>
-                </Box>
-                {/* Friend Attends */}
-                <Box
-                  sx={{
-                    backgroundColor: "#333333",
-                    display: "flex",
-                    borderRadius: "5px",
-                    p: 1.5,
-                    paddingRight: 0,
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 1,
-                    }}
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
-                    />
-
-                    <Box>
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          fontWeight: "500",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        Ahmed Selim
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#A4A4A4",
-                          fontSize: 11,
-                          fontWeight: "400",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        6 Sep 2023, 9:00 pm
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <IconButton
-                      aria-label="more"
-                      id="long-button"
-                      aria-controls={open ? "long-menu" : undefined}
-                      aria-expanded={open ? "true" : undefined}
-                      aria-haspopup="true"
-                      onClick={handleClick}
-                    >
-                      <MoreVertIcon sx={{ color: "white" }} />
-                    </IconButton>
-                    <Menu
-                      id="long-menu"
-                      MenuListProps={{
-                        "aria-labelledby": "long-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      PaperProps={{
-                        style: {
-                          maxHeight: ITEM_HEIGHT * 4.5,
-                          width: "20ch",
-                        },
-                      }}
-                    >
-                      {options.map((option) => (
-                        <MenuItem
-                          key={option}
-                          selected={option === "Pyxis"}
-                          onClick={handleClose}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  </Box>
-                </Box>
-                {/* Friend Attends */}
-                <Box
-                  sx={{
-                    backgroundColor: "#333333",
-                    display: "flex",
-                    borderRadius: "5px",
-                    p: 1.5,
-                    paddingRight: 0,
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 1,
-                    }}
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
-                    />
-
-                    <Box>
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          fontWeight: "500",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        Ahmed Selim
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#A4A4A4",
-                          fontSize: 11,
-                          fontWeight: "400",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        6 Sep 2023, 9:00 pm
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <IconButton
-                      aria-label="more"
-                      id="long-button"
-                      aria-controls={open ? "long-menu" : undefined}
-                      aria-expanded={open ? "true" : undefined}
-                      aria-haspopup="true"
-                      onClick={handleClick}
-                    >
-                      <MoreVertIcon sx={{ color: "white" }} />
-                    </IconButton>
-                    <Menu
-                      id="long-menu"
-                      MenuListProps={{
-                        "aria-labelledby": "long-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      PaperProps={{
-                        style: {
-                          maxHeight: ITEM_HEIGHT * 4.5,
-                          width: "20ch",
-                        },
-                      }}
-                    >
-                      {options.map((option) => (
-                        <MenuItem
-                          key={option}
-                          selected={option === "Pyxis"}
-                          onClick={handleClose}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  </Box>
-                </Box>
-                {/* Friend Attends */}
-                <Box
-                  sx={{
-                    backgroundColor: "#333333",
-                    display: "flex",
-                    borderRadius: "5px",
-                    p: 1.5,
-                    paddingRight: 0,
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 1,
-                    }}
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
-                    />
-
-                    <Box>
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          fontWeight: "500",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        Ahmed Selim
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#A4A4A4",
-                          fontSize: 11,
-                          fontWeight: "400",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        6 Sep 2023, 9:00 pm
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <IconButton
-                      aria-label="more"
-                      id="long-button"
-                      aria-controls={open ? "long-menu" : undefined}
-                      aria-expanded={open ? "true" : undefined}
-                      aria-haspopup="true"
-                      onClick={handleClick}
-                    >
-                      <MoreVertIcon sx={{ color: "white" }} />
-                    </IconButton>
-                    <Menu
-                      id="long-menu"
-                      MenuListProps={{
-                        "aria-labelledby": "long-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      PaperProps={{
-                        style: {
-                          maxHeight: ITEM_HEIGHT * 4.5,
-                          width: "20ch",
-                        },
-                      }}
-                    >
-                      {options.map((option) => (
-                        <MenuItem
-                          key={option}
-                          selected={option === "Pyxis"}
-                          onClick={handleClose}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  </Box>
-                </Box>
-                {/* Friend Attends */}
-                <Box
-                  sx={{
-                    backgroundColor: "#333333",
-                    display: "flex",
-                    borderRadius: "5px",
-                    p: 1.5,
-                    paddingRight: 0,
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 1,
-                    }}
-                  >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
-                    />
-
-                    <Box>
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 14,
-                          fontWeight: "500",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        Ahmed Selim
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#A4A4A4",
-                          fontSize: 11,
-                          fontWeight: "400",
-                          wordWrap: "break-word",
-                        }}
-                      >
-                        6 Sep 2023, 9:00 pm
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <IconButton
-                      aria-label="more"
-                      id="long-button"
-                      aria-controls={open ? "long-menu" : undefined}
-                      aria-expanded={open ? "true" : undefined}
-                      aria-haspopup="true"
-                      onClick={handleClick}
-                    >
-                      <MoreVertIcon sx={{ color: "white" }} />
-                    </IconButton>
-                    <Menu
-                      id="long-menu"
-                      MenuListProps={{
-                        "aria-labelledby": "long-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      PaperProps={{
-                        style: {
-                          maxHeight: ITEM_HEIGHT * 4.5,
-                          width: "20ch",
-                        },
-                      }}
-                    >
-                      {options.map((option) => (
-                        <MenuItem
-                          key={option}
-                          selected={option === "Pyxis"}
-                          onClick={handleClose}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  </Box>
-                </Box>
+                ))}
               </Box>
             </Box>
+              ) : (
+                <Box
+              sx={{
+                display: "flex",
+                justifyContent: "start",
+                flexDirection: "column",
+              }}
+            >
+              <CircularProgress
+                size={64}
+                thickness={2}
+                sx={{ color: "#EE726A" }}
+              />
+            </Box>
+          )}
           </Grid>
         </CustomTabPanel>
       </Box>
