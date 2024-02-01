@@ -1,6 +1,7 @@
 {
   "body": {
-    "operationId": 7,
-    "bookingGuestid":"e274cbf6-31a9-4249-934d-ca9a8a3af622"
+    "operationId": 8,
+    "bookingMainGuestId":"e274cbf6-31a9-4249-934d-ca9a8a3af622",
+    "bookingEventId":"335e5bb5-bf5a-46bd-8f71-a13ededbf500"
   }
 }

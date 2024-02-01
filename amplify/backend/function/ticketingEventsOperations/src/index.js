@@ -52,6 +52,8 @@ exports.handler = async (event) => {
     const bookAttributes = requestBody.bookAttributes;
     const eventBookingID = requestBody.eventBookingID;
     const bookingGuestid = requestBody.bookingGuestid;
+    const bookingMainGuestId = requestBody.bookingMainGuestId;
+    const bookingEventId = requestBody.bookingEventId;
 
     if (operationId === operationIdEnum.listEvents) {
       variables = {
@@ -65,6 +67,24 @@ exports.handler = async (event) => {
         },
       };
       query = listEvents;
+    } else if (operationId === operationIdEnum.listBookingsForCompanion) {
+      variables = {
+        filter: {
+          deleted: {
+            eq: "0",
+          },
+          bookingMainGuestId: {
+            eq: bookingMainGuestId,
+          },
+          bookingEventId: {
+            eq: bookingEventId,
+          },
+          isMainGuest: {
+            eq: false,
+          },
+        },
+      };
+      query = listBookings;
     } else if (operationId === operationIdEnum.bookEvent) {
       const createInput = {
         status: bookAttributes.status,
@@ -245,6 +265,8 @@ exports.handler = async (event) => {
       items = responseBody.data.getBooking;
     } else if (operationId === operationIdEnum.updateBooking) {
       items = responseBody.data.updateBooking;
+    } else if (operationId === operationIdEnum.listBookingsForCompanion) {
+      items = responseBody.data.listBookings;
     } else if (operationId === operationIdEnum.listEventsByGuestId) {
       variables = {
         filter: {
@@ -290,11 +312,14 @@ exports.handler = async (event) => {
           "Content-Type": "application/json",
           "x-api-key": GRAPHQL_API_KEY,
         },
-        body: JSON.stringify({ query: listBookings, variables: bookingVariables }),
+        body: JSON.stringify({
+          query: listBookings,
+          variables: bookingVariables,
+        }),
       };
       const bookings = await fetch(GRAPHQL_ENDPOINT, bookingOptions);
       const bookingsList = await bookings.json();
-      items = bookingsList.data.listBookings
+      items = bookingsList.data.listBookings;
       console.log(items);
     }
     return {
