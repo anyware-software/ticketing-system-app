@@ -19,6 +19,7 @@ const {
   createBooking,
   getBooking,
   updateBooking,
+  listBookings,
 } = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
@@ -50,6 +51,7 @@ exports.handler = async (event) => {
     let variables, query;
     const bookAttributes = requestBody.bookAttributes;
     const eventBookingID = requestBody.eventBookingID;
+    const bookingGuestid = requestBody.bookingGuestid;
 
     if (operationId === operationIdEnum.listEvents) {
       variables = {
@@ -243,6 +245,57 @@ exports.handler = async (event) => {
       items = responseBody.data.getBooking;
     } else if (operationId === operationIdEnum.updateBooking) {
       items = responseBody.data.updateBooking;
+    } else if (operationId === operationIdEnum.listEventsByGuestId) {
+      variables = {
+        filter: {
+          deleted: {
+            eq: "0",
+          },
+          endDate: {
+            gt: formatDateToYYYYMMDDHHMMSS(new Date()),
+          },
+        },
+      };
+      query = listEvents;
+      const eventOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": GRAPHQL_API_KEY,
+        },
+        body: JSON.stringify({ query: listEvents, variables: variables }),
+      };
+      const events = await fetch(GRAPHQL_ENDPOINT, eventOptions);
+      const eventsList = await events.json();
+      const eventsListIds = eventsList.data.listEvents.items.map(
+        (event) => event.id
+      );
+      const bookingVariables = {
+        filter: {
+          deleted: {
+            eq: "0",
+          },
+          bookingGuestId: {
+            eq: bookingGuestid,
+          },
+          or: eventsListIds.map((eventid) => ({
+            bookingEventId: { eq: eventid },
+          })),
+        },
+      };
+      query = listBookings;
+      const bookingOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": GRAPHQL_API_KEY,
+        },
+        body: JSON.stringify({ query: listBookings, variables: bookingVariables }),
+      };
+      const bookings = await fetch(GRAPHQL_ENDPOINT, bookingOptions);
+      const bookingsList = await bookings.json();
+      items = bookingsList.data.listBookings
+      console.log(items);
     }
     return {
       statusCode: 200,

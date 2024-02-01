@@ -5,6 +5,7 @@ const operationIdEnum = {
     'sendSmsMessage': 4 ,
     'getBooking':5,
     'updateBooking':6,
+    'listEventsByGuestId': 7,
 }
 module.exports = {
     operationIdEnum

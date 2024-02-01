@@ -603,6 +603,176 @@ const updateBooking = /* GraphQL */ `
     }
   }
 `;
+const listBookings = /* GraphQL */ `
+  query ListBookings(
+    $filter: ModelBookingFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBookings(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        status
+        guest {
+          id
+          name
+          username
+          email
+          phone_number
+          guestGroupID
+          guestGroupName
+          guest_avatar
+          avg_spend
+          avg_ticket_type
+          numberOfTickets
+          connections
+          last_attended_event
+          gender
+          group
+          faceBookID
+          appPassword
+          birthdate
+          isVerified
+          images
+          address
+          totalEvents
+          flags
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          __typename
+        }
+        mainGuest {
+          id
+          name
+          username
+          email
+          phone_number
+          guestGroupID
+          guestGroupName
+          guest_avatar
+          avg_spend
+          avg_ticket_type
+          numberOfTickets
+          connections
+          last_attended_event
+          gender
+          group
+          faceBookID
+          appPassword
+          birthdate
+          isVerified
+          images
+          address
+          totalEvents
+          flags
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          __typename
+        }
+        event {
+          id
+          name
+          description
+          startDate
+          endDate
+          location {
+            address
+            coordinates {
+              lat
+              lng
+              __typename
+            }
+            __typename
+          }
+          todoList
+          eventComments {
+            image
+            name
+            message
+            __typename
+          }
+          map
+          image
+          gallery
+          visibleTo
+          tickets {
+            nextToken
+            __typename
+          }
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          __typename
+        }
+        eventTicket {
+          id
+          type
+          cashlessCredit
+          description
+          waves {
+            name
+            price
+            startDate
+            endDate
+            active
+            quota
+            AutomaticShift
+            __typename
+          }
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
+        wave
+        isMainGuest
+        orderId
+        statusUpdatedByID
+        statusUpdatedByName
+        statusUpdatedAt
+        specialNeed
+        phone_number
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        bookingGuestId
+        bookingMainGuestId
+        bookingEventId
+        bookingEventTicketId
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 module.exports = {
   getEvent,
   listEvents,
@@ -610,4 +780,5 @@ module.exports = {
   createBooking,
   getBooking,
   updateBooking,
+  listBookings,
 };

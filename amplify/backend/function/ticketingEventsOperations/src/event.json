@@ -1,9 +1,6 @@
 {
   "body": {
-    "operationId": 6,
-    "eventBookingID":"72299f99-04db-4495-8491-920c04ce4b60",
-    "bookAttributes":{
-      "orderId":"ABC123"
-    }
+    "operationId": 7,
+    "bookingGuestid":"e274cbf6-31a9-4249-934d-ca9a8a3af622"
   }
 }
