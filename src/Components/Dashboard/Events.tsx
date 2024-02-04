@@ -365,6 +365,20 @@ export default function Events() {
     return randomId;
   };
 
+  const generateTicketNumber = () => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const idLength = 7;
+    const currentDate = new Date().toISOString().replace(/[-T:Z.]/g, "");
+    let randomId = "";
+    randomId += currentDate;
+    for (let i = 0; i < idLength; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomId += characters.charAt(randomIndex);
+    }
+    return randomId;
+  };
+
   const sendSmsToUser = async (phone: string, message: string) => {
     try {
       await sendSms(phone, message);
