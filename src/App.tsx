@@ -24,7 +24,6 @@ import getGuest from "./services/getGuest";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import ContentLoader from "./Components/ContentLoader/ContentLoder";
 import PaymentPage from "./Components/Dashboard/PaymentPage";
-import MainLayout from "./Components/MainLayout";
 import GuestProfile from "./Components/Dashboard/GuestProfile";
 import Events from "./Components/Dashboard/Events";
 //-------------------------------------------------------------
