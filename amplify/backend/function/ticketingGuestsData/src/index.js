@@ -48,6 +48,7 @@ exports.handler = async (event) => {
         group: userAttributes.group,
         faceBookID: userAttributes.faceBookID,
         birthdate: userAttributes.birthdate,
+        gender: userAttributes.gender,
         deleted: "0",
         createdAt: userAttributes.createdAt,
         createdByID: userAttributes.createdByID,

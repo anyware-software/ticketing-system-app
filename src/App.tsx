@@ -75,9 +75,10 @@ function App() {
             group = "Cognito";
           }
           let currentUser = await getGuest(loggedInUser.sub);
+          let currentUserGender = loggedInUser.gender          
           if (!currentUser) {
             // console.log("case1");
-            let newUser = await createGuest(loggedInUser, group, faceBookID);
+            let newUser = await createGuest(loggedInUser, group, faceBookID ,currentUserGender);
             dispatch(setLogin({ user: newUser }));
           } else {
             // console.log("case2");
@@ -96,6 +97,26 @@ function App() {
   useEffect(() => {
     fetchUser();
   }, [user]);
+
+  // useEffect(() => {
+  //   async function getGender() {
+  //     const userdata = await fetchUserAttributes();
+  //     console.log(userdata);
+      
+  //     const accessToken = userdata.profile;
+  //     axios
+  //       .get(
+  //         `https://graph.facebook.com/me?fields=gender,birthday&access_token=${accessToken}`
+  //         )
+  //       .then(async (response) => {
+  //         console.log(response);
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   }
+  //   getGender();
+  // }, []);
 
   return (
     <>

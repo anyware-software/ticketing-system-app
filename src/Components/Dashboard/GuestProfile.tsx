@@ -517,7 +517,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   //----------------------------------------------------------------
   let connections = JSON.parse(user?.connections || "[]");
 
-  console.log(currentCompanions);
+  // console.log(currentCompanions);
 
   return (
     <Box
