@@ -20,8 +20,9 @@ import LoginIcon from "@mui/icons-material/Login";
 import { setLogin } from "../../state";
 import { signOut } from "aws-amplify/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import FestivalIcon from '@mui/icons-material/Festival';
+import { useLocation, useNavigate } from "react-router-dom";
+import FestivalIcon from "@mui/icons-material/Festival";
+import { Pages } from "../../constants/Pages";
 
 interface MainListItemsProps {
   onItemSelected: (item: string) => void;
@@ -32,6 +33,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
   const user = useSelector((state: any) => state.app.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleItemClick = (item: string) => {
     setSelectedItem(item);
@@ -51,104 +53,153 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
     localStorage.removeItem("user");
     await signOut();
   };
-
+  const isCurrentPage = (page: string, exact?: boolean) => {
+    if (exact) {
+      return location.pathname.replaceAll("/", "") === page;
+    }
+    return location.pathname.includes(page);
+  };
   return (
     <React.Fragment>
       <ListItemButton
         selected={selectedItem === "My Profile"}
-     
-        onClick={() => handleItemClick("My Profile")}
+        onClick={() => navigate(`/dashboard/${Pages.PROFILE}`)}
       >
         <ListItemIcon>
-          <PersonOutlineOutlinedIcon sx={{ color: selectedItem === "My Profile" ? "rgba(240, 99, 90, 1)" : "white" }}/>
+          <PersonOutlineOutlinedIcon
+            sx={{
+              color: isCurrentPage("dashboard", true)
+                ? "rgba(240, 99, 90, 1)"
+                : "white",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="My Profile" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "events"}
-       
-        onClick={() => handleItemClick("events")}
+        onClick={() => navigate(`/dashboard/${Pages.EVENTS}`)}
       >
         <ListItemIcon>
-          <FestivalIcon sx={{ color: selectedItem === "events" ? "rgba(240, 99, 90, 1)" : "white" }} />
+          <FestivalIcon
+            sx={{
+              color: isCurrentPage(Pages.EVENTS)
+                ? "rgba(240, 99, 90, 1)"
+                : "white",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="events" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Notifications"}
-       
-        onClick={() => handleItemClick("Notifications")}
+        onClick={() => navigate(`/dashboard/${Pages.NOTIFICATIONS}`)}
       >
         <ListItemIcon>
-          <ChatBubbleOutlineOutlinedIcon sx={{ color: selectedItem === "Notifications" ? "rgba(240, 99, 90, 1)" : "white" }} />
+          <ChatBubbleOutlineOutlinedIcon
+            sx={{
+              color: isCurrentPage(Pages.NOTIFICATIONS)
+                ? "rgba(240, 99, 90, 1)"
+                : "white",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="Notifications" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Calender"}
-        
-        onClick={() => handleItemClick("Calender")}
+        onClick={() => navigate(`/dashboard/${Pages.CALENDAR}`)}
       >
         <ListItemIcon>
-          <TodayOutlinedIcon sx={{ color: selectedItem === "Calender" ? "rgba(240, 99, 90, 1)" : "white" }} />
+          <TodayOutlinedIcon
+            sx={{
+              color: isCurrentPage(Pages.CALENDAR)
+                ? "rgba(240, 99, 90, 1)"
+                : "white",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="Calender" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Bookmark"}
-       
-        onClick={() => handleItemClick("Bookmark")}
+        onClick={() => navigate(`/dashboard/${Pages.BOOKMARKS}`)}
       >
         <ListItemIcon>
-          <TurnedInNotOutlinedIcon sx={{ color: selectedItem === "Bookmark" ? "rgba(240, 99, 90, 1)" : "white" }} />
+          <TurnedInNotOutlinedIcon
+            sx={{
+              color: isCurrentPage(Pages.BOOKMARKS)
+                ? "rgba(240, 99, 90, 1)"
+                : "white",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="Bookmark" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Contact US"}
-       
-        onClick={() => handleItemClick("Contact US")}
+        onClick={() => navigate(`/dashboard/${Pages.CONTACT}`)}
       >
         <ListItemIcon>
-          <LocalPostOfficeOutlinedIcon sx={{ color: selectedItem === "Contact US" ? "rgba(240, 99, 90, 1)" : "white" }} />
+          <LocalPostOfficeOutlinedIcon
+            sx={{
+              color: isCurrentPage(Pages.CONTACT)
+                ? "rgba(240, 99, 90, 1)"
+                : "white",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="Contact US" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Setting"}
-       
-        onClick={() => handleItemClick("Setting")}
+        onClick={() => navigate(`/dashboard/${Pages.SETTINGS}`)}
       >
         <ListItemIcon>
-          <SettingsOutlinedIcon sx={{ color: selectedItem === "Setting" ? "rgba(240, 99, 90, 1)" : "white" }} />
+          <SettingsOutlinedIcon
+            sx={{
+              color: isCurrentPage(Pages.SETTINGS)
+                ? "rgba(240, 99, 90, 1)"
+                : "white",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="Setting" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Help & FAQs"}
-       
-        onClick={() => handleItemClick("Help & FAQs")}
+        onClick={() => navigate(`/dashboard/${Pages.HELP}`)}
       >
         <ListItemIcon>
-          <HelpOutlineOutlinedIcon sx={{ color: selectedItem === "Help & FAQs" ? "rgba(240, 99, 90, 1)" : "white" }} />
+          <HelpOutlineOutlinedIcon
+            sx={{
+              color: isCurrentPage(Pages.HELP)
+                ? "rgba(240, 99, 90, 1)"
+                : "white",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="Help & FAQs" />
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "Sign Out"}
-        
         onClick={() => handleItemClick("Sign Out")}
       >
         <ListItemIcon>
-          <LoginIcon sx={{ color: selectedItem === "Sign Out" ? "rgba(240, 99, 90, 1)" : "white" }} />
+          <LoginIcon
+            sx={{
+              color:
+                selectedItem === "Sign Out" ? "rgba(240, 99, 90, 1)" : "white",
+            }}
+          />
         </ListItemIcon>
         <ListItemText primary="Sign Out" />
       </ListItemButton>

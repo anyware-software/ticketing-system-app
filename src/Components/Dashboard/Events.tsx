@@ -29,7 +29,7 @@ import AccessibleIcon from "@mui/icons-material/Accessible";
 import getGuestByPhone from "../../services/getGuestByPhone";
 import Avatar from "@mui/material/Avatar";
 import createBooking from "../../services/createBooking";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import CloseIcon from "@mui/icons-material/Close";
@@ -43,6 +43,7 @@ import sendSms from "../../services/sendSMS";
 import EventMapOverlay from "./Event Components/EventMapOverlay";
 import EventLocationOverlay from "./Event Components/EventLocationOverlay";
 import NoDataEvent from "../NoEvent/NoDataEvent";
+import { toggleDrawer as toggleDrawerState } from "../../state/index";
 // import type { Event } from '../../API';
 
 interface Event {
@@ -94,12 +95,7 @@ interface Guest {
   phone_number: string;
 }
 
-type props = {
-  toggleDrawer: any;
-  openSideNav: boolean;
-};
-
-export default function Events({ toggleDrawer, openSideNav }: props) {
+export default function Events() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -111,6 +107,8 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
   const [ticketChosen, setTicketChosen] = useState("noTickets");
   const [orderId, setOrderId] = useState("");
   const user = useSelector((state: any) => state.app.user);
+  const openSideNav = useSelector((state: any) => state.drawer);
+  const dispatch = useDispatch();
   const [validationWarning, setValidationWarning] = useState<boolean>(false);
   const [message, setMessage] = useState<any>("");
   const [currentEvent, setCurrentEvent] = useState<Event>({
@@ -132,7 +130,9 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
   const [currentEventTicket, setCurrentEventTicket] = useState<EventTickets[]>(
     []
   );
-
+  const toggleDrawer = () => {
+    dispatch(toggleDrawerState());
+  };
   let checkBoxStyles = {
     justifyContent: "space-between",
     backgroundColor: "rgba(0, 0, 0, 1)",

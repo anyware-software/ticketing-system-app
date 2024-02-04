@@ -20,12 +20,18 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 // import { mainListItems } from "./ListItems";
 import GuestProfile from "./GuestProfile";
 import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
-import { Button, Checkbox, FormControl, TextField , useMediaQuery} from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  TextField,
+  useMediaQuery,
+} from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "../../state";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { signOut } from "aws-amplify/auth";
 import { MainListItems } from "./ListItems";
 import NotFound from "../NotFound/NotFound";
@@ -125,15 +131,15 @@ export default function Dashboard() {
   useEffect(() => {
     if (!user) {
       setLoading(true);
-    }else{
+    } else {
       setLoading(false);
     }
   }, [user]);
 
-  if(loading) return <ContentLoader />
+  if (loading) return <ContentLoader />;
 
   return (
-    <Box sx={{ display: "flex", overflow: "hidden" }}>
+    <Box sx={{ display: "flex", overflow: "hidden", bgcolor: "black" }}>
       <CssBaseline />
       <AppBar
         open={open}
@@ -285,13 +291,8 @@ export default function Dashboard() {
       </Drawer>
       {/* Main Component */}
       {/* <GuestProfile /> */}
-      {selectedItem === "My Profile" && (
-        <GuestProfile toggleDrawer={toggleDrawer} openSideNav={open} />
-      )}
-      {/* <Current Event /> */}
-      {selectedItem === "events" && (
-        <Events toggleDrawer={toggleDrawer} openSideNav={open} />
-      )}
+
+      <Outlet />
     </Box>
   );
 }

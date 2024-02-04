@@ -23,6 +23,10 @@ import createGuest from "./services/createGuest";
 import getGuest from "./services/getGuest";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import ContentLoader from "./Components/ContentLoader/ContentLoder";
+import PaymentPage from "./Components/Dashboard/PaymentPage";
+import MainLayout from "./Components/MainLayout";
+import GuestProfile from "./Components/Dashboard/GuestProfile";
+import Events from "./Components/Dashboard/Events";
 //-------------------------------------------------------------
 
 const provider = {
@@ -42,7 +46,15 @@ const router = createBrowserRouter([
       { index: true, element: <Login /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
-      { path: "/dashboard", element: <Dashboard /> },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+        children: [
+          { index: true, element: <GuestProfile /> },
+          { path: "events", element: <Events /> },
+          { path: "payment/:id", element: <PaymentPage /> },
+        ],
+      },
       { path: "*", element: <NotFound /> },
     ],
   },
@@ -75,10 +87,15 @@ function App() {
             group = "Cognito";
           }
           let currentUser = await getGuest(loggedInUser.sub);
-          let currentUserGender = loggedInUser.gender          
+          let currentUserGender = loggedInUser.gender;
           if (!currentUser) {
             // console.log("case1");
-            let newUser = await createGuest(loggedInUser, group, faceBookID ,currentUserGender);
+            let newUser = await createGuest(
+              loggedInUser,
+              group,
+              faceBookID,
+              currentUserGender
+            );
             dispatch(setLogin({ user: newUser }));
           } else {
             // console.log("case2");

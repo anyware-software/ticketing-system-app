@@ -50,6 +50,7 @@ import updateBooking from "../../services/updateBooking";
 import listGuestBooking from "../../services/listGuestBookings";
 import listAccompaniedGuests from "../../services/listAccompaniedGuests";
 import { useNavigate } from "react-router-dom";
+import { toggleDrawer as toggleDrawerState } from "../../state/index";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -61,18 +62,18 @@ interface MyObject {
 }
 
 type props = {
-  toggleDrawer: any;
-  openSideNav: boolean;
+  toggleDrawer?: any;
+  openSideNav?: boolean;
 };
 
-export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
+export default function GuestProfile({ openSideNav }: props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const [isHovered, setIsHovered] = useState(false);
   const [currentBookings, setCurrentBookings] = useState<Booking>();
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
+  const dispatch = useDispatch();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -82,7 +83,9 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   const [avatarLoading, SetAvatarLoading] = useState(false);
 
   const user = useSelector((state: any) => state.app.user);
-
+  const toggleDrawer = () => {
+    dispatch(toggleDrawerState());
+  };
   useEffect(() => {
     const handdleUpdateBooking = async () => {
       if (user) {
@@ -520,6 +523,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   let connections = JSON.parse(user?.connections || "[]");
 
   // console.log(currentCompanions);
+  console.log(currentBookings);
 
   return (
     <Box
@@ -1729,8 +1733,16 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                       backgroundColor: "#F0635A",
                       display: { xs: "none", sm: "block", lg: "block" },
                     }}
+                    onClick={() => {
+                      if (currentBookings?.status === BookingStatus.APPROVED) {
+                        navigate(`payment/${currentBookings?.id}`);
+                      }
+                    }}
                   >
-                    VIEW TICKET(S)
+                    {/*  */}
+                    {currentBookings?.status === BookingStatus.APPROVED
+                      ? "Pay Now"
+                      : "VIEW TICKET(S)"}
                   </Button>
                 </Box>
               </Box>
@@ -1974,8 +1986,8 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                         backgroundColor: "#F0635A",
                         display: { xs: "none", sm: "block", lg: "block" },
                       }}
-                      onClick={()=>{
-                        navigate('/dashboard/');
+                      onClick={() => {
+                        navigate("/dashboard/");
                       }}
                     >
                       Book Now !
