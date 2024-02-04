@@ -61,12 +61,7 @@ interface MyObject {
   id: string;
 }
 
-type props = {
-  toggleDrawer?: any;
-  openSideNav?: boolean;
-};
-
-export default function GuestProfile({ openSideNav }: props) {
+export default function GuestProfile() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
