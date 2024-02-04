@@ -153,12 +153,14 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
     getFriends();
     async function getGuestBookingEvents() {
       const booking = await listGuestBooking({ bookingGuestid: user.id });
-      const sortedBookings = booking.items.sort((a: any, b: any) => {
-        const startDateA = new Date(a.event.startDate).getTime();
-        const startDateB = new Date(b.event.startDate).getTime();
-        return startDateA - startDateB;
-      });
-      setCurrentBookings(sortedBookings[0]);
+      if (booking) {
+        const sortedBookings = booking.items.sort((a: any, b: any) => {
+          const startDateA = new Date(a.event.startDate).getTime();
+          const startDateB = new Date(b.event.startDate).getTime();
+          return startDateA - startDateB;
+        });
+        setCurrentBookings(sortedBookings[0]);
+      }
     }
     getGuestBookingEvents();
   }, [user]);
@@ -1501,7 +1503,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             alignItems: { sm: "center", lg: "start" },
             flexDirection: "column",
             height: "100%",
-            mx:3,
+            mx: {xs:0,sm:3,md:0,lg:0},
           }}
         >
           {currentBookings && currentCompanions.length > 0 ? (

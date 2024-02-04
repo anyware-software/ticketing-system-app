@@ -112,13 +112,15 @@ export default function MobileViewTabs() {
 
   useEffect(() => {
     async function getGuestBookingEvents() {
-      const booking = await listGuestBooking({ bookingGuestid: user.id });
-      const sortedBookings = booking.items.sort((a: any, b: any) => {
-        const startDateA = new Date(a.event.startDate).getTime();
-        const startDateB = new Date(b.event.startDate).getTime();
-        return startDateA - startDateB;
-      });
-      setCurrentBookings(sortedBookings[0]);
+      const booking = await listGuestBooking({ bookingGuestid: user?.id });
+      if (booking) {
+        const sortedBookings = booking.items.sort((a: any, b: any) => {
+          const startDateA = new Date(a.event.startDate).getTime();
+          const startDateB = new Date(b.event.startDate).getTime();
+          return startDateA - startDateB;
+        });
+        setCurrentBookings(sortedBookings[0]);
+      }
     }
     getGuestBookingEvents();
   }, [user]);
