@@ -34,12 +34,11 @@ import { setLogin } from "../../state";
 import { Outlet, useNavigate } from "react-router-dom";
 import { signOut } from "aws-amplify/auth";
 import { MainListItems } from "./ListItems";
-import NotFound from "../NotFound/NotFound";
-import Login from "../Login/Login";
 import { dbStorage } from "../../constants/Enums";
 import { useEffect, useState } from "react";
 import ContentLoader from "../ContentLoader/ContentLoder";
-import Events from "./Events";
+
+import { toggleDrawer as toggleDrawerState } from "../../state";
 
 const drawerWidth: number = 240;
 
@@ -94,8 +93,9 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Dashboard() {
-  const [open, setOpen] = React.useState(false);
   const user = useSelector((state: any) => state.app.user);
+  const drawerState = useSelector((state: any) => state.app.drawer);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -107,7 +107,7 @@ export default function Dashboard() {
     setSelectedItem(item);
   };
   const toggleDrawer = () => {
-    setOpen(!open);
+    dispatch(toggleDrawerState());
   };
 
   const handleLogOut = async () => {
@@ -124,9 +124,6 @@ export default function Dashboard() {
     await signOut();
   };
   // console.log(selectedItem);
-  if (selectedItem === "Sign Out") {
-    handleLogOut();
-  }
 
   useEffect(() => {
     if (!user) {
@@ -142,7 +139,7 @@ export default function Dashboard() {
     <Box sx={{ display: "flex", overflow: "hidden", bgcolor: "black" }}>
       <CssBaseline />
       <AppBar
-        open={open}
+        open={drawerState}
         sx={{
           backgroundColor: "#000000",
           display: { xs: "none", sm: "flex" },
@@ -160,7 +157,7 @@ export default function Dashboard() {
             onClick={toggleDrawer}
             sx={{
               marginRight: "36px",
-              ...(open && { display: "none" }),
+              ...(drawerState && { display: "none" }),
             }}
           >
             <MenuIcon />
@@ -230,7 +227,7 @@ export default function Dashboard() {
         </Toolbar>
       </AppBar>
 
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={drawerState}>
         <Toolbar
           sx={{
             display: "flex",
@@ -257,7 +254,7 @@ export default function Dashboard() {
                 height: "5rem",
                 borderRadius: "50%",
                 marginLeft: "1rem",
-                display: open ? "block" : "none",
+                display: drawerState ? "block" : "none",
                 marginTop: "2vh",
               }}
               alt="unknownUser"
@@ -269,7 +266,7 @@ export default function Dashboard() {
                 fontWeight: "600",
                 wordWrap: "break-word",
                 my: 1,
-                display: open ? "block" : "none",
+                display: drawerState ? "block" : "none",
               }}
             >
               {user?.name &&
