@@ -86,6 +86,7 @@ exports.handler = async (event) => {
       };
       query = listBookings;
     } else if (operationId === operationIdEnum.bookEvent) {
+      console.log({bookAttributes: bookAttributes.guestTicket.number});
       const createInput = {
         status: bookAttributes.status,
         bookingGuestId: bookAttributes.bookingGuestId,
@@ -97,6 +98,7 @@ exports.handler = async (event) => {
         orderId: bookAttributes.orderId,
         specialNeed: bookAttributes.specialNeed,
         phone_number: bookAttributes.phone_number,
+        guestTicket: bookAttributes.guestTicket,
         deleted: "0",
         createdAt: bookAttributes.createdAt,
         createdByID: bookAttributes.createdByID,

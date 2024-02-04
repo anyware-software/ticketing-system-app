@@ -1,7 +1,13 @@
 {
   "body": {
-    "operationId": 8,
-    "bookingMainGuestId":"e274cbf6-31a9-4249-934d-ca9a8a3af622",
-    "bookingEventId":"335e5bb5-bf5a-46bd-8f71-a13ededbf500"
+    "operationId": 3,
+    "bookAttributes": {
+      "guestTicket": {
+        "number": "101010"
+      },
+      "createdAt": "String",
+      "createdByID": "String",
+      "createdByName": "String"
+    }
   }
 }

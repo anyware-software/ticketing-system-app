@@ -13,6 +13,7 @@ async function createBooking(
   orderId?: String,
   specialNeed?: Boolean,
   phone_number?: String,
+  ticketNumber?: any
 ) {
   // console.log(user, status, bookingMainGuestId, bookingGuestId, bookingEventId, bookingEventTicketId, isMainGuest, wave, orderId, specialNeed);
 
@@ -28,17 +29,18 @@ async function createBooking(
       wave: wave,
       orderId: orderId,
       specialNeed: specialNeed,
-      phone_number:phone_number,
+      phone_number: phone_number,
+      guestTicket: ticketNumber,
       createdAt: new Date(),
       createdByID: user.id,
       createdByName: user.name,
-    }
+    };
 
     const requestBody = {
       operationId,
-      bookAttributes: bookAttributes
+      bookAttributes: bookAttributes,
     };
-    console.log(requestBody)
+    console.log(requestBody);
     const options = {
       method: "POST",
       headers: {
@@ -48,7 +50,6 @@ async function createBooking(
     };
     const response = await axios.post(EventEndPoints, requestBody);
     return response.data;
-
   } catch (error) {
     console.error("Error creating user :", error);
     throw error;

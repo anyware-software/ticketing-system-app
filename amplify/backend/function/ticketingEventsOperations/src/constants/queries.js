@@ -273,6 +273,10 @@ const createBooking = /* GraphQL */ `
       statusUpdatedAt
       specialNeed
       phone_number
+      guestTicket {
+        number
+        __typename
+      }
       deleted
       createdAt
       createdByID

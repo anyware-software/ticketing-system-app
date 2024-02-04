@@ -1058,16 +1058,6 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
         type
         cashlessCredit
         description
-        waves {
-          name
-          price
-          startDate
-          endDate
-          active
-          quota
-          AutomaticShift
-          __typename
-        }
         color
         paymentRules
         approvalRule
@@ -1141,16 +1131,6 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
         type
         cashlessCredit
         description
-        waves {
-          name
-          price
-          startDate
-          endDate
-          active
-          quota
-          AutomaticShift
-          __typename
-        }
         color
         paymentRules
         approvalRule
@@ -1224,16 +1204,6 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
         type
         cashlessCredit
         description
-        waves {
-          name
-          price
-          startDate
-          endDate
-          active
-          quota
-          AutomaticShift
-          __typename
-        }
         color
         paymentRules
         approvalRule
@@ -1486,11 +1456,6 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
       endDate
       location {
         address
-        coordinates {
-          lat
-          lng
-          __typename
-        }
         __typename
       }
       todoList
@@ -1505,33 +1470,6 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
       gallery
       visibleTo
       tickets {
-        items {
-          id
-          type
-          cashlessCredit
-          description
-          color
-          paymentRules
-          approvalRule
-          showAll
-          showOnHold
-          onHoldDisplayText
-          showSoldOut
-          soldOutDisplayText
-          setAvailable
-          availableAtDate
-          allowTransferred
-          transferredAprroval
-          transferredSameGender
-          eventID
-          deleted
-          createdAt
-          createdByID
-          createdByName
-          updatedAt
-          eventTicketsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1587,6 +1525,10 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
     statusUpdatedAt
     specialNeed
     phone_number
+    guestTicket {
+      number
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -1680,11 +1622,6 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
       endDate
       location {
         address
-        coordinates {
-          lat
-          lng
-          __typename
-        }
         __typename
       }
       todoList
@@ -1699,33 +1636,6 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
       gallery
       visibleTo
       tickets {
-        items {
-          id
-          type
-          cashlessCredit
-          description
-          color
-          paymentRules
-          approvalRule
-          showAll
-          showOnHold
-          onHoldDisplayText
-          showSoldOut
-          soldOutDisplayText
-          setAvailable
-          availableAtDate
-          allowTransferred
-          transferredAprroval
-          transferredSameGender
-          eventID
-          deleted
-          createdAt
-          createdByID
-          createdByName
-          updatedAt
-          eventTicketsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1781,6 +1691,10 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
     statusUpdatedAt
     specialNeed
     phone_number
+    guestTicket {
+      number
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -1874,11 +1788,6 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
       endDate
       location {
         address
-        coordinates {
-          lat
-          lng
-          __typename
-        }
         __typename
       }
       todoList
@@ -1893,33 +1802,6 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
       gallery
       visibleTo
       tickets {
-        items {
-          id
-          type
-          cashlessCredit
-          description
-          color
-          paymentRules
-          approvalRule
-          showAll
-          showOnHold
-          onHoldDisplayText
-          showSoldOut
-          soldOutDisplayText
-          setAvailable
-          availableAtDate
-          allowTransferred
-          transferredAprroval
-          transferredSameGender
-          eventID
-          deleted
-          createdAt
-          createdByID
-          createdByName
-          updatedAt
-          eventTicketsId
-          __typename
-        }
         nextToken
         __typename
       }
@@ -1975,6 +1857,10 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
     statusUpdatedAt
     specialNeed
     phone_number
+    guestTicket {
+      number
+      __typename
+    }
     deleted
     createdAt
     createdByID

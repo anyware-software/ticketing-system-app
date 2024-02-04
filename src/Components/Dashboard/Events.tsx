@@ -406,7 +406,8 @@ export default function Events() {
         eventForMainGuest?.waveName,
         orderId,
         isSpecial,
-        user.phone_number
+        user.phone_number,
+        {number: generateTicketNumber()}
       );
       // console.log(bookingRequest);
       setTicketChosen("book");
@@ -431,7 +432,8 @@ export default function Events() {
         eventForValidGuest?.waveName,
         orderId,
         isSpecial,
-        validGuest.phone_number
+        validGuest.phone_number,
+        {number: generateTicketNumber()}
       );
       // console.log(bookingRequest);
     });
@@ -450,7 +452,8 @@ export default function Events() {
         eventForNotValidGuest?.waveName,
         orderId,
         isSpecial,
-        notValidGuest?.phone
+        notValidGuest?.phone,
+        {number: generateTicketNumber()}
       );
       // console.log(bookingRequest);
       sendSmsToUser(

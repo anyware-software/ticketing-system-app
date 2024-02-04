@@ -518,7 +518,7 @@ export default function GuestProfile() {
   let connections = JSON.parse(user?.connections || "[]");
 
   // console.log(currentCompanions);
-  console.log(currentBookings);
+  // console.log(currentBookings);
 
   return (
     <Box
