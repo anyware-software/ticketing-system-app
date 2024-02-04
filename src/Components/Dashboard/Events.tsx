@@ -42,6 +42,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import sendSms from "../../services/sendSMS";
 import EventMapOverlay from "./Event Components/EventMapOverlay";
 import EventLocationOverlay from "./Event Components/EventLocationOverlay";
+import NoDataEvent from "../NoEvent/NoDataEvent";
 // import type { Event } from '../../API';
 
 interface Event {
@@ -505,14 +506,14 @@ export default function Events({ toggleDrawer, openSideNav }: props) {
       </Box>
     );
 
-  if (user.phone_number === "" || user.phone_number === "00")
+  if (user.phone_number === "" || user.phone_number === "+20")
     return (
       <Box
         sx={{
           width: "100%",
         }}
       >
-        <NoEvent />
+        <NoDataEvent />
       </Box>
     );
 

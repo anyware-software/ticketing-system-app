@@ -49,6 +49,7 @@ import getBooking from "../../services/getBooking";
 import updateBooking from "../../services/updateBooking";
 import listGuestBooking from "../../services/listGuestBookings";
 import listAccompaniedGuests from "../../services/listAccompaniedGuests";
+import { useNavigate } from "react-router-dom";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -67,6 +68,7 @@ type props = {
 export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const [isHovered, setIsHovered] = useState(false);
   const [currentBookings, setCurrentBookings] = useState<Booking>();
@@ -1503,7 +1505,7 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
             alignItems: { sm: "center", lg: "start" },
             flexDirection: "column",
             height: "100%",
-            mx: {xs:0,sm:3,md:0,lg:0},
+            mx: { xs: 0, sm: 3, md: 0, lg: 0 },
           }}
         >
           {currentBookings && currentCompanions.length > 0 ? (
@@ -1918,11 +1920,69 @@ export default function GuestProfile({ toggleDrawer, openSideNav }: props) {
                 flexDirection: "column",
               }}
             >
-              <CircularProgress
-                size={64}
-                thickness={2}
-                sx={{ color: "#EE726A" }}
-              />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "start",
+                  flexDirection: "column",
+                  gap: 2,
+                  pl: 5,
+                }}
+              >
+                <Box>
+                  <Typography
+                    sx={{
+                      color: "white",
+                      fontSize: 18,
+                      fontWeight: "600",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    My Bookings
+                  </Typography>
+                </Box>
+
+                <Box
+                  sx={{
+                    //   height: "10vh",
+                    background: "rgba(247.56, 247.56, 247.56, 0.21)",
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "1rem",
+                    borderRadius: "10px",
+                    gap: 2,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 2,
+                    }}
+                  >
+                    <Typography color={"white"}>
+                      You have No Current Bookings
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        fontSize: 13,
+                        fontWeight: "600",
+                        wordWrap: "break-word",
+                        backgroundColor: "#F0635A",
+                        display: { xs: "none", sm: "block", lg: "block" },
+                      }}
+                      onClick={()=>{
+                        navigate('/dashboard/');
+                      }}
+                    >
+                      Book Now !
+                    </Button>
+                  </Box>
+                </Box>
+              </Box>
             </Box>
           )}
         </Grid>

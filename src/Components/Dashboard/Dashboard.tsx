@@ -288,11 +288,10 @@ export default function Dashboard() {
       {selectedItem === "My Profile" && (
         <GuestProfile toggleDrawer={toggleDrawer} openSideNav={open} />
       )}
+      {/* <Current Event /> */}
       {selectedItem === "events" && (
         <Events toggleDrawer={toggleDrawer} openSideNav={open} />
       )}
-        
-      
     </Box>
   );
 }

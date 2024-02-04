@@ -32,7 +32,7 @@ import { Booking } from "../../API";
 import listGuestBooking from "../../services/listGuestBookings";
 import listAccompaniedGuests from "../../services/listAccompaniedGuests";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import { useNavigate } from "react-router-dom";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -76,6 +76,7 @@ export default function MobileViewTabs() {
   const [currentBookings, setCurrentBookings] = useState<Booking>();
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -138,7 +139,6 @@ export default function MobileViewTabs() {
     getGuestCompanions();
   }, [currentBookings, user]);
 
-  
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -1006,392 +1006,462 @@ export default function MobileViewTabs() {
             }}
           >
             {currentBookings && currentCompanions.length > 0 ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "start",
-                flexDirection: "column",
-                gap: 4,
-                width: { xs: "100%", sm: "51%" },
-              }}
-            >
               <Box
                 sx={{
-                  //   height: "10vh",
-                  background: "rgba(247.56, 247.56, 247.56, 0.21)",
                   display: "flex",
-                  alignItems: "center",
-                  padding: "1rem",
-                  borderRadius: "10px",
-
-                  justifyContent: "space-between",
+                  justifyContent: "start",
+                  flexDirection: "column",
+                  gap: 4,
+                  width: { xs: "100%", sm: "51%" },
                 }}
               >
-               <Box
-                  component="img"
-                  src={`${dbStorage}${currentBookings?.event?.image}`}
-                  alt=""
+                <Box
                   sx={{
-                    height: "6rem",
-                    width: "6rem",
+                    //   height: "10vh",
+                    background: "rgba(247.56, 247.56, 247.56, 0.21)",
+                    display: "flex",
+                    alignItems: "center",
+                    padding: "1rem",
+                    borderRadius: "10px",
+
+                    justifyContent: "space-between",
                   }}
-                />
+                >
+                  <Box
+                    component="img"
+                    src={`${dbStorage}${currentBookings?.event?.image}`}
+                    alt=""
+                    sx={{
+                      height: "6rem",
+                      width: "6rem",
+                    }}
+                  />
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: "700",
+                          wordWrap: "break-word",
+                          display: { xs: "none", sm: "block" },
+                        }}
+                      >
+                        Electronic Steve-Music Festival
+                      </Typography>
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                        gap: { xs: 0.5, sm: 3 },
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                        }}
+                      >
+                        <Box>
+                          <CalendarTodayIcon
+                            sx={{ color: "white", fontSize: "20px" }}
+                          />
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <Box>
+                            <Typography
+                              sx={{
+                                color: "white",
+                                fontSize: 12,
+                                fontWeight: "400",
+                                wordWrap: "break-word",
+                              }}
+                            >
+                              {currentBookings?.event?.startDate
+                                ? new Date(
+                                    currentBookings.event.startDate
+                                  ).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  })
+                                : "N/A"}
+                            </Typography>
+                          </Box>
+                          <Box>
+                            <Typography
+                              sx={{
+                                color: "white",
+                                fontSize: 9,
+                                fontWeight: "400",
+                                wordWrap: "break-word",
+                              }}
+                            >
+                              {currentBookings?.event?.startDate
+                                ? new Date(
+                                    currentBookings.event.startDate
+                                  ).toLocaleDateString("en-US", {
+                                    weekday: "long",
+                                    hour: "numeric",
+                                    minute: "numeric",
+                                  })
+                                : "N/A"}{" "}
+                              -{" "}
+                              {currentBookings?.event?.endDate
+                                ? new Date(
+                                    currentBookings.event.endDate
+                                  ).toLocaleDateString("en-US", {
+                                    weekday: "long",
+                                    hour: "numeric",
+                                    minute: "numeric",
+                                  })
+                                : "N/A"}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                        }}
+                      >
+                        <Box>
+                          <PlaceIcon
+                            sx={{ color: "white", fontSize: "20px" }}
+                          />
+                        </Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <Box>
+                            <Typography
+                              sx={{
+                                color: "white",
+                                fontSize: 12,
+                                fontWeight: "400",
+                                wordWrap: "break-word",
+                              }}
+                            >
+                              {
+                                currentBookings?.event?.location?.address?.split(
+                                  ","
+                                )[1]
+                              }
+                            </Typography>
+                          </Box>
+                          <Box>
+                            <Typography
+                              sx={{
+                                color: "white",
+                                fontSize: 9,
+                                fontWeight: "400",
+                                wordWrap: "break-word",
+                              }}
+                            >
+                              {currentBookings?.event?.location?.address}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+
+                  <Box>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        fontSize: 13,
+                        fontWeight: "600",
+                        wordWrap: "break-word",
+                        backgroundColor: "#F0635A",
+                        display: { xs: "none", sm: "none", lg: "block" },
+                      }}
+                    >
+                      VIEW TICKET(S)
+                    </Button>
+                  </Box>
+                </Box>
 
                 <Box
                   sx={{
                     display: "flex",
                     flexDirection: "column",
+                    gap: 1,
                   }}
                 >
-                  <Box>
-                    <Typography
-                      sx={{
-                        color: "white",
-                        fontSize: 18,
-                        fontWeight: "700",
-                        wordWrap: "break-word",
-                        display: { xs: "none", sm: "block" },
-                      }}
-                    >
-                      Electronic Steve-Music Festival
-                    </Typography>
-                  </Box>
-
+                  <Typography
+                    sx={{
+                      color: "#A19F9F",
+                      fontSize: 14,
+                      fontWeight: "600",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    Accompanied Guests
+                  </Typography>
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection: { xs: "column", sm: "row" },
-                      gap: { xs: 0.5, sm: 3 },
+                      gap: 2,
                     }}
                   >
-                    <Box
+                    <AvatarGroup
+                      total={currentCompanions.length}
                       sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1,
+                        "& .MuiAvatar-root": {
+                          width: 35,
+                          height: 35,
+                          fontSize: 10,
+                          color: "black",
+                          border: "1px solid white",
+                          backgroundColor: 'darkgrey" , borderColor',
+                        },
                       }}
                     >
-                      <Box>
-                        <CalendarTodayIcon
-                          sx={{ color: "white", fontSize: "20px" }}
+                      {currentCompanions.map((companion) => (
+                        <Avatar
+                          key={companion.bookingGuestId}
+                          src={`${dbStorage}${companion.guest?.guest_avatar}`}
                         />
-                      </Box>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 12,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            {currentBookings?.event?.startDate
-                              ? new Date(
-                                  currentBookings.event.startDate
-                                ).toLocaleDateString("en-US", {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                })
-                              : "N/A"}
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 9,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                           {currentBookings?.event?.startDate
-                              ? new Date(
-                                  currentBookings.event.startDate
-                                ).toLocaleDateString("en-US", {
-                                  weekday: "long",
-                                  hour: "numeric",
-                                  minute: "numeric",
-                                })
-                              : "N/A"}{" "}
-                            -{" "}
-                            {currentBookings?.event?.endDate
-                              ? new Date(
-                                  currentBookings.event.endDate
-                                ).toLocaleDateString("en-US", {
-                                  weekday: "long",
-                                  hour: "numeric",
-                                  minute: "numeric",
-                                })
-                              : "N/A"}
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Box>
+                      ))}
+                    </AvatarGroup>
 
                     <Box
                       sx={{
+                        backgroundColor: "#EE726A",
                         display: "flex",
                         alignItems: "center",
-                        gap: 1,
+                        px: "8px",
+                        py: "5px",
+                        borderRadius: "5px",
                       }}
                     >
-                      <Box>
-                        <PlaceIcon sx={{ color: "white", fontSize: "20px" }} />
-                      </Box>
-                      <Box
+                      <Typography
                         sx={{
-                          display: "flex",
-                          flexDirection: "column",
+                          fontSize: 11,
+                          wordWrap: "break-word",
+                          color: "black",
                         }}
                       >
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 12,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            {
-                              currentBookings?.event?.location?.address?.split(
-                                ","
-                              )[1]
-                            }
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 9,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            {currentBookings?.event?.location?.address}
-                          </Typography>
-                        </Box>
-                      </Box>
+                        Total :{" "}
+                        <span style={{ fontSize: "12px", fontWeight: "700" }}>
+                          {currentCompanions.length}
+                        </span>
+                      </Typography>
                     </Box>
                   </Box>
                 </Box>
 
-                <Box>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      fontSize: 13,
-                      fontWeight: "600",
-                      wordWrap: "break-word",
-                      backgroundColor: "#F0635A",
-                      display: { xs: "none", sm: "none", lg: "block" },
-                    }}
-                  >
-                    VIEW TICKET(S)
-                  </Button>
+                <Box
+                  sx={{
+                    display: { xs: "flex", sm: "grid" },
+                    flexDirection: { xs: "column", sm: "" },
+                    gridTemplateColumns: "repeat(2, 1fr)",
+                    gap: { xs: 1, sm: 2 },
+                    // justifyContent: {xs:'center',sm:""}
+                  }}
+                >
+                  {currentCompanions.map((companion) => (
+                    <Box
+                      key={companion.bookingGuestId}
+                      sx={{
+                        backgroundColor: "#333333",
+                        display: "flex",
+                        borderRadius: "5px",
+                        p: 1.5,
+                        paddingRight: 0,
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: 1,
+                        }}
+                      >
+                        <Avatar
+                          key={companion.bookingGuestId}
+                          src={`${dbStorage}${companion.guest?.guest_avatar}`}
+                        />
+                        <Box>
+                          <Typography
+                            sx={{
+                              color: "white",
+                              fontSize: 14,
+                              fontWeight: "500",
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            {companion.guest?.name}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "#A4A4A4",
+                              fontSize: 11,
+                              fontWeight: "400",
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            {companion?.event?.startDate
+                              ? new Date(
+                                  companion.event.startDate
+                                ).toLocaleDateString("en-US", {
+                                  day: "numeric",
+                                  month: "short",
+                                  year: "numeric",
+                                  hour: "numeric",
+                                  minute: "numeric",
+                                  hour12: true,
+                                })
+                              : "N/A"}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Box>
+                        <IconButton
+                          aria-label="more"
+                          id="long-button"
+                          aria-controls={open ? "long-menu" : undefined}
+                          aria-expanded={open ? "true" : undefined}
+                          aria-haspopup="true"
+                          onClick={handleClick}
+                        >
+                          <MoreVertIcon sx={{ color: "white" }} />
+                        </IconButton>
+                        <Menu
+                          id="long-menu"
+                          MenuListProps={{
+                            "aria-labelledby": "long-button",
+                          }}
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          PaperProps={{
+                            style: {
+                              maxHeight: ITEM_HEIGHT * 4.5,
+                              width: "20ch",
+                            },
+                          }}
+                        >
+                          {options.map((option) => (
+                            <MenuItem
+                              key={option}
+                              selected={option === "Pyxis"}
+                              onClick={handleClose}
+                            >
+                              {option}
+                            </MenuItem>
+                          ))}
+                        </Menu>
+                      </Box>
+                    </Box>
+                  ))}
                 </Box>
               </Box>
-
+            ) : (
               <Box
                 sx={{
                   display: "flex",
+                  justifyContent: "start",
                   flexDirection: "column",
-                  gap: 1,
                 }}
               >
-                <Typography
-                  sx={{
-                    color: "#A19F9F",
-                    fontSize: 14,
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  Accompanied Guests
-                </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: 2,
-                  }}
-                >
-                 <AvatarGroup
-                    total={currentCompanions.length}
-                    sx={{
-                      "& .MuiAvatar-root": {
-                        width: 35,
-                        height: 35,
-                        fontSize: 10,
-                        color: "black",
-                        border: "1px solid white",
-                        backgroundColor: 'darkgrey" , borderColor',
-                      },
-                    }}
-                  >
-                    {currentCompanions.map((companion) => (
-                      <Avatar
-                        key={companion.bookingGuestId}
-                        src={`${dbStorage}${companion.guest?.guest_avatar}`}
-                      />
-                    ))}
-                  </AvatarGroup>
-
-                  <Box
-                    sx={{
-                      backgroundColor: "#EE726A",
-                      display: "flex",
-                      alignItems: "center",
-                      px: "8px",
-                      py: "5px",
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontSize: 11,
-                        wordWrap: "break-word",
-                        color: "black",
-                      }}
-                    >
-                      Total :{" "}
-                      <span style={{ fontSize: "12px", fontWeight: "700" }}>
-                        {currentCompanions.length}
-                      </span>
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-
-              <Box
-                sx={{
-                  display: { xs: "flex", sm: "grid" },
-                  flexDirection: { xs: "column", sm: "" },
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  gap: { xs: 1, sm: 2 },
-                  // justifyContent: {xs:'center',sm:""}
-                }}
-              >
-                {currentCompanions.map((companion) => (
-                  <Box
-                    key={companion.bookingGuestId}
-                    sx={{
-                      backgroundColor: "#333333",
-                      display: "flex",
-                      borderRadius: "5px",
-                      p: 1.5,
-                      paddingRight: 0,
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        gap: 1,
-                      }}
-                    >
-                      <Avatar
-                        key={companion.bookingGuestId}
-                        src={`${dbStorage}${companion.guest?.guest_avatar}`}
-                      />
-                      <Box>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: 14,
-                            fontWeight: "500",
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          {companion.guest?.name}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "#A4A4A4",
-                            fontSize: 11,
-                            fontWeight: "400",
-                            wordWrap: "break-word",
-                          }}
-                        >
-                          {companion?.event?.startDate
-                            ? new Date(
-                                companion.event.startDate
-                              ).toLocaleDateString("en-US", {
-                                day: "numeric",
-                                month: "short",
-                                year: "numeric",
-                                hour: "numeric",
-                                minute: "numeric",
-                                hour12: true,
-                              })
-                            : "N/A"}
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <Box>
-                      <IconButton
-                        aria-label="more"
-                        id="long-button"
-                        aria-controls={open ? "long-menu" : undefined}
-                        aria-expanded={open ? "true" : undefined}
-                        aria-haspopup="true"
-                        onClick={handleClick}
-                      >
-                        <MoreVertIcon sx={{ color: "white" }} />
-                      </IconButton>
-                      <Menu
-                        id="long-menu"
-                        MenuListProps={{
-                          "aria-labelledby": "long-button",
-                        }}
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        PaperProps={{
-                          style: {
-                            maxHeight: ITEM_HEIGHT * 4.5,
-                            width: "20ch",
-                          },
-                        }}
-                      >
-                        {options.map((option) => (
-                          <MenuItem
-                            key={option}
-                            selected={option === "Pyxis"}
-                            onClick={handleClose}
-                          >
-                            {option}
-                          </MenuItem>
-                        ))}
-                      </Menu>
-                    </Box>
-                  </Box>
-                ))}
-              </Box>
-            </Box>
-              ) : (
-                <Box
-              sx={{
-                display: "flex",
-                justifyContent: "start",
-                flexDirection: "column",
-              }}
-            >
-              <CircularProgress
+                {/* <CircularProgress
                 size={64}
                 thickness={2}
                 sx={{ color: "#EE726A" }}
-              />
-            </Box>
-          )}
+              /> */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "start",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "start",
+                      flexDirection: "column",
+                      gap: 2,
+                      pl: 5,
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: 18,
+                          fontWeight: "600",
+                          wordWrap: "break-word",
+                        }}
+                      >
+                        My Bookings
+                      </Typography>
+                    </Box>
+
+                    <Box
+                      sx={{
+                        //   height: "10vh",
+                        background: "rgba(247.56, 247.56, 247.56, 0.21)",
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "1rem",
+                        borderRadius: "10px",
+                        gap: 2,
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 2,
+                        }}
+                      >
+                        <Typography color={"white"}>
+                          You have No Current Bookings
+                        </Typography>
+                        <Button
+                          variant="contained"
+                          sx={{
+                            color: "white",
+                            fontSize: 13,
+                            fontWeight: "600",
+                            wordWrap: "break-word",
+                            backgroundColor: "#F0635A",
+                            display: { xs: "none", sm: "block", lg: "block" },
+                          }}
+                        >
+                          Book Now
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+            )}
           </Grid>
         </CustomTabPanel>
       </Box>

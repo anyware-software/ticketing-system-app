@@ -98,26 +98,6 @@ function App() {
     fetchUser();
   }, [user]);
 
-  // useEffect(() => {
-  //   async function getGender() {
-  //     const userdata = await fetchUserAttributes();
-  //     console.log(userdata);
-      
-  //     const accessToken = userdata.profile;
-  //     axios
-  //       .get(
-  //         `https://graph.facebook.com/me?fields=gender,birthday&access_token=${accessToken}`
-  //         )
-  //       .then(async (response) => {
-  //         console.log(response);
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });
-  //   }
-  //   getGender();
-  // }, []);
-
   return (
     <>
       <RouterProvider router={router} />

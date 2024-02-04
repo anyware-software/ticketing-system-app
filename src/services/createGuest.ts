@@ -7,7 +7,7 @@ async function createGuest(
     faceBookID:any,
     gender:any,
 ) {
-  console.log(user,group,faceBookID);
+  // console.log(user,group,faceBookID);
   
   try {    
     const operationId = 1;
@@ -17,7 +17,6 @@ async function createGuest(
       phone_number:user.phone_number?(user.phone_number.substring(2,user?.phone_number.length+1)):"+20",
       group:group,
       faceBookID:faceBookID,
-      birthdate:user.birthdate?(user.birthdate.tostring()):"",
       gender:gender,
       createdAt: new Date(),
       createdByID:user.sub,
