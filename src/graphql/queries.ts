@@ -1115,6 +1115,7 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
   getBooking(id: $id) {
     id
     status
+    overallStatus
     guest {
       id
       name
@@ -1283,6 +1284,7 @@ export const listBookings = /* GraphQL */ `query ListBookings(
     items {
       id
       status
+      overallStatus
       guest {
         id
         name
