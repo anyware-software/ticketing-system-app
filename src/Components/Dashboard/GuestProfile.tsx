@@ -1507,7 +1507,7 @@ export default function GuestProfile() {
             mx: { xs: 0, sm: 3, md: 0, lg: 0 },
           }}
         >
-          {currentBookings && currentCompanions.length > 0 ? (
+          {currentBookings ? (
             <Box
               sx={{
                 display: "flex",
@@ -1982,7 +1982,7 @@ export default function GuestProfile() {
                         display: { xs: "none", sm: "block", lg: "block" },
                       }}
                       onClick={() => {
-                        navigate("/dashboard/");
+                        navigate("/dashboard/events/");
                       }}
                     >
                       Book Now !
