@@ -406,7 +406,8 @@ export default function Events() {
         orderId,
         isSpecial,
         user.phone_number,
-        {number: generateTicketNumber()}
+        { number: generateTicketNumber() },
+        BookingStatus.PENDING
       );
       // console.log(bookingRequest);
       setTicketChosen("book");
@@ -432,7 +433,7 @@ export default function Events() {
         orderId,
         isSpecial,
         validGuest.phone_number,
-        {number: generateTicketNumber()}
+        { number: generateTicketNumber() }
       );
       // console.log(bookingRequest);
     });
@@ -452,7 +453,7 @@ export default function Events() {
         orderId,
         isSpecial,
         notValidGuest?.phone,
-        {number: generateTicketNumber()}
+        { number: generateTicketNumber() }
       );
       // console.log(bookingRequest);
       sendSmsToUser(

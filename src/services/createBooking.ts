@@ -13,7 +13,8 @@ async function createBooking(
   orderId?: String,
   specialNeed?: Boolean,
   phone_number?: String,
-  ticketNumber?: any
+  ticketNumber?: any,
+  overallStatus?: string
 ) {
   // console.log(user, status, bookingMainGuestId, bookingGuestId, bookingEventId, bookingEventTicketId, isMainGuest, wave, orderId, specialNeed);
 
@@ -34,6 +35,7 @@ async function createBooking(
       createdAt: new Date(),
       createdByID: user.id,
       createdByName: user.name,
+      overallStatus: overallStatus,
     };
 
     const requestBody = {
