@@ -1525,6 +1525,10 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
     statusUpdatedAt
     specialNeed
     phone_number
+    guestTicket {
+      number
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -1687,6 +1691,10 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
     statusUpdatedAt
     specialNeed
     phone_number
+    guestTicket {
+      number
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -1849,6 +1857,10 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
     statusUpdatedAt
     specialNeed
     phone_number
+    guestTicket {
+      number
+      __typename
+    }
     deleted
     createdAt
     createdByID

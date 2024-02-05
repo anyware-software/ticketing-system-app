@@ -1254,6 +1254,10 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
     statusUpdatedAt
     specialNeed
     phone_number
+    guestTicket {
+      number
+      __typename
+    }
     deleted
     createdAt
     createdByID
@@ -1394,6 +1398,10 @@ export const listBookings = /* GraphQL */ `query ListBookings(
       statusUpdatedAt
       specialNeed
       phone_number
+      guestTicket {
+        number
+        __typename
+      }
       deleted
       createdAt
       createdByID

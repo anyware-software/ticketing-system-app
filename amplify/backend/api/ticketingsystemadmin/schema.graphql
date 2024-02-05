@@ -480,8 +480,13 @@ type Booking
   statusUpdatedAt: String
   specialNeed: Boolean
   phone_number: String
+  guestTicket: GuestTicket
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!
   createdByName: String!
+}
+
+type GuestTicket {
+  number: String
 }

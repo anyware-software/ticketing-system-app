@@ -364,6 +364,20 @@ export default function Events() {
     return randomId;
   };
 
+  const generateTicketNumber = () => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const idLength = 7;
+    const currentDate = new Date().toISOString().replace(/[-T:Z.]/g, "");
+    let randomId = "";
+    randomId += currentDate;
+    for (let i = 0; i < idLength; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomId += characters.charAt(randomIndex);
+    }
+    return randomId;
+  };
+
   const sendSmsToUser = async (phone: string, message: string) => {
     try {
       await sendSms(phone, message);
@@ -391,7 +405,8 @@ export default function Events() {
         eventForMainGuest?.waveName,
         orderId,
         isSpecial,
-        user.phone_number
+        user.phone_number,
+        {number: generateTicketNumber()}
       );
       // console.log(bookingRequest);
       setTicketChosen("book");
@@ -416,7 +431,8 @@ export default function Events() {
         eventForValidGuest?.waveName,
         orderId,
         isSpecial,
-        validGuest.phone_number
+        validGuest.phone_number,
+        {number: generateTicketNumber()}
       );
       // console.log(bookingRequest);
     });
@@ -435,7 +451,8 @@ export default function Events() {
         eventForNotValidGuest?.waveName,
         orderId,
         isSpecial,
-        notValidGuest?.phone
+        notValidGuest?.phone,
+        {number: generateTicketNumber()}
       );
       // console.log(bookingRequest);
       sendSmsToUser(

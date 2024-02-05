@@ -1233,6 +1233,7 @@ export type CreateBookingInput = {
   statusUpdatedAt?: string | null,
   specialNeed?: boolean | null,
   phone_number?: string | null,
+  guestTicket?: GuestTicketInput | null,
   deleted?: string | null,
   createdAt?: string | null,
   createdByID: string,
@@ -1241,6 +1242,10 @@ export type CreateBookingInput = {
   bookingMainGuestId?: string | null,
   bookingEventId?: string | null,
   bookingEventTicketId?: string | null,
+};
+
+export type GuestTicketInput = {
+  number?: string | null,
 };
 
 export type ModelBookingConditionInput = {
@@ -1282,6 +1287,7 @@ export type Booking = {
   statusUpdatedAt?: string | null,
   specialNeed?: boolean | null,
   phone_number?: string | null,
+  guestTicket?: GuestTicket | null,
   deleted?: string | null,
   createdAt: string,
   createdByID: string,
@@ -1291,6 +1297,11 @@ export type Booking = {
   bookingMainGuestId?: string | null,
   bookingEventId?: string | null,
   bookingEventTicketId?: string | null,
+};
+
+export type GuestTicket = {
+  __typename: "GuestTicket",
+  number?: string | null,
 };
 
 export type UpdateBookingInput = {
@@ -1304,6 +1315,7 @@ export type UpdateBookingInput = {
   statusUpdatedAt?: string | null,
   specialNeed?: boolean | null,
   phone_number?: string | null,
+  guestTicket?: GuestTicketInput | null,
   deleted?: string | null,
   createdAt?: string | null,
   createdByID?: string | null,
@@ -3544,6 +3556,10 @@ export type CreateBookingMutation = {
     statusUpdatedAt?: string | null,
     specialNeed?: boolean | null,
     phone_number?: string | null,
+    guestTicket?:  {
+      __typename: "GuestTicket",
+      number?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -3705,6 +3721,10 @@ export type UpdateBookingMutation = {
     statusUpdatedAt?: string | null,
     specialNeed?: boolean | null,
     phone_number?: string | null,
+    guestTicket?:  {
+      __typename: "GuestTicket",
+      number?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -3866,6 +3886,10 @@ export type DeleteBookingMutation = {
     statusUpdatedAt?: string | null,
     specialNeed?: boolean | null,
     phone_number?: string | null,
+    guestTicket?:  {
+      __typename: "GuestTicket",
+      number?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -5116,6 +5140,10 @@ export type GetBookingQuery = {
     statusUpdatedAt?: string | null,
     specialNeed?: boolean | null,
     phone_number?: string | null,
+    guestTicket?:  {
+      __typename: "GuestTicket",
+      number?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -5256,6 +5284,10 @@ export type ListBookingsQuery = {
       statusUpdatedAt?: string | null,
       specialNeed?: boolean | null,
       phone_number?: string | null,
+      guestTicket?:  {
+        __typename: "GuestTicket",
+        number?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
@@ -6699,6 +6731,10 @@ export type OnCreateBookingSubscription = {
     statusUpdatedAt?: string | null,
     specialNeed?: boolean | null,
     phone_number?: string | null,
+    guestTicket?:  {
+      __typename: "GuestTicket",
+      number?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -6859,6 +6895,10 @@ export type OnUpdateBookingSubscription = {
     statusUpdatedAt?: string | null,
     specialNeed?: boolean | null,
     phone_number?: string | null,
+    guestTicket?:  {
+      __typename: "GuestTicket",
+      number?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
@@ -7019,6 +7059,10 @@ export type OnDeleteBookingSubscription = {
     statusUpdatedAt?: string | null,
     specialNeed?: boolean | null,
     phone_number?: string | null,
+    guestTicket?:  {
+      __typename: "GuestTicket",
+      number?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
