@@ -1386,6 +1386,7 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
   createBooking(input: $input, condition: $condition) {
     id
     status
+    overallStatus
     guest {
       id
       name
@@ -1552,6 +1553,7 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
   updateBooking(input: $input, condition: $condition) {
     id
     status
+    overallStatus
     guest {
       id
       name
@@ -1718,6 +1720,7 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
   deleteBooking(input: $input, condition: $condition) {
     id
     status
+    overallStatus
     guest {
       id
       name

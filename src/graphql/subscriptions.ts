@@ -1278,6 +1278,7 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
   onCreateBooking(filter: $filter) {
     id
     status
+    overallStatus
     guest {
       id
       name
@@ -1441,6 +1442,7 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
   onUpdateBooking(filter: $filter) {
     id
     status
+    overallStatus
     guest {
       id
       name
@@ -1604,6 +1606,7 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
   onDeleteBooking(filter: $filter) {
     id
     status
+    overallStatus
     guest {
       id
       name

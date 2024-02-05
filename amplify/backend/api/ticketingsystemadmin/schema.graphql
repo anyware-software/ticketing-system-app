@@ -468,6 +468,7 @@ type Booking
   ) {
   id: ID!
   status: String
+  overallStatus: String
   guest: Guest @hasOne
   mainGuest: Guest @hasOne
   event: Event @hasOne

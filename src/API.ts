@@ -1225,6 +1225,7 @@ export type DeleteEventTicketInput = {
 export type CreateBookingInput = {
   id?: string | null,
   status?: string | null,
+  overallStatus?: string | null,
   wave?: string | null,
   isMainGuest?: boolean | null,
   orderId?: string | null,
@@ -1250,6 +1251,7 @@ export type GuestTicketInput = {
 
 export type ModelBookingConditionInput = {
   status?: ModelStringInput | null,
+  overallStatus?: ModelStringInput | null,
   wave?: ModelStringInput | null,
   isMainGuest?: ModelBooleanInput | null,
   orderId?: ModelStringInput | null,
@@ -1275,6 +1277,7 @@ export type Booking = {
   __typename: "Booking",
   id: string,
   status?: string | null,
+  overallStatus?: string | null,
   guest?: Guest | null,
   mainGuest?: Guest | null,
   event?: Event | null,
@@ -1307,6 +1310,7 @@ export type GuestTicket = {
 export type UpdateBookingInput = {
   id: string,
   status?: string | null,
+  overallStatus?: string | null,
   wave?: string | null,
   isMainGuest?: boolean | null,
   orderId?: string | null,
@@ -1713,6 +1717,7 @@ export type ModelEventTicketFilterInput = {
 export type ModelBookingFilterInput = {
   id?: ModelIDInput | null,
   status?: ModelStringInput | null,
+  overallStatus?: ModelStringInput | null,
   wave?: ModelStringInput | null,
   isMainGuest?: ModelBooleanInput | null,
   orderId?: ModelStringInput | null,
@@ -2065,6 +2070,7 @@ export type ModelSubscriptionFloatInput = {
 export type ModelSubscriptionBookingFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   status?: ModelSubscriptionStringInput | null,
+  overallStatus?: ModelSubscriptionStringInput | null,
   wave?: ModelSubscriptionStringInput | null,
   isMainGuest?: ModelSubscriptionBooleanInput | null,
   orderId?: ModelSubscriptionStringInput | null,
@@ -3417,6 +3423,7 @@ export type CreateBookingMutation = {
     __typename: "Booking",
     id: string,
     status?: string | null,
+    overallStatus?: string | null,
     guest?:  {
       __typename: "Guest",
       id: string,
@@ -3582,6 +3589,7 @@ export type UpdateBookingMutation = {
     __typename: "Booking",
     id: string,
     status?: string | null,
+    overallStatus?: string | null,
     guest?:  {
       __typename: "Guest",
       id: string,
@@ -3747,6 +3755,7 @@ export type DeleteBookingMutation = {
     __typename: "Booking",
     id: string,
     status?: string | null,
+    overallStatus?: string | null,
     guest?:  {
       __typename: "Guest",
       id: string,
@@ -5001,6 +5010,7 @@ export type GetBookingQuery = {
     __typename: "Booking",
     id: string,
     status?: string | null,
+    overallStatus?: string | null,
     guest?:  {
       __typename: "Guest",
       id: string,
@@ -5169,6 +5179,7 @@ export type ListBookingsQuery = {
       __typename: "Booking",
       id: string,
       status?: string | null,
+      overallStatus?: string | null,
       guest?:  {
         __typename: "Guest",
         id: string,
@@ -6592,6 +6603,7 @@ export type OnCreateBookingSubscription = {
     __typename: "Booking",
     id: string,
     status?: string | null,
+    overallStatus?: string | null,
     guest?:  {
       __typename: "Guest",
       id: string,
@@ -6756,6 +6768,7 @@ export type OnUpdateBookingSubscription = {
     __typename: "Booking",
     id: string,
     status?: string | null,
+    overallStatus?: string | null,
     guest?:  {
       __typename: "Guest",
       id: string,
@@ -6920,6 +6933,7 @@ export type OnDeleteBookingSubscription = {
     __typename: "Booking",
     id: string,
     status?: string | null,
+    overallStatus?: string | null,
     guest?:  {
       __typename: "Guest",
       id: string,
