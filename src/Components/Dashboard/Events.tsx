@@ -107,7 +107,6 @@ export default function Events() {
   const [ticketChosen, setTicketChosen] = useState("noTickets");
   const [orderId, setOrderId] = useState("");
   const user = useSelector((state: any) => state.app.user);
-  const openSideNav = useSelector((state: any) => state.drawer);
   const dispatch = useDispatch();
   const [validationWarning, setValidationWarning] = useState<boolean>(false);
   const [message, setMessage] = useState<any>("");
