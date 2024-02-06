@@ -427,13 +427,12 @@ export default function GuestProfile() {
     if (file) {
       try {
         const result = await uploadImage(file);
-        if (result) { // Check if result is defined
+        if (result) {
           setSelectedImage(`${dbStorage}${result}`);
         } else {
           console.error("Failed to upload image.");
         }
       } catch (error) {
-        // Handle the error
         console.error(error);
       }
     }
@@ -510,9 +509,7 @@ export default function GuestProfile() {
           accessLevel: "guest",
         },
       }).result;
-
-      console.log("Succeeded uploading image: ", result);
-
+      // console.log("Succeeded uploading image: ", result);
       if (!user?.images || user.images.length < 4) {
         try {
           let UpdatedGuest = await updateGuest({
