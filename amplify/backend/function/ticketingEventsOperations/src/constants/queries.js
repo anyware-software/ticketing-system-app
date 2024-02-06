@@ -777,6 +777,35 @@ const listBookings = /* GraphQL */ `
     }
   }
 `;
+
+const listOverViewBookings = /* GraphQL */ `
+  query ListBookings(
+    $filter: ModelBookingFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBookings(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        status
+        guest {
+          guestGroupID
+          guestGroupName
+          gender
+          totalEvents
+        }
+        event {
+          id
+          name
+        }
+        eventTicket {
+          type
+        }
+        wave
+      }
+      nextToken
+    }
+  }
+`;
 module.exports = {
   getEvent,
   listEvents,
@@ -785,4 +814,5 @@ module.exports = {
   getBooking,
   updateBooking,
   listBookings,
+  listOverViewBookings,
 };

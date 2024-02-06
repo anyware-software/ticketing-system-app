@@ -470,9 +470,9 @@ type Booking
   status: String
   overallStatus: String
   guest: Guest @hasOne
-  mainGuest: Guest @hasOne
-  event: Event @hasOne
-  eventTicket: EventTicket @hasOne
+  mainGuest: Guest! @hasOne
+  event: Event! @hasOne
+  eventTicket: EventTicket! @hasOne
   wave: String
   isMainGuest: Boolean
   orderId: String

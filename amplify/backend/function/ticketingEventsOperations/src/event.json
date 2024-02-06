@@ -1,13 +1,5 @@
 {
   "body": {
-    "operationId": 3,
-    "bookAttributes": {
-      "guestTicket": {
-        "number": "101010"
-      },
-      "createdAt": "String",
-      "createdByID": "String",
-      "createdByName": "String"
-    }
+    "operationId": 9
   }
 }

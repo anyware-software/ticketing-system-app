@@ -7,6 +7,7 @@ const operationIdEnum = {
     'updateBooking':6,
     'listEventsByGuestId': 7,
     'listBookingsForCompanion': 8,
+    'overview': 9
 }
 module.exports = {
     operationIdEnum

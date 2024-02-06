@@ -1240,9 +1240,9 @@ export type CreateBookingInput = {
   createdByID: string,
   createdByName: string,
   bookingGuestId?: string | null,
-  bookingMainGuestId?: string | null,
-  bookingEventId?: string | null,
-  bookingEventTicketId?: string | null,
+  bookingMainGuestId: string,
+  bookingEventId: string,
+  bookingEventTicketId: string,
 };
 
 export type GuestTicketInput = {
@@ -1279,9 +1279,9 @@ export type Booking = {
   status?: string | null,
   overallStatus?: string | null,
   guest?: Guest | null,
-  mainGuest?: Guest | null,
-  event?: Event | null,
-  eventTicket?: EventTicket | null,
+  mainGuest: Guest,
+  event: Event,
+  eventTicket: EventTicket,
   wave?: string | null,
   isMainGuest?: boolean | null,
   orderId?: string | null,
@@ -1297,9 +1297,9 @@ export type Booking = {
   createdByName: string,
   updatedAt: string,
   bookingGuestId?: string | null,
-  bookingMainGuestId?: string | null,
-  bookingEventId?: string | null,
-  bookingEventTicketId?: string | null,
+  bookingMainGuestId: string,
+  bookingEventId: string,
+  bookingEventTicketId: string,
 };
 
 export type GuestTicket = {
@@ -3455,7 +3455,7 @@ export type CreateBookingMutation = {
       createdByName: string,
       updatedAt: string,
     } | null,
-    mainGuest?:  {
+    mainGuest:  {
       __typename: "Guest",
       id: string,
       name?: string | null,
@@ -3485,8 +3485,8 @@ export type CreateBookingMutation = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    event?:  {
+    },
+    event:  {
       __typename: "Event",
       id: string,
       name?: string | null,
@@ -3517,8 +3517,8 @@ export type CreateBookingMutation = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    eventTicket?:  {
+    },
+    eventTicket:  {
       __typename: "EventTicket",
       id: string,
       type: string,
@@ -3554,7 +3554,7 @@ export type CreateBookingMutation = {
       createdByName: string,
       updatedAt: string,
       eventTicketsId?: string | null,
-    } | null,
+    },
     wave?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
@@ -3573,9 +3573,9 @@ export type CreateBookingMutation = {
     createdByName: string,
     updatedAt: string,
     bookingGuestId?: string | null,
-    bookingMainGuestId?: string | null,
-    bookingEventId?: string | null,
-    bookingEventTicketId?: string | null,
+    bookingMainGuestId: string,
+    bookingEventId: string,
+    bookingEventTicketId: string,
   } | null,
 };
 
@@ -3621,7 +3621,7 @@ export type UpdateBookingMutation = {
       createdByName: string,
       updatedAt: string,
     } | null,
-    mainGuest?:  {
+    mainGuest:  {
       __typename: "Guest",
       id: string,
       name?: string | null,
@@ -3651,8 +3651,8 @@ export type UpdateBookingMutation = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    event?:  {
+    },
+    event:  {
       __typename: "Event",
       id: string,
       name?: string | null,
@@ -3683,8 +3683,8 @@ export type UpdateBookingMutation = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    eventTicket?:  {
+    },
+    eventTicket:  {
       __typename: "EventTicket",
       id: string,
       type: string,
@@ -3720,7 +3720,7 @@ export type UpdateBookingMutation = {
       createdByName: string,
       updatedAt: string,
       eventTicketsId?: string | null,
-    } | null,
+    },
     wave?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
@@ -3739,9 +3739,9 @@ export type UpdateBookingMutation = {
     createdByName: string,
     updatedAt: string,
     bookingGuestId?: string | null,
-    bookingMainGuestId?: string | null,
-    bookingEventId?: string | null,
-    bookingEventTicketId?: string | null,
+    bookingMainGuestId: string,
+    bookingEventId: string,
+    bookingEventTicketId: string,
   } | null,
 };
 
@@ -3787,7 +3787,7 @@ export type DeleteBookingMutation = {
       createdByName: string,
       updatedAt: string,
     } | null,
-    mainGuest?:  {
+    mainGuest:  {
       __typename: "Guest",
       id: string,
       name?: string | null,
@@ -3817,8 +3817,8 @@ export type DeleteBookingMutation = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    event?:  {
+    },
+    event:  {
       __typename: "Event",
       id: string,
       name?: string | null,
@@ -3849,8 +3849,8 @@ export type DeleteBookingMutation = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    eventTicket?:  {
+    },
+    eventTicket:  {
       __typename: "EventTicket",
       id: string,
       type: string,
@@ -3886,7 +3886,7 @@ export type DeleteBookingMutation = {
       createdByName: string,
       updatedAt: string,
       eventTicketsId?: string | null,
-    } | null,
+    },
     wave?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
@@ -3905,9 +3905,9 @@ export type DeleteBookingMutation = {
     createdByName: string,
     updatedAt: string,
     bookingGuestId?: string | null,
-    bookingMainGuestId?: string | null,
-    bookingEventId?: string | null,
-    bookingEventTicketId?: string | null,
+    bookingMainGuestId: string,
+    bookingEventId: string,
+    bookingEventTicketId: string,
   } | null,
 };
 
@@ -5042,7 +5042,7 @@ export type GetBookingQuery = {
       createdByName: string,
       updatedAt: string,
     } | null,
-    mainGuest?:  {
+    mainGuest:  {
       __typename: "Guest",
       id: string,
       name?: string | null,
@@ -5072,8 +5072,8 @@ export type GetBookingQuery = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    event?:  {
+    },
+    event:  {
       __typename: "Event",
       id: string,
       name?: string | null,
@@ -5104,8 +5104,8 @@ export type GetBookingQuery = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    eventTicket?:  {
+    },
+    eventTicket:  {
       __typename: "EventTicket",
       id: string,
       type: string,
@@ -5141,7 +5141,7 @@ export type GetBookingQuery = {
       createdByName: string,
       updatedAt: string,
       eventTicketsId?: string | null,
-    } | null,
+    },
     wave?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
@@ -5160,9 +5160,9 @@ export type GetBookingQuery = {
     createdByName: string,
     updatedAt: string,
     bookingGuestId?: string | null,
-    bookingMainGuestId?: string | null,
-    bookingEventId?: string | null,
-    bookingEventTicketId?: string | null,
+    bookingMainGuestId: string,
+    bookingEventId: string,
+    bookingEventTicketId: string,
   } | null,
 };
 
@@ -5211,7 +5211,7 @@ export type ListBookingsQuery = {
         createdByName: string,
         updatedAt: string,
       } | null,
-      mainGuest?:  {
+      mainGuest:  {
         __typename: "Guest",
         id: string,
         name?: string | null,
@@ -5241,8 +5241,8 @@ export type ListBookingsQuery = {
         createdByID: string,
         createdByName: string,
         updatedAt: string,
-      } | null,
-      event?:  {
+      },
+      event:  {
         __typename: "Event",
         id: string,
         name?: string | null,
@@ -5259,8 +5259,8 @@ export type ListBookingsQuery = {
         createdByID: string,
         createdByName: string,
         updatedAt: string,
-      } | null,
-      eventTicket?:  {
+      },
+      eventTicket:  {
         __typename: "EventTicket",
         id: string,
         type: string,
@@ -5286,7 +5286,7 @@ export type ListBookingsQuery = {
         createdByName: string,
         updatedAt: string,
         eventTicketsId?: string | null,
-      } | null,
+      },
       wave?: string | null,
       isMainGuest?: boolean | null,
       orderId?: string | null,
@@ -5305,9 +5305,9 @@ export type ListBookingsQuery = {
       createdByName: string,
       updatedAt: string,
       bookingGuestId?: string | null,
-      bookingMainGuestId?: string | null,
-      bookingEventId?: string | null,
-      bookingEventTicketId?: string | null,
+      bookingMainGuestId: string,
+      bookingEventId: string,
+      bookingEventTicketId: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -6635,7 +6635,7 @@ export type OnCreateBookingSubscription = {
       createdByName: string,
       updatedAt: string,
     } | null,
-    mainGuest?:  {
+    mainGuest:  {
       __typename: "Guest",
       id: string,
       name?: string | null,
@@ -6665,8 +6665,8 @@ export type OnCreateBookingSubscription = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    event?:  {
+    },
+    event:  {
       __typename: "Event",
       id: string,
       name?: string | null,
@@ -6697,8 +6697,8 @@ export type OnCreateBookingSubscription = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    eventTicket?:  {
+    },
+    eventTicket:  {
       __typename: "EventTicket",
       id: string,
       type: string,
@@ -6734,7 +6734,7 @@ export type OnCreateBookingSubscription = {
       createdByName: string,
       updatedAt: string,
       eventTicketsId?: string | null,
-    } | null,
+    },
     wave?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
@@ -6753,9 +6753,9 @@ export type OnCreateBookingSubscription = {
     createdByName: string,
     updatedAt: string,
     bookingGuestId?: string | null,
-    bookingMainGuestId?: string | null,
-    bookingEventId?: string | null,
-    bookingEventTicketId?: string | null,
+    bookingMainGuestId: string,
+    bookingEventId: string,
+    bookingEventTicketId: string,
   } | null,
 };
 
@@ -6800,7 +6800,7 @@ export type OnUpdateBookingSubscription = {
       createdByName: string,
       updatedAt: string,
     } | null,
-    mainGuest?:  {
+    mainGuest:  {
       __typename: "Guest",
       id: string,
       name?: string | null,
@@ -6830,8 +6830,8 @@ export type OnUpdateBookingSubscription = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    event?:  {
+    },
+    event:  {
       __typename: "Event",
       id: string,
       name?: string | null,
@@ -6862,8 +6862,8 @@ export type OnUpdateBookingSubscription = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    eventTicket?:  {
+    },
+    eventTicket:  {
       __typename: "EventTicket",
       id: string,
       type: string,
@@ -6899,7 +6899,7 @@ export type OnUpdateBookingSubscription = {
       createdByName: string,
       updatedAt: string,
       eventTicketsId?: string | null,
-    } | null,
+    },
     wave?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
@@ -6918,9 +6918,9 @@ export type OnUpdateBookingSubscription = {
     createdByName: string,
     updatedAt: string,
     bookingGuestId?: string | null,
-    bookingMainGuestId?: string | null,
-    bookingEventId?: string | null,
-    bookingEventTicketId?: string | null,
+    bookingMainGuestId: string,
+    bookingEventId: string,
+    bookingEventTicketId: string,
   } | null,
 };
 
@@ -6965,7 +6965,7 @@ export type OnDeleteBookingSubscription = {
       createdByName: string,
       updatedAt: string,
     } | null,
-    mainGuest?:  {
+    mainGuest:  {
       __typename: "Guest",
       id: string,
       name?: string | null,
@@ -6995,8 +6995,8 @@ export type OnDeleteBookingSubscription = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    event?:  {
+    },
+    event:  {
       __typename: "Event",
       id: string,
       name?: string | null,
@@ -7027,8 +7027,8 @@ export type OnDeleteBookingSubscription = {
       createdByID: string,
       createdByName: string,
       updatedAt: string,
-    } | null,
-    eventTicket?:  {
+    },
+    eventTicket:  {
       __typename: "EventTicket",
       id: string,
       type: string,
@@ -7064,7 +7064,7 @@ export type OnDeleteBookingSubscription = {
       createdByName: string,
       updatedAt: string,
       eventTicketsId?: string | null,
-    } | null,
+    },
     wave?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
@@ -7083,8 +7083,8 @@ export type OnDeleteBookingSubscription = {
     createdByName: string,
     updatedAt: string,
     bookingGuestId?: string | null,
-    bookingMainGuestId?: string | null,
-    bookingEventId?: string | null,
-    bookingEventTicketId?: string | null,
+    bookingMainGuestId: string,
+    bookingEventId: string,
+    bookingEventTicketId: string,
   } | null,
 };
