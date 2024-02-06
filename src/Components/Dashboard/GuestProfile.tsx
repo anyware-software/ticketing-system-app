@@ -51,6 +51,7 @@ import listGuestBooking from "../../services/listGuestBookings";
 import listAccompaniedGuests from "../../services/listAccompaniedGuests";
 import { useNavigate } from "react-router-dom";
 import { toggleDrawer as toggleDrawerState } from "../../state/index";
+import sendSms from "../../services/sendSMS";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -517,6 +518,17 @@ export default function GuestProfile() {
   //----------------------------------------------------------------
   let connections = JSON.parse(user?.connections || "[]");
 
+  const sendSmsToUser = async (
+    phone: string | null | undefined,
+    message: string
+  ) => {
+    if (!phone) return;
+    try {
+      await sendSms(phone, message);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   // console.log(currentCompanions);
   // console.log(currentBookings);
 
@@ -1646,24 +1658,6 @@ export default function GuestProfile() {
                                 })
                               : "N/A"}
                           </Typography>
-                          {/* <Typography
-                            sx={{
-                              color: "white",
-                              fontSize: 9,
-                              fontWeight: "400",
-                              wordWrap: "break-word",
-                            }}
-                          >
-                            {currentBookings?.event?.endDate
-                              ? new Date(
-                                  currentBookings.event.endDate
-                                ).toLocaleDateString("en-US", {
-                                  weekday: "long",
-                                  hour: "numeric",
-                                  minute: "numeric",
-                                })
-                              : "N/A"}
-                          </Typography> */}
                         </Box>
                       </Box>
                     </Box>
@@ -1819,7 +1813,7 @@ export default function GuestProfile() {
                   gridTemplateColumns: "repeat(2, 1fr)",
                   gap: 1,
                   // justifyContent: {xs:'center',sm:""}
-                  width: { xs: "90%", sm: "%" },
+                  width: { xs: "90%", sm: "100%" },
                 }}
               >
                 {currentCompanions.map((companion) => (
@@ -1853,7 +1847,9 @@ export default function GuestProfile() {
                             wordWrap: "break-word",
                           }}
                         >
-                          {companion.guest?.name}
+                          {companion.guest?.name
+                            ? companion.guest.name
+                            : companion.guestName}
                         </Typography>
                         <Typography
                           sx={{
@@ -1878,6 +1874,25 @@ export default function GuestProfile() {
                         </Typography>
                       </Box>
                     </Box>
+                      {!companion.bookingGuestId && (
+                        <Button
+                          variant="contained"
+                          sx={{
+                            backgroundColor: "rgba(240, 99, 90, 1)",
+                            fontSize: "12px",
+                            px: .5,
+                            ml: .5,
+                          }}
+                          onClick={() => {
+                            sendSmsToUser(
+                              companion.phone_number,
+                              `Hi ${companion.guestName} ${user.name} is inviting you to ULTER : http://localhost:3000/login/?id=${companion.id}`
+                            );
+                          }}
+                        >
+                          Invite To Ultar !
+                        </Button>
+                      )}
                     <Box>
                       <IconButton
                         aria-label="more"

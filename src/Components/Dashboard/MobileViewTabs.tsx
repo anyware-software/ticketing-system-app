@@ -33,6 +33,7 @@ import listGuestBooking from "../../services/listGuestBookings";
 import listAccompaniedGuests from "../../services/listAccompaniedGuests";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
+import sendSms from "../../services/sendSMS";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -418,6 +419,17 @@ export default function MobileViewTabs() {
   //Mobile Edit
   //----------------------------------------------------------------
 
+  const sendSmsToUser = async (
+    phone: string | null | undefined,
+    message: string
+  ) => {
+    if (!phone) return;
+    try {
+      await sendSms(phone, message);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       <Box sx={{ width: "100%", display: { xs: "block", sm: "none" } }}>
@@ -1313,7 +1325,9 @@ export default function MobileViewTabs() {
                               wordWrap: "break-word",
                             }}
                           >
-                            {companion.guest?.name}
+                            {companion.guest?.name
+                            ? companion.guest.name
+                            : companion.guestName}
                           </Typography>
                           <Typography
                             sx={{
@@ -1338,6 +1352,24 @@ export default function MobileViewTabs() {
                           </Typography>
                         </Box>
                       </Box>
+                      {!companion.bookingGuestId && (
+                        <Button
+                          variant="contained"
+                          sx={{
+                            backgroundColor: "rgba(240, 99, 90, 1)",
+                            fontSize: "12px",
+                            px: 1,
+                          }}
+                          onClick={() => {
+                            sendSmsToUser(
+                              companion.phone_number,
+                              `Hi ${companion.guestName} ${user.name} is inviting you to ULTER : http://localhost:3000/login/?id=${companion.id}`
+                            );
+                          }}
+                        >
+                          Invite To Ultar !
+                        </Button>
+                      )}
                       <Box>
                         <IconButton
                           aria-label="more"

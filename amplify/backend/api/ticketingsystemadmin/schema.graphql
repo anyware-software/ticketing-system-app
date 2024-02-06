@@ -482,6 +482,7 @@ type Booking
   specialNeed: Boolean
   phone_number: String
   guestTicket: GuestTicket
+  guestName: String
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!

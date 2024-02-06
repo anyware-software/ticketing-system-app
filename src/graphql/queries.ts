@@ -1259,6 +1259,7 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
       number
       __typename
     }
+    guestName
     deleted
     createdAt
     createdByID
@@ -1404,6 +1405,7 @@ export const listBookings = /* GraphQL */ `query ListBookings(
         number
         __typename
       }
+      guestName
       deleted
       createdAt
       createdByID

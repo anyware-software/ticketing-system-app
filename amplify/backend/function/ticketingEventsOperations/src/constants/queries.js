@@ -277,6 +277,7 @@ const createBooking = /* GraphQL */ `
         number
         __typename
       }
+      guestName
       deleted
       createdAt
       createdByID
@@ -434,6 +435,7 @@ const getBooking = /* GraphQL */ `
       statusUpdatedAt
       specialNeed
       phone_number
+      guestName
       deleted
       createdAt
       createdByID
@@ -594,6 +596,7 @@ const updateBooking = /* GraphQL */ `
       statusUpdatedAt
       specialNeed
       phone_number
+      guestName
       deleted
       createdAt
       createdByID
@@ -761,6 +764,7 @@ const listBookings = /* GraphQL */ `
         statusUpdatedAt
         specialNeed
         phone_number
+        guestName
         deleted
         createdAt
         createdByID
@@ -777,7 +781,6 @@ const listBookings = /* GraphQL */ `
     }
   }
 `;
-
 const listOverViewBookings = /* GraphQL */ `
   query ListBookings(
     $filter: ModelBookingFilterInput

@@ -452,7 +452,8 @@ export default function Events() {
         orderId,
         isSpecial,
         notValidGuest?.phone,
-        { number: generateTicketNumber() }
+        { number: generateTicketNumber() },
+        notValidGuest?.name,
       );
       // console.log(bookingRequest);
       sendSmsToUser(
@@ -498,7 +499,7 @@ export default function Events() {
 
     return currentDate >= startDateObj && currentDate <= endDateObj;
   };
-  // console.log(notValidGuestsBooking);
+  // console.log(notValidGuests);
 
   if (loading)
     return (

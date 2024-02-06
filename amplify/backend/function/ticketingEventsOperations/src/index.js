@@ -101,6 +101,7 @@ exports.handler = async (event) => {
         phone_number: bookAttributes.phone_number,
         guestTicket: bookAttributes.guestTicket,
         overallStatus: bookAttributes.overallStatus,
+        guestName: bookAttributes.guestName,
         deleted: '0',
         createdAt: bookAttributes.createdAt,
         createdByID: bookAttributes.createdByID,
@@ -355,30 +356,46 @@ exports.handler = async (event) => {
 
       let result = bookings.reduce(
         (result, booking) => {
-          if (!result.gender[booking.guest.gender]) {
-            result.gender[booking.guest.gender] = 1;
-          } else {
-            result.gender[booking.guest.gender]++;
+          if (booking.guest) {
+            if (!result.gender[booking.guest.gender]) {
+              result.gender[booking.guest.gender] = 1;
+            } else {
+              result.gender[booking.guest.gender]++;
+            }
+
+            if (!result.guests[booking.guest.guestGroupName]) {
+              result.guests[booking.guest.guestGroupName] = 1;
+            } else {
+              result.guests[booking.guest.guestGroupName]++;
+            }
+
+            if (booking.guest.totalEvents > 0) result.guest.recurring++;
           }
 
-          if (!result.guests[booking.guest.guestGroupName]) {
-            result.guests[booking.guest.guestGroupName] = 1;
-          } else {
-            result.guests[booking.guest.guestGroupName]++;
+          if (booking.eventTicket) {
+            if (!result.ticketsTypes[booking.eventTicket.type]) {
+              result.ticketsTypes[booking.eventTicket.type] = 1;
+            } else {
+              result.ticketsTypes[booking.eventTicket.type]++;
+            }
           }
 
-          if (booking.guest.totalEvents > 0) result.guest.recurring++;
-
-          if (!result.ticketsTypes[booking.eventTicket.type]) {
-            result.ticketsTypes[booking.eventTicket.type] = 1;
-          } else {
-            result.ticketsTypes[booking.eventTicket.type]++;
+          if (booking.status) {
+            if (!result.ticketsStatuses[booking.status]) {
+              result.ticketsStatuses[booking.status] = 1;
+            } else {
+              result.ticketsStatuses[booking.status]++;
+            }
           }
 
-          if (!result.ticketsStatuses[booking.status]) {
-            result.ticketsStatuses[booking.status] = 1;
-          } else {
-            result.ticketsStatuses[booking.status]++;
+          // this should be event total revenue not number 
+          // update it after payment
+          if (booking.event) {
+            if (!result.events[booking.event.name]) {
+              result.events[booking.event.name] = 1;
+            } else {
+              result.events[booking.event.name]++;
+            }
           }
 
           return result;
@@ -388,6 +405,7 @@ exports.handler = async (event) => {
           guests: { recurring: 0 },
           ticketsTypes: {},
           ticketsStatuses: {},
+          events: {},
         },
       );
 
