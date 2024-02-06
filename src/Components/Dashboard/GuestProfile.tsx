@@ -52,6 +52,7 @@ import listAccompaniedGuests from "../../services/listAccompaniedGuests";
 import { useNavigate } from "react-router-dom";
 import { toggleDrawer as toggleDrawerState } from "../../state/index";
 import sendSms from "../../services/sendSMS";
+import Resizer from "react-image-file-resizer";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -408,13 +409,29 @@ export default function GuestProfile() {
   //image part
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
+  // const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     try {
+  //       const result = await uploadImage(file);
+  //       // console.log(`${result}`);
+  //       setSelectedImage(`${dbStorage}${result}`);
+  //     } catch (error) {
+  //       // Handle the error
+  //       console.error(error);
+  //     }
+  //   }
+  // };
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       try {
         const result = await uploadImage(file);
-        // console.log(`${result}`);
-        setSelectedImage(`${dbStorage}${result}`);
+        if (result) { // Check if result is defined
+          setSelectedImage(`${dbStorage}${result}`);
+        } else {
+          console.error("Failed to upload image.");
+        }
       } catch (error) {
         // Handle the error
         console.error(error);
@@ -423,17 +440,79 @@ export default function GuestProfile() {
   };
   const [validationWarning, setValidationWarning] = useState<boolean>(false);
   const [message, setMessage] = useState<any>("");
+  // const uploadImage = async (file: File) => {
+  //   try {
+  //     SetAvatarLoading(true);
+  //     const result = await uploadData({
+  //       key: `${new Date().getTime()}-${file.name.replace(/\s/g, "-")}`,
+  //       data: file,
+  //       options: {
+  //         accessLevel: "guest",
+  //       },
+  //     }).result;
+  //     console.log("Succeeded uploading image: ", result);
+  //     if (!user?.images || user.images.length < 4) {
+  //       try {
+  //         let UpdatedGuest = await updateGuest({
+  //           userID: user?.id,
+  //           email: user?.email,
+  //           name: user?.name,
+  //           phone_number: user?.phone_number,
+  //           birthdate: user?.birthdate,
+  //           gender: user?.gender,
+  //           guest_avatar: result.key,
+  //           connections: user?.connections,
+  //           images: user?.images ? [...user.images, result.key] : [result.key],
+  //         });
+  //         console.log(UpdatedGuest);
+  //         dispatch(setLogin({ user: UpdatedGuest }));
+  //         SetAvatarLoading(false);
+  //       } catch (error) {
+  //         console.error("Error updating Images:", error);
+  //       }
+  //     } else {
+  //       console.log("you got 3 images remove one and replace it");
+  //       setValidationWarning(true);
+  //       setMessage("You need to replace one of your images to upload new one");
+  //     }
+  //     return result.key;
+  //   } catch (error) {
+  //     console.log("Error uploading image: ", error);
+  //     throw error;
+  //   }
+  // };
   const uploadImage = async (file: File) => {
     try {
       SetAvatarLoading(true);
+      // Resizing the image
+      const resizedFile = await new Promise<File>((resolve, reject) => {
+        Resizer.imageFileResizer(
+          file,
+          160,
+          160,
+          "JPEG",
+          75,
+          0,
+          (resizedFile) => {
+            if (resizedFile instanceof File) {
+              resolve(resizedFile);
+            } else {
+              reject(new Error("Failed to resize image."));
+            }
+          },
+          "file"
+        );
+      });
       const result = await uploadData({
         key: `${new Date().getTime()}-${file.name.replace(/\s/g, "-")}`,
-        data: file,
+        data: resizedFile,
         options: {
           accessLevel: "guest",
         },
       }).result;
-      // console.log("Succeeded uploading image: ", result);
+
+      console.log("Succeeded uploading image: ", result);
+
       if (!user?.images || user.images.length < 4) {
         try {
           let UpdatedGuest = await updateGuest({
@@ -456,14 +535,15 @@ export default function GuestProfile() {
       } else {
         console.log("you got 3 images remove one and replace it");
         setValidationWarning(true);
-        setMessage("You need to replace one of your images to upload new one");
+        setMessage("You need to replace one of your images to upload a new one");
       }
       return result.key;
     } catch (error) {
       console.log("Error uploading image: ", error);
       throw error;
     }
-  };
+};
+
   const deleteUserPhoto = async (index: any, photo: any) => {
     const updatedImages = [...user.images];
     // console.log(index);
