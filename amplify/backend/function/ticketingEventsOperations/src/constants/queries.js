@@ -781,7 +781,88 @@ const listBookings = /* GraphQL */ `
     }
   }
 `;
-
+const listInvitations = /* GraphQL */ `query ListInvitations(
+  $filter: ModelInvitationFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listInvitations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      event {
+        id
+        name
+        description
+        startDate
+        endDate
+        location {
+          address
+          coordinates {
+            lat
+            lng
+            __typename
+          }
+          __typename
+        }
+        todoList
+        map
+        image
+        gallery
+        visibleTo
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
+      eventTicket {
+        id
+        type
+        cashlessCredit
+        description
+        color
+        paymentRules
+        approvalRule
+        showAll
+        showOnHold
+        onHoldDisplayText
+        showSoldOut
+        soldOutDisplayText
+        setAvailable
+        availableAtDate
+        allowTransferred
+        transferredAprroval
+        transferredSameGender
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventTicketsId
+        __typename
+      }
+      wave
+      phone_number
+      email
+      reason
+      secret
+      used
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      invitationEventId
+      invitationEventTicketId
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+`
 const listOverViewBookings = /* GraphQL */ `
   query ListBookings(
     $filter: ModelBookingFilterInput
@@ -824,4 +905,5 @@ module.exports = {
   updateBooking,
   listBookings,
   listOverViewBookings,
+  listInvitations,
 };

@@ -22,6 +22,7 @@ const {
   updateBooking,
   listBookings,
   listOverViewBookings,
+  listInvitations,
 } = require('./constants/queries');
 
 const GRAPHQL_ENDPOINT =
@@ -60,6 +61,7 @@ exports.handler = async (event) => {
     const bookingGuestid = requestBody.bookingGuestid;
     const bookingMainGuestId = requestBody.bookingMainGuestId;
     const bookingEventId = requestBody.bookingEventId;
+    const invitationSecret = requestBody.invitationSecret;
 
     if (operationId === operationIdEnum.listEvents) {
       variables = {
@@ -91,6 +93,21 @@ exports.handler = async (event) => {
         },
       };
       query = listBookings;
+    } else if (operationId === operationIdEnum.listInvitations) {
+      variables = {
+        filter: {
+          deleted: {
+            eq: '0',
+          },
+          secret: {
+            eq: invitationSecret,
+          },
+          used: {
+            eq: false,
+          },
+        },
+      };
+      query = listInvitations;
     } else if (operationId === operationIdEnum.bookEvent) {
       console.log({ bookAttributes: bookAttributes.guestTicket.number });
       const createInput = {
@@ -295,6 +312,8 @@ exports.handler = async (event) => {
       items = responseBody.data.updateBooking;
     } else if (operationId === operationIdEnum.listBookingsForCompanion) {
       items = responseBody.data.listBookings;
+    } else if (operationId === operationIdEnum.listInvitations) {
+      items = responseBody.data.listInvitations;
     } else if (operationId === operationIdEnum.listEventsByGuestId) {
       variables = {
         filter: {

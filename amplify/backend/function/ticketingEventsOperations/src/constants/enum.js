@@ -9,6 +9,7 @@ const operationIdEnum = {
     'listBookingsForCompanion': 8,
     'overview': 9,
     'sendMails': 10,
+    'listInvitations': 11,
 }
 module.exports = {
     operationIdEnum

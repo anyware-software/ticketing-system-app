@@ -26,6 +26,7 @@ import ContentLoader from "./Components/ContentLoader/ContentLoder";
 import PaymentPage from "./Components/Dashboard/PaymentPage";
 import GuestProfile from "./Components/Dashboard/GuestProfile";
 import Events from "./Components/Dashboard/Events";
+import InvitationPage from "./Components/InvitationPage/InvitationPage";
 //-------------------------------------------------------------
 
 const provider = {
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
       { index: true, element: <Login /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
+      { path: "/inv", element: <InvitationPage /> },
       {
         path: "/dashboard",
         element: <Dashboard />,
@@ -102,8 +104,8 @@ function App() {
           }
         }
       } catch (e: any) {
-        console.log(e);
-        console.log("not logged in");
+        // console.log(e);
+        // console.log("not logged in");
         localStorage.removeItem("user");
         dispatch(setLogin({ user: null }));
       }
