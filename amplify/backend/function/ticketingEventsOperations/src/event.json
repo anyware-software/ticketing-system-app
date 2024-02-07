@@ -1,5 +1,12 @@
 {
   "body": {
-    "operationId": 9
+    "operationId": 10,
+    "queryStringParameters": {
+      "sender_name": "Samir",
+      "customer_email": "mohamedsamir30996@gmail.com",
+      "customer_secret": "123456ABCD",
+      "source_email": "info@anyware.software",
+      "template_name": "UlterReserved"
+    }
   }
 }

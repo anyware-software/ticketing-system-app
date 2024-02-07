@@ -1264,11 +1264,25 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
     createdAt
     createdByID
     createdByName
+    rejectionReason {
+      id
+      content
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      updatedByID
+      updatedByName
+      __typename
+    }
+    rejectionComment
     updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
     bookingEventTicketId
+    bookingRejectionReasonId
     __typename
   }
 }
@@ -1410,11 +1424,25 @@ export const listBookings = /* GraphQL */ `query ListBookings(
       createdAt
       createdByID
       createdByName
+      rejectionReason {
+        id
+        content
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        updatedByID
+        updatedByName
+        __typename
+      }
+      rejectionComment
       updatedAt
       bookingGuestId
       bookingMainGuestId
       bookingEventId
       bookingEventTicketId
+      bookingRejectionReasonId
       __typename
     }
     nextToken
@@ -1424,4 +1452,216 @@ export const listBookings = /* GraphQL */ `query ListBookings(
 ` as GeneratedQuery<
   APITypes.ListBookingsQueryVariables,
   APITypes.ListBookingsQuery
+>;
+export const getRejectReason = /* GraphQL */ `query GetRejectReason($id: ID!) {
+  getRejectReason(id: $id) {
+    id
+    content
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    updatedByID
+    updatedByName
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetRejectReasonQueryVariables,
+  APITypes.GetRejectReasonQuery
+>;
+export const listRejectReasons = /* GraphQL */ `query ListRejectReasons(
+  $filter: ModelRejectReasonFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listRejectReasons(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      content
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      updatedByID
+      updatedByName
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListRejectReasonsQueryVariables,
+  APITypes.ListRejectReasonsQuery
+>;
+export const getInvitation = /* GraphQL */ `query GetInvitation($id: ID!) {
+  getInvitation(id: $id) {
+    id
+    event {
+      id
+      name
+      description
+      startDate
+      endDate
+      location {
+        address
+        __typename
+      }
+      todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
+      map
+      image
+      gallery
+      visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    eventTicket {
+      id
+      type
+      cashlessCredit
+      description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    wave
+    phone_number
+    email
+    reason
+    secret
+    used
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    invitationEventId
+    invitationEventTicketId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetInvitationQueryVariables,
+  APITypes.GetInvitationQuery
+>;
+export const listInvitations = /* GraphQL */ `query ListInvitations(
+  $filter: ModelInvitationFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listInvitations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      event {
+        id
+        name
+        description
+        startDate
+        endDate
+        todoList
+        map
+        image
+        gallery
+        visibleTo
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
+      eventTicket {
+        id
+        type
+        cashlessCredit
+        description
+        color
+        paymentRules
+        approvalRule
+        showAll
+        showOnHold
+        onHoldDisplayText
+        showSoldOut
+        soldOutDisplayText
+        setAvailable
+        availableAtDate
+        allowTransferred
+        transferredAprroval
+        transferredSameGender
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventTicketsId
+        __typename
+      }
+      wave
+      phone_number
+      email
+      reason
+      secret
+      used
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      invitationEventId
+      invitationEventTicketId
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListInvitationsQueryVariables,
+  APITypes.ListInvitationsQuery
 >;

@@ -487,8 +487,59 @@ type Booking
   createdAt: String!
   createdByID: String!
   createdByName: String!
+  rejectionReason: RejectReason @hasOne
+  rejectionComment: String
 }
 
 type GuestTicket {
   number: String
+}
+type RejectReason
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  content: String!
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
+  updatedAt: String
+  updatedByID: String
+  updatedByName: String
+}
+
+type Invitation
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [create, update, delete, read] }
+    ]
+  ) {
+  id: ID!
+  event: Event! @hasOne
+  eventTicket: EventTicket! @hasOne
+  wave: String
+  phone_number: String
+  email: String
+  reason: String
+  secret: String
+  used: Boolean
+  deleted: String @default(value: "0")
+  createdAt: String!
+  createdByID: String!
+  createdByName: String!
 }

@@ -1535,11 +1535,25 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
     createdAt
     createdByID
     createdByName
+    rejectionReason {
+      id
+      content
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      updatedByID
+      updatedByName
+      __typename
+    }
+    rejectionComment
     updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
     bookingEventTicketId
+    bookingRejectionReasonId
     __typename
   }
 }
@@ -1703,11 +1717,25 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
     createdAt
     createdByID
     createdByName
+    rejectionReason {
+      id
+      content
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      updatedByID
+      updatedByName
+      __typename
+    }
+    rejectionComment
     updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
     bookingEventTicketId
+    bookingRejectionReasonId
     __typename
   }
 }
@@ -1871,15 +1899,377 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
     createdAt
     createdByID
     createdByName
+    rejectionReason {
+      id
+      content
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      updatedByID
+      updatedByName
+      __typename
+    }
+    rejectionComment
     updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
     bookingEventTicketId
+    bookingRejectionReasonId
     __typename
   }
 }
 ` as GeneratedMutation<
   APITypes.DeleteBookingMutationVariables,
   APITypes.DeleteBookingMutation
+>;
+export const createRejectReason = /* GraphQL */ `mutation CreateRejectReason(
+  $input: CreateRejectReasonInput!
+  $condition: ModelRejectReasonConditionInput
+) {
+  createRejectReason(input: $input, condition: $condition) {
+    id
+    content
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    updatedByID
+    updatedByName
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateRejectReasonMutationVariables,
+  APITypes.CreateRejectReasonMutation
+>;
+export const updateRejectReason = /* GraphQL */ `mutation UpdateRejectReason(
+  $input: UpdateRejectReasonInput!
+  $condition: ModelRejectReasonConditionInput
+) {
+  updateRejectReason(input: $input, condition: $condition) {
+    id
+    content
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    updatedByID
+    updatedByName
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateRejectReasonMutationVariables,
+  APITypes.UpdateRejectReasonMutation
+>;
+export const deleteRejectReason = /* GraphQL */ `mutation DeleteRejectReason(
+  $input: DeleteRejectReasonInput!
+  $condition: ModelRejectReasonConditionInput
+) {
+  deleteRejectReason(input: $input, condition: $condition) {
+    id
+    content
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    updatedByID
+    updatedByName
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteRejectReasonMutationVariables,
+  APITypes.DeleteRejectReasonMutation
+>;
+export const createInvitation = /* GraphQL */ `mutation CreateInvitation(
+  $input: CreateInvitationInput!
+  $condition: ModelInvitationConditionInput
+) {
+  createInvitation(input: $input, condition: $condition) {
+    id
+    event {
+      id
+      name
+      description
+      startDate
+      endDate
+      location {
+        address
+        __typename
+      }
+      todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
+      map
+      image
+      gallery
+      visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    eventTicket {
+      id
+      type
+      cashlessCredit
+      description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    wave
+    phone_number
+    email
+    reason
+    secret
+    used
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    invitationEventId
+    invitationEventTicketId
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateInvitationMutationVariables,
+  APITypes.CreateInvitationMutation
+>;
+export const updateInvitation = /* GraphQL */ `mutation UpdateInvitation(
+  $input: UpdateInvitationInput!
+  $condition: ModelInvitationConditionInput
+) {
+  updateInvitation(input: $input, condition: $condition) {
+    id
+    event {
+      id
+      name
+      description
+      startDate
+      endDate
+      location {
+        address
+        __typename
+      }
+      todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
+      map
+      image
+      gallery
+      visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    eventTicket {
+      id
+      type
+      cashlessCredit
+      description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    wave
+    phone_number
+    email
+    reason
+    secret
+    used
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    invitationEventId
+    invitationEventTicketId
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateInvitationMutationVariables,
+  APITypes.UpdateInvitationMutation
+>;
+export const deleteInvitation = /* GraphQL */ `mutation DeleteInvitation(
+  $input: DeleteInvitationInput!
+  $condition: ModelInvitationConditionInput
+) {
+  deleteInvitation(input: $input, condition: $condition) {
+    id
+    event {
+      id
+      name
+      description
+      startDate
+      endDate
+      location {
+        address
+        __typename
+      }
+      todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
+      map
+      image
+      gallery
+      visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    eventTicket {
+      id
+      type
+      cashlessCredit
+      description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    wave
+    phone_number
+    email
+    reason
+    secret
+    used
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    invitationEventId
+    invitationEventTicketId
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteInvitationMutationVariables,
+  APITypes.DeleteInvitationMutation
 >;

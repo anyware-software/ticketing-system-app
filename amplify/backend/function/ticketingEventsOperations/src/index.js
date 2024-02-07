@@ -11,6 +11,7 @@ Amplify Params - DO NOT EDIT */
  */
 const fetch = require('node-fetch');
 const { operationIdEnum } = require('./constants/enum');
+const aws = require('aws-sdk');
 
 const {
   getEvent,
@@ -38,6 +39,10 @@ function formatDateToYYYYMMDDHHMMSS(date) {
 
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
+
+aws.config.update({ region: 'us-east-2' });
+const ses = new aws.SES();
+
 exports.handler = async (event) => {
   try {
     let requestBody;
@@ -137,6 +142,24 @@ exports.handler = async (event) => {
         },
       };
       query = updateBooking;
+    } else if (operationId === operationIdEnum.sendMails) {
+      const templateData = {};
+      templateData.customerEmail = requestBody.queryStringParameters.customer_email;
+      templateData.customerSecret = requestBody.queryStringParameters.customer_secret;
+      templateData.senderName = requestBody.queryStringParameters.sender_name;
+      const sourceMail = requestBody.queryStringParameters.source_email;
+      const templateName = requestBody.queryStringParameters.template_name;
+      await ses
+        .sendTemplatedEmail({
+          Destination: {
+            ToAddresses: [templateData.customerEmail],
+          },
+          Source: sourceMail,
+          Template: templateName,
+          TemplateData: JSON.stringify(templateData),
+        })
+        .promise();
+      return { status: 'done' };
     } else if (operationId === operationIdEnum.sendSmsMessage) {
       try {
         console.log({ event: JSON.stringify(event) });
@@ -374,9 +397,21 @@ exports.handler = async (event) => {
 
           if (booking.eventTicket) {
             if (!result.ticketsTypes[booking.eventTicket.type]) {
-              result.ticketsTypes[booking.eventTicket.type] = 1;
+              result.ticketsTypes[booking.eventTicket.type] = {};
+              result.ticketsTypes[booking.eventTicket.type].amount = 1;
             } else {
-              result.ticketsTypes[booking.eventTicket.type]++;
+              result.ticketsTypes[booking.eventTicket.type].amount++;
+            }
+            if (!result.ticketsTypes[booking.eventTicket.type].color) {
+              result.ticketsTypes[booking.eventTicket.type].color =
+                booking.eventTicket.color;
+            }
+            if (!result.ticketsTypes[booking.eventTicket.type].quota) {
+              result.ticketsTypes[booking.eventTicket.type].quota =
+                booking.eventTicket.waves.reduce(
+                  (quota, wave) => (quota += wave.quota),
+                  0,
+                );
             }
           }
 
@@ -388,7 +423,7 @@ exports.handler = async (event) => {
             }
           }
 
-          // this should be event total revenue not number 
+          // this should be event total revenue not number
           // update it after payment
           if (booking.event) {
             if (!result.events[booking.event.name]) {

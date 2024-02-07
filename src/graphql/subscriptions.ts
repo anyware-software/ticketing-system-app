@@ -1427,11 +1427,25 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
     createdAt
     createdByID
     createdByName
+    rejectionReason {
+      id
+      content
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      updatedByID
+      updatedByName
+      __typename
+    }
+    rejectionComment
     updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
     bookingEventTicketId
+    bookingRejectionReasonId
     __typename
   }
 }
@@ -1592,11 +1606,25 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
     createdAt
     createdByID
     createdByName
+    rejectionReason {
+      id
+      content
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      updatedByID
+      updatedByName
+      __typename
+    }
+    rejectionComment
     updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
     bookingEventTicketId
+    bookingRejectionReasonId
     __typename
   }
 }
@@ -1757,15 +1785,371 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
     createdAt
     createdByID
     createdByName
+    rejectionReason {
+      id
+      content
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      updatedByID
+      updatedByName
+      __typename
+    }
+    rejectionComment
     updatedAt
     bookingGuestId
     bookingMainGuestId
     bookingEventId
     bookingEventTicketId
+    bookingRejectionReasonId
     __typename
   }
 }
 ` as GeneratedSubscription<
   APITypes.OnDeleteBookingSubscriptionVariables,
   APITypes.OnDeleteBookingSubscription
+>;
+export const onCreateRejectReason = /* GraphQL */ `subscription OnCreateRejectReason(
+  $filter: ModelSubscriptionRejectReasonFilterInput
+) {
+  onCreateRejectReason(filter: $filter) {
+    id
+    content
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    updatedByID
+    updatedByName
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateRejectReasonSubscriptionVariables,
+  APITypes.OnCreateRejectReasonSubscription
+>;
+export const onUpdateRejectReason = /* GraphQL */ `subscription OnUpdateRejectReason(
+  $filter: ModelSubscriptionRejectReasonFilterInput
+) {
+  onUpdateRejectReason(filter: $filter) {
+    id
+    content
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    updatedByID
+    updatedByName
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateRejectReasonSubscriptionVariables,
+  APITypes.OnUpdateRejectReasonSubscription
+>;
+export const onDeleteRejectReason = /* GraphQL */ `subscription OnDeleteRejectReason(
+  $filter: ModelSubscriptionRejectReasonFilterInput
+) {
+  onDeleteRejectReason(filter: $filter) {
+    id
+    content
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    updatedByID
+    updatedByName
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteRejectReasonSubscriptionVariables,
+  APITypes.OnDeleteRejectReasonSubscription
+>;
+export const onCreateInvitation = /* GraphQL */ `subscription OnCreateInvitation(
+  $filter: ModelSubscriptionInvitationFilterInput
+) {
+  onCreateInvitation(filter: $filter) {
+    id
+    event {
+      id
+      name
+      description
+      startDate
+      endDate
+      location {
+        address
+        __typename
+      }
+      todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
+      map
+      image
+      gallery
+      visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    eventTicket {
+      id
+      type
+      cashlessCredit
+      description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    wave
+    phone_number
+    email
+    reason
+    secret
+    used
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    invitationEventId
+    invitationEventTicketId
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateInvitationSubscriptionVariables,
+  APITypes.OnCreateInvitationSubscription
+>;
+export const onUpdateInvitation = /* GraphQL */ `subscription OnUpdateInvitation(
+  $filter: ModelSubscriptionInvitationFilterInput
+) {
+  onUpdateInvitation(filter: $filter) {
+    id
+    event {
+      id
+      name
+      description
+      startDate
+      endDate
+      location {
+        address
+        __typename
+      }
+      todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
+      map
+      image
+      gallery
+      visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    eventTicket {
+      id
+      type
+      cashlessCredit
+      description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    wave
+    phone_number
+    email
+    reason
+    secret
+    used
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    invitationEventId
+    invitationEventTicketId
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateInvitationSubscriptionVariables,
+  APITypes.OnUpdateInvitationSubscription
+>;
+export const onDeleteInvitation = /* GraphQL */ `subscription OnDeleteInvitation(
+  $filter: ModelSubscriptionInvitationFilterInput
+) {
+  onDeleteInvitation(filter: $filter) {
+    id
+    event {
+      id
+      name
+      description
+      startDate
+      endDate
+      location {
+        address
+        __typename
+      }
+      todoList
+      eventComments {
+        image
+        name
+        message
+        __typename
+      }
+      map
+      image
+      gallery
+      visibleTo
+      tickets {
+        nextToken
+        __typename
+      }
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      __typename
+    }
+    eventTicket {
+      id
+      type
+      cashlessCredit
+      description
+      waves {
+        name
+        price
+        startDate
+        endDate
+        active
+        quota
+        AutomaticShift
+        __typename
+      }
+      color
+      paymentRules
+      approvalRule
+      showAll
+      showOnHold
+      onHoldDisplayText
+      showSoldOut
+      soldOutDisplayText
+      setAvailable
+      availableAtDate
+      allowTransferred
+      transferredAprroval
+      transferredSameGender
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventTicketsId
+      __typename
+    }
+    wave
+    phone_number
+    email
+    reason
+    secret
+    used
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    invitationEventId
+    invitationEventTicketId
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteInvitationSubscriptionVariables,
+  APITypes.OnDeleteInvitationSubscription
 >;

@@ -781,6 +781,7 @@ const listBookings = /* GraphQL */ `
     }
   }
 `;
+
 const listOverViewBookings = /* GraphQL */ `
   query ListBookings(
     $filter: ModelBookingFilterInput
@@ -802,6 +803,10 @@ const listOverViewBookings = /* GraphQL */ `
         }
         eventTicket {
           type
+          color
+          waves {
+            quota
+          }
         }
         wave
       }
@@ -809,6 +814,7 @@ const listOverViewBookings = /* GraphQL */ `
     }
   }
 `;
+
 module.exports = {
   getEvent,
   listEvents,
