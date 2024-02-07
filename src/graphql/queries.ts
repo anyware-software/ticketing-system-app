@@ -881,6 +881,16 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
         type
         cashlessCredit
         description
+        waves {
+          name
+          price
+          startDate
+          endDate
+          active
+          quota
+          AutomaticShift
+          __typename
+        }
         color
         paymentRules
         approvalRule
@@ -929,6 +939,11 @@ export const listEvents = /* GraphQL */ `query ListEvents(
       endDate
       location {
         address
+        coordinates {
+          lat
+          lng
+          __typename
+        }
         __typename
       }
       todoList
@@ -943,6 +958,43 @@ export const listEvents = /* GraphQL */ `query ListEvents(
       gallery
       visibleTo
       tickets {
+        items {
+          id
+          type
+          cashlessCredit
+          description
+          waves {
+            name
+            price
+            startDate
+            endDate
+            active
+            quota
+            AutomaticShift
+            __typename
+          }
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
         nextToken
         __typename
       }
@@ -1186,6 +1238,11 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
       endDate
       location {
         address
+        coordinates {
+          lat
+          lng
+          __typename
+        }
         __typename
       }
       todoList
@@ -1200,6 +1257,43 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
       gallery
       visibleTo
       tickets {
+        items {
+          id
+          type
+          cashlessCredit
+          description
+          waves {
+            name
+            price
+            startDate
+            endDate
+            active
+            quota
+            AutomaticShift
+            __typename
+          }
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
         nextToken
         __typename
       }
@@ -1368,11 +1462,57 @@ export const listBookings = /* GraphQL */ `query ListBookings(
         description
         startDate
         endDate
+        location {
+          address
+          coordinates {
+            lat
+            lng
+            __typename
+          }
+          __typename
+        }
         todoList
+        eventComments {
+          image
+          name
+          message
+          __typename
+        }
         map
         image
         gallery
         visibleTo
+        tickets {
+          items {
+            id
+            type
+            cashlessCredit
+            description
+            color
+            paymentRules
+            approvalRule
+            showAll
+            showOnHold
+            onHoldDisplayText
+            showSoldOut
+            soldOutDisplayText
+            setAvailable
+            availableAtDate
+            allowTransferred
+            transferredAprroval
+            transferredSameGender
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventTicketsId
+            __typename
+          }
+          nextToken
+          __typename
+        }
         deleted
         createdAt
         createdByID
@@ -1385,6 +1525,16 @@ export const listBookings = /* GraphQL */ `query ListBookings(
         type
         cashlessCredit
         description
+        waves {
+          name
+          price
+          startDate
+          endDate
+          active
+          quota
+          AutomaticShift
+          __typename
+        }
         color
         paymentRules
         approvalRule
@@ -1508,6 +1658,11 @@ export const getInvitation = /* GraphQL */ `query GetInvitation($id: ID!) {
       endDate
       location {
         address
+        coordinates {
+          lat
+          lng
+          __typename
+        }
         __typename
       }
       todoList
@@ -1522,6 +1677,43 @@ export const getInvitation = /* GraphQL */ `query GetInvitation($id: ID!) {
       gallery
       visibleTo
       tickets {
+        items {
+          id
+          type
+          cashlessCredit
+          description
+          waves {
+            name
+            price
+            startDate
+            endDate
+            active
+            quota
+            AutomaticShift
+            __typename
+          }
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
         nextToken
         __typename
       }
@@ -1603,11 +1795,57 @@ export const listInvitations = /* GraphQL */ `query ListInvitations(
         description
         startDate
         endDate
+        location {
+          address
+          coordinates {
+            lat
+            lng
+            __typename
+          }
+          __typename
+        }
         todoList
+        eventComments {
+          image
+          name
+          message
+          __typename
+        }
         map
         image
         gallery
         visibleTo
+        tickets {
+          items {
+            id
+            type
+            cashlessCredit
+            description
+            color
+            paymentRules
+            approvalRule
+            showAll
+            showOnHold
+            onHoldDisplayText
+            showSoldOut
+            soldOutDisplayText
+            setAvailable
+            availableAtDate
+            allowTransferred
+            transferredAprroval
+            transferredSameGender
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventTicketsId
+            __typename
+          }
+          nextToken
+          __typename
+        }
         deleted
         createdAt
         createdByID
@@ -1620,6 +1858,16 @@ export const listInvitations = /* GraphQL */ `query ListInvitations(
         type
         cashlessCredit
         description
+        waves {
+          name
+          price
+          startDate
+          endDate
+          active
+          quota
+          AutomaticShift
+          __typename
+        }
         color
         paymentRules
         approvalRule

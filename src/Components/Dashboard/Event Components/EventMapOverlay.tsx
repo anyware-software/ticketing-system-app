@@ -3,24 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { dbStorage } from "../../../constants/Enums";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-
-
-interface Event {
-  id: string;
-  name: string;
-  image: string;
-  gallery: string[];
-  description: string;
-  map: string;
-  startDate: string;
-  location: {
-    address: string;
-    coordinates: {
-      lat: number;
-      lng: number;
-    };
-  };
-}
+import { Event } from "../../../API";
 
 const EventMapOverlay = ({ currentEvent }: { currentEvent: Event }) => {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);

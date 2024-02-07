@@ -44,24 +44,24 @@ import EventMapOverlay from "./Event Components/EventMapOverlay";
 import EventLocationOverlay from "./Event Components/EventLocationOverlay";
 import NoDataEvent from "../NoEvent/NoDataEvent";
 import { toggleDrawer as toggleDrawerState } from "../../state/index";
-// import type { Event } from '../../API';
+import type { Event } from "../../API";
 
-interface Event {
-  id: string;
-  name: string;
-  image: string;
-  gallery: string[];
-  description: string;
-  map: string;
-  startDate: string;
-  location: {
-    address: string;
-    coordinates: {
-      lat: number;
-      lng: number;
-    };
-  };
-}
+// interface Event {
+//   id: string;
+//   name: string;
+//   image: string;
+//   gallery: string[];
+//   description: string;
+//   map: string;
+//   startDate: string;
+//   location: {
+//     address: string;
+//     coordinates: {
+//       lat: number;
+//       lng: number;
+//     };
+//   };
+// }
 interface EventTickets {
   id: string;
   type: string;
@@ -110,22 +110,7 @@ export default function Events() {
   const dispatch = useDispatch();
   const [validationWarning, setValidationWarning] = useState<boolean>(false);
   const [message, setMessage] = useState<any>("");
-  const [currentEvent, setCurrentEvent] = useState<Event>({
-    id: "",
-    name: "",
-    image: "",
-    gallery: [],
-    description: "",
-    map: "",
-    startDate: "",
-    location: {
-      address: "",
-      coordinates: {
-        lat: 0,
-        lng: 0,
-      },
-    },
-  });
+  const [currentEvent, setCurrentEvent] = useState<Event>();
   const [currentEventTicket, setCurrentEventTicket] = useState<EventTickets[]>(
     []
   );
@@ -179,17 +164,21 @@ export default function Events() {
   }, []);
 
   useEffect(() => {
-    if (currentEvent.id === "") {
+    if (currentEvent?.id === "") {
       setLoading(true);
     } else {
       setLoading(false);
     }
-  }, [currentEvent.id]);
+  }, [currentEvent?.id]);
 
   const handlePrevImage = () => {
     setIsTransitioning(true);
     setSelectedImageIndex((prevIndex) =>
-      prevIndex === 0 ? currentEvent.gallery.length - 4 : prevIndex - 1
+      prevIndex === 0
+        ? currentEvent?.gallery?.length
+          ? currentEvent.gallery.length - 4
+          : 0
+        : prevIndex - 1
     );
     setTimeout(() => setIsTransitioning(false), 500);
   };
@@ -197,11 +186,10 @@ export default function Events() {
   const handleNextImage = () => {
     setIsTransitioning(true);
     setSelectedImageIndex((prevIndex) =>
-      prevIndex === currentEvent.gallery.length - 4 ? 0 : prevIndex + 1
+      prevIndex === (currentEvent?.gallery?.length ?? 0) - 4 ? 0 : prevIndex + 1
     );
     setTimeout(() => setIsTransitioning(false), 500);
   };
-
   useEffect(() => {
     if (currentEventTicket.length > 0) {
       const allPrices = currentEventTicket.flatMap((ticket) =>
@@ -399,7 +387,7 @@ export default function Events() {
         BookingStatus.PENDING,
         user.id,
         mainGuest?.id,
-        currentEvent.id,
+        currentEvent?.id,
         eventForMainGuest?.ticketId,
         true,
         eventForMainGuest?.waveName,
@@ -425,7 +413,7 @@ export default function Events() {
         BookingStatus.PENDING,
         user.id,
         validGuest.id,
-        currentEvent.id,
+        currentEvent?.id,
         eventForValidGuest?.ticketId,
         false,
         eventForValidGuest?.waveName,
@@ -445,7 +433,7 @@ export default function Events() {
         BookingStatus.NOT_REGISTERED,
         user.id,
         undefined,
-        currentEvent.id,
+        currentEvent?.id,
         eventForNotValidGuest?.ticketId,
         false,
         eventForNotValidGuest?.waveName,
@@ -453,7 +441,7 @@ export default function Events() {
         isSpecial,
         notValidGuest?.phone,
         { number: generateTicketNumber() },
-        notValidGuest?.name,
+        notValidGuest?.name
       );
       // console.log(bookingRequest);
       sendSmsToUser(
@@ -668,7 +656,7 @@ export default function Events() {
                           ? `${dbStorage}${currentEvent.image}`
                           : "../../../Images/event.png"
                       }
-                      alt={currentEvent.name}
+                      alt={currentEvent.name || ""}
                       sx={{
                         width: "100%",
                         height: "100%",
@@ -853,14 +841,15 @@ export default function Events() {
                             display: { xs: "none", sm: "block" },
                           }}
                         >
-                          {new Date(currentEvent.startDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }
-                          )}
+                          {currentEvent.startDate
+                            ? new Date(
+                                currentEvent.startDate
+                              ).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })
+                            : "N/A"}
                         </Typography>
                         <Typography
                           sx={{
@@ -869,14 +858,15 @@ export default function Events() {
                             display: { xs: "none", sm: "block" },
                           }}
                         >
-                          {new Date(currentEvent.startDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              weekday: "long",
-                              hour: "numeric",
-                              minute: "numeric",
-                            }
-                          )}
+                          {currentEvent.startDate
+                            ? new Date(
+                                currentEvent.startDate
+                              ).toLocaleDateString("en-US", {
+                                weekday: "long",
+                                hour: "numeric",
+                                minute: "numeric",
+                              })
+                            : "N/A"}
                         </Typography>
                         <Typography
                           sx={{
@@ -885,17 +875,19 @@ export default function Events() {
                             display: { xs: "block", sm: "none" },
                           }}
                         >
-                          {new Date(currentEvent.startDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                              weekday: "long",
-                              hour: "numeric",
-                              minute: "numeric",
-                            }
-                          )}
+                          {currentEvent.startDate
+                            ? new Date(currentEvent.startDate).toLocaleString(
+                                "en-US",
+                                {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                  weekday: "long",
+                                  hour: "numeric",
+                                  minute: "numeric",
+                                }
+                              )
+                            : "N/A"}
                         </Typography>
                       </Box>
                     </Box>
@@ -978,7 +970,7 @@ export default function Events() {
                   fontWeight: 700,
                 }}
               >
-                {ticketChosen === "noTickets" && `${currentEvent.name}`}
+                {ticketChosen === "noTickets" && `${currentEvent?.name}`}
                 {ticketChosen === "tickets" && "Add Accompanied Guests"}
                 {ticketChosen === "guests" && "Review Guests"}
               </Typography>
@@ -1536,13 +1528,15 @@ export default function Events() {
                                     mt: 1,
                                   }}
                                 >
-                                  {new Date(
-                                    currentEvent.startDate
-                                  ).toLocaleDateString("en-US", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                  })}
+                                  {currentEvent?.startDate
+                                    ? new Date(
+                                        currentEvent.startDate
+                                      ).toLocaleDateString("en-US", {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                      })
+                                    : "N/A"}
                                 </Box>
                               </Box>
                             ));
@@ -1664,13 +1658,15 @@ export default function Events() {
                                       mt: 1,
                                     }}
                                   >
-                                    {new Date(
-                                      currentEvent.startDate
-                                    ).toLocaleDateString("en-US", {
-                                      year: "numeric",
-                                      month: "long",
-                                      day: "numeric",
-                                    })}
+                                    {currentEvent?.startDate
+                                      ? new Date(
+                                          currentEvent.startDate
+                                        ).toLocaleDateString("en-US", {
+                                          year: "numeric",
+                                          month: "long",
+                                          day: "numeric",
+                                        })
+                                      : "No start date available"}
                                   </Box>
                                 </Box>
                               ));

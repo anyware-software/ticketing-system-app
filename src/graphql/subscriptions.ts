@@ -962,6 +962,16 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
         type
         cashlessCredit
         description
+        waves {
+          name
+          price
+          startDate
+          endDate
+          active
+          quota
+          AutomaticShift
+          __typename
+        }
         color
         paymentRules
         approvalRule
@@ -1032,6 +1042,16 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
         type
         cashlessCredit
         description
+        waves {
+          name
+          price
+          startDate
+          endDate
+          active
+          quota
+          AutomaticShift
+          __typename
+        }
         color
         paymentRules
         approvalRule
@@ -1102,6 +1122,16 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
         type
         cashlessCredit
         description
+        waves {
+          name
+          price
+          startDate
+          endDate
+          active
+          quota
+          AutomaticShift
+          __typename
+        }
         color
         paymentRules
         approvalRule
@@ -1349,6 +1379,11 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
       endDate
       location {
         address
+        coordinates {
+          lat
+          lng
+          __typename
+        }
         __typename
       }
       todoList
@@ -1363,6 +1398,43 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
       gallery
       visibleTo
       tickets {
+        items {
+          id
+          type
+          cashlessCredit
+          description
+          waves {
+            name
+            price
+            startDate
+            endDate
+            active
+            quota
+            AutomaticShift
+            __typename
+          }
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
         nextToken
         __typename
       }
@@ -1528,6 +1600,11 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
       endDate
       location {
         address
+        coordinates {
+          lat
+          lng
+          __typename
+        }
         __typename
       }
       todoList
@@ -1542,6 +1619,43 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
       gallery
       visibleTo
       tickets {
+        items {
+          id
+          type
+          cashlessCredit
+          description
+          waves {
+            name
+            price
+            startDate
+            endDate
+            active
+            quota
+            AutomaticShift
+            __typename
+          }
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
         nextToken
         __typename
       }
@@ -1707,6 +1821,11 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
       endDate
       location {
         address
+        coordinates {
+          lat
+          lng
+          __typename
+        }
         __typename
       }
       todoList
@@ -1721,6 +1840,43 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
       gallery
       visibleTo
       tickets {
+        items {
+          id
+          type
+          cashlessCredit
+          description
+          waves {
+            name
+            price
+            startDate
+            endDate
+            active
+            quota
+            AutomaticShift
+            __typename
+          }
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
         nextToken
         __typename
       }
@@ -1884,6 +2040,11 @@ export const onCreateInvitation = /* GraphQL */ `subscription OnCreateInvitation
       endDate
       location {
         address
+        coordinates {
+          lat
+          lng
+          __typename
+        }
         __typename
       }
       todoList
@@ -1898,6 +2059,43 @@ export const onCreateInvitation = /* GraphQL */ `subscription OnCreateInvitation
       gallery
       visibleTo
       tickets {
+        items {
+          id
+          type
+          cashlessCredit
+          description
+          waves {
+            name
+            price
+            startDate
+            endDate
+            active
+            quota
+            AutomaticShift
+            __typename
+          }
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
         nextToken
         __typename
       }
@@ -1978,6 +2176,11 @@ export const onUpdateInvitation = /* GraphQL */ `subscription OnUpdateInvitation
       endDate
       location {
         address
+        coordinates {
+          lat
+          lng
+          __typename
+        }
         __typename
       }
       todoList
@@ -1992,6 +2195,43 @@ export const onUpdateInvitation = /* GraphQL */ `subscription OnUpdateInvitation
       gallery
       visibleTo
       tickets {
+        items {
+          id
+          type
+          cashlessCredit
+          description
+          waves {
+            name
+            price
+            startDate
+            endDate
+            active
+            quota
+            AutomaticShift
+            __typename
+          }
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
         nextToken
         __typename
       }
@@ -2072,6 +2312,11 @@ export const onDeleteInvitation = /* GraphQL */ `subscription OnDeleteInvitation
       endDate
       location {
         address
+        coordinates {
+          lat
+          lng
+          __typename
+        }
         __typename
       }
       todoList
@@ -2086,6 +2331,43 @@ export const onDeleteInvitation = /* GraphQL */ `subscription OnDeleteInvitation
       gallery
       visibleTo
       tickets {
+        items {
+          id
+          type
+          cashlessCredit
+          description
+          waves {
+            name
+            price
+            startDate
+            endDate
+            active
+            quota
+            AutomaticShift
+            __typename
+          }
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
         nextToken
         __typename
       }

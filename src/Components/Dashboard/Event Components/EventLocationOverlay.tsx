@@ -5,23 +5,8 @@ import Typography from "@mui/material/Typography";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { GOOGLE_MAPS_LIBRARIES } from "../Library";
 import axios from "axios";
+import { Event } from "../../../API";
 
-interface Event {
-  id: string;
-  name: string;
-  image: string;
-  gallery: string[];
-  description: string;
-  map: string;
-  startDate: string;
-  location: {
-    address: string;
-    coordinates: {
-      lat: number;
-      lng: number;
-    };
-  };
-}
 
 const EventLocationOverlay = ({ currentEvent }: { currentEvent: Event }) => {
   const [isGoogleMapOverlayOpen, setIsGoogleMapOverlayOpen] = useState(false);
