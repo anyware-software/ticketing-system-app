@@ -34,10 +34,14 @@ import TurnedInNotIcon from "@mui/icons-material/TurnedInNot";
 import EventMapOverlay from "../Dashboard/Event Components/EventMapOverlay";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventLocationOverlay from "../Dashboard/Event Components/EventLocationOverlay";
+import Avatar from "@mui/material/Avatar";
+import { Chip } from "@mui/material";
+import { QRCodeSVG } from "qrcode.react";
 
 export default function InvitationPage() {
   const [loading, setLoading] = useState(false);
-  const [invitations, setInvitations] = useState<Invitation>();
+  const [invitations, setInvitations] = useState<Invitation[]>();
+  const [currentInvitations, setCurrentInvitations] = useState<Invitation>();
   const location = useLocation();
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -48,8 +52,8 @@ export default function InvitationPage() {
     setIsTransitioning(true);
     setSelectedImageIndex((prevIndex) =>
       prevIndex === 0
-        ? invitations?.event?.gallery?.length
-          ? invitations.event.gallery.length - 4
+        ? currentInvitations?.event?.gallery?.length
+          ? currentInvitations.event.gallery.length - 4
           : 0
         : prevIndex - 1
     );
@@ -59,7 +63,7 @@ export default function InvitationPage() {
   const handleNextImage = () => {
     setIsTransitioning(true);
     setSelectedImageIndex((prevIndex) =>
-      prevIndex === (invitations?.event?.gallery?.length ?? 0) - 4
+      prevIndex === (currentInvitations?.event?.gallery?.length ?? 0) - 4
         ? 0
         : prevIndex + 1
     );
@@ -71,6 +75,7 @@ export default function InvitationPage() {
       if (!id) return;
       const inv = await listInvitaions(id);
       setInvitations(inv.items);
+      setCurrentInvitations(inv.items[0]);
     }
     getGuestInvitations();
   }, [id]);
@@ -84,6 +89,8 @@ export default function InvitationPage() {
   }, [invitations]);
 
   if (loading) return <ContentLoader />;
+
+  console.log(invitations);
 
   return (
     <>
@@ -124,7 +131,6 @@ export default function InvitationPage() {
             boxShadow: "none",
             alignItems: { xs: "center", sm: "start" },
             justifyContent: { xs: "end", sm: "start" },
-            minHeight: { xs: "15vh", sm: "10vh" },
           }}
         >
           <Toolbar disableGutters>
@@ -147,7 +153,7 @@ export default function InvitationPage() {
           container
           sx={{
             px: { xs: 0, sm: 10, md: 10, lg: 12 },
-            mt: { xs: 0, sm: 12, md: 12, lg: 12 },
+            mt: { xs: 0, sm: 2, md: 2, lg: 2 },
             // m:{xs:0,sm:10,md:10,lg:0},
             overflow: "auto",
           }}
@@ -161,7 +167,7 @@ export default function InvitationPage() {
               position: "relative",
             }}
           >
-            {invitations && (
+            {currentInvitations && (
               <Box
                 sx={{
                   display: "flex",
@@ -203,11 +209,11 @@ export default function InvitationPage() {
                     <Box
                       component="img"
                       src={
-                        invitations?.event?.image
-                          ? `${dbStorage}${invitations?.event?.image}`
+                        currentInvitations?.event?.image
+                          ? `${dbStorage}${currentInvitations?.event?.image}`
                           : "../../../Images/event.png"
                       }
-                      alt={invitations?.event?.name || ""}
+                      alt={currentInvitations?.event?.name || ""}
                       sx={{
                         width: "100%",
                         height: "100%",
@@ -227,9 +233,8 @@ export default function InvitationPage() {
                         borderRadius: "10px",
                         display: { xs: "flex", sm: "none" },
                         alignItems: "start",
-                        // justifyContent: "space-around",
-                        pt: 5,
-                        gap: 5,
+                        justifyContent: "center",
+                        pt: 1,
                       }}
                     >
                       <Typography
@@ -241,7 +246,7 @@ export default function InvitationPage() {
                           fontWeight: 700,
                         }}
                       >
-                        {invitations?.event?.name}
+                        {currentInvitations?.event?.name}
                       </Typography>
                     </Box>
                   </Box>
@@ -266,7 +271,7 @@ export default function InvitationPage() {
                     {/* <IconButton onClick={handlePrevImage} sx={{ color: "white" }}>
                     <ArrowBackIosNewIcon />
                   </IconButton> */}
-                    {invitations?.event?.gallery
+                    {currentInvitations?.event?.gallery
                       ?.slice(selectedImageIndex, selectedImageIndex + 4)
                       .map((image, index) => (
                         <img
@@ -307,7 +312,7 @@ export default function InvitationPage() {
                         width: { xs: "60%", sm: "100%" },
                       }}
                     >
-                      {invitations?.event?.name}
+                      {currentInvitations?.event?.name}
                     </Typography>
                     <Box
                       sx={{
@@ -326,7 +331,7 @@ export default function InvitationPage() {
                       fontSize: "12px",
                     }}
                   >
-                    {invitations?.event?.description}
+                    {currentInvitations?.event?.description}
                   </Typography>
                   <Box
                     sx={{
@@ -347,7 +352,9 @@ export default function InvitationPage() {
                         alignItems: "center",
                       }}
                     >
-                      <EventMapOverlay currentEvent={invitations.event} />
+                      <EventMapOverlay
+                        currentEvent={currentInvitations.event}
+                      />
                     </Box>
                   </Box>
 
@@ -374,9 +381,9 @@ export default function InvitationPage() {
                             display: { xs: "none", sm: "block" },
                           }}
                         >
-                          {invitations?.event?.startDate
+                          {currentInvitations?.event?.startDate
                             ? new Date(
-                                invitations.event.startDate
+                                currentInvitations.event.startDate
                               ).toLocaleDateString("en-US", {
                                 year: "numeric",
                                 month: "long",
@@ -391,9 +398,9 @@ export default function InvitationPage() {
                             display: { xs: "none", sm: "block" },
                           }}
                         >
-                          {invitations?.event?.startDate
+                          {currentInvitations?.event?.startDate
                             ? new Date(
-                                invitations.event.startDate
+                                currentInvitations.event.startDate
                               ).toLocaleDateString("en-US", {
                                 weekday: "long",
                                 hour: "numeric",
@@ -408,9 +415,9 @@ export default function InvitationPage() {
                             display: { xs: "block", sm: "none" },
                           }}
                         >
-                          {invitations?.event?.startDate
+                          {currentInvitations?.event?.startDate
                             ? new Date(
-                                invitations.event.startDate
+                                currentInvitations.event.startDate
                               ).toLocaleDateString("en-US", {
                                 year: "numeric",
                                 month: "long",
@@ -423,7 +430,9 @@ export default function InvitationPage() {
                         </Typography>
                       </Box>
                     </Box>
-                    <EventLocationOverlay currentEvent={invitations.event} />
+                    <EventLocationOverlay
+                      currentEvent={currentInvitations.event}
+                    />
                   </Box>
                 </Box>
 
@@ -439,6 +448,222 @@ export default function InvitationPage() {
                 </Box>
               </Box>
             )}
+          </Grid>
+
+          <Typography variant="h4" sx={{color:'white', position: "relative",my:3}}>
+            Invitation Tickets
+          </Typography>
+
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            lg={12}
+            sx={{
+              position: "relative",
+              my: 5,
+              display: { xs: "flex", sm: "grid" },
+              gridTemplateColumns: {
+                sm: "repeat(1, 1fr)",
+                md: "repeat(2, 1fr)",
+                lg: "repeat(4, 1fr)",
+              },
+              rowGap: 1,
+              columnGap: 1,
+              flexDirection: "column",
+              gap:3
+            }}
+          >
+            {invitations &&
+              invitations.map((invitation: Invitation) => (
+                <Box key={invitation.id}>
+                  <Box>
+                    <Box
+                      sx={{
+                        bgcolor: "white",
+                        color: "black",
+                        fontWeight: "bold",
+                        borderTopLeftRadius: "10px",
+                        borderTopRightRadius: "10px",
+                        maxWidth: "300px",
+                        mx: "auto",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          p: 2,
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            px: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 2,
+                            }}
+                          >
+                            <Box>
+                              <Typography
+                                fontWeight="bold"
+                                color="GrayText"
+                                fontSize={12}
+                              >
+                                Date
+                              </Typography>
+                              <Typography fontWeight="bold" fontSize={12}>
+                                {invitation?.event?.startDate?.split("T")[0] ||
+                                  "N/A"}
+                              </Typography>
+                            </Box>
+                            <Box>
+                              <Typography
+                                fontWeight="bold"
+                                color="GrayText"
+                                fontSize={12}
+                              >
+                                Location
+                              </Typography>
+                              <Typography fontWeight="bold" fontSize={12}>
+                                {invitation?.event?.location?.address?.split(
+                                  ","
+                                )[1] || "N/A"}
+                              </Typography>
+                            </Box>
+                            <Box>
+                              <Typography
+                                fontWeight="bold"
+                                color="GrayText"
+                                fontSize={12}
+                              >
+                                Payment
+                              </Typography>
+                              <Typography fontWeight="bold" fontSize={12}>
+                                Successful
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+                        <Box
+                          sx={{
+                            padding: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 2,
+                            }}
+                          >
+                            <Box>
+                              <Typography
+                                fontWeight="bold"
+                                color="GrayText"
+                                fontSize={12}
+                              >
+                                Ticket Type
+                              </Typography>
+
+                              <Chip
+                                label={invitation?.eventTicket?.type}
+                                size="small"
+                                sx={{
+                                  width: "100%",
+                                  fontSize: "12px",
+                                  height: "20px",
+                                  backgroundColor: `${invitation?.eventTicket?.color}`,
+                                }}
+                              />
+                            </Box>
+                            <Box>
+                              <Typography
+                                fontWeight="bold"
+                                color="GrayText"
+                                fontSize={12}
+                              >
+                                Time
+                              </Typography>
+                              <Typography fontWeight="bold" fontSize={12}>
+                                {invitation?.event?.startDate?.split("T")[1] ||
+                                  "N/A"}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Box>
+                      {/* Seperator */}
+                      <Box sx={{ width: "100%", position: "relative" }}>
+                        <Box
+                          sx={{
+                            borderRadius: "0 20px 20px 0",
+                            height: "40px",
+                            width: "20px",
+                            bgcolor: "black",
+                            position: "absolute",
+                            top: "-19.5px",
+                            left: "0px",
+                          }}
+                        />
+                        <hr
+                          style={{
+                            border: "1px dashed black",
+                            width: "100%",
+                          }}
+                        />
+                        <Box
+                          sx={{
+                            borderRadius: "20px 0 0 20px",
+                            height: "40px",
+                            width: "20px",
+                            bgcolor: "black",
+                            position: "absolute",
+                            top: "-19.5px",
+                            right: "0px",
+                          }}
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          gap: 2,
+                          pb: 2,
+                          pt: 1,
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            height: "100px",
+                            width: "100px",
+                          }}
+                        >
+                          <QRCodeSVG
+                            value={`http://localhost:3001/?id=${invitation.id}`}
+                            size={100}
+                          />
+                        </Box>
+                      </Box>
+                    </Box>
+                    {/* green footer */}
+                    <Box
+                      sx={{
+                        backgroundColor: "#62b58f",
+                        height: "40px",
+                        maxWidth: "300px",
+                        mx: "auto",
+                        borderBottomLeftRadius: "10px",
+                        borderBottomRightRadius: "10px",
+                      }}
+                    />
+                  </Box>
+                </Box>
+              ))}
           </Grid>
         </Grid>
       </Box>
