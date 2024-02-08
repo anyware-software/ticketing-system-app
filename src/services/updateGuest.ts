@@ -13,7 +13,6 @@ async function updateGuest({
   images,
   address,
   deleted,
-  createdAt,
 }: any) {
   // console.log(userID,email ,birthdate );
 
@@ -30,7 +29,6 @@ async function updateGuest({
       images,
       address,
       deleted,
-      createdAt,
     };
 
     const requestBody = {

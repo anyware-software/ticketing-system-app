@@ -18,7 +18,7 @@ async function createGuest(
       group:group,
       faceBookID:faceBookID,
       gender:gender,
-      createdAt: new Date(),
+      createdAt: new Date().toLocaleString(),
       createdByID:user.sub,
       createdByName: user.email,
     }

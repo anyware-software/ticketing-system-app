@@ -33,7 +33,7 @@ async function createBooking(
       phone_number: phone_number,
       guestTicket: ticketNumber,
       guestName: guestName,
-      createdAt: new Date(),
+      createdAt: new Date().toLocaleString(),
       createdByID: user.id,
       createdByName: user.name,
     };
