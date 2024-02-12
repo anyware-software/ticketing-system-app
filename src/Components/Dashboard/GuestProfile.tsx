@@ -1812,7 +1812,8 @@ export default function GuestProfile() {
                       }}
                       onClick={() => {
                         if (currentBookings?.status === BookingStatus.APPROVED) {
-                          navigate(`payment/${currentBookings?.id}`);
+                          // navigate(`payment/${currentBookings?.id}`);
+                          
                         }
                       }}
                     >

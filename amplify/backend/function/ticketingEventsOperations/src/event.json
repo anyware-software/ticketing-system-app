@@ -1,22 +1,12 @@
 {
   "body": {
-    "operationId": 3,
+    "operationId": 12,
     "bookAttributes": {
-      "status": "pending",
-      "bookingMainGuestId": "e274cbf6-31a9-4249-934d-ca9a8a3af622",
-      "bookingGuestId": "e274cbf6-31a9-4249-934d-ca9a8a3af622",
-      "bookingEventId": "335e5bb5-bf5a-46bd-8f71-a13ededbf500",
-      "bookingEventTicketId": "893d8f2f-0e1b-4a6b-bb36-6e7387b22ac2",
-      "isMainGuest": true,
-      "wave": "second",
-      "orderId": "2G1iKUz",
-      "specialNeed": false,
-      "phone_number": "01552123555",
-      "guestTicket": {
-        "number": "202402121415170544tF4Bhc"
-      },
-      "guestName": "mohamed samir",
-      "waveId": "66529a4f-636a-467b-a36e-9a4343b55fd3",
+      "guestId": "e274cbf6-31a9-4249-934d-ca9a8a3af622",
+      "eventId": "335e5bb5-bf5a-46bd-8f71-a13ededbf500",
+      "ticketId": "893d8f2f-0e1b-4a6b-bb36-6e7387b22ac2",
+      "transactionBookingId": "111dd799-8241-4606-946e-b11c7654f8ff",
+      "issuccess": true,
       "createdAt": "2024-02-12T14:15:17.054Z",
       "createdByID": "e274cbf6-31a9-4249-934d-ca9a8a3af622",
       "createdByName": "mohamed samir"

@@ -10,6 +10,7 @@ const operationIdEnum = {
     'overview': 9,
     'sendMails': 10,
     'listInvitations': 11,
+    'createTransaction': 12,
 }
 module.exports = {
     operationIdEnum
