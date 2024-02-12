@@ -111,6 +111,7 @@ exports.handler = async (event) => {
         bookingEventId: bookAttributes.bookingEventId,
         bookingEventTicketId: bookAttributes.bookingEventTicketId,
         wave: bookAttributes.wave,
+        waveId: bookAttributes.waveId,
         isMainGuest: bookAttributes.isMainGuest,
         orderId: bookAttributes.orderId,
         specialNeed: bookAttributes.specialNeed,
