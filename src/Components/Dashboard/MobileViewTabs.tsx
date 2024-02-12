@@ -667,7 +667,15 @@ export default function MobileViewTabs() {
                             wordWrap: "break-word",
                           }}
                         >
-                          {originalBirthText}
+                          {originalBirthText
+                            ? new Date(originalBirthText)
+                                .toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "numeric",
+                                  day: "numeric",
+                                })
+                                .replaceAll("/", "-")
+                            : "N/A"}
                         </span>
 
                         <IconButton
@@ -1326,8 +1334,8 @@ export default function MobileViewTabs() {
                             }}
                           >
                             {companion.guest?.name
-                            ? companion.guest.name
-                            : companion.guestName}
+                              ? companion.guest.name
+                              : companion.guestName}
                           </Typography>
                           <Typography
                             sx={{

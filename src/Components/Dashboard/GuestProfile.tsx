@@ -1257,7 +1257,15 @@ export default function GuestProfile() {
                           wordWrap: "break-word",
                         }}
                       >
-                        {originalBirthText}
+                        {originalBirthText
+                            ? new Date(originalBirthText)
+                                .toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "numeric",
+                                  day: "numeric",
+                                })
+                                .replaceAll("/", "-")
+                            : "N/A"}
                       </span>
 
                       <IconButton
