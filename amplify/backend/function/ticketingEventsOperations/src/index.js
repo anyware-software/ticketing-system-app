@@ -60,6 +60,9 @@ exports.handler = async (event) => {
           deleted: {
             eq: '0',
           },
+          published: {
+            eq: true,
+          },
           startDate: {
             gt: new Date().toISOString(),
           },
