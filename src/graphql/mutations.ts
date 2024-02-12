@@ -1116,7 +1116,6 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
     createdByID
     createdByName
     published
-    isPaid
     updatedAt
     __typename
   }
@@ -1219,7 +1218,6 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
     createdByID
     createdByName
     published
-    isPaid
     updatedAt
     __typename
   }
@@ -1322,7 +1320,6 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
     createdByID
     createdByName
     published
-    isPaid
     updatedAt
     __typename
   }
@@ -1698,7 +1695,6 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -1771,6 +1767,7 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
       __typename
     }
     rejectionComment
+    isPaid
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -1944,7 +1941,6 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -2017,6 +2013,7 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
       __typename
     }
     rejectionComment
+    isPaid
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -2190,7 +2187,6 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -2263,6 +2259,7 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
       __typename
     }
     rejectionComment
+    isPaid
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -2435,7 +2432,6 @@ export const createInvitation = /* GraphQL */ `mutation CreateInvitation(
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -2593,7 +2589,6 @@ export const updateInvitation = /* GraphQL */ `mutation UpdateInvitation(
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -2751,7 +2746,6 @@ export const deleteInvitation = /* GraphQL */ `mutation DeleteInvitation(
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -2967,7 +2961,6 @@ export const createTransaction = /* GraphQL */ `mutation CreateTransaction(
         createdByID
         createdByName
         published
-        isPaid
         updatedAt
         __typename
       }
@@ -3040,6 +3033,7 @@ export const createTransaction = /* GraphQL */ `mutation CreateTransaction(
         __typename
       }
       rejectionComment
+      isPaid
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -3215,7 +3209,6 @@ export const updateTransaction = /* GraphQL */ `mutation UpdateTransaction(
         createdByID
         createdByName
         published
-        isPaid
         updatedAt
         __typename
       }
@@ -3288,6 +3281,7 @@ export const updateTransaction = /* GraphQL */ `mutation UpdateTransaction(
         __typename
       }
       rejectionComment
+      isPaid
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -3463,7 +3457,6 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
         createdByID
         createdByName
         published
-        isPaid
         updatedAt
         __typename
       }
@@ -3536,6 +3529,7 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
         __typename
       }
       rejectionComment
+      isPaid
       updatedAt
       bookingGuestId
       bookingMainGuestId

@@ -939,7 +939,6 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
     createdByID
     createdByName
     published
-    isPaid
     updatedAt
     __typename
   }
@@ -1041,7 +1040,6 @@ export const listEvents = /* GraphQL */ `query ListEvents(
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -1409,7 +1407,6 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -1482,6 +1479,7 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
       __typename
     }
     rejectionComment
+    isPaid
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -1646,7 +1644,6 @@ export const listBookings = /* GraphQL */ `query ListBookings(
         createdByID
         createdByName
         published
-        isPaid
         updatedAt
         __typename
       }
@@ -1719,6 +1716,7 @@ export const listBookings = /* GraphQL */ `query ListBookings(
         __typename
       }
       rejectionComment
+      isPaid
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -1872,7 +1870,6 @@ export const getInvitation = /* GraphQL */ `query GetInvitation($id: ID!) {
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -2021,7 +2018,6 @@ export const listInvitations = /* GraphQL */ `query ListInvitations(
         createdByID
         createdByName
         published
-        isPaid
         updatedAt
         __typename
       }
@@ -2237,7 +2233,6 @@ export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
         createdByID
         createdByName
         published
-        isPaid
         updatedAt
         __typename
       }
@@ -2310,6 +2305,7 @@ export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
         __typename
       }
       rejectionComment
+      isPaid
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -2442,7 +2438,6 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
           createdByID
           createdByName
           published
-          isPaid
           updatedAt
           __typename
         }
@@ -2515,6 +2510,7 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
           __typename
         }
         rejectionComment
+        isPaid
         updatedAt
         bookingGuestId
         bookingMainGuestId

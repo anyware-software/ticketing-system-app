@@ -1020,7 +1020,6 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
     createdByID
     createdByName
     published
-    isPaid
     updatedAt
     __typename
   }
@@ -1120,7 +1119,6 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
     createdByID
     createdByName
     published
-    isPaid
     updatedAt
     __typename
   }
@@ -1220,7 +1218,6 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
     createdByID
     createdByName
     published
-    isPaid
     updatedAt
     __typename
   }
@@ -1587,7 +1584,6 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -1660,6 +1656,7 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
       __typename
     }
     rejectionComment
+    isPaid
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -1830,7 +1827,6 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -1903,6 +1899,7 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
       __typename
     }
     rejectionComment
+    isPaid
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -2073,7 +2070,6 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -2146,6 +2142,7 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
       __typename
     }
     rejectionComment
+    isPaid
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -2314,7 +2311,6 @@ export const onCreateInvitation = /* GraphQL */ `subscription OnCreateInvitation
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -2471,7 +2467,6 @@ export const onUpdateInvitation = /* GraphQL */ `subscription OnUpdateInvitation
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -2628,7 +2623,6 @@ export const onDeleteInvitation = /* GraphQL */ `subscription OnDeleteInvitation
       createdByID
       createdByName
       published
-      isPaid
       updatedAt
       __typename
     }
@@ -2843,7 +2837,6 @@ export const onCreateTransaction = /* GraphQL */ `subscription OnCreateTransacti
         createdByID
         createdByName
         published
-        isPaid
         updatedAt
         __typename
       }
@@ -2916,6 +2909,7 @@ export const onCreateTransaction = /* GraphQL */ `subscription OnCreateTransacti
         __typename
       }
       rejectionComment
+      isPaid
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -3090,7 +3084,6 @@ export const onUpdateTransaction = /* GraphQL */ `subscription OnUpdateTransacti
         createdByID
         createdByName
         published
-        isPaid
         updatedAt
         __typename
       }
@@ -3163,6 +3156,7 @@ export const onUpdateTransaction = /* GraphQL */ `subscription OnUpdateTransacti
         __typename
       }
       rejectionComment
+      isPaid
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -3337,7 +3331,6 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
         createdByID
         createdByName
         published
-        isPaid
         updatedAt
         __typename
       }
@@ -3410,6 +3403,7 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
         __typename
       }
       rejectionComment
+      isPaid
       updatedAt
       bookingGuestId
       bookingMainGuestId

@@ -968,7 +968,6 @@ export type CreateEventInput = {
   createdByID: string,
   createdByName: string,
   published: boolean,
-  isPaid?: boolean | null,
 };
 
 export type LocationInput = {
@@ -1002,7 +1001,6 @@ export type ModelEventConditionInput = {
   createdByID?: ModelStringInput | null,
   createdByName?: ModelStringInput | null,
   published?: ModelBooleanInput | null,
-  isPaid?: ModelBooleanInput | null,
   and?: Array< ModelEventConditionInput | null > | null,
   or?: Array< ModelEventConditionInput | null > | null,
   not?: ModelEventConditionInput | null,
@@ -1029,7 +1027,6 @@ export type Event = {
   createdByID: string,
   createdByName: string,
   published: boolean,
-  isPaid?: boolean | null,
   updatedAt: string,
 };
 
@@ -1137,7 +1134,6 @@ export type UpdateEventInput = {
   createdByID?: string | null,
   createdByName?: string | null,
   published?: boolean | null,
-  isPaid?: boolean | null,
 };
 
 export type DeleteEventInput = {
@@ -1315,6 +1311,7 @@ export type CreateBookingInput = {
   createdByID: string,
   createdByName: string,
   rejectionComment?: string | null,
+  isPaid?: boolean | null,
   bookingGuestId?: string | null,
   bookingMainGuestId: string,
   bookingEventId: string,
@@ -1344,6 +1341,7 @@ export type ModelBookingConditionInput = {
   createdByID?: ModelStringInput | null,
   createdByName?: ModelStringInput | null,
   rejectionComment?: ModelStringInput | null,
+  isPaid?: ModelBooleanInput | null,
   and?: Array< ModelBookingConditionInput | null > | null,
   or?: Array< ModelBookingConditionInput | null > | null,
   not?: ModelBookingConditionInput | null,
@@ -1380,6 +1378,7 @@ export type Booking = {
   createdByName: string,
   rejectionReason?: RejectReason | null,
   rejectionComment?: string | null,
+  isPaid?: boolean | null,
   updatedAt: string,
   bookingGuestId?: string | null,
   bookingMainGuestId: string,
@@ -1426,6 +1425,7 @@ export type UpdateBookingInput = {
   createdByID?: string | null,
   createdByName?: string | null,
   rejectionComment?: string | null,
+  isPaid?: boolean | null,
   bookingGuestId?: string | null,
   bookingMainGuestId?: string | null,
   bookingEventId?: string | null,
@@ -1951,7 +1951,6 @@ export type ModelEventFilterInput = {
   createdByID?: ModelStringInput | null,
   createdByName?: ModelStringInput | null,
   published?: ModelBooleanInput | null,
-  isPaid?: ModelBooleanInput | null,
   and?: Array< ModelEventFilterInput | null > | null,
   or?: Array< ModelEventFilterInput | null > | null,
   not?: ModelEventFilterInput | null,
@@ -2026,6 +2025,7 @@ export type ModelBookingFilterInput = {
   createdByID?: ModelStringInput | null,
   createdByName?: ModelStringInput | null,
   rejectionComment?: ModelStringInput | null,
+  isPaid?: ModelBooleanInput | null,
   and?: Array< ModelBookingFilterInput | null > | null,
   or?: Array< ModelBookingFilterInput | null > | null,
   not?: ModelBookingFilterInput | null,
@@ -2389,7 +2389,6 @@ export type ModelSubscriptionEventFilterInput = {
   createdByID?: ModelSubscriptionStringInput | null,
   createdByName?: ModelSubscriptionStringInput | null,
   published?: ModelSubscriptionBooleanInput | null,
-  isPaid?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionEventFilterInput | null > | null,
   or?: Array< ModelSubscriptionEventFilterInput | null > | null,
 };
@@ -2465,6 +2464,7 @@ export type ModelSubscriptionBookingFilterInput = {
   createdByID?: ModelSubscriptionStringInput | null,
   createdByName?: ModelSubscriptionStringInput | null,
   rejectionComment?: ModelSubscriptionStringInput | null,
+  isPaid?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionBookingFilterInput | null > | null,
   or?: Array< ModelSubscriptionBookingFilterInput | null > | null,
 };
@@ -3584,7 +3584,6 @@ export type CreateEventMutation = {
     createdByID: string,
     createdByName: string,
     published: boolean,
-    isPaid?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -3686,7 +3685,6 @@ export type UpdateEventMutation = {
     createdByID: string,
     createdByName: string,
     published: boolean,
-    isPaid?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -3788,7 +3786,6 @@ export type DeleteEventMutation = {
     createdByID: string,
     createdByName: string,
     published: boolean,
-    isPaid?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -4158,7 +4155,6 @@ export type CreateBookingMutation = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -4230,6 +4226,7 @@ export type CreateBookingMutation = {
       updatedByName?: string | null,
     } | null,
     rejectionComment?: string | null,
+    isPaid?: boolean | null,
     updatedAt: string,
     bookingGuestId?: string | null,
     bookingMainGuestId: string,
@@ -4403,7 +4400,6 @@ export type UpdateBookingMutation = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -4475,6 +4471,7 @@ export type UpdateBookingMutation = {
       updatedByName?: string | null,
     } | null,
     rejectionComment?: string | null,
+    isPaid?: boolean | null,
     updatedAt: string,
     bookingGuestId?: string | null,
     bookingMainGuestId: string,
@@ -4648,7 +4645,6 @@ export type DeleteBookingMutation = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -4720,6 +4716,7 @@ export type DeleteBookingMutation = {
       updatedByName?: string | null,
     } | null,
     rejectionComment?: string | null,
+    isPaid?: boolean | null,
     updatedAt: string,
     bookingGuestId?: string | null,
     bookingMainGuestId: string,
@@ -4889,7 +4886,6 @@ export type CreateInvitationMutation = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -5046,7 +5042,6 @@ export type UpdateInvitationMutation = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -5203,7 +5198,6 @@ export type DeleteInvitationMutation = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -5419,7 +5413,6 @@ export type CreateTransactionMutation = {
         createdByID: string,
         createdByName: string,
         published: boolean,
-        isPaid?: boolean | null,
         updatedAt: string,
       },
       eventTicket:  {
@@ -5491,6 +5484,7 @@ export type CreateTransactionMutation = {
         updatedByName?: string | null,
       } | null,
       rejectionComment?: string | null,
+      isPaid?: boolean | null,
       updatedAt: string,
       bookingGuestId?: string | null,
       bookingMainGuestId: string,
@@ -5666,7 +5660,6 @@ export type UpdateTransactionMutation = {
         createdByID: string,
         createdByName: string,
         published: boolean,
-        isPaid?: boolean | null,
         updatedAt: string,
       },
       eventTicket:  {
@@ -5738,6 +5731,7 @@ export type UpdateTransactionMutation = {
         updatedByName?: string | null,
       } | null,
       rejectionComment?: string | null,
+      isPaid?: boolean | null,
       updatedAt: string,
       bookingGuestId?: string | null,
       bookingMainGuestId: string,
@@ -5913,7 +5907,6 @@ export type DeleteTransactionMutation = {
         createdByID: string,
         createdByName: string,
         published: boolean,
-        isPaid?: boolean | null,
         updatedAt: string,
       },
       eventTicket:  {
@@ -5985,6 +5978,7 @@ export type DeleteTransactionMutation = {
         updatedByName?: string | null,
       } | null,
       rejectionComment?: string | null,
+      isPaid?: boolean | null,
       updatedAt: string,
       bookingGuestId?: string | null,
       bookingMainGuestId: string,
@@ -6925,7 +6919,6 @@ export type GetEventQuery = {
     createdByID: string,
     createdByName: string,
     published: boolean,
-    isPaid?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -7030,7 +7023,6 @@ export type ListEventsQuery = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
@@ -7395,7 +7387,6 @@ export type GetBookingQuery = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -7467,6 +7458,7 @@ export type GetBookingQuery = {
       updatedByName?: string | null,
     } | null,
     rejectionComment?: string | null,
+    isPaid?: boolean | null,
     updatedAt: string,
     bookingGuestId?: string | null,
     bookingMainGuestId: string,
@@ -7632,7 +7624,6 @@ export type ListBookingsQuery = {
         createdByID: string,
         createdByName: string,
         published: boolean,
-        isPaid?: boolean | null,
         updatedAt: string,
       },
       eventTicket:  {
@@ -7704,6 +7695,7 @@ export type ListBookingsQuery = {
         updatedByName?: string | null,
       } | null,
       rejectionComment?: string | null,
+      isPaid?: boolean | null,
       updatedAt: string,
       bookingGuestId?: string | null,
       bookingMainGuestId: string,
@@ -7858,7 +7850,6 @@ export type GetInvitationQuery = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -8007,7 +7998,6 @@ export type ListInvitationsQuery = {
         createdByID: string,
         createdByName: string,
         published: boolean,
-        isPaid?: boolean | null,
         updatedAt: string,
       },
       eventTicket:  {
@@ -8224,7 +8214,6 @@ export type GetTransactionQuery = {
         createdByID: string,
         createdByName: string,
         published: boolean,
-        isPaid?: boolean | null,
         updatedAt: string,
       },
       eventTicket:  {
@@ -8296,6 +8285,7 @@ export type GetTransactionQuery = {
         updatedByName?: string | null,
       } | null,
       rejectionComment?: string | null,
+      isPaid?: boolean | null,
       updatedAt: string,
       bookingGuestId?: string | null,
       bookingMainGuestId: string,
@@ -8429,7 +8419,6 @@ export type ListTransactionsQuery = {
           createdByID: string,
           createdByName: string,
           published: boolean,
-          isPaid?: boolean | null,
           updatedAt: string,
         },
         eventTicket:  {
@@ -8501,6 +8490,7 @@ export type ListTransactionsQuery = {
           updatedByName?: string | null,
         } | null,
         rejectionComment?: string | null,
+        isPaid?: boolean | null,
         updatedAt: string,
         bookingGuestId?: string | null,
         bookingMainGuestId: string,
@@ -9551,7 +9541,6 @@ export type OnCreateEventSubscription = {
     createdByID: string,
     createdByName: string,
     published: boolean,
-    isPaid?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -9652,7 +9641,6 @@ export type OnUpdateEventSubscription = {
     createdByID: string,
     createdByName: string,
     published: boolean,
-    isPaid?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -9753,7 +9741,6 @@ export type OnDeleteEventSubscription = {
     createdByID: string,
     createdByName: string,
     published: boolean,
-    isPaid?: boolean | null,
     updatedAt: string,
   } | null,
 };
@@ -10116,7 +10103,6 @@ export type OnCreateBookingSubscription = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -10188,6 +10174,7 @@ export type OnCreateBookingSubscription = {
       updatedByName?: string | null,
     } | null,
     rejectionComment?: string | null,
+    isPaid?: boolean | null,
     updatedAt: string,
     bookingGuestId?: string | null,
     bookingMainGuestId: string,
@@ -10360,7 +10347,6 @@ export type OnUpdateBookingSubscription = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -10432,6 +10418,7 @@ export type OnUpdateBookingSubscription = {
       updatedByName?: string | null,
     } | null,
     rejectionComment?: string | null,
+    isPaid?: boolean | null,
     updatedAt: string,
     bookingGuestId?: string | null,
     bookingMainGuestId: string,
@@ -10604,7 +10591,6 @@ export type OnDeleteBookingSubscription = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -10676,6 +10662,7 @@ export type OnDeleteBookingSubscription = {
       updatedByName?: string | null,
     } | null,
     rejectionComment?: string | null,
+    isPaid?: boolean | null,
     updatedAt: string,
     bookingGuestId?: string | null,
     bookingMainGuestId: string,
@@ -10841,7 +10828,6 @@ export type OnCreateInvitationSubscription = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -10997,7 +10983,6 @@ export type OnUpdateInvitationSubscription = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -11153,7 +11138,6 @@ export type OnDeleteInvitationSubscription = {
       createdByID: string,
       createdByName: string,
       published: boolean,
-      isPaid?: boolean | null,
       updatedAt: string,
     },
     eventTicket:  {
@@ -11368,7 +11352,6 @@ export type OnCreateTransactionSubscription = {
         createdByID: string,
         createdByName: string,
         published: boolean,
-        isPaid?: boolean | null,
         updatedAt: string,
       },
       eventTicket:  {
@@ -11440,6 +11423,7 @@ export type OnCreateTransactionSubscription = {
         updatedByName?: string | null,
       } | null,
       rejectionComment?: string | null,
+      isPaid?: boolean | null,
       updatedAt: string,
       bookingGuestId?: string | null,
       bookingMainGuestId: string,
@@ -11614,7 +11598,6 @@ export type OnUpdateTransactionSubscription = {
         createdByID: string,
         createdByName: string,
         published: boolean,
-        isPaid?: boolean | null,
         updatedAt: string,
       },
       eventTicket:  {
@@ -11686,6 +11669,7 @@ export type OnUpdateTransactionSubscription = {
         updatedByName?: string | null,
       } | null,
       rejectionComment?: string | null,
+      isPaid?: boolean | null,
       updatedAt: string,
       bookingGuestId?: string | null,
       bookingMainGuestId: string,
@@ -11860,7 +11844,6 @@ export type OnDeleteTransactionSubscription = {
         createdByID: string,
         createdByName: string,
         published: boolean,
-        isPaid?: boolean | null,
         updatedAt: string,
       },
       eventTicket:  {
@@ -11932,6 +11915,7 @@ export type OnDeleteTransactionSubscription = {
         updatedByName?: string | null,
       } | null,
       rejectionComment?: string | null,
+      isPaid?: boolean | null,
       updatedAt: string,
       bookingGuestId?: string | null,
       bookingMainGuestId: string,
