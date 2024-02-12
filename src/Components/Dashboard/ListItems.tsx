@@ -191,7 +191,11 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
 
       <ListItemButton
         selected={selectedItem === "Sign Out"}
-        onClick={() => handleItemClick("Sign Out")}
+        // onClick={() => handleItemClick("Sign Out")}
+        onClick={() => {
+          handleLogOut();
+          handleItemClick("Sign Out");
+        }}
       >
         <ListItemIcon>
           <LoginIcon
