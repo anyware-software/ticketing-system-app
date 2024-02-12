@@ -118,6 +118,7 @@ exports.handler = async (event) => {
         guestTicket: bookAttributes.guestTicket,
         overallStatus: bookAttributes.overallStatus,
         guestName: bookAttributes.guestName,
+        isPaid: false,
         deleted: '0',
         createdAt: bookAttributes.createdAt,
         createdByID: bookAttributes.createdByID,
@@ -415,6 +416,8 @@ exports.handler = async (event) => {
 
       let result = bookings.reduce(
         (result, booking) => {
+          // some of these if condetions should check if the booking is paid
+          // do this after payments is implemented
           if (booking.guest) {
             if (!result.gender[booking.guest.gender]) {
               result.gender[booking.guest.gender] = 1;
@@ -459,8 +462,16 @@ exports.handler = async (event) => {
             }
           }
 
+          if (booking.waveId) {
+            if (!result.waves[booking.waveId]) {
+              result.waves[booking.waveId] = 1;
+            } else {
+              result.waves[booking.waveId]++;
+            }
+          }
+
           // this should be event total revenue not number
-          // update it after payment
+          // update it after payment is implemented
           if (booking.event) {
             if (!result.events[booking.event.name]) {
               result.events[booking.event.name] = 1;
@@ -477,6 +488,7 @@ exports.handler = async (event) => {
           ticketsTypes: {},
           ticketsStatuses: {},
           events: {},
+          waves: {},
         },
       );
 

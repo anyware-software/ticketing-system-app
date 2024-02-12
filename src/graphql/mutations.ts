@@ -1768,6 +1768,7 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
     }
     rejectionComment
     isPaid
+    paidAmount
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -2014,6 +2015,7 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
     }
     rejectionComment
     isPaid
+    paidAmount
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -2260,6 +2262,7 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
     }
     rejectionComment
     isPaid
+    paidAmount
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -3034,6 +3037,7 @@ export const createTransaction = /* GraphQL */ `mutation CreateTransaction(
       }
       rejectionComment
       isPaid
+      paidAmount
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -3043,6 +3047,11 @@ export const createTransaction = /* GraphQL */ `mutation CreateTransaction(
       __typename
     }
     issuccess
+    failureReason
+    currency
+    amount_cents
+    refund
+    refunded_amount_cents
     createdAt
     createdByID
     createdByName
@@ -3282,6 +3291,7 @@ export const updateTransaction = /* GraphQL */ `mutation UpdateTransaction(
       }
       rejectionComment
       isPaid
+      paidAmount
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -3291,6 +3301,11 @@ export const updateTransaction = /* GraphQL */ `mutation UpdateTransaction(
       __typename
     }
     issuccess
+    failureReason
+    currency
+    amount_cents
+    refund
+    refunded_amount_cents
     createdAt
     createdByID
     createdByName
@@ -3530,6 +3545,7 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
       }
       rejectionComment
       isPaid
+      paidAmount
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -3539,6 +3555,11 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
       __typename
     }
     issuccess
+    failureReason
+    currency
+    amount_cents
+    refund
+    refunded_amount_cents
     createdAt
     createdByID
     createdByName

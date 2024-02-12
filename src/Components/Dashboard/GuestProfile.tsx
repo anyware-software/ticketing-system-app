@@ -1811,17 +1811,15 @@ export default function GuestProfile() {
                         display: { xs: "none", sm: "block", lg: "block" },
                       }}
                       onClick={() => {
-                        if (
-                          currentBookings?.status === BookingStatus.APPROVED
-                        ) {
+                        if (currentBookings?.status === BookingStatus.APPROVED) {
                           navigate(`payment/${currentBookings?.id}`);
                         }
                       }}
                     >
                       {/*  */}
-                      {currentBookings?.status === BookingStatus.APPROVED
-                        ? "Pay Now"
-                        : "VIEW TICKET(S)"}
+                      {currentBookings?.isPaid === true
+                        ? "VIEW TICKET(S)"
+                        : "Pay Now"}
                     </Button>
                   )}
                 </Box>

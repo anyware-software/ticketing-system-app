@@ -499,7 +499,7 @@ type Booking
   event: Event! @hasOne
   eventTicket: EventTicket! @hasOne
   wave: String
-  waveId: ID
+  waveId: ID!
   isMainGuest: Boolean
   orderId: String
   statusUpdatedByID: String
@@ -516,6 +516,7 @@ type Booking
   rejectionReason: RejectReason @hasOne
   rejectionComment: String
   isPaid: Boolean
+  paidAmount: Float
 }
 
 type GuestTicket {
@@ -589,6 +590,11 @@ type Transaction
   ticketId: String
   booking: Booking @hasOne
   issuccess: Boolean
+  failureReason: String
+  currency: String
+  amount_cents: String
+  refund: Boolean
+  refunded_amount_cents: String
   createdAt: String
   createdByID: String
   createdByName: String

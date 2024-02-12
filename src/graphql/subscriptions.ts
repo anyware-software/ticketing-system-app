@@ -1657,6 +1657,7 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
     }
     rejectionComment
     isPaid
+    paidAmount
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -1900,6 +1901,7 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
     }
     rejectionComment
     isPaid
+    paidAmount
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -2143,6 +2145,7 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
     }
     rejectionComment
     isPaid
+    paidAmount
     updatedAt
     bookingGuestId
     bookingMainGuestId
@@ -2910,6 +2913,7 @@ export const onCreateTransaction = /* GraphQL */ `subscription OnCreateTransacti
       }
       rejectionComment
       isPaid
+      paidAmount
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -2919,6 +2923,11 @@ export const onCreateTransaction = /* GraphQL */ `subscription OnCreateTransacti
       __typename
     }
     issuccess
+    failureReason
+    currency
+    amount_cents
+    refund
+    refunded_amount_cents
     createdAt
     createdByID
     createdByName
@@ -3157,6 +3166,7 @@ export const onUpdateTransaction = /* GraphQL */ `subscription OnUpdateTransacti
       }
       rejectionComment
       isPaid
+      paidAmount
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -3166,6 +3176,11 @@ export const onUpdateTransaction = /* GraphQL */ `subscription OnUpdateTransacti
       __typename
     }
     issuccess
+    failureReason
+    currency
+    amount_cents
+    refund
+    refunded_amount_cents
     createdAt
     createdByID
     createdByName
@@ -3404,6 +3419,7 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
       }
       rejectionComment
       isPaid
+      paidAmount
       updatedAt
       bookingGuestId
       bookingMainGuestId
@@ -3413,6 +3429,11 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
       __typename
     }
     issuccess
+    failureReason
+    currency
+    amount_cents
+    refund
+    refunded_amount_cents
     createdAt
     createdByID
     createdByName

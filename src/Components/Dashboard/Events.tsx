@@ -71,6 +71,7 @@ interface EventTickets {
   price: number;
   startDate: string;
   waves: {
+    id: string;
     AutomaticShift: boolean;
     active: boolean;
     endDate: string;
@@ -205,9 +206,10 @@ export default function Events() {
     ticketId: string,
     ticketType: string,
     waveName: string,
-    wavePrice: number
+    wavePrice: number,
+    waveId: string,
   ) => {
-    const countKey = `${ticketId}-${ticketType}-${waveName}-${wavePrice}`;
+    const countKey = `${ticketId}-${ticketType}-${waveName}-${wavePrice}-${waveId}`;
     setWaveCounts((prevCounts) => ({
       ...prevCounts,
       [countKey]: (prevCounts[countKey] || 0) + 1,
@@ -218,9 +220,10 @@ export default function Events() {
     ticketId: string,
     ticketType: string,
     waveName: string,
-    wavePrice: number
+    wavePrice: number,
+    waveId: string,
   ) => {
-    const countKey = `${ticketId}-${ticketType}-${waveName}-${wavePrice}`;
+    const countKey = `${ticketId}-${ticketType}-${waveName}-${wavePrice}-${waveId}`;    
     setWaveCounts((prevCounts) => ({
       ...prevCounts,
       [countKey]: Math.max((prevCounts[countKey] || 0) - 1, 0),
@@ -236,15 +239,17 @@ export default function Events() {
     .filter((countKey) => waveCounts[countKey] > 0)
     .map((countKey) => {
       const parts = countKey.split("-");
-      const ticketId = parts.slice(0, -3).join("-");
-      const ticketName = parts[parts.length - 3];
-      const waveName = parts[parts.length - 2];
-      const wavePrice = parts[parts.length - 1];
+      const ticketId = parts.slice(0, -8).join("-");    
+      const ticketName = parts[parts.length - 8];
+      const waveName = parts[parts.length - 7];
+      const wavePrice = parts[parts.length - 6];
+      const waveId = parts.slice(8, 13).join("-");
       return {
         ticketId,
         ticketName,
         waveName,
         wavePrice,
+        waveId,
         count: waveCounts[countKey],
       };
     });
@@ -258,6 +263,7 @@ export default function Events() {
       ticketType: string;
       ticketColor: string;
       waveName: string;
+      waveId: string;
     };
   }>({});
   const [phones, setPhones] = useState<string[]>([]);
@@ -282,13 +288,15 @@ export default function Events() {
     ticketColor: string,
     index: number,
     field: "name" | "phone",
-    value: string
+    value: string,
+    waveId: string,
   ) => {
-    const key = `${ticketId}-${waveName}-${index}`;
+    const key = `${ticketId}-${waveName}-${waveId}-${index}`;
     const parts = key.split("-");
-    const extractedTicketId = parts.slice(0, -2).join("-");
-    const extractedWaveName = parts[parts.length - 2];
-
+    const extractedTicketId = parts.slice(0, -7).join("-");
+    const extractedWaveName = parts[parts.length - 7];
+    const extractedWaveId = parts.slice(6,11).join("-");
+    
     setBookingRequests((prevFormData) => ({
       ...prevFormData,
       [key]: {
@@ -296,6 +304,7 @@ export default function Events() {
         customKey: key,
         ticketId: extractedTicketId,
         waveName: extractedWaveName,
+        waveId: extractedWaveId,
         ticketType: ticketType,
         ticketColor: ticketColor,
         [field]: value,
@@ -394,7 +403,9 @@ export default function Events() {
         orderId,
         isSpecial,
         user.phone_number,
-        { number: generateTicketNumber() }
+        { number: generateTicketNumber() },
+        user.name,
+        eventForMainGuest?.waveId,
       );
       // console.log(bookingRequest);
       setTicketChosen("book");
@@ -420,7 +431,9 @@ export default function Events() {
         orderId,
         isSpecial,
         validGuest.phone_number,
-        { number: generateTicketNumber() }
+        { number: generateTicketNumber() },
+        user.name,
+        eventForValidGuest?.waveId,
       );
       // console.log(bookingRequest);
     });
@@ -441,7 +454,8 @@ export default function Events() {
         isSpecial,
         notValidGuest?.phone,
         { number: generateTicketNumber() },
-        notValidGuest?.name
+        notValidGuest?.name,
+        eventForNotValidGuest?.waveId,
       );
       // console.log(bookingRequest);
       sendSmsToUser(
@@ -487,7 +501,7 @@ export default function Events() {
 
     return currentDate >= startDateObj && currentDate <= endDateObj;
   };
-  // console.log(notValidGuests);
+  // console.log(selectedWaves);
 
   if (loading)
     return (
@@ -1196,13 +1210,14 @@ export default function Events() {
                                             ticket.id,
                                             ticket.type,
                                             wave.name,
-                                            wave.price
+                                            wave.price,
+                                            wave.id,
                                           )
                                         }
                                       />
                                       <Typography sx={{ color: "white" }}>
                                         {waveCounts[
-                                          `${ticket.id}-${ticket.type}-${wave.name}-${wave.price}`
+                                          `${ticket.id}-${ticket.type}-${wave.name}-${wave.price}-${wave.id}`
                                         ] || 0}
                                       </Typography>
 
@@ -1215,7 +1230,8 @@ export default function Events() {
                                             ticket.id,
                                             ticket.type,
                                             wave.name,
-                                            wave.price
+                                            wave.price,
+                                            wave.id
                                           )
                                         }
                                       />
@@ -1323,7 +1339,8 @@ export default function Events() {
                                             ticket.color,
                                             index,
                                             "name",
-                                            e.target.value
+                                            e.target.value,
+                                            wave.waveId,
                                           )
                                         }
                                         sx={{
@@ -1359,7 +1376,8 @@ export default function Events() {
                                             ticket.color,
                                             index,
                                             "phone",
-                                            e.target.value
+                                            e.target.value,
+                                            wave.waveId,
                                           )
                                         }
                                         sx={{

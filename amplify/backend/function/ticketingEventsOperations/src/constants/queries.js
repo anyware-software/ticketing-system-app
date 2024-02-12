@@ -27,6 +27,61 @@ const getEvent = /* GraphQL */ `
       gallery
       visibleTo
       tickets {
+        items {
+          id
+          type
+          cashlessCredit
+          description
+          waves {
+            id
+            name
+            price
+            startDate
+            endDate
+            active
+            quota
+            AutomaticShift
+            __typename
+          }
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
+        nextToken
+        __typename
+      }
+      invitationLimit {
+        items {
+          id
+          adminID
+          quota
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventInvitationLimitId
+          __typename
+        }
         nextToken
         __typename
       }
@@ -34,6 +89,7 @@ const getEvent = /* GraphQL */ `
       createdAt
       createdByID
       createdByName
+      published
       updatedAt
       __typename
     }
@@ -52,15 +108,90 @@ const listEvents = /* GraphQL */ `
         description
         startDate
         endDate
+        location {
+          address
+          coordinates {
+            lat
+            lng
+            __typename
+          }
+          __typename
+        }
         todoList
+        eventComments {
+          image
+          name
+          message
+          __typename
+        }
         map
         image
         gallery
         visibleTo
+        tickets {
+          items {
+            id
+            type
+            cashlessCredit
+            description
+            waves {
+              id
+              name
+              price
+              startDate
+              endDate
+              active
+              quota
+              AutomaticShift
+              __typename
+            }
+            color
+            paymentRules
+            approvalRule
+            showAll
+            showOnHold
+            onHoldDisplayText
+            showSoldOut
+            soldOutDisplayText
+            setAvailable
+            availableAtDate
+            allowTransferred
+            transferredAprroval
+            transferredSameGender
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventTicketsId
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        invitationLimit {
+          items {
+            id
+            adminID
+            quota
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventInvitationLimitId
+            __typename
+          }
+          nextToken
+          __typename
+        }
         deleted
         createdAt
         createdByID
         createdByName
+        published
         updatedAt
         __typename
       }
@@ -90,6 +221,7 @@ const byEventID = /* GraphQL */ `
         cashlessCredit
         description
         waves {
+          id
           name
           price
           startDate
@@ -134,6 +266,7 @@ const createBooking = /* GraphQL */ `
     createBooking(input: $input, condition: $condition) {
       id
       status
+      overallStatus
       guest {
         id
         name
@@ -204,6 +337,11 @@ const createBooking = /* GraphQL */ `
         endDate
         location {
           address
+          coordinates {
+            lat
+            lng
+            __typename
+          }
           __typename
         }
         todoList
@@ -218,6 +356,61 @@ const createBooking = /* GraphQL */ `
         gallery
         visibleTo
         tickets {
+          items {
+            id
+            type
+            cashlessCredit
+            description
+            waves {
+              id
+              name
+              price
+              startDate
+              endDate
+              active
+              quota
+              AutomaticShift
+              __typename
+            }
+            color
+            paymentRules
+            approvalRule
+            showAll
+            showOnHold
+            onHoldDisplayText
+            showSoldOut
+            soldOutDisplayText
+            setAvailable
+            availableAtDate
+            allowTransferred
+            transferredAprroval
+            transferredSameGender
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventTicketsId
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        invitationLimit {
+          items {
+            id
+            adminID
+            quota
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventInvitationLimitId
+            __typename
+          }
           nextToken
           __typename
         }
@@ -225,6 +418,7 @@ const createBooking = /* GraphQL */ `
         createdAt
         createdByID
         createdByName
+        published
         updatedAt
         __typename
       }
@@ -234,6 +428,7 @@ const createBooking = /* GraphQL */ `
         cashlessCredit
         description
         waves {
+          id
           name
           price
           startDate
@@ -266,6 +461,7 @@ const createBooking = /* GraphQL */ `
         __typename
       }
       wave
+      waveId
       isMainGuest
       orderId
       statusUpdatedByID
@@ -282,11 +478,27 @@ const createBooking = /* GraphQL */ `
       createdAt
       createdByID
       createdByName
+      rejectionReason {
+        id
+        content
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        updatedByID
+        updatedByName
+        __typename
+      }
+      rejectionComment
+      isPaid
+      paidAmount
       updatedAt
       bookingGuestId
       bookingMainGuestId
       bookingEventId
       bookingEventTicketId
+      bookingRejectionReasonId
       __typename
     }
   }
@@ -296,6 +508,7 @@ const getBooking = /* GraphQL */ `
     getBooking(id: $id) {
       id
       status
+      overallStatus
       guest {
         id
         name
@@ -366,6 +579,11 @@ const getBooking = /* GraphQL */ `
         endDate
         location {
           address
+          coordinates {
+            lat
+            lng
+            __typename
+          }
           __typename
         }
         todoList
@@ -380,6 +598,61 @@ const getBooking = /* GraphQL */ `
         gallery
         visibleTo
         tickets {
+          items {
+            id
+            type
+            cashlessCredit
+            description
+            waves {
+              id
+              name
+              price
+              startDate
+              endDate
+              active
+              quota
+              AutomaticShift
+              __typename
+            }
+            color
+            paymentRules
+            approvalRule
+            showAll
+            showOnHold
+            onHoldDisplayText
+            showSoldOut
+            soldOutDisplayText
+            setAvailable
+            availableAtDate
+            allowTransferred
+            transferredAprroval
+            transferredSameGender
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventTicketsId
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        invitationLimit {
+          items {
+            id
+            adminID
+            quota
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventInvitationLimitId
+            __typename
+          }
           nextToken
           __typename
         }
@@ -387,6 +660,7 @@ const getBooking = /* GraphQL */ `
         createdAt
         createdByID
         createdByName
+        published
         updatedAt
         __typename
       }
@@ -396,6 +670,7 @@ const getBooking = /* GraphQL */ `
         cashlessCredit
         description
         waves {
+          id
           name
           price
           startDate
@@ -428,6 +703,7 @@ const getBooking = /* GraphQL */ `
         __typename
       }
       wave
+      waveId
       isMainGuest
       orderId
       statusUpdatedByID
@@ -435,16 +711,36 @@ const getBooking = /* GraphQL */ `
       statusUpdatedAt
       specialNeed
       phone_number
+      guestTicket {
+        number
+        __typename
+      }
       guestName
       deleted
       createdAt
       createdByID
       createdByName
+      rejectionReason {
+        id
+        content
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        updatedByID
+        updatedByName
+        __typename
+      }
+      rejectionComment
+      isPaid
+      paidAmount
       updatedAt
       bookingGuestId
       bookingMainGuestId
       bookingEventId
       bookingEventTicketId
+      bookingRejectionReasonId
       __typename
     }
   }
@@ -457,6 +753,7 @@ const updateBooking = /* GraphQL */ `
     updateBooking(input: $input, condition: $condition) {
       id
       status
+      overallStatus
       guest {
         id
         name
@@ -527,6 +824,11 @@ const updateBooking = /* GraphQL */ `
         endDate
         location {
           address
+          coordinates {
+            lat
+            lng
+            __typename
+          }
           __typename
         }
         todoList
@@ -541,6 +843,61 @@ const updateBooking = /* GraphQL */ `
         gallery
         visibleTo
         tickets {
+          items {
+            id
+            type
+            cashlessCredit
+            description
+            waves {
+              id
+              name
+              price
+              startDate
+              endDate
+              active
+              quota
+              AutomaticShift
+              __typename
+            }
+            color
+            paymentRules
+            approvalRule
+            showAll
+            showOnHold
+            onHoldDisplayText
+            showSoldOut
+            soldOutDisplayText
+            setAvailable
+            availableAtDate
+            allowTransferred
+            transferredAprroval
+            transferredSameGender
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventTicketsId
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        invitationLimit {
+          items {
+            id
+            adminID
+            quota
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventInvitationLimitId
+            __typename
+          }
           nextToken
           __typename
         }
@@ -548,6 +905,7 @@ const updateBooking = /* GraphQL */ `
         createdAt
         createdByID
         createdByName
+        published
         updatedAt
         __typename
       }
@@ -557,6 +915,7 @@ const updateBooking = /* GraphQL */ `
         cashlessCredit
         description
         waves {
+          id
           name
           price
           startDate
@@ -589,6 +948,7 @@ const updateBooking = /* GraphQL */ `
         __typename
       }
       wave
+      waveId
       isMainGuest
       orderId
       statusUpdatedByID
@@ -596,16 +956,36 @@ const updateBooking = /* GraphQL */ `
       statusUpdatedAt
       specialNeed
       phone_number
+      guestTicket {
+        number
+        __typename
+      }
       guestName
       deleted
       createdAt
       createdByID
       createdByName
+      rejectionReason {
+        id
+        content
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        updatedByID
+        updatedByName
+        __typename
+      }
+      rejectionComment
+      isPaid
+      paidAmount
       updatedAt
       bookingGuestId
       bookingMainGuestId
       bookingEventId
       bookingEventTicketId
+      bookingRejectionReasonId
       __typename
     }
   }
@@ -620,6 +1000,7 @@ const listBookings = /* GraphQL */ `
       items {
         id
         status
+        overallStatus
         guest {
           id
           name
@@ -709,6 +1090,50 @@ const listBookings = /* GraphQL */ `
           gallery
           visibleTo
           tickets {
+            items {
+              id
+              type
+              cashlessCredit
+              description
+              color
+              paymentRules
+              approvalRule
+              showAll
+              showOnHold
+              onHoldDisplayText
+              showSoldOut
+              soldOutDisplayText
+              setAvailable
+              availableAtDate
+              allowTransferred
+              transferredAprroval
+              transferredSameGender
+              eventID
+              deleted
+              createdAt
+              createdByID
+              createdByName
+              updatedAt
+              eventTicketsId
+              __typename
+            }
+            nextToken
+            __typename
+          }
+          invitationLimit {
+            items {
+              id
+              adminID
+              quota
+              eventID
+              deleted
+              createdAt
+              createdByID
+              createdByName
+              updatedAt
+              eventInvitationLimitId
+              __typename
+            }
             nextToken
             __typename
           }
@@ -716,6 +1141,7 @@ const listBookings = /* GraphQL */ `
           createdAt
           createdByID
           createdByName
+          published
           updatedAt
           __typename
         }
@@ -725,6 +1151,7 @@ const listBookings = /* GraphQL */ `
           cashlessCredit
           description
           waves {
+            id
             name
             price
             startDate
@@ -757,6 +1184,7 @@ const listBookings = /* GraphQL */ `
           __typename
         }
         wave
+        waveId
         isMainGuest
         orderId
         statusUpdatedByID
@@ -764,16 +1192,36 @@ const listBookings = /* GraphQL */ `
         statusUpdatedAt
         specialNeed
         phone_number
+        guestTicket {
+          number
+          __typename
+        }
         guestName
         deleted
         createdAt
         createdByID
         createdByName
+        rejectionReason {
+          id
+          content
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          updatedByID
+          updatedByName
+          __typename
+        }
+        rejectionComment
+        isPaid
+        paidAmount
         updatedAt
         bookingGuestId
         bookingMainGuestId
         bookingEventId
         bookingEventTicketId
+        bookingRejectionReasonId
         __typename
       }
       nextToken
@@ -781,88 +1229,89 @@ const listBookings = /* GraphQL */ `
     }
   }
 `;
-const listInvitations = /* GraphQL */ `query ListInvitations(
-  $filter: ModelInvitationFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listInvitations(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      event {
+const listInvitations = /* GraphQL */ `
+  query ListInvitations(
+    $filter: ModelInvitationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listInvitations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
         id
-        name
-        description
-        startDate
-        endDate
-        location {
-          address
-          coordinates {
-            lat
-            lng
+        event {
+          id
+          name
+          description
+          startDate
+          endDate
+          location {
+            address
+            coordinates {
+              lat
+              lng
+              __typename
+            }
             __typename
           }
+          todoList
+          map
+          image
+          gallery
+          visibleTo
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
           __typename
         }
-        todoList
-        map
-        image
-        gallery
-        visibleTo
+        eventTicket {
+          id
+          type
+          cashlessCredit
+          description
+          color
+          paymentRules
+          approvalRule
+          showAll
+          showOnHold
+          onHoldDisplayText
+          showSoldOut
+          soldOutDisplayText
+          setAvailable
+          availableAtDate
+          allowTransferred
+          transferredAprroval
+          transferredSameGender
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventTicketsId
+          __typename
+        }
+        wave
+        phone_number
+        email
+        reason
+        secret
+        used
         deleted
         createdAt
         createdByID
         createdByName
         updatedAt
+        invitationEventId
+        invitationEventTicketId
         __typename
       }
-      eventTicket {
-        id
-        type
-        cashlessCredit
-        description
-        color
-        paymentRules
-        approvalRule
-        showAll
-        showOnHold
-        onHoldDisplayText
-        showSoldOut
-        soldOutDisplayText
-        setAvailable
-        availableAtDate
-        allowTransferred
-        transferredAprroval
-        transferredSameGender
-        eventID
-        deleted
-        createdAt
-        createdByID
-        createdByName
-        updatedAt
-        eventTicketsId
-        __typename
-      }
-      wave
-      phone_number
-      email
-      reason
-      secret
-      used
-      deleted
-      createdAt
-      createdByID
-      createdByName
-      updatedAt
-      invitationEventId
-      invitationEventTicketId
+      nextToken
       __typename
     }
-    nextToken
-    __typename
   }
-}
-`
+`;
 const listOverViewBookings = /* GraphQL */ `
   query ListBookings(
     $filter: ModelBookingFilterInput
@@ -889,7 +1338,7 @@ const listOverViewBookings = /* GraphQL */ `
             quota
           }
         }
-        wave
+        waveId
       }
       nextToken
     }
