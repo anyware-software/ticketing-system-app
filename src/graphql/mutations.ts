@@ -1059,6 +1059,7 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
         cashlessCredit
         description
         waves {
+          id
           name
           price
           startDate
@@ -1093,10 +1094,28 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
       nextToken
       __typename
     }
+    invitationLimit {
+      items {
+        id
+        adminID
+        quota
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventInvitationLimitId
+        __typename
+      }
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
     createdByName
+    published
     updatedAt
     __typename
   }
@@ -1142,6 +1161,7 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
         cashlessCredit
         description
         waves {
+          id
           name
           price
           startDate
@@ -1176,10 +1196,28 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
       nextToken
       __typename
     }
+    invitationLimit {
+      items {
+        id
+        adminID
+        quota
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventInvitationLimitId
+        __typename
+      }
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
     createdByName
+    published
     updatedAt
     __typename
   }
@@ -1225,6 +1263,7 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
         cashlessCredit
         description
         waves {
+          id
           name
           price
           startDate
@@ -1259,10 +1298,28 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
       nextToken
       __typename
     }
+    invitationLimit {
+      items {
+        id
+        adminID
+        quota
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventInvitationLimitId
+        __typename
+      }
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
     createdByName
+    published
     updatedAt
     __typename
   }
@@ -1281,6 +1338,7 @@ export const createEventTicket = /* GraphQL */ `mutation CreateEventTicket(
     cashlessCredit
     description
     waves {
+      id
       name
       price
       startDate
@@ -1327,6 +1385,7 @@ export const updateEventTicket = /* GraphQL */ `mutation UpdateEventTicket(
     cashlessCredit
     description
     waves {
+      id
       name
       price
       startDate
@@ -1373,6 +1432,7 @@ export const deleteEventTicket = /* GraphQL */ `mutation DeleteEventTicket(
     cashlessCredit
     description
     waves {
+      id
       name
       price
       startDate
@@ -1408,6 +1468,72 @@ export const deleteEventTicket = /* GraphQL */ `mutation DeleteEventTicket(
 ` as GeneratedMutation<
   APITypes.DeleteEventTicketMutationVariables,
   APITypes.DeleteEventTicketMutation
+>;
+export const createInvitationLimit = /* GraphQL */ `mutation CreateInvitationLimit(
+  $input: CreateInvitationLimitInput!
+  $condition: ModelInvitationLimitConditionInput
+) {
+  createInvitationLimit(input: $input, condition: $condition) {
+    id
+    adminID
+    quota
+    eventID
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    eventInvitationLimitId
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateInvitationLimitMutationVariables,
+  APITypes.CreateInvitationLimitMutation
+>;
+export const updateInvitationLimit = /* GraphQL */ `mutation UpdateInvitationLimit(
+  $input: UpdateInvitationLimitInput!
+  $condition: ModelInvitationLimitConditionInput
+) {
+  updateInvitationLimit(input: $input, condition: $condition) {
+    id
+    adminID
+    quota
+    eventID
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    eventInvitationLimitId
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateInvitationLimitMutationVariables,
+  APITypes.UpdateInvitationLimitMutation
+>;
+export const deleteInvitationLimit = /* GraphQL */ `mutation DeleteInvitationLimit(
+  $input: DeleteInvitationLimitInput!
+  $condition: ModelInvitationLimitConditionInput
+) {
+  deleteInvitationLimit(input: $input, condition: $condition) {
+    id
+    adminID
+    quota
+    eventID
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    eventInvitationLimitId
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteInvitationLimitMutationVariables,
+  APITypes.DeleteInvitationLimitMutation
 >;
 export const createBooking = /* GraphQL */ `mutation CreateBooking(
   $input: CreateBookingInput!
@@ -1512,6 +1638,7 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
           cashlessCredit
           description
           waves {
+            id
             name
             price
             startDate
@@ -1546,10 +1673,28 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
         nextToken
         __typename
       }
+      invitationLimit {
+        items {
+          id
+          adminID
+          quota
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventInvitationLimitId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
       createdByName
+      published
       updatedAt
       __typename
     }
@@ -1559,6 +1704,7 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
       cashlessCredit
       description
       waves {
+        id
         name
         price
         startDate
@@ -1591,6 +1737,7 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
       __typename
     }
     wave
+    waveId
     isMainGuest
     orderId
     statusUpdatedByID
@@ -1736,6 +1883,7 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
           cashlessCredit
           description
           waves {
+            id
             name
             price
             startDate
@@ -1770,10 +1918,28 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
         nextToken
         __typename
       }
+      invitationLimit {
+        items {
+          id
+          adminID
+          quota
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventInvitationLimitId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
       createdByName
+      published
       updatedAt
       __typename
     }
@@ -1783,6 +1949,7 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
       cashlessCredit
       description
       waves {
+        id
         name
         price
         startDate
@@ -1815,6 +1982,7 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
       __typename
     }
     wave
+    waveId
     isMainGuest
     orderId
     statusUpdatedByID
@@ -1960,6 +2128,7 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
           cashlessCredit
           description
           waves {
+            id
             name
             price
             startDate
@@ -1994,10 +2163,28 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
         nextToken
         __typename
       }
+      invitationLimit {
+        items {
+          id
+          adminID
+          quota
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventInvitationLimitId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
       createdByName
+      published
       updatedAt
       __typename
     }
@@ -2007,6 +2194,7 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
       cashlessCredit
       description
       waves {
+        id
         name
         price
         startDate
@@ -2039,6 +2227,7 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
       __typename
     }
     wave
+    waveId
     isMainGuest
     orderId
     statusUpdatedByID
@@ -2183,6 +2372,7 @@ export const createInvitation = /* GraphQL */ `mutation CreateInvitation(
           cashlessCredit
           description
           waves {
+            id
             name
             price
             startDate
@@ -2217,10 +2407,28 @@ export const createInvitation = /* GraphQL */ `mutation CreateInvitation(
         nextToken
         __typename
       }
+      invitationLimit {
+        items {
+          id
+          adminID
+          quota
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventInvitationLimitId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
       createdByName
+      published
       updatedAt
       __typename
     }
@@ -2230,6 +2438,7 @@ export const createInvitation = /* GraphQL */ `mutation CreateInvitation(
       cashlessCredit
       description
       waves {
+        id
         name
         price
         startDate
@@ -2320,6 +2529,7 @@ export const updateInvitation = /* GraphQL */ `mutation UpdateInvitation(
           cashlessCredit
           description
           waves {
+            id
             name
             price
             startDate
@@ -2354,10 +2564,28 @@ export const updateInvitation = /* GraphQL */ `mutation UpdateInvitation(
         nextToken
         __typename
       }
+      invitationLimit {
+        items {
+          id
+          adminID
+          quota
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventInvitationLimitId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
       createdByName
+      published
       updatedAt
       __typename
     }
@@ -2367,6 +2595,7 @@ export const updateInvitation = /* GraphQL */ `mutation UpdateInvitation(
       cashlessCredit
       description
       waves {
+        id
         name
         price
         startDate
@@ -2457,6 +2686,7 @@ export const deleteInvitation = /* GraphQL */ `mutation DeleteInvitation(
           cashlessCredit
           description
           waves {
+            id
             name
             price
             startDate
@@ -2491,10 +2721,28 @@ export const deleteInvitation = /* GraphQL */ `mutation DeleteInvitation(
         nextToken
         __typename
       }
+      invitationLimit {
+        items {
+          id
+          adminID
+          quota
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventInvitationLimitId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
       createdByName
+      published
       updatedAt
       __typename
     }
@@ -2504,6 +2752,7 @@ export const deleteInvitation = /* GraphQL */ `mutation DeleteInvitation(
       cashlessCredit
       description
       waves {
+        id
         name
         price
         startDate

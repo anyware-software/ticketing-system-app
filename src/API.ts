@@ -967,6 +967,7 @@ export type CreateEventInput = {
   createdAt?: string | null,
   createdByID: string,
   createdByName: string,
+  published: boolean,
 };
 
 export type LocationInput = {
@@ -999,6 +1000,7 @@ export type ModelEventConditionInput = {
   createdAt?: ModelStringInput | null,
   createdByID?: ModelStringInput | null,
   createdByName?: ModelStringInput | null,
+  published?: ModelBooleanInput | null,
   and?: Array< ModelEventConditionInput | null > | null,
   or?: Array< ModelEventConditionInput | null > | null,
   not?: ModelEventConditionInput | null,
@@ -1019,10 +1021,12 @@ export type Event = {
   gallery?: Array< string | null > | null,
   visibleTo?: string | null,
   tickets?: ModelEventTicketConnection | null,
+  invitationLimit?: ModelInvitationLimitConnection | null,
   deleted?: string | null,
   createdAt: string,
   createdByID: string,
   createdByName: string,
+  published: boolean,
   updatedAt: string,
 };
 
@@ -1082,6 +1086,7 @@ export type EventTicket = {
 
 export type Wave = {
   __typename: "Wave",
+  id: string,
   name: string,
   price: number,
   startDate?: string | null,
@@ -1089,6 +1094,26 @@ export type Wave = {
   active?: boolean | null,
   quota?: number | null,
   AutomaticShift?: boolean | null,
+};
+
+export type ModelInvitationLimitConnection = {
+  __typename: "ModelInvitationLimitConnection",
+  items:  Array<InvitationLimit | null >,
+  nextToken?: string | null,
+};
+
+export type InvitationLimit = {
+  __typename: "InvitationLimit",
+  id: string,
+  adminID?: string | null,
+  quota?: number | null,
+  eventID?: string | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID?: string | null,
+  createdByName?: string | null,
+  updatedAt: string,
+  eventInvitationLimitId?: string | null,
 };
 
 export type UpdateEventInput = {
@@ -1108,6 +1133,7 @@ export type UpdateEventInput = {
   createdAt?: string | null,
   createdByID?: string | null,
   createdByName?: string | null,
+  published?: boolean | null,
 };
 
 export type DeleteEventInput = {
@@ -1142,6 +1168,7 @@ export type CreateEventTicketInput = {
 };
 
 export type WaveInput = {
+  id: string,
   name: string,
   price: number,
   startDate?: string | null,
@@ -1222,11 +1249,54 @@ export type DeleteEventTicketInput = {
   id: string,
 };
 
+export type CreateInvitationLimitInput = {
+  id?: string | null,
+  adminID?: string | null,
+  quota?: number | null,
+  eventID?: string | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID?: string | null,
+  createdByName?: string | null,
+  eventInvitationLimitId?: string | null,
+};
+
+export type ModelInvitationLimitConditionInput = {
+  adminID?: ModelStringInput | null,
+  quota?: ModelIntInput | null,
+  eventID?: ModelIDInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelInvitationLimitConditionInput | null > | null,
+  or?: Array< ModelInvitationLimitConditionInput | null > | null,
+  not?: ModelInvitationLimitConditionInput | null,
+  eventInvitationLimitId?: ModelIDInput | null,
+};
+
+export type UpdateInvitationLimitInput = {
+  id: string,
+  adminID?: string | null,
+  quota?: number | null,
+  eventID?: string | null,
+  deleted?: string | null,
+  createdAt?: string | null,
+  createdByID?: string | null,
+  createdByName?: string | null,
+  eventInvitationLimitId?: string | null,
+};
+
+export type DeleteInvitationLimitInput = {
+  id: string,
+};
+
 export type CreateBookingInput = {
   id?: string | null,
   status?: string | null,
   overallStatus?: string | null,
   wave?: string | null,
+  waveId?: string | null,
   isMainGuest?: boolean | null,
   orderId?: string | null,
   statusUpdatedByID?: string | null,
@@ -1256,6 +1326,7 @@ export type ModelBookingConditionInput = {
   status?: ModelStringInput | null,
   overallStatus?: ModelStringInput | null,
   wave?: ModelStringInput | null,
+  waveId?: ModelIDInput | null,
   isMainGuest?: ModelBooleanInput | null,
   orderId?: ModelStringInput | null,
   statusUpdatedByID?: ModelStringInput | null,
@@ -1289,6 +1360,7 @@ export type Booking = {
   event: Event,
   eventTicket: EventTicket,
   wave?: string | null,
+  waveId?: string | null,
   isMainGuest?: boolean | null,
   orderId?: string | null,
   statusUpdatedByID?: string | null,
@@ -1335,6 +1407,7 @@ export type UpdateBookingInput = {
   status?: string | null,
   overallStatus?: string | null,
   wave?: string | null,
+  waveId?: string | null,
   isMainGuest?: boolean | null,
   orderId?: string | null,
   statusUpdatedByID?: string | null,
@@ -1816,6 +1889,7 @@ export type ModelEventFilterInput = {
   createdAt?: ModelStringInput | null,
   createdByID?: ModelStringInput | null,
   createdByName?: ModelStringInput | null,
+  published?: ModelBooleanInput | null,
   and?: Array< ModelEventFilterInput | null > | null,
   or?: Array< ModelEventFilterInput | null > | null,
   not?: ModelEventFilterInput | null,
@@ -1856,11 +1930,27 @@ export type ModelEventTicketFilterInput = {
   eventTicketsId?: ModelIDInput | null,
 };
 
+export type ModelInvitationLimitFilterInput = {
+  id?: ModelIDInput | null,
+  adminID?: ModelStringInput | null,
+  quota?: ModelIntInput | null,
+  eventID?: ModelIDInput | null,
+  deleted?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  createdByID?: ModelStringInput | null,
+  createdByName?: ModelStringInput | null,
+  and?: Array< ModelInvitationLimitFilterInput | null > | null,
+  or?: Array< ModelInvitationLimitFilterInput | null > | null,
+  not?: ModelInvitationLimitFilterInput | null,
+  eventInvitationLimitId?: ModelIDInput | null,
+};
+
 export type ModelBookingFilterInput = {
   id?: ModelIDInput | null,
   status?: ModelStringInput | null,
   overallStatus?: ModelStringInput | null,
   wave?: ModelStringInput | null,
+  waveId?: ModelIDInput | null,
   isMainGuest?: ModelBooleanInput | null,
   orderId?: ModelStringInput | null,
   statusUpdatedByID?: ModelStringInput | null,
@@ -2215,6 +2305,7 @@ export type ModelSubscriptionEventFilterInput = {
   createdAt?: ModelSubscriptionStringInput | null,
   createdByID?: ModelSubscriptionStringInput | null,
   createdByName?: ModelSubscriptionStringInput | null,
+  published?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionEventFilterInput | null > | null,
   or?: Array< ModelSubscriptionEventFilterInput | null > | null,
 };
@@ -2258,11 +2349,25 @@ export type ModelSubscriptionFloatInput = {
   notIn?: Array< number | null > | null,
 };
 
+export type ModelSubscriptionInvitationLimitFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  adminID?: ModelSubscriptionStringInput | null,
+  quota?: ModelSubscriptionIntInput | null,
+  eventID?: ModelSubscriptionIDInput | null,
+  deleted?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  createdByID?: ModelSubscriptionStringInput | null,
+  createdByName?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionInvitationLimitFilterInput | null > | null,
+  or?: Array< ModelSubscriptionInvitationLimitFilterInput | null > | null,
+};
+
 export type ModelSubscriptionBookingFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   status?: ModelSubscriptionStringInput | null,
   overallStatus?: ModelSubscriptionStringInput | null,
   wave?: ModelSubscriptionStringInput | null,
+  waveId?: ModelSubscriptionIDInput | null,
   isMainGuest?: ModelSubscriptionBooleanInput | null,
   orderId?: ModelSubscriptionStringInput | null,
   statusUpdatedByID?: ModelSubscriptionStringInput | null,
@@ -3328,6 +3433,7 @@ export type CreateEventMutation = {
         description?: string | null,
         waves?:  Array< {
           __typename: "Wave",
+          id: string,
           name: string,
           price: number,
           startDate?: string | null,
@@ -3359,10 +3465,28 @@ export type CreateEventMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    invitationLimit?:  {
+      __typename: "ModelInvitationLimitConnection",
+      items:  Array< {
+        __typename: "InvitationLimit",
+        id: string,
+        adminID?: string | null,
+        quota?: number | null,
+        eventID?: string | null,
+        deleted?: string | null,
+        createdAt?: string | null,
+        createdByID?: string | null,
+        createdByName?: string | null,
+        updatedAt: string,
+        eventInvitationLimitId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
     createdByName: string,
+    published: boolean,
     updatedAt: string,
   } | null,
 };
@@ -3410,6 +3534,7 @@ export type UpdateEventMutation = {
         description?: string | null,
         waves?:  Array< {
           __typename: "Wave",
+          id: string,
           name: string,
           price: number,
           startDate?: string | null,
@@ -3441,10 +3566,28 @@ export type UpdateEventMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    invitationLimit?:  {
+      __typename: "ModelInvitationLimitConnection",
+      items:  Array< {
+        __typename: "InvitationLimit",
+        id: string,
+        adminID?: string | null,
+        quota?: number | null,
+        eventID?: string | null,
+        deleted?: string | null,
+        createdAt?: string | null,
+        createdByID?: string | null,
+        createdByName?: string | null,
+        updatedAt: string,
+        eventInvitationLimitId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
     createdByName: string,
+    published: boolean,
     updatedAt: string,
   } | null,
 };
@@ -3492,6 +3635,7 @@ export type DeleteEventMutation = {
         description?: string | null,
         waves?:  Array< {
           __typename: "Wave",
+          id: string,
           name: string,
           price: number,
           startDate?: string | null,
@@ -3523,10 +3667,28 @@ export type DeleteEventMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    invitationLimit?:  {
+      __typename: "ModelInvitationLimitConnection",
+      items:  Array< {
+        __typename: "InvitationLimit",
+        id: string,
+        adminID?: string | null,
+        quota?: number | null,
+        eventID?: string | null,
+        deleted?: string | null,
+        createdAt?: string | null,
+        createdByID?: string | null,
+        createdByName?: string | null,
+        updatedAt: string,
+        eventInvitationLimitId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
     createdByName: string,
+    published: boolean,
     updatedAt: string,
   } | null,
 };
@@ -3545,6 +3707,7 @@ export type CreateEventTicketMutation = {
     description?: string | null,
     waves?:  Array< {
       __typename: "Wave",
+      id: string,
       name: string,
       price: number,
       startDate?: string | null,
@@ -3590,6 +3753,7 @@ export type UpdateEventTicketMutation = {
     description?: string | null,
     waves?:  Array< {
       __typename: "Wave",
+      id: string,
       name: string,
       price: number,
       startDate?: string | null,
@@ -3635,6 +3799,7 @@ export type DeleteEventTicketMutation = {
     description?: string | null,
     waves?:  Array< {
       __typename: "Wave",
+      id: string,
       name: string,
       price: number,
       startDate?: string | null,
@@ -3663,6 +3828,69 @@ export type DeleteEventTicketMutation = {
     createdByName: string,
     updatedAt: string,
     eventTicketsId?: string | null,
+  } | null,
+};
+
+export type CreateInvitationLimitMutationVariables = {
+  input: CreateInvitationLimitInput,
+  condition?: ModelInvitationLimitConditionInput | null,
+};
+
+export type CreateInvitationLimitMutation = {
+  createInvitationLimit?:  {
+    __typename: "InvitationLimit",
+    id: string,
+    adminID?: string | null,
+    quota?: number | null,
+    eventID?: string | null,
+    deleted?: string | null,
+    createdAt?: string | null,
+    createdByID?: string | null,
+    createdByName?: string | null,
+    updatedAt: string,
+    eventInvitationLimitId?: string | null,
+  } | null,
+};
+
+export type UpdateInvitationLimitMutationVariables = {
+  input: UpdateInvitationLimitInput,
+  condition?: ModelInvitationLimitConditionInput | null,
+};
+
+export type UpdateInvitationLimitMutation = {
+  updateInvitationLimit?:  {
+    __typename: "InvitationLimit",
+    id: string,
+    adminID?: string | null,
+    quota?: number | null,
+    eventID?: string | null,
+    deleted?: string | null,
+    createdAt?: string | null,
+    createdByID?: string | null,
+    createdByName?: string | null,
+    updatedAt: string,
+    eventInvitationLimitId?: string | null,
+  } | null,
+};
+
+export type DeleteInvitationLimitMutationVariables = {
+  input: DeleteInvitationLimitInput,
+  condition?: ModelInvitationLimitConditionInput | null,
+};
+
+export type DeleteInvitationLimitMutation = {
+  deleteInvitationLimit?:  {
+    __typename: "InvitationLimit",
+    id: string,
+    adminID?: string | null,
+    quota?: number | null,
+    eventID?: string | null,
+    deleted?: string | null,
+    createdAt?: string | null,
+    createdByID?: string | null,
+    createdByName?: string | null,
+    updatedAt: string,
+    eventInvitationLimitId?: string | null,
   } | null,
 };
 
@@ -3776,6 +4004,7 @@ export type CreateBookingMutation = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -3807,10 +4036,28 @@ export type CreateBookingMutation = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -3821,6 +4068,7 @@ export type CreateBookingMutation = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -3851,6 +4099,7 @@ export type CreateBookingMutation = {
       eventTicketsId?: string | null,
     },
     wave?: string | null,
+    waveId?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
     statusUpdatedByID?: string | null,
@@ -3999,6 +4248,7 @@ export type UpdateBookingMutation = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -4030,10 +4280,28 @@ export type UpdateBookingMutation = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -4044,6 +4312,7 @@ export type UpdateBookingMutation = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -4074,6 +4343,7 @@ export type UpdateBookingMutation = {
       eventTicketsId?: string | null,
     },
     wave?: string | null,
+    waveId?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
     statusUpdatedByID?: string | null,
@@ -4222,6 +4492,7 @@ export type DeleteBookingMutation = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -4253,10 +4524,28 @@ export type DeleteBookingMutation = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -4267,6 +4556,7 @@ export type DeleteBookingMutation = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -4297,6 +4587,7 @@ export type DeleteBookingMutation = {
       eventTicketsId?: string | null,
     },
     wave?: string | null,
+    waveId?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
     statusUpdatedByID?: string | null,
@@ -4441,6 +4732,7 @@ export type CreateInvitationMutation = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -4472,10 +4764,28 @@ export type CreateInvitationMutation = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -4486,6 +4796,7 @@ export type CreateInvitationMutation = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -4577,6 +4888,7 @@ export type UpdateInvitationMutation = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -4608,10 +4920,28 @@ export type UpdateInvitationMutation = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -4622,6 +4952,7 @@ export type UpdateInvitationMutation = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -4713,6 +5044,7 @@ export type DeleteInvitationMutation = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -4744,10 +5076,28 @@ export type DeleteInvitationMutation = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -4758,6 +5108,7 @@ export type DeleteInvitationMutation = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -5673,6 +6024,7 @@ export type GetEventQuery = {
         description?: string | null,
         waves?:  Array< {
           __typename: "Wave",
+          id: string,
           name: string,
           price: number,
           startDate?: string | null,
@@ -5704,10 +6056,28 @@ export type GetEventQuery = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    invitationLimit?:  {
+      __typename: "ModelInvitationLimitConnection",
+      items:  Array< {
+        __typename: "InvitationLimit",
+        id: string,
+        adminID?: string | null,
+        quota?: number | null,
+        eventID?: string | null,
+        deleted?: string | null,
+        createdAt?: string | null,
+        createdByID?: string | null,
+        createdByName?: string | null,
+        updatedAt: string,
+        eventInvitationLimitId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
     createdByName: string,
+    published: boolean,
     updatedAt: string,
   } | null,
 };
@@ -5758,6 +6128,7 @@ export type ListEventsQuery = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -5789,10 +6160,28 @@ export type ListEventsQuery = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     } | null >,
     nextToken?: string | null,
@@ -5812,6 +6201,7 @@ export type GetEventTicketQuery = {
     description?: string | null,
     waves?:  Array< {
       __typename: "Wave",
+      id: string,
       name: string,
       price: number,
       startDate?: string | null,
@@ -5860,6 +6250,7 @@ export type ListEventTicketsQuery = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -5912,6 +6303,7 @@ export type ByEventIDQuery = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -5940,6 +6332,52 @@ export type ByEventIDQuery = {
       createdByName: string,
       updatedAt: string,
       eventTicketsId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetInvitationLimitQueryVariables = {
+  id: string,
+};
+
+export type GetInvitationLimitQuery = {
+  getInvitationLimit?:  {
+    __typename: "InvitationLimit",
+    id: string,
+    adminID?: string | null,
+    quota?: number | null,
+    eventID?: string | null,
+    deleted?: string | null,
+    createdAt?: string | null,
+    createdByID?: string | null,
+    createdByName?: string | null,
+    updatedAt: string,
+    eventInvitationLimitId?: string | null,
+  } | null,
+};
+
+export type ListInvitationLimitsQueryVariables = {
+  filter?: ModelInvitationLimitFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListInvitationLimitsQuery = {
+  listInvitationLimits?:  {
+    __typename: "ModelInvitationLimitConnection",
+    items:  Array< {
+      __typename: "InvitationLimit",
+      id: string,
+      adminID?: string | null,
+      quota?: number | null,
+      eventID?: string | null,
+      deleted?: string | null,
+      createdAt?: string | null,
+      createdByID?: string | null,
+      createdByName?: string | null,
+      updatedAt: string,
+      eventInvitationLimitId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -6054,6 +6492,7 @@ export type GetBookingQuery = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -6085,10 +6524,28 @@ export type GetBookingQuery = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -6099,6 +6556,7 @@ export type GetBookingQuery = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -6129,6 +6587,7 @@ export type GetBookingQuery = {
       eventTicketsId?: string | null,
     },
     wave?: string | null,
+    waveId?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
     statusUpdatedByID?: string | null,
@@ -6301,10 +6760,28 @@ export type ListBookingsQuery = {
           } | null >,
           nextToken?: string | null,
         } | null,
+        invitationLimit?:  {
+          __typename: "ModelInvitationLimitConnection",
+          items:  Array< {
+            __typename: "InvitationLimit",
+            id: string,
+            adminID?: string | null,
+            quota?: number | null,
+            eventID?: string | null,
+            deleted?: string | null,
+            createdAt?: string | null,
+            createdByID?: string | null,
+            createdByName?: string | null,
+            updatedAt: string,
+            eventInvitationLimitId?: string | null,
+          } | null >,
+          nextToken?: string | null,
+        } | null,
         deleted?: string | null,
         createdAt: string,
         createdByID: string,
         createdByName: string,
+        published: boolean,
         updatedAt: string,
       },
       eventTicket:  {
@@ -6315,6 +6792,7 @@ export type ListBookingsQuery = {
         description?: string | null,
         waves?:  Array< {
           __typename: "Wave",
+          id: string,
           name: string,
           price: number,
           startDate?: string | null,
@@ -6345,6 +6823,7 @@ export type ListBookingsQuery = {
         eventTicketsId?: string | null,
       },
       wave?: string | null,
+      waveId?: string | null,
       isMainGuest?: boolean | null,
       orderId?: string | null,
       statusUpdatedByID?: string | null,
@@ -6474,6 +6953,7 @@ export type GetInvitationQuery = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -6505,10 +6985,28 @@ export type GetInvitationQuery = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -6519,6 +7017,7 @@ export type GetInvitationQuery = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -6634,10 +7133,28 @@ export type ListInvitationsQuery = {
           } | null >,
           nextToken?: string | null,
         } | null,
+        invitationLimit?:  {
+          __typename: "ModelInvitationLimitConnection",
+          items:  Array< {
+            __typename: "InvitationLimit",
+            id: string,
+            adminID?: string | null,
+            quota?: number | null,
+            eventID?: string | null,
+            deleted?: string | null,
+            createdAt?: string | null,
+            createdByID?: string | null,
+            createdByName?: string | null,
+            updatedAt: string,
+            eventInvitationLimitId?: string | null,
+          } | null >,
+          nextToken?: string | null,
+        } | null,
         deleted?: string | null,
         createdAt: string,
         createdByID: string,
         createdByName: string,
+        published: boolean,
         updatedAt: string,
       },
       eventTicket:  {
@@ -6648,6 +7165,7 @@ export type ListInvitationsQuery = {
         description?: string | null,
         waves?:  Array< {
           __typename: "Wave",
+          id: string,
           name: string,
           price: number,
           startDate?: string | null,
@@ -7673,6 +8191,7 @@ export type OnCreateEventSubscription = {
         description?: string | null,
         waves?:  Array< {
           __typename: "Wave",
+          id: string,
           name: string,
           price: number,
           startDate?: string | null,
@@ -7704,10 +8223,28 @@ export type OnCreateEventSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    invitationLimit?:  {
+      __typename: "ModelInvitationLimitConnection",
+      items:  Array< {
+        __typename: "InvitationLimit",
+        id: string,
+        adminID?: string | null,
+        quota?: number | null,
+        eventID?: string | null,
+        deleted?: string | null,
+        createdAt?: string | null,
+        createdByID?: string | null,
+        createdByName?: string | null,
+        updatedAt: string,
+        eventInvitationLimitId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
     createdByName: string,
+    published: boolean,
     updatedAt: string,
   } | null,
 };
@@ -7754,6 +8291,7 @@ export type OnUpdateEventSubscription = {
         description?: string | null,
         waves?:  Array< {
           __typename: "Wave",
+          id: string,
           name: string,
           price: number,
           startDate?: string | null,
@@ -7785,10 +8323,28 @@ export type OnUpdateEventSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    invitationLimit?:  {
+      __typename: "ModelInvitationLimitConnection",
+      items:  Array< {
+        __typename: "InvitationLimit",
+        id: string,
+        adminID?: string | null,
+        quota?: number | null,
+        eventID?: string | null,
+        deleted?: string | null,
+        createdAt?: string | null,
+        createdByID?: string | null,
+        createdByName?: string | null,
+        updatedAt: string,
+        eventInvitationLimitId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
     createdByName: string,
+    published: boolean,
     updatedAt: string,
   } | null,
 };
@@ -7835,6 +8391,7 @@ export type OnDeleteEventSubscription = {
         description?: string | null,
         waves?:  Array< {
           __typename: "Wave",
+          id: string,
           name: string,
           price: number,
           startDate?: string | null,
@@ -7866,10 +8423,28 @@ export type OnDeleteEventSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
+    invitationLimit?:  {
+      __typename: "ModelInvitationLimitConnection",
+      items:  Array< {
+        __typename: "InvitationLimit",
+        id: string,
+        adminID?: string | null,
+        quota?: number | null,
+        eventID?: string | null,
+        deleted?: string | null,
+        createdAt?: string | null,
+        createdByID?: string | null,
+        createdByName?: string | null,
+        updatedAt: string,
+        eventInvitationLimitId?: string | null,
+      } | null >,
+      nextToken?: string | null,
+    } | null,
     deleted?: string | null,
     createdAt: string,
     createdByID: string,
     createdByName: string,
+    published: boolean,
     updatedAt: string,
   } | null,
 };
@@ -7887,6 +8462,7 @@ export type OnCreateEventTicketSubscription = {
     description?: string | null,
     waves?:  Array< {
       __typename: "Wave",
+      id: string,
       name: string,
       price: number,
       startDate?: string | null,
@@ -7931,6 +8507,7 @@ export type OnUpdateEventTicketSubscription = {
     description?: string | null,
     waves?:  Array< {
       __typename: "Wave",
+      id: string,
       name: string,
       price: number,
       startDate?: string | null,
@@ -7975,6 +8552,7 @@ export type OnDeleteEventTicketSubscription = {
     description?: string | null,
     waves?:  Array< {
       __typename: "Wave",
+      id: string,
       name: string,
       price: number,
       startDate?: string | null,
@@ -8003,6 +8581,66 @@ export type OnDeleteEventTicketSubscription = {
     createdByName: string,
     updatedAt: string,
     eventTicketsId?: string | null,
+  } | null,
+};
+
+export type OnCreateInvitationLimitSubscriptionVariables = {
+  filter?: ModelSubscriptionInvitationLimitFilterInput | null,
+};
+
+export type OnCreateInvitationLimitSubscription = {
+  onCreateInvitationLimit?:  {
+    __typename: "InvitationLimit",
+    id: string,
+    adminID?: string | null,
+    quota?: number | null,
+    eventID?: string | null,
+    deleted?: string | null,
+    createdAt?: string | null,
+    createdByID?: string | null,
+    createdByName?: string | null,
+    updatedAt: string,
+    eventInvitationLimitId?: string | null,
+  } | null,
+};
+
+export type OnUpdateInvitationLimitSubscriptionVariables = {
+  filter?: ModelSubscriptionInvitationLimitFilterInput | null,
+};
+
+export type OnUpdateInvitationLimitSubscription = {
+  onUpdateInvitationLimit?:  {
+    __typename: "InvitationLimit",
+    id: string,
+    adminID?: string | null,
+    quota?: number | null,
+    eventID?: string | null,
+    deleted?: string | null,
+    createdAt?: string | null,
+    createdByID?: string | null,
+    createdByName?: string | null,
+    updatedAt: string,
+    eventInvitationLimitId?: string | null,
+  } | null,
+};
+
+export type OnDeleteInvitationLimitSubscriptionVariables = {
+  filter?: ModelSubscriptionInvitationLimitFilterInput | null,
+};
+
+export type OnDeleteInvitationLimitSubscription = {
+  onDeleteInvitationLimit?:  {
+    __typename: "InvitationLimit",
+    id: string,
+    adminID?: string | null,
+    quota?: number | null,
+    eventID?: string | null,
+    deleted?: string | null,
+    createdAt?: string | null,
+    createdByID?: string | null,
+    createdByName?: string | null,
+    updatedAt: string,
+    eventInvitationLimitId?: string | null,
   } | null,
 };
 
@@ -8115,6 +8753,7 @@ export type OnCreateBookingSubscription = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -8146,10 +8785,28 @@ export type OnCreateBookingSubscription = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -8160,6 +8817,7 @@ export type OnCreateBookingSubscription = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -8190,6 +8848,7 @@ export type OnCreateBookingSubscription = {
       eventTicketsId?: string | null,
     },
     wave?: string | null,
+    waveId?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
     statusUpdatedByID?: string | null,
@@ -8337,6 +8996,7 @@ export type OnUpdateBookingSubscription = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -8368,10 +9028,28 @@ export type OnUpdateBookingSubscription = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -8382,6 +9060,7 @@ export type OnUpdateBookingSubscription = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -8412,6 +9091,7 @@ export type OnUpdateBookingSubscription = {
       eventTicketsId?: string | null,
     },
     wave?: string | null,
+    waveId?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
     statusUpdatedByID?: string | null,
@@ -8559,6 +9239,7 @@ export type OnDeleteBookingSubscription = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -8590,10 +9271,28 @@ export type OnDeleteBookingSubscription = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -8604,6 +9303,7 @@ export type OnDeleteBookingSubscription = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -8634,6 +9334,7 @@ export type OnDeleteBookingSubscription = {
       eventTicketsId?: string | null,
     },
     wave?: string | null,
+    waveId?: string | null,
     isMainGuest?: boolean | null,
     orderId?: string | null,
     statusUpdatedByID?: string | null,
@@ -8774,6 +9475,7 @@ export type OnCreateInvitationSubscription = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -8805,10 +9507,28 @@ export type OnCreateInvitationSubscription = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -8819,6 +9539,7 @@ export type OnCreateInvitationSubscription = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -8909,6 +9630,7 @@ export type OnUpdateInvitationSubscription = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -8940,10 +9662,28 @@ export type OnUpdateInvitationSubscription = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -8954,6 +9694,7 @@ export type OnUpdateInvitationSubscription = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,
@@ -9044,6 +9785,7 @@ export type OnDeleteInvitationSubscription = {
           description?: string | null,
           waves?:  Array< {
             __typename: "Wave",
+            id: string,
             name: string,
             price: number,
             startDate?: string | null,
@@ -9075,10 +9817,28 @@ export type OnDeleteInvitationSubscription = {
         } | null >,
         nextToken?: string | null,
       } | null,
+      invitationLimit?:  {
+        __typename: "ModelInvitationLimitConnection",
+        items:  Array< {
+          __typename: "InvitationLimit",
+          id: string,
+          adminID?: string | null,
+          quota?: number | null,
+          eventID?: string | null,
+          deleted?: string | null,
+          createdAt?: string | null,
+          createdByID?: string | null,
+          createdByName?: string | null,
+          updatedAt: string,
+          eventInvitationLimitId?: string | null,
+        } | null >,
+        nextToken?: string | null,
+      } | null,
       deleted?: string | null,
       createdAt: string,
       createdByID: string,
       createdByName: string,
+      published: boolean,
       updatedAt: string,
     },
     eventTicket:  {
@@ -9089,6 +9849,7 @@ export type OnDeleteInvitationSubscription = {
       description?: string | null,
       waves?:  Array< {
         __typename: "Wave",
+        id: string,
         name: string,
         price: number,
         startDate?: string | null,

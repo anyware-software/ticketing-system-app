@@ -385,10 +385,12 @@ type Event
   gallery: [String]
   visibleTo: String
   tickets: [EventTicket] @hasMany
+  invitationLimit: [InvitationLimit] @hasMany
   deleted: String @default(value: "0")
   createdAt: String!
   createdByID: String!
   createdByName: String!
+  published: Boolean!
 }
 
 type Location {
@@ -444,7 +446,30 @@ type EventTicket
   createdByName: String!
 }
 
+type InvitationLimit
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [create, update, delete, read] }
+    ]
+  ) {
+  id: ID!
+  adminID: String
+  quota: Int
+  eventID: ID
+  deleted: String @default(value: "0")
+  createdAt: String
+  createdByID: String
+  createdByName: String
+}
+
 type Wave {
+  id: ID!
   name: String!
   price: Float!
   startDate: String
@@ -474,6 +499,7 @@ type Booking
   event: Event! @hasOne
   eventTicket: EventTicket! @hasOne
   wave: String
+  waveId: ID
   isMainGuest: Boolean
   orderId: String
   statusUpdatedByID: String

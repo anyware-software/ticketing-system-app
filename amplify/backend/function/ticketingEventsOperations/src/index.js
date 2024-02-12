@@ -30,17 +30,6 @@ const GRAPHQL_ENDPOINT =
 const GRAPHQL_API_KEY =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIKEYOUTPUT;
 
-function formatDateToYYYYMMDDHHMMSS(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hour = String(date.getHours()).padStart(2, '0');
-  const minute = String(date.getMinutes()).padStart(2, '0');
-  const second = String(date.getSeconds()).padStart(2, '0');
-
-  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-}
-
 aws.config.update({ region: 'us-east-2' });
 const ses = new aws.SES();
 
@@ -62,6 +51,8 @@ exports.handler = async (event) => {
     const bookingMainGuestId = requestBody.bookingMainGuestId;
     const bookingEventId = requestBody.bookingEventId;
     const invitationSecret = requestBody.invitationSecret;
+    const fromDate = requestBody.fromDate;
+    const toDate = requestBody.toDate;
 
     if (operationId === operationIdEnum.listEvents) {
       variables = {
@@ -70,7 +61,7 @@ exports.handler = async (event) => {
             eq: '0',
           },
           startDate: {
-            gt: formatDateToYYYYMMDDHHMMSS(new Date()),
+            gt: new Date().toISOString(),
           },
         },
       };
@@ -161,8 +152,10 @@ exports.handler = async (event) => {
       query = updateBooking;
     } else if (operationId === operationIdEnum.sendMails) {
       const templateData = {};
-      templateData.customerEmail = requestBody.queryStringParameters.customer_email;
-      templateData.customerSecret = requestBody.queryStringParameters.customer_secret;
+      templateData.customerEmail =
+        requestBody.queryStringParameters.customer_email;
+      templateData.customerSecret =
+        requestBody.queryStringParameters.customer_secret;
       templateData.senderName = requestBody.queryStringParameters.sender_name;
       const sourceMail = requestBody.queryStringParameters.source_email;
       const templateName = requestBody.queryStringParameters.template_name;
@@ -321,7 +314,7 @@ exports.handler = async (event) => {
             eq: '0',
           },
           endDate: {
-            gt: formatDateToYYYYMMDDHHMMSS(new Date()),
+            gt: new Date().toISOString(),
           },
         },
       };
@@ -370,6 +363,27 @@ exports.handler = async (event) => {
       console.log(items);
     } else if (operationId === operationIdEnum.overview) {
       async function list(nextToken, limit) {
+        const filter = {
+          deleted: { eq: '0' },
+        };
+        filter.and = [];
+
+        if (eventID) filter.bookingEventId = { eq: eventID };
+        if (fromDate && toDate) {
+          filter.and.push({
+            createdAt: {
+              ge: fromDate,
+            },
+          });
+          filter.and.push({
+            createdAt: {
+              lt: toDate,
+            },
+          });
+        }
+
+        if (filter.and && filter.and.length === 0) delete filter.and;
+        console.log(filter.and);
         const options = {
           method: 'POST',
           headers: {
@@ -378,7 +392,7 @@ exports.handler = async (event) => {
           },
           body: JSON.stringify({
             query: listOverViewBookings,
-            variables: { limit: limit || 100000, nextToken },
+            variables: { limit: limit || 100000, filter, nextToken },
           }),
         };
         const listing = await fetch(GRAPHQL_ENDPOINT, options).then((res) =>

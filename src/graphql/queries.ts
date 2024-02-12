@@ -882,6 +882,7 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
         cashlessCredit
         description
         waves {
+          id
           name
           price
           startDate
@@ -916,10 +917,28 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
       nextToken
       __typename
     }
+    invitationLimit {
+      items {
+        id
+        adminID
+        quota
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventInvitationLimitId
+        __typename
+      }
+      nextToken
+      __typename
+    }
     deleted
     createdAt
     createdByID
     createdByName
+    published
     updatedAt
     __typename
   }
@@ -964,6 +983,7 @@ export const listEvents = /* GraphQL */ `query ListEvents(
           cashlessCredit
           description
           waves {
+            id
             name
             price
             startDate
@@ -998,10 +1018,28 @@ export const listEvents = /* GraphQL */ `query ListEvents(
         nextToken
         __typename
       }
+      invitationLimit {
+        items {
+          id
+          adminID
+          quota
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventInvitationLimitId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
       createdByName
+      published
       updatedAt
       __typename
     }
@@ -1020,6 +1058,7 @@ export const getEventTicket = /* GraphQL */ `query GetEventTicket($id: ID!) {
     cashlessCredit
     description
     waves {
+      id
       name
       price
       startDate
@@ -1068,6 +1107,7 @@ export const listEventTickets = /* GraphQL */ `query ListEventTickets(
       cashlessCredit
       description
       waves {
+        id
         name
         price
         startDate
@@ -1127,6 +1167,7 @@ export const byEventID = /* GraphQL */ `query ByEventID(
       cashlessCredit
       description
       waves {
+        id
         name
         price
         startDate
@@ -1163,6 +1204,52 @@ export const byEventID = /* GraphQL */ `query ByEventID(
   }
 }
 ` as GeneratedQuery<APITypes.ByEventIDQueryVariables, APITypes.ByEventIDQuery>;
+export const getInvitationLimit = /* GraphQL */ `query GetInvitationLimit($id: ID!) {
+  getInvitationLimit(id: $id) {
+    id
+    adminID
+    quota
+    eventID
+    deleted
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    eventInvitationLimitId
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetInvitationLimitQueryVariables,
+  APITypes.GetInvitationLimitQuery
+>;
+export const listInvitationLimits = /* GraphQL */ `query ListInvitationLimits(
+  $filter: ModelInvitationLimitFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listInvitationLimits(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      adminID
+      quota
+      eventID
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      updatedAt
+      eventInvitationLimitId
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListInvitationLimitsQueryVariables,
+  APITypes.ListInvitationLimitsQuery
+>;
 export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
   getBooking(id: $id) {
     id
@@ -1263,6 +1350,7 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
           cashlessCredit
           description
           waves {
+            id
             name
             price
             startDate
@@ -1297,10 +1385,28 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
         nextToken
         __typename
       }
+      invitationLimit {
+        items {
+          id
+          adminID
+          quota
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventInvitationLimitId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
       createdByName
+      published
       updatedAt
       __typename
     }
@@ -1310,6 +1416,7 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
       cashlessCredit
       description
       waves {
+        id
         name
         price
         startDate
@@ -1342,6 +1449,7 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
       __typename
     }
     wave
+    waveId
     isMainGuest
     orderId
     statusUpdatedByID
@@ -1513,10 +1621,28 @@ export const listBookings = /* GraphQL */ `query ListBookings(
           nextToken
           __typename
         }
+        invitationLimit {
+          items {
+            id
+            adminID
+            quota
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventInvitationLimitId
+            __typename
+          }
+          nextToken
+          __typename
+        }
         deleted
         createdAt
         createdByID
         createdByName
+        published
         updatedAt
         __typename
       }
@@ -1526,6 +1652,7 @@ export const listBookings = /* GraphQL */ `query ListBookings(
         cashlessCredit
         description
         waves {
+          id
           name
           price
           startDate
@@ -1558,6 +1685,7 @@ export const listBookings = /* GraphQL */ `query ListBookings(
         __typename
       }
       wave
+      waveId
       isMainGuest
       orderId
       statusUpdatedByID
@@ -1683,6 +1811,7 @@ export const getInvitation = /* GraphQL */ `query GetInvitation($id: ID!) {
           cashlessCredit
           description
           waves {
+            id
             name
             price
             startDate
@@ -1717,10 +1846,28 @@ export const getInvitation = /* GraphQL */ `query GetInvitation($id: ID!) {
         nextToken
         __typename
       }
+      invitationLimit {
+        items {
+          id
+          adminID
+          quota
+          eventID
+          deleted
+          createdAt
+          createdByID
+          createdByName
+          updatedAt
+          eventInvitationLimitId
+          __typename
+        }
+        nextToken
+        __typename
+      }
       deleted
       createdAt
       createdByID
       createdByName
+      published
       updatedAt
       __typename
     }
@@ -1730,6 +1877,7 @@ export const getInvitation = /* GraphQL */ `query GetInvitation($id: ID!) {
       cashlessCredit
       description
       waves {
+        id
         name
         price
         startDate
@@ -1846,10 +1994,28 @@ export const listInvitations = /* GraphQL */ `query ListInvitations(
           nextToken
           __typename
         }
+        invitationLimit {
+          items {
+            id
+            adminID
+            quota
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventInvitationLimitId
+            __typename
+          }
+          nextToken
+          __typename
+        }
         deleted
         createdAt
         createdByID
         createdByName
+        published
         updatedAt
         __typename
       }
@@ -1859,6 +2025,7 @@ export const listInvitations = /* GraphQL */ `query ListInvitations(
         cashlessCredit
         description
         waves {
+          id
           name
           price
           startDate
