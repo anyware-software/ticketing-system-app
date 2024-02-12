@@ -532,14 +532,16 @@ export default function GuestProfile() {
       } else {
         console.log("you got 3 images remove one and replace it");
         setValidationWarning(true);
-        setMessage("You need to replace one of your images to upload a new one");
+        setMessage(
+          "You need to replace one of your images to upload a new one"
+        );
       }
       return result.key;
     } catch (error) {
       console.log("Error uploading image: ", error);
       throw error;
     }
-};
+  };
 
   const deleteUserPhoto = async (index: any, photo: any) => {
     const updatedImages = [...user.images];
@@ -1258,14 +1260,14 @@ export default function GuestProfile() {
                         }}
                       >
                         {originalBirthText
-                            ? new Date(originalBirthText)
-                                .toLocaleDateString("en-US", {
-                                  year: "numeric",
-                                  month: "numeric",
-                                  day: "numeric",
-                                })
-                                .replaceAll("/", "-")
-                            : "N/A"}
+                          ? new Date(originalBirthText)
+                              .toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "numeric",
+                                day: "numeric",
+                              })
+                              .replaceAll("/", "-")
+                          : "N/A"}
                       </span>
 
                       <IconButton
@@ -1797,27 +1799,31 @@ export default function GuestProfile() {
                 </Box>
 
                 <Box>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      fontSize: 13,
-                      fontWeight: "600",
-                      wordWrap: "break-word",
-                      backgroundColor: "#F0635A",
-                      display: { xs: "none", sm: "block", lg: "block" },
-                    }}
-                    onClick={() => {
-                      if (currentBookings?.status === BookingStatus.APPROVED) {
-                        navigate(`payment/${currentBookings?.id}`);
-                      }
-                    }}
-                  >
-                    {/*  */}
-                    {currentBookings?.status === BookingStatus.APPROVED
-                      ? "Pay Now"
-                      : "VIEW TICKET(S)"}
-                  </Button>
+                  {currentBookings?.status === BookingStatus.APPROVED && (
+                    <Button
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        fontSize: 13,
+                        fontWeight: "600",
+                        wordWrap: "break-word",
+                        backgroundColor: "#F0635A",
+                        display: { xs: "none", sm: "block", lg: "block" },
+                      }}
+                      onClick={() => {
+                        if (
+                          currentBookings?.status === BookingStatus.APPROVED
+                        ) {
+                          navigate(`payment/${currentBookings?.id}`);
+                        }
+                      }}
+                    >
+                      {/*  */}
+                      {currentBookings?.status === BookingStatus.APPROVED
+                        ? "Pay Now"
+                        : "VIEW TICKET(S)"}
+                    </Button>
+                  )}
                 </Box>
               </Box>
 
@@ -1959,25 +1965,25 @@ export default function GuestProfile() {
                         </Typography>
                       </Box>
                     </Box>
-                      {!companion.bookingGuestId && (
-                        <Button
-                          variant="contained"
-                          sx={{
-                            backgroundColor: "rgba(240, 99, 90, 1)",
-                            fontSize: "12px",
-                            px: .5,
-                            ml: .5,
-                          }}
-                          onClick={() => {
-                            sendSmsToUser(
-                              companion.phone_number,
-                              `Hi ${companion.guestName} ${user.name} is inviting you to ULTER : http://localhost:3000/login/?id=${companion.id}`
-                            );
-                          }}
-                        >
-                          Invite To Ultar !
-                        </Button>
-                      )}
+                    {!companion.bookingGuestId && (
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: "rgba(240, 99, 90, 1)",
+                          fontSize: "12px",
+                          px: 0.5,
+                          ml: 0.5,
+                        }}
+                        onClick={() => {
+                          sendSmsToUser(
+                            companion.phone_number,
+                            `Hi ${companion.guestName} ${user.name} is inviting you to ULTER : http://localhost:3000/login/?id=${companion.id}`
+                          );
+                        }}
+                      >
+                        Invite To Ultar !
+                      </Button>
+                    )}
                     <Box>
                       <IconButton
                         aria-label="more"

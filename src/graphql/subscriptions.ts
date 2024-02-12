@@ -1020,6 +1020,7 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
     createdByID
     createdByName
     published
+    isPaid
     updatedAt
     __typename
   }
@@ -1119,6 +1120,7 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
     createdByID
     createdByName
     published
+    isPaid
     updatedAt
     __typename
   }
@@ -1218,6 +1220,7 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
     createdByID
     createdByName
     published
+    isPaid
     updatedAt
     __typename
   }
@@ -1584,6 +1587,7 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
       createdByID
       createdByName
       published
+      isPaid
       updatedAt
       __typename
     }
@@ -1826,6 +1830,7 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
       createdByID
       createdByName
       published
+      isPaid
       updatedAt
       __typename
     }
@@ -2068,6 +2073,7 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
       createdByID
       createdByName
       published
+      isPaid
       updatedAt
       __typename
     }
@@ -2308,6 +2314,7 @@ export const onCreateInvitation = /* GraphQL */ `subscription OnCreateInvitation
       createdByID
       createdByName
       published
+      isPaid
       updatedAt
       __typename
     }
@@ -2464,6 +2471,7 @@ export const onUpdateInvitation = /* GraphQL */ `subscription OnUpdateInvitation
       createdByID
       createdByName
       published
+      isPaid
       updatedAt
       __typename
     }
@@ -2620,6 +2628,7 @@ export const onDeleteInvitation = /* GraphQL */ `subscription OnDeleteInvitation
       createdByID
       createdByName
       published
+      isPaid
       updatedAt
       __typename
     }
@@ -2680,4 +2689,745 @@ export const onDeleteInvitation = /* GraphQL */ `subscription OnDeleteInvitation
 ` as GeneratedSubscription<
   APITypes.OnDeleteInvitationSubscriptionVariables,
   APITypes.OnDeleteInvitationSubscription
+>;
+export const onCreateTransaction = /* GraphQL */ `subscription OnCreateTransaction(
+  $filter: ModelSubscriptionTransactionFilterInput
+) {
+  onCreateTransaction(filter: $filter) {
+    id
+    guestId
+    eventId
+    ticketId
+    booking {
+      id
+      status
+      overallStatus
+      guest {
+        id
+        name
+        username
+        email
+        phone_number
+        guestGroupID
+        guestGroupName
+        guest_avatar
+        avg_spend
+        avg_ticket_type
+        numberOfTickets
+        connections
+        last_attended_event
+        gender
+        group
+        faceBookID
+        appPassword
+        birthdate
+        isVerified
+        images
+        address
+        totalEvents
+        flags
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
+      mainGuest {
+        id
+        name
+        username
+        email
+        phone_number
+        guestGroupID
+        guestGroupName
+        guest_avatar
+        avg_spend
+        avg_ticket_type
+        numberOfTickets
+        connections
+        last_attended_event
+        gender
+        group
+        faceBookID
+        appPassword
+        birthdate
+        isVerified
+        images
+        address
+        totalEvents
+        flags
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
+      event {
+        id
+        name
+        description
+        startDate
+        endDate
+        location {
+          address
+          coordinates {
+            lat
+            lng
+            __typename
+          }
+          __typename
+        }
+        todoList
+        eventComments {
+          image
+          name
+          message
+          __typename
+        }
+        map
+        image
+        gallery
+        visibleTo
+        tickets {
+          items {
+            id
+            type
+            cashlessCredit
+            description
+            color
+            paymentRules
+            approvalRule
+            showAll
+            showOnHold
+            onHoldDisplayText
+            showSoldOut
+            soldOutDisplayText
+            setAvailable
+            availableAtDate
+            allowTransferred
+            transferredAprroval
+            transferredSameGender
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventTicketsId
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        invitationLimit {
+          items {
+            id
+            adminID
+            quota
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventInvitationLimitId
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        published
+        isPaid
+        updatedAt
+        __typename
+      }
+      eventTicket {
+        id
+        type
+        cashlessCredit
+        description
+        waves {
+          id
+          name
+          price
+          startDate
+          endDate
+          active
+          quota
+          AutomaticShift
+          __typename
+        }
+        color
+        paymentRules
+        approvalRule
+        showAll
+        showOnHold
+        onHoldDisplayText
+        showSoldOut
+        soldOutDisplayText
+        setAvailable
+        availableAtDate
+        allowTransferred
+        transferredAprroval
+        transferredSameGender
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventTicketsId
+        __typename
+      }
+      wave
+      waveId
+      isMainGuest
+      orderId
+      statusUpdatedByID
+      statusUpdatedByName
+      statusUpdatedAt
+      specialNeed
+      phone_number
+      guestTicket {
+        number
+        __typename
+      }
+      guestName
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      rejectionReason {
+        id
+        content
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        updatedByID
+        updatedByName
+        __typename
+      }
+      rejectionComment
+      updatedAt
+      bookingGuestId
+      bookingMainGuestId
+      bookingEventId
+      bookingEventTicketId
+      bookingRejectionReasonId
+      __typename
+    }
+    issuccess
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    transactionBookingId
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateTransactionSubscriptionVariables,
+  APITypes.OnCreateTransactionSubscription
+>;
+export const onUpdateTransaction = /* GraphQL */ `subscription OnUpdateTransaction(
+  $filter: ModelSubscriptionTransactionFilterInput
+) {
+  onUpdateTransaction(filter: $filter) {
+    id
+    guestId
+    eventId
+    ticketId
+    booking {
+      id
+      status
+      overallStatus
+      guest {
+        id
+        name
+        username
+        email
+        phone_number
+        guestGroupID
+        guestGroupName
+        guest_avatar
+        avg_spend
+        avg_ticket_type
+        numberOfTickets
+        connections
+        last_attended_event
+        gender
+        group
+        faceBookID
+        appPassword
+        birthdate
+        isVerified
+        images
+        address
+        totalEvents
+        flags
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
+      mainGuest {
+        id
+        name
+        username
+        email
+        phone_number
+        guestGroupID
+        guestGroupName
+        guest_avatar
+        avg_spend
+        avg_ticket_type
+        numberOfTickets
+        connections
+        last_attended_event
+        gender
+        group
+        faceBookID
+        appPassword
+        birthdate
+        isVerified
+        images
+        address
+        totalEvents
+        flags
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
+      event {
+        id
+        name
+        description
+        startDate
+        endDate
+        location {
+          address
+          coordinates {
+            lat
+            lng
+            __typename
+          }
+          __typename
+        }
+        todoList
+        eventComments {
+          image
+          name
+          message
+          __typename
+        }
+        map
+        image
+        gallery
+        visibleTo
+        tickets {
+          items {
+            id
+            type
+            cashlessCredit
+            description
+            color
+            paymentRules
+            approvalRule
+            showAll
+            showOnHold
+            onHoldDisplayText
+            showSoldOut
+            soldOutDisplayText
+            setAvailable
+            availableAtDate
+            allowTransferred
+            transferredAprroval
+            transferredSameGender
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventTicketsId
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        invitationLimit {
+          items {
+            id
+            adminID
+            quota
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventInvitationLimitId
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        published
+        isPaid
+        updatedAt
+        __typename
+      }
+      eventTicket {
+        id
+        type
+        cashlessCredit
+        description
+        waves {
+          id
+          name
+          price
+          startDate
+          endDate
+          active
+          quota
+          AutomaticShift
+          __typename
+        }
+        color
+        paymentRules
+        approvalRule
+        showAll
+        showOnHold
+        onHoldDisplayText
+        showSoldOut
+        soldOutDisplayText
+        setAvailable
+        availableAtDate
+        allowTransferred
+        transferredAprroval
+        transferredSameGender
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventTicketsId
+        __typename
+      }
+      wave
+      waveId
+      isMainGuest
+      orderId
+      statusUpdatedByID
+      statusUpdatedByName
+      statusUpdatedAt
+      specialNeed
+      phone_number
+      guestTicket {
+        number
+        __typename
+      }
+      guestName
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      rejectionReason {
+        id
+        content
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        updatedByID
+        updatedByName
+        __typename
+      }
+      rejectionComment
+      updatedAt
+      bookingGuestId
+      bookingMainGuestId
+      bookingEventId
+      bookingEventTicketId
+      bookingRejectionReasonId
+      __typename
+    }
+    issuccess
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    transactionBookingId
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateTransactionSubscriptionVariables,
+  APITypes.OnUpdateTransactionSubscription
+>;
+export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransaction(
+  $filter: ModelSubscriptionTransactionFilterInput
+) {
+  onDeleteTransaction(filter: $filter) {
+    id
+    guestId
+    eventId
+    ticketId
+    booking {
+      id
+      status
+      overallStatus
+      guest {
+        id
+        name
+        username
+        email
+        phone_number
+        guestGroupID
+        guestGroupName
+        guest_avatar
+        avg_spend
+        avg_ticket_type
+        numberOfTickets
+        connections
+        last_attended_event
+        gender
+        group
+        faceBookID
+        appPassword
+        birthdate
+        isVerified
+        images
+        address
+        totalEvents
+        flags
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
+      mainGuest {
+        id
+        name
+        username
+        email
+        phone_number
+        guestGroupID
+        guestGroupName
+        guest_avatar
+        avg_spend
+        avg_ticket_type
+        numberOfTickets
+        connections
+        last_attended_event
+        gender
+        group
+        faceBookID
+        appPassword
+        birthdate
+        isVerified
+        images
+        address
+        totalEvents
+        flags
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        __typename
+      }
+      event {
+        id
+        name
+        description
+        startDate
+        endDate
+        location {
+          address
+          coordinates {
+            lat
+            lng
+            __typename
+          }
+          __typename
+        }
+        todoList
+        eventComments {
+          image
+          name
+          message
+          __typename
+        }
+        map
+        image
+        gallery
+        visibleTo
+        tickets {
+          items {
+            id
+            type
+            cashlessCredit
+            description
+            color
+            paymentRules
+            approvalRule
+            showAll
+            showOnHold
+            onHoldDisplayText
+            showSoldOut
+            soldOutDisplayText
+            setAvailable
+            availableAtDate
+            allowTransferred
+            transferredAprroval
+            transferredSameGender
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventTicketsId
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        invitationLimit {
+          items {
+            id
+            adminID
+            quota
+            eventID
+            deleted
+            createdAt
+            createdByID
+            createdByName
+            updatedAt
+            eventInvitationLimitId
+            __typename
+          }
+          nextToken
+          __typename
+        }
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        published
+        isPaid
+        updatedAt
+        __typename
+      }
+      eventTicket {
+        id
+        type
+        cashlessCredit
+        description
+        waves {
+          id
+          name
+          price
+          startDate
+          endDate
+          active
+          quota
+          AutomaticShift
+          __typename
+        }
+        color
+        paymentRules
+        approvalRule
+        showAll
+        showOnHold
+        onHoldDisplayText
+        showSoldOut
+        soldOutDisplayText
+        setAvailable
+        availableAtDate
+        allowTransferred
+        transferredAprroval
+        transferredSameGender
+        eventID
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        eventTicketsId
+        __typename
+      }
+      wave
+      waveId
+      isMainGuest
+      orderId
+      statusUpdatedByID
+      statusUpdatedByName
+      statusUpdatedAt
+      specialNeed
+      phone_number
+      guestTicket {
+        number
+        __typename
+      }
+      guestName
+      deleted
+      createdAt
+      createdByID
+      createdByName
+      rejectionReason {
+        id
+        content
+        deleted
+        createdAt
+        createdByID
+        createdByName
+        updatedAt
+        updatedByID
+        updatedByName
+        __typename
+      }
+      rejectionComment
+      updatedAt
+      bookingGuestId
+      bookingMainGuestId
+      bookingEventId
+      bookingEventTicketId
+      bookingRejectionReasonId
+      __typename
+    }
+    issuccess
+    createdAt
+    createdByID
+    createdByName
+    updatedAt
+    transactionBookingId
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteTransactionSubscriptionVariables,
+  APITypes.OnDeleteTransactionSubscription
 >;

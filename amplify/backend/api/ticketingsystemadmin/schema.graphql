@@ -391,6 +391,7 @@ type Event
   createdByID: String!
   createdByName: String!
   published: Boolean!
+  isPaid: Boolean
 }
 
 type Location {
@@ -568,4 +569,27 @@ type Invitation
   createdAt: String!
   createdByID: String!
   createdByName: String!
+}
+
+type Transaction
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [create, update, delete, read] }
+    ]
+  ) {
+  id: ID!
+  guestId: String
+  eventId: String
+  ticketId: String
+  booking: Booking @hasOne
+  issuccess: Boolean
+  createdAt: String
+  createdByID: String
+  createdByName: String
 }
