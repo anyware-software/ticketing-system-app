@@ -34,6 +34,7 @@ import listAccompaniedGuests from "../../services/listAccompaniedGuests";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import sendSms from "../../services/sendSMS";
+import createTransaction from "../../services/createTransaction";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -430,6 +431,25 @@ export default function MobileViewTabs() {
       console.log(err);
     }
   };
+
+  async function payForTicket() {
+    try {
+      await createTransaction({
+        user: user,
+        guestId: currentBookings?.bookingGuestId,
+        eventId: currentBookings?.bookingEventId,
+        ticketId: currentBookings?.bookingEventTicketId,
+        issuccess: true,
+        currency: "EGP",
+        amount_cents: "1000",
+        transactionBookingId: currentBookings?.id,
+        isPaid: true,
+        paidAmount: 20000,
+      });
+    } catch (err) {
+      console.log();
+    }
+  }
   return (
     <>
       <Box sx={{ width: "100%", display: { xs: "block", sm: "none" } }}>
@@ -1207,19 +1227,32 @@ export default function MobileViewTabs() {
                   </Box>
 
                   <Box>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        fontSize: 13,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                        backgroundColor: "#F0635A",
-                        display: { xs: "none", sm: "none", lg: "block" },
-                      }}
-                    >
-                      VIEW TICKET(S)
-                    </Button>
+                    {currentBookings?.status === BookingStatus.APPROVED && (
+                      <Button
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          fontSize: 13,
+                          fontWeight: "600",
+                          wordWrap: "break-word",
+                          backgroundColor: "#F0635A",
+                          display: { xs: "none", sm: "block", lg: "block" },
+                        }}
+                        onClick={() => {
+                          if (currentBookings?.isPaid === false) {
+                            // navigate(`payment/${currentBookings?.id}`);
+                            payForTicket();
+                          } else {
+                            navigate(`ticket/${currentBookings?.id}`);
+                          }
+                        }}
+                      >
+                        {/*  */}
+                        {currentBookings?.isPaid === true
+                          ? "VIEW TICKET(S)"
+                          : "Pay Now"}
+                      </Button>
+                    )}
                   </Box>
                 </Box>
 
