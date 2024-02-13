@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "api": {
+      "ticketingsystemadmin": [
+        "Query",
+        "Mutation",
+        "Subscription"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

@@ -161,6 +161,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "ticketingPaymentWebhook": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "ticketingsystemadmin"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "ticketingsystemadmin93d9a57393d9a573PreSignup": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -213,6 +229,22 @@
         {
           "category": "function",
           "resourceName": "ticketingGuestsData"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketingPaymentWebhook_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketingPaymentWebhook"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketingPaymentWebhook_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketingPaymentWebhook"
         }
       ]
     },

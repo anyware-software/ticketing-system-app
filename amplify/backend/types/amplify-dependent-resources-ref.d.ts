@@ -49,6 +49,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "ticketingPaymentWebhook": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "ticketingsystemadmin93d9a57393d9a573PreSignup": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
