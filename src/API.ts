@@ -1634,6 +1634,43 @@ export type DeleteTransactionInput = {
   id: string,
 };
 
+export type CreateWavesConsumptionInput = {
+  waveId?: string | null,
+  consumedTickets?: number | null,
+  totalTickets?: number | null,
+  id?: string | null,
+};
+
+export type ModelWavesConsumptionConditionInput = {
+  waveId?: ModelStringInput | null,
+  consumedTickets?: ModelIntInput | null,
+  totalTickets?: ModelIntInput | null,
+  and?: Array< ModelWavesConsumptionConditionInput | null > | null,
+  or?: Array< ModelWavesConsumptionConditionInput | null > | null,
+  not?: ModelWavesConsumptionConditionInput | null,
+};
+
+export type WavesConsumption = {
+  __typename: "WavesConsumption",
+  waveId?: string | null,
+  consumedTickets?: number | null,
+  totalTickets?: number | null,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateWavesConsumptionInput = {
+  waveId?: string | null,
+  consumedTickets?: number | null,
+  totalTickets?: number | null,
+  id: string,
+};
+
+export type DeleteWavesConsumptionInput = {
+  id: string,
+};
+
 export type ModelAccountFilterInput = {
   id?: ModelIDInput | null,
   domain?: ModelStringInput | null,
@@ -2139,6 +2176,21 @@ export type ModelTransactionConnection = {
   nextToken?: string | null,
 };
 
+export type ModelWavesConsumptionFilterInput = {
+  waveId?: ModelStringInput | null,
+  consumedTickets?: ModelIntInput | null,
+  totalTickets?: ModelIntInput | null,
+  and?: Array< ModelWavesConsumptionFilterInput | null > | null,
+  or?: Array< ModelWavesConsumptionFilterInput | null > | null,
+  not?: ModelWavesConsumptionFilterInput | null,
+};
+
+export type ModelWavesConsumptionConnection = {
+  __typename: "ModelWavesConsumptionConnection",
+  items:  Array<WavesConsumption | null >,
+  nextToken?: string | null,
+};
+
 export type ModelSubscriptionAccountFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   domain?: ModelSubscriptionStringInput | null,
@@ -2546,6 +2598,14 @@ export type ModelSubscriptionTransactionFilterInput = {
   createdByName?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionTransactionFilterInput | null > | null,
   or?: Array< ModelSubscriptionTransactionFilterInput | null > | null,
+};
+
+export type ModelSubscriptionWavesConsumptionFilterInput = {
+  waveId?: ModelSubscriptionStringInput | null,
+  consumedTickets?: ModelSubscriptionIntInput | null,
+  totalTickets?: ModelSubscriptionIntInput | null,
+  and?: Array< ModelSubscriptionWavesConsumptionFilterInput | null > | null,
+  or?: Array< ModelSubscriptionWavesConsumptionFilterInput | null > | null,
 };
 
 export type CreateAccountMutationVariables = {
@@ -6052,6 +6112,57 @@ export type DeleteTransactionMutation = {
   } | null,
 };
 
+export type CreateWavesConsumptionMutationVariables = {
+  input: CreateWavesConsumptionInput,
+  condition?: ModelWavesConsumptionConditionInput | null,
+};
+
+export type CreateWavesConsumptionMutation = {
+  createWavesConsumption?:  {
+    __typename: "WavesConsumption",
+    waveId?: string | null,
+    consumedTickets?: number | null,
+    totalTickets?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateWavesConsumptionMutationVariables = {
+  input: UpdateWavesConsumptionInput,
+  condition?: ModelWavesConsumptionConditionInput | null,
+};
+
+export type UpdateWavesConsumptionMutation = {
+  updateWavesConsumption?:  {
+    __typename: "WavesConsumption",
+    waveId?: string | null,
+    consumedTickets?: number | null,
+    totalTickets?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteWavesConsumptionMutationVariables = {
+  input: DeleteWavesConsumptionInput,
+  condition?: ModelWavesConsumptionConditionInput | null,
+};
+
+export type DeleteWavesConsumptionMutation = {
+  deleteWavesConsumption?:  {
+    __typename: "WavesConsumption",
+    waveId?: string | null,
+    consumedTickets?: number | null,
+    totalTickets?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type GetAccountQueryVariables = {
   id: string,
 };
@@ -8575,6 +8686,44 @@ export type ListTransactionsQuery = {
       createdByName?: string | null,
       updatedAt: string,
       transactionBookingId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetWavesConsumptionQueryVariables = {
+  id: string,
+};
+
+export type GetWavesConsumptionQuery = {
+  getWavesConsumption?:  {
+    __typename: "WavesConsumption",
+    waveId?: string | null,
+    consumedTickets?: number | null,
+    totalTickets?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListWavesConsumptionsQueryVariables = {
+  filter?: ModelWavesConsumptionFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListWavesConsumptionsQuery = {
+  listWavesConsumptions?:  {
+    __typename: "ModelWavesConsumptionConnection",
+    items:  Array< {
+      __typename: "WavesConsumption",
+      waveId?: string | null,
+      consumedTickets?: number | null,
+      totalTickets?: number | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -12021,5 +12170,53 @@ export type OnDeleteTransactionSubscription = {
     createdByName?: string | null,
     updatedAt: string,
     transactionBookingId?: string | null,
+  } | null,
+};
+
+export type OnCreateWavesConsumptionSubscriptionVariables = {
+  filter?: ModelSubscriptionWavesConsumptionFilterInput | null,
+};
+
+export type OnCreateWavesConsumptionSubscription = {
+  onCreateWavesConsumption?:  {
+    __typename: "WavesConsumption",
+    waveId?: string | null,
+    consumedTickets?: number | null,
+    totalTickets?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateWavesConsumptionSubscriptionVariables = {
+  filter?: ModelSubscriptionWavesConsumptionFilterInput | null,
+};
+
+export type OnUpdateWavesConsumptionSubscription = {
+  onUpdateWavesConsumption?:  {
+    __typename: "WavesConsumption",
+    waveId?: string | null,
+    consumedTickets?: number | null,
+    totalTickets?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteWavesConsumptionSubscriptionVariables = {
+  filter?: ModelSubscriptionWavesConsumptionFilterInput | null,
+};
+
+export type OnDeleteWavesConsumptionSubscription = {
+  onDeleteWavesConsumption?:  {
+    __typename: "WavesConsumption",
+    waveId?: string | null,
+    consumedTickets?: number | null,
+    totalTickets?: number | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };

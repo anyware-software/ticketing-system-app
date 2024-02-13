@@ -599,3 +599,20 @@ type Transaction
   createdByID: String
   createdByName: String
 }
+
+type WavesConsumption
+  @model
+  @auth(
+    rules: [
+      # allow groups to create, update, and delete users
+      { allow: groups, groups: ["admin"] }
+      # allow all authenticated users to read attachments
+      { allow: private, operations: [read] }
+      # allow all guest users (unauthenticated) to read attachments
+      { allow: public, operations: [read] }
+    ]
+  ) {
+  waveId: String
+  consumedTickets: Int
+  totalTickets: Int
+}

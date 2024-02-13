@@ -9,7 +9,7 @@ Amplify Params - DO NOT EDIT */
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
-const { handleSuccessPayment } = require("./utils/payMob");
+const { handleSuccessPayment } = require("./utils/payment");
 
 exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
@@ -39,6 +39,8 @@ exports.handler = async (event) => {
         orderId: bookAttributes.orderId,
         specialNeed: bookAttributes.specialNeed,
         phone_number: bookAttributes.phone_number,
+        isPaid: bookAttributes.isPaid,
+        paidAmount: bookAttributes.paidAmount,
         deleted: "0",
         createdAt: bookAttributes.createdAt,
         createdByID: bookAttributes.createdByID,

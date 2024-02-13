@@ -3572,3 +3572,57 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
   APITypes.DeleteTransactionMutationVariables,
   APITypes.DeleteTransactionMutation
 >;
+export const createWavesConsumption = /* GraphQL */ `mutation CreateWavesConsumption(
+  $input: CreateWavesConsumptionInput!
+  $condition: ModelWavesConsumptionConditionInput
+) {
+  createWavesConsumption(input: $input, condition: $condition) {
+    waveId
+    consumedTickets
+    totalTickets
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateWavesConsumptionMutationVariables,
+  APITypes.CreateWavesConsumptionMutation
+>;
+export const updateWavesConsumption = /* GraphQL */ `mutation UpdateWavesConsumption(
+  $input: UpdateWavesConsumptionInput!
+  $condition: ModelWavesConsumptionConditionInput
+) {
+  updateWavesConsumption(input: $input, condition: $condition) {
+    waveId
+    consumedTickets
+    totalTickets
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateWavesConsumptionMutationVariables,
+  APITypes.UpdateWavesConsumptionMutation
+>;
+export const deleteWavesConsumption = /* GraphQL */ `mutation DeleteWavesConsumption(
+  $input: DeleteWavesConsumptionInput!
+  $condition: ModelWavesConsumptionConditionInput
+) {
+  deleteWavesConsumption(input: $input, condition: $condition) {
+    waveId
+    consumedTickets
+    totalTickets
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteWavesConsumptionMutationVariables,
+  APITypes.DeleteWavesConsumptionMutation
+>;

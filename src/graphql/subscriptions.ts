@@ -3446,3 +3446,54 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
   APITypes.OnDeleteTransactionSubscriptionVariables,
   APITypes.OnDeleteTransactionSubscription
 >;
+export const onCreateWavesConsumption = /* GraphQL */ `subscription OnCreateWavesConsumption(
+  $filter: ModelSubscriptionWavesConsumptionFilterInput
+) {
+  onCreateWavesConsumption(filter: $filter) {
+    waveId
+    consumedTickets
+    totalTickets
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateWavesConsumptionSubscriptionVariables,
+  APITypes.OnCreateWavesConsumptionSubscription
+>;
+export const onUpdateWavesConsumption = /* GraphQL */ `subscription OnUpdateWavesConsumption(
+  $filter: ModelSubscriptionWavesConsumptionFilterInput
+) {
+  onUpdateWavesConsumption(filter: $filter) {
+    waveId
+    consumedTickets
+    totalTickets
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateWavesConsumptionSubscriptionVariables,
+  APITypes.OnUpdateWavesConsumptionSubscription
+>;
+export const onDeleteWavesConsumption = /* GraphQL */ `subscription OnDeleteWavesConsumption(
+  $filter: ModelSubscriptionWavesConsumptionFilterInput
+) {
+  onDeleteWavesConsumption(filter: $filter) {
+    waveId
+    consumedTickets
+    totalTickets
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteWavesConsumptionSubscriptionVariables,
+  APITypes.OnDeleteWavesConsumptionSubscription
+>;
