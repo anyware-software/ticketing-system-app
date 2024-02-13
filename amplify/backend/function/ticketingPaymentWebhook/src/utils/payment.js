@@ -54,6 +54,8 @@ const updateBooking = async (bookAttributes) => {
       orderId: bookAttributes.orderId,
       specialNeed: bookAttributes.specialNeed,
       phone_number: bookAttributes.phone_number,
+      isPaid: bookAttributes.isPaid,
+      paidAmount: bookAttributes.paidAmount,
       deleted: "0",
       createdAt: bookAttributes.createdAt,
       createdByID: bookAttributes.createdByID,
