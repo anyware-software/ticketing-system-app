@@ -53,6 +53,7 @@ import { useNavigate } from "react-router-dom";
 import { toggleDrawer as toggleDrawerState } from "../../state/index";
 import sendSms from "../../services/sendSMS";
 import Resizer from "react-image-file-resizer";
+import createTransaction from "../../services/createTransaction";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -610,6 +611,27 @@ export default function GuestProfile() {
   };
   // console.log(currentCompanions);
   // console.log(currentBookings);
+
+  async function payForTicket(){
+    try{
+      // await createTransaction({
+      //   user:user,
+      //   guestId:currentBookings?.bookingGuestId,
+      //   eventId:currentBookings?.bookingEventId,
+      //   ticketId:currentBookings?.bookingEventTicketId,
+      //   issuccess:true,
+      //   currency:'EGP',
+      //   amount_cents:'1000',
+      //   transactionBookingId:currentBookings?.id,
+      // })
+      // await updateBooking({
+        
+      // })
+    }catch(err){
+      console.log();
+    }
+  }
+// console.log(currentBookings);
 
   return (
     <Box
@@ -1813,7 +1835,7 @@ export default function GuestProfile() {
                       onClick={() => {
                         if (currentBookings?.status === BookingStatus.APPROVED) {
                           // navigate(`payment/${currentBookings?.id}`);
-                          
+                          payForTicket()
                         }
                       }}
                     >

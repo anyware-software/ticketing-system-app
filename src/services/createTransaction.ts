@@ -1,7 +1,7 @@
 import axios from "axios";
 import { EventEndPoints } from "../constants/Enums";
 
-async function createBooking({
+async function createTransaction({
   user,
   guestId,
   eventId,
@@ -52,4 +52,4 @@ async function createBooking({
   }
 }
 
-export default createBooking;
+export default createTransaction;
