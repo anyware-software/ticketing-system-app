@@ -1,6 +1,15 @@
 {
   "body": {
-    "operationId": 11,
-    "invitationSecret":"20240207141611654ZUNzoLK"
+    "operationId": 12,
+    "bookAttributes": {
+      "guestId": "e274cbf6-31a9-4249-934d-ca9a8a3af622",
+      "eventId": "335e5bb5-bf5a-46bd-8f71-a13ededbf500",
+      "ticketId": "893d8f2f-0e1b-4a6b-bb36-6e7387b22ac2",
+      "transactionBookingId": "111dd799-8241-4606-946e-b11c7654f8ff",
+      "issuccess": true,
+      "createdAt": "2024-02-12T14:15:17.054Z",
+      "createdByID": "e274cbf6-31a9-4249-934d-ca9a8a3af622",
+      "createdByName": "mohamed samir"
+    }
   }
 }
