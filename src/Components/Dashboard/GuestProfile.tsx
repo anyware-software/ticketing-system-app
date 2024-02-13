@@ -614,19 +614,18 @@ export default function GuestProfile() {
 
   async function payForTicket(){
     try{
-      // await createTransaction({
-      //   user:user,
-      //   guestId:currentBookings?.bookingGuestId,
-      //   eventId:currentBookings?.bookingEventId,
-      //   ticketId:currentBookings?.bookingEventTicketId,
-      //   issuccess:true,
-      //   currency:'EGP',
-      //   amount_cents:'1000',
-      //   transactionBookingId:currentBookings?.id,
-      // })
-      // await updateBooking({
-        
-      // })
+      await createTransaction({
+        user:user,
+        guestId:currentBookings?.bookingGuestId,
+        eventId:currentBookings?.bookingEventId,
+        ticketId:currentBookings?.bookingEventTicketId,
+        issuccess:true,
+        currency:'EGP',
+        amount_cents:'1000',
+        transactionBookingId:currentBookings?.id,
+        isPaid:true,
+        paidAmount:20000,
+      })
     }catch(err){
       console.log();
     }
@@ -1833,9 +1832,11 @@ export default function GuestProfile() {
                         display: { xs: "none", sm: "block", lg: "block" },
                       }}
                       onClick={() => {
-                        if (currentBookings?.status === BookingStatus.APPROVED) {
+                        if (currentBookings?.isPaid === false) {
                           // navigate(`payment/${currentBookings?.id}`);
                           payForTicket()
+                        }else{
+                          navigate(`ticket/${currentBookings?.id}`);
                         }
                       }}
                     >

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { EventEndPoints } from "../constants/Enums";
+import { paymentWebhook } from "../constants/Enums";
 
 async function createTransaction({
   user,
@@ -13,10 +13,11 @@ async function createTransaction({
   refund,
   refunded_amount_cents,
   transactionBookingId,
+  isPaid,
+  paidAmount,
 }: any) {
   try {
-    const operationId = 12;
-    const bookAttributes = {
+    const paymentObj = {
       guestId: guestId,
       eventId: eventId,
       ticketId: ticketId,
@@ -31,20 +32,19 @@ async function createTransaction({
       createdByID: user.id,
       createdByName: user.name,
     };
+    const bookAttributes = {
+      isPaid: isPaid,
+      paidAmount: paidAmount,
+    };
 
     const requestBody = {
-      operationId,
+      eventBookingID: transactionBookingId,
+      paymentObj: paymentObj,
       bookAttributes: bookAttributes,
     };
     console.log(requestBody);
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    };
-    const response = await axios.post(EventEndPoints, requestBody);
+
+    const response = await axios.post(paymentWebhook, requestBody);
     return response.data;
   } catch (error) {
     console.error("Error creating user :", error);

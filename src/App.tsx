@@ -27,6 +27,7 @@ import PaymentPage from "./Components/Dashboard/PaymentPage";
 import GuestProfile from "./Components/Dashboard/GuestProfile";
 import Events from "./Components/Dashboard/Events";
 import InvitationPage from "./Components/InvitationPage/InvitationPage";
+import PayedTicket from "./Components/PayedTicket/PayedTicket";
 //-------------------------------------------------------------
 
 const provider = {
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
           { index: true, element: <GuestProfile /> },
           { path: "events", element: <Events /> },
           { path: "payment/:id", element: <PaymentPage /> },
+          { path: "ticket/:id", element: <PayedTicket /> },
         ],
       },
       { path: "*", element: <NotFound /> },
