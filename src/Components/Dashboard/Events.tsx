@@ -407,6 +407,7 @@ export default function Events() {
         { number: generateTicketNumber() ,redeemed:false },
         user.name,
         eventForMainGuest?.waveId,
+        BookingStatus.PENDING,
       );
       // console.log(bookingRequest);
       setTicketChosen("book");
@@ -435,6 +436,7 @@ export default function Events() {
         { number: generateTicketNumber(),redeemed:false },
         user.name,
         eventForValidGuest?.waveId,
+        BookingStatus.PENDING,
       );
       // console.log(bookingRequest);
     });
@@ -457,6 +459,7 @@ export default function Events() {
         { number: generateTicketNumber(),redeemed:false },
         notValidGuest?.name,
         eventForNotValidGuest?.waveId,
+        BookingStatus.PENDING,
       );
       // console.log(bookingRequest);
       sendSmsToUser(

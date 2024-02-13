@@ -15,7 +15,8 @@ async function createBooking(
   phone_number?: String,
   ticketObj?: any,
   guestName?: String,
-  waveId?: String
+  waveId?: String,
+  overallStatus?: String,
 ) {
   // console.log(user, status, bookingMainGuestId, bookingGuestId, bookingEventId, bookingEventTicketId, isMainGuest, wave, orderId, specialNeed);
 
@@ -35,6 +36,7 @@ async function createBooking(
       guestTicket: ticketObj,
       guestName: guestName,
       waveId:waveId,
+      overallStatus:overallStatus,
       createdAt: new Date().toISOString(),
       createdByID: user.id,
       createdByName: user.name,
