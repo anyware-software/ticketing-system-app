@@ -434,6 +434,11 @@ export default function MobileViewTabs() {
 
   async function payForTicket() {
     try {
+      const waveId = currentBookings?.waveId;
+      const wave = currentBookings?.eventTicket?.waves?.find(
+        (wave) => wave?.id === waveId
+      );
+      const amountCents = wave?.price ? wave.price * 100 : 0;
       await createTransaction({
         user: user,
         guestId: currentBookings?.bookingGuestId,
@@ -441,10 +446,10 @@ export default function MobileViewTabs() {
         ticketId: currentBookings?.bookingEventTicketId,
         issuccess: true,
         currency: "EGP",
-        amount_cents: "1000",
+        amount_cents: `${amountCents}`,
         transactionBookingId: currentBookings?.id,
         isPaid: true,
-        paidAmount: 20000,
+        paidAmount: wave?.price,
       });
     } catch (err) {
       console.log();

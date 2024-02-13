@@ -215,12 +215,12 @@ export default function PayedTicket() {
                     sx={{
                       mt: 0.5,
                       color:
-                        validBooking?.guestTicket?.redeemed === false
+                        !validBooking?.guestTicket?.redeemed
                           ? "green"
                           : "red",
                     }}
                   >
-                    {validBooking?.guestTicket?.redeemed === false
+                    {!validBooking?.guestTicket?.redeemed
                       ? "(Valid)"
                       : "(Not Valid)"}
                   </Typography>

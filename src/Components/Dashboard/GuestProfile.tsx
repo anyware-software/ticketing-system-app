@@ -609,28 +609,31 @@ export default function GuestProfile() {
       console.log(err);
     }
   };
-  // console.log(currentCompanions);
-  // console.log(currentBookings);
 
-  async function payForTicket(){
-    try{
+  async function payForTicket() {
+    try {
+      const waveId = currentBookings?.waveId;
+      const wave = currentBookings?.eventTicket?.waves?.find(
+        (wave) => wave?.id === waveId
+      );
+      const amountCents = wave?.price ? wave.price * 100 : 0;
       await createTransaction({
-        user:user,
-        guestId:currentBookings?.bookingGuestId,
-        eventId:currentBookings?.bookingEventId,
-        ticketId:currentBookings?.bookingEventTicketId,
-        issuccess:true,
-        currency:'EGP',
-        amount_cents:'1000',
-        transactionBookingId:currentBookings?.id,
-        isPaid:true,
-        paidAmount:20000,
-      })
-    }catch(err){
+        user: user,
+        guestId: currentBookings?.bookingGuestId,
+        eventId: currentBookings?.bookingEventId,
+        ticketId: currentBookings?.bookingEventTicketId,
+        issuccess: true,
+        currency: "EGP",
+        amount_cents: `${amountCents}`,
+        transactionBookingId: currentBookings?.id,
+        isPaid: true,
+        paidAmount: wave?.price,
+      });
+    } catch (err) {
       console.log();
     }
   }
-// console.log(currentBookings);
+      
 
   return (
     <Box
@@ -1834,8 +1837,8 @@ export default function GuestProfile() {
                       onClick={() => {
                         if (currentBookings?.isPaid === false) {
                           // navigate(`payment/${currentBookings?.id}`);
-                          payForTicket()
-                        }else{
+                          payForTicket();
+                        } else {
                           navigate(`ticket/${currentBookings?.id}`);
                         }
                       }}
