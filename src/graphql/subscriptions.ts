@@ -1636,6 +1636,7 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
     phone_number
     guestTicket {
       number
+      redeemed
       __typename
     }
     guestName
@@ -1880,6 +1881,7 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
     phone_number
     guestTicket {
       number
+      redeemed
       __typename
     }
     guestName
@@ -2124,6 +2126,7 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
     phone_number
     guestTicket {
       number
+      redeemed
       __typename
     }
     guestName
@@ -2892,6 +2895,7 @@ export const onCreateTransaction = /* GraphQL */ `subscription OnCreateTransacti
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName
@@ -3145,6 +3149,7 @@ export const onUpdateTransaction = /* GraphQL */ `subscription OnUpdateTransacti
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName
@@ -3398,6 +3403,7 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName
@@ -3445,4 +3451,55 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
 ` as GeneratedSubscription<
   APITypes.OnDeleteTransactionSubscriptionVariables,
   APITypes.OnDeleteTransactionSubscription
+>;
+export const onCreateWavesConsumption = /* GraphQL */ `subscription OnCreateWavesConsumption(
+  $filter: ModelSubscriptionWavesConsumptionFilterInput
+) {
+  onCreateWavesConsumption(filter: $filter) {
+    waveId
+    consumedTickets
+    totalTickets
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateWavesConsumptionSubscriptionVariables,
+  APITypes.OnCreateWavesConsumptionSubscription
+>;
+export const onUpdateWavesConsumption = /* GraphQL */ `subscription OnUpdateWavesConsumption(
+  $filter: ModelSubscriptionWavesConsumptionFilterInput
+) {
+  onUpdateWavesConsumption(filter: $filter) {
+    waveId
+    consumedTickets
+    totalTickets
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateWavesConsumptionSubscriptionVariables,
+  APITypes.OnUpdateWavesConsumptionSubscription
+>;
+export const onDeleteWavesConsumption = /* GraphQL */ `subscription OnDeleteWavesConsumption(
+  $filter: ModelSubscriptionWavesConsumptionFilterInput
+) {
+  onDeleteWavesConsumption(filter: $filter) {
+    waveId
+    consumedTickets
+    totalTickets
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteWavesConsumptionSubscriptionVariables,
+  APITypes.OnDeleteWavesConsumptionSubscription
 >;

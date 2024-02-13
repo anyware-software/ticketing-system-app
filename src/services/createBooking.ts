@@ -13,7 +13,7 @@ async function createBooking(
   orderId?: String,
   specialNeed?: Boolean,
   phone_number?: String,
-  ticketNumber?: any,
+  ticketObj?: any,
   guestName?: String,
   waveId?: String
 ) {
@@ -32,7 +32,7 @@ async function createBooking(
       orderId: orderId,
       specialNeed: specialNeed,
       phone_number: phone_number,
-      guestTicket: ticketNumber,
+      guestTicket: ticketObj,
       guestName: guestName,
       waveId:waveId,
       createdAt: new Date().toISOString(),

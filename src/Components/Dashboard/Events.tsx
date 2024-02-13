@@ -352,8 +352,9 @@ export default function Events() {
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     const idLength = 7;
+    const currentDate = new Date().toISOString().replace(/[-T:Z.]/g, "");
     let randomId = "";
-
+    randomId += currentDate;
     for (let i = 0; i < idLength; i++) {
       const randomIndex = Math.floor(Math.random() * characters.length);
       randomId += characters.charAt(randomIndex);
@@ -403,7 +404,7 @@ export default function Events() {
         orderId,
         isSpecial,
         user.phone_number,
-        { number: generateTicketNumber() },
+        { number: generateTicketNumber() ,redeemed:false },
         user.name,
         eventForMainGuest?.waveId,
       );
@@ -431,7 +432,7 @@ export default function Events() {
         orderId,
         isSpecial,
         validGuest.phone_number,
-        { number: generateTicketNumber() },
+        { number: generateTicketNumber(),redeemed:false },
         user.name,
         eventForValidGuest?.waveId,
       );
@@ -453,7 +454,7 @@ export default function Events() {
         orderId,
         isSpecial,
         notValidGuest?.phone,
-        { number: generateTicketNumber() },
+        { number: generateTicketNumber(),redeemed:false },
         notValidGuest?.name,
         eventForNotValidGuest?.waveId,
       );

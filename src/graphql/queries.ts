@@ -1459,6 +1459,7 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
     phone_number
     guestTicket {
       number
+      redeemed
       __typename
     }
     guestName
@@ -1697,6 +1698,7 @@ export const listBookings = /* GraphQL */ `query ListBookings(
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName
@@ -2287,6 +2289,7 @@ export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName
@@ -2498,6 +2501,7 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
         phone_number
         guestTicket {
           number
+          redeemed
           __typename
         }
         guestName
@@ -2548,4 +2552,42 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
 ` as GeneratedQuery<
   APITypes.ListTransactionsQueryVariables,
   APITypes.ListTransactionsQuery
+>;
+export const getWavesConsumption = /* GraphQL */ `query GetWavesConsumption($id: ID!) {
+  getWavesConsumption(id: $id) {
+    waveId
+    consumedTickets
+    totalTickets
+    id
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetWavesConsumptionQueryVariables,
+  APITypes.GetWavesConsumptionQuery
+>;
+export const listWavesConsumptions = /* GraphQL */ `query ListWavesConsumptions(
+  $filter: ModelWavesConsumptionFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listWavesConsumptions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      waveId
+      consumedTickets
+      totalTickets
+      id
+      createdAt
+      updatedAt
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListWavesConsumptionsQueryVariables,
+  APITypes.ListWavesConsumptionsQuery
 >;
