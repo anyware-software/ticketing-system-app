@@ -12,9 +12,11 @@ import { QRCodeSVG } from "qrcode.react";
 import { Chip } from "@mui/material";
 import { dbStorage } from "../../constants/Enums";
 import { Avatar } from "@mui/material";
+import ContentLoader from "../ContentLoader/ContentLoder";
 
 export default function PayedTicket() {
   const [validBooking, setValidBooking] = useState<Booking>();
+  const [loading, setLoading] = useState(false);
 
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -25,17 +27,28 @@ export default function PayedTicket() {
 
   useEffect(() => {
     async function getValidBooking() {
+      setLoading(true);
       const booking = await getBooking(id);
       if (booking.isPaid === true) {
         setValidBooking(booking);
       } else {
         return;
       }
+      setLoading(false);
     }
     getValidBooking();
   }, []);
 
-  console.log(validBooking);
+  if (loading)
+    return (
+      <Box
+        sx={{
+          width: "100%",
+        }}
+      >
+        <ContentLoader />
+      </Box>
+    );
 
   return (
     <Box
@@ -214,10 +227,9 @@ export default function PayedTicket() {
                     fontSize={10}
                     sx={{
                       mt: 0.5,
-                      color:
-                        !validBooking?.guestTicket?.redeemed
-                          ? "green"
-                          : "red",
+                      color: !validBooking?.guestTicket?.redeemed
+                        ? "green"
+                        : "red",
                     }}
                   >
                     {!validBooking?.guestTicket?.redeemed

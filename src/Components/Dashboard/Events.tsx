@@ -146,6 +146,7 @@ export default function Events() {
 
   useEffect(() => {
     const getCurrentEvent = async () => {
+      setLoading(true);
       if (currentEventId) {
         try {
           let currentEvent = await getEvent(currentEventId);
@@ -156,6 +157,7 @@ export default function Events() {
           console.error("Error getting event:", error);
         }
       }
+      setLoading(false);
     };
     getCurrentEvent();
   }, [currentEventId]);
@@ -164,13 +166,13 @@ export default function Events() {
     getListEvents();
   }, []);
 
-  useEffect(() => {
-    if (currentEvent?.id === "") {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
-  }, [currentEvent?.id]);
+  // useEffect(() => {
+  //   if (currentEvent?.id === "") {
+  //     setLoading(true);
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // }, [currentEvent?.id]);
 
   const handlePrevImage = () => {
     setIsTransitioning(true);
@@ -507,6 +509,27 @@ export default function Events() {
   };
   // console.log(selectedWaves);
 
+  // if (loading)
+  //   return (
+  //     <Box
+  //       sx={{
+  //         width: "100%",
+  //       }}
+  //     >
+  //       <ContentLoader />
+  //     </Box>
+  //   );
+
+  if (currentEventId === "")
+    return (
+      <Box
+        sx={{
+          width: "100%",
+        }}
+      >
+        <ContentLoader />
+      </Box>
+    );
   if (loading)
     return (
       <Box
@@ -517,8 +540,7 @@ export default function Events() {
         <ContentLoader />
       </Box>
     );
-
-  if (currentEventId === "")
+    if (loading && currentEventId === "")
     return (
       <Box
         sx={{

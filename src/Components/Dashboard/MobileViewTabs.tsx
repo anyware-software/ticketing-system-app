@@ -77,6 +77,7 @@ export default function MobileViewTabs() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [currentBookings, setCurrentBookings] = useState<Booking>();
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
+  const [bookingLoading, setBookingLoading] = useState(false);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -115,6 +116,7 @@ export default function MobileViewTabs() {
 
   useEffect(() => {
     async function getGuestBookingEvents() {
+      setBookingLoading(true);
       const booking = await listGuestBooking({ bookingGuestid: user?.id });
       if (booking) {
         const sortedBookings = booking.items.sort((a: any, b: any) => {
@@ -125,6 +127,7 @@ export default function MobileViewTabs() {
         setCurrentBookings(sortedBookings[0]);
       }
     }
+    setBookingLoading(false);
     getGuestBookingEvents();
   }, [user]);
 
@@ -1050,7 +1053,13 @@ export default function MobileViewTabs() {
               // gap: 10,
             }}
           >
-            {currentBookings && currentCompanions.length > 0 ? (
+            { bookingLoading ? (
+            <CircularProgress
+              size={64}
+              thickness={1}
+              sx={{ color: "#EE726A" }}
+            />
+          ) : currentBookings ? (
               <Box
                 sx={{
                   display: "flex",
