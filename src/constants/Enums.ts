@@ -12,6 +12,9 @@ export const paymentWebhook =
 export const dbStorage =
   "https://ticketingsystemadmina29b1f146cd8476b9f9aefcf325132756-dev.s3.us-east-2.amazonaws.com/public/";
 
+export const smsEndpoint =
+  "https://sms.anyware.software/cequens-sms/sendSMS";
+
 export enum BookingStatus {
   APPROVED = "approved",
   REGJECTED = "rejected",
