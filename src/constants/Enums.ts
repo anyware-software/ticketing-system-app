@@ -12,6 +12,9 @@ export const paymentWebhook =
 export const dbStorage =
   "https://ticketingsystemadmina29b1f146cd8476b9f9aefcf325132756-dev.s3.us-east-2.amazonaws.com/public/";
 
+export enum paymentEndPoints {
+  OPERATIONS = "https://crbtmornzj4nrckuxxad6i3fja0jdmsa.lambda-url.us-east-2.on.aws/",
+}
 export enum BookingStatus {
   APPROVED = "approved",
   REGJECTED = "rejected",
