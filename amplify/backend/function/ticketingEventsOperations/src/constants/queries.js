@@ -1338,12 +1338,15 @@ const listOverViewBookings = /* GraphQL */ `
             quota
           }
         }
+        isPaid
+        paidAmount      
         waveId
       }
       nextToken
     }
   }
 `;
+
 const createTransaction = /* GraphQL */ `
   mutation CreateTransaction(
     $input: CreateTransactionInput!
