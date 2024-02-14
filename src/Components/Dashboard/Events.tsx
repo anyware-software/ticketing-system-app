@@ -209,7 +209,7 @@ export default function Events() {
     ticketType: string,
     waveName: string,
     wavePrice: number,
-    waveId: string,
+    waveId: string
   ) => {
     const countKey = `${ticketId}-${ticketType}-${waveName}-${wavePrice}-${waveId}`;
     setWaveCounts((prevCounts) => ({
@@ -223,9 +223,9 @@ export default function Events() {
     ticketType: string,
     waveName: string,
     wavePrice: number,
-    waveId: string,
+    waveId: string
   ) => {
-    const countKey = `${ticketId}-${ticketType}-${waveName}-${wavePrice}-${waveId}`;    
+    const countKey = `${ticketId}-${ticketType}-${waveName}-${wavePrice}-${waveId}`;
     setWaveCounts((prevCounts) => ({
       ...prevCounts,
       [countKey]: Math.max((prevCounts[countKey] || 0) - 1, 0),
@@ -241,7 +241,7 @@ export default function Events() {
     .filter((countKey) => waveCounts[countKey] > 0)
     .map((countKey) => {
       const parts = countKey.split("-");
-      const ticketId = parts.slice(0, -8).join("-");    
+      const ticketId = parts.slice(0, -8).join("-");
       const ticketName = parts[parts.length - 8];
       const waveName = parts[parts.length - 7];
       const wavePrice = parts[parts.length - 6];
@@ -291,14 +291,14 @@ export default function Events() {
     index: number,
     field: "name" | "phone",
     value: string,
-    waveId: string,
+    waveId: string
   ) => {
     const key = `${ticketId}-${waveName}-${waveId}-${index}`;
     const parts = key.split("-");
     const extractedTicketId = parts.slice(0, -7).join("-");
     const extractedWaveName = parts[parts.length - 7];
-    const extractedWaveId = parts.slice(6,11).join("-");
-    
+    const extractedWaveId = parts.slice(6, 11).join("-");
+
     setBookingRequests((prevFormData) => ({
       ...prevFormData,
       [key]: {
@@ -351,29 +351,40 @@ export default function Events() {
     }
   };
   const generateOrderId = () => {
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     const idLength = 7;
     const currentDate = new Date().toISOString().replace(/[-T:Z.]/g, "");
-    let randomId = "";
-    randomId += currentDate;
-    for (let i = 0; i < idLength; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      randomId += characters.charAt(randomIndex);
+    let randomId = currentDate;
+    const uniqueCharacters = new Set();
+    let uniqueCharsCount = 0;
+    while (uniqueCharsCount < idLength) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        const char = characters.charAt(randomIndex);
+        if (!uniqueCharacters.has(char)) {
+            randomId += char;
+            uniqueCharacters.add(char);
+            uniqueCharsCount++;
+        }
     }
     return randomId;
-  };
+};
+
 
   const generateTicketNumber = () => {
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     const idLength = 7;
     const currentDate = new Date().toISOString().replace(/[-T:Z.]/g, "");
-    let randomId = "";
-    randomId += currentDate;
-    for (let i = 0; i < idLength; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      randomId += characters.charAt(randomIndex);
+    let randomId = currentDate;
+    const uniqueCharacters = new Set();
+    let uniqueCharsCount = 0;
+    while (uniqueCharsCount < idLength) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        const char = characters.charAt(randomIndex);
+        if (!uniqueCharacters.has(char)) {
+            randomId += char;
+            uniqueCharacters.add(char);
+            uniqueCharsCount++;
+        }
     }
     return randomId;
   };
@@ -406,10 +417,10 @@ export default function Events() {
         orderId,
         isSpecial,
         user.phone_number,
-        { number: generateTicketNumber() ,redeemed:false },
+        { number: generateTicketNumber(), redeemed: false },
         user.name,
         eventForMainGuest?.waveId,
-        BookingStatus.PENDING,
+        BookingStatus.PENDING
       );
       // console.log(bookingRequest);
       setTicketChosen("book");
@@ -435,10 +446,10 @@ export default function Events() {
         orderId,
         isSpecial,
         validGuest.phone_number,
-        { number: generateTicketNumber(),redeemed:false },
+        { number: generateTicketNumber(), redeemed: false },
         user.name,
         eventForValidGuest?.waveId,
-        BookingStatus.PENDING,
+        BookingStatus.PENDING
       );
       // console.log(bookingRequest);
     });
@@ -458,10 +469,10 @@ export default function Events() {
         orderId,
         isSpecial,
         notValidGuest?.phone,
-        { number: generateTicketNumber(),redeemed:false },
+        { number: generateTicketNumber(), redeemed: false },
         notValidGuest?.name,
         eventForNotValidGuest?.waveId,
-        BookingStatus.PENDING,
+        BookingStatus.PENDING
       );
       // console.log(bookingRequest);
       sendSmsToUser(
@@ -540,7 +551,7 @@ export default function Events() {
         <ContentLoader />
       </Box>
     );
-    if (loading && currentEventId === "")
+  if (loading && currentEventId === "")
     return (
       <Box
         sx={{
@@ -987,12 +998,15 @@ export default function Events() {
                     }
                     if (ticketChosen === "guests") {
                       setBookingRequests({});
+                      setMainGuest(null);
+                      setValidGuests([]);
+                      setNotValidGuests([]);
                       setTicketChosen("tickets");
                     }
                     if (ticketChosen === "book") {
                       // setBookingRequests({});
                       setNotValidGuestsBooking([]);
-                      setTicketChosen("guests");
+                      setTicketChosen("noTickets");
                     }
                   }}
                 >
@@ -1033,12 +1047,15 @@ export default function Events() {
                     }
                     if (ticketChosen === "guests") {
                       setBookingRequests({});
+                      setMainGuest(null);
+                      setValidGuests([]);
+                      setNotValidGuests([]);
                       setTicketChosen("tickets");
                     }
                     if (ticketChosen === "book") {
                       // setBookingRequests({});
                       setNotValidGuestsBooking([]);
-                      setTicketChosen("guests");
+                      setTicketChosen("noTickets");
                     }
                   }}
                 >
@@ -1237,7 +1254,7 @@ export default function Events() {
                                             ticket.type,
                                             wave.name,
                                             wave.price,
-                                            wave.id,
+                                            wave.id
                                           )
                                         }
                                       />
@@ -1275,169 +1292,175 @@ export default function Events() {
               {ticketChosen === "tickets" && (
                 <Box
                   sx={{
-                    display: "grid",
-                    gridTemplateColumns: {
-                      xs: "repeat(1, 1fr)",
-                      sm: "repeat(1, 1fr)",
-                      md: "repeat(2, 1fr)",
-                      lg: "repeat(3, 1fr)",
-                    },
-                    gap: 1,
+                    width: "100%",
                   }}
                 >
-                  {currentEventTicket.map((ticket) => {
-                    const wavesForTicket = selectedWaves.filter(
-                      (wave) => wave.ticketId === ticket.id
-                    );
-                    if (
-                      wavesForTicket.length === 0 ||
-                      wavesForTicket.every((wave) => wave.count === 0)
-                    ) {
-                      return null;
-                    }
-                    return (
-                      <Box key={ticket.id}>
-                        <Box
-                          sx={{
-                            width: "100%",
-                            height: ".75rem",
-                            backgroundColor: ticket?.color || "gold",
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            p: 3,
-                            backgroundColor: "rgba(0, 0, 0, 1)",
-                          }}
-                        >
-                          <Typography
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: {
+                        xs: "repeat(1, 1fr)",
+                        sm: "repeat(1, 1fr)",
+                        md: "repeat(2, 1fr)",
+                        lg: "repeat(3, 1fr)",
+                      },
+                      gap: 1,
+                    }}
+                  >
+                    {currentEventTicket.map((ticket) => {
+                      const wavesForTicket = selectedWaves.filter(
+                        (wave) => wave.ticketId === ticket.id
+                      );
+                      if (
+                        wavesForTicket.length === 0 ||
+                        wavesForTicket.every((wave) => wave.count === 0)
+                      ) {
+                        return null;
+                      }
+                      return (
+                        <Box key={ticket.id}>
+                          <Box
                             sx={{
-                              color: "white",
-                              mb: 2,
-                              textTransform: "capitalize",
-                              fontSize: "25px",
-                              fontWeight: 700,
+                              width: "100%",
+                              height: ".75rem",
+                              backgroundColor: ticket?.color || "gold",
+                            }}
+                          />
+                          <Box
+                            sx={{
+                              p: 3,
+                              backgroundColor: "rgba(0, 0, 0, 1)",
                             }}
                           >
-                            {ticket.type}
-                          </Typography>
-                          {wavesForTicket.map((wave) => (
-                            <Box key={wave.ticketId}>
-                              <Typography
-                                sx={{
-                                  color: "white",
-                                  mb: 2,
-                                  textTransform: "capitalize",
-                                  fontSize: "20px",
-                                  fontWeight: 500,
-                                }}
-                              >
-                                {wave.waveName}
-                              </Typography>
-                              {Array.from(
-                                { length: wave.count },
-                                (_, index) => (
-                                  <Box
-                                    key={`${wave.ticketId}-${wave.waveName}-${index}`}
-                                    sx={{
-                                      mb: 2,
-                                    }}
-                                  >
+                            <Typography
+                              sx={{
+                                color: "white",
+                                mb: 2,
+                                textTransform: "capitalize",
+                                fontSize: "25px",
+                                fontWeight: 700,
+                              }}
+                            >
+                              {ticket.type}
+                            </Typography>
+                            {wavesForTicket.map((wave) => (
+                              <Box key={wave.ticketId}>
+                                <Typography
+                                  sx={{
+                                    color: "white",
+                                    mb: 2,
+                                    textTransform: "capitalize",
+                                    fontSize: "20px",
+                                    fontWeight: 500,
+                                  }}
+                                >
+                                  {wave.waveName}
+                                </Typography>
+                                {Array.from(
+                                  { length: wave.count },
+                                  (_, index) => (
                                     <Box
+                                      key={`${wave.ticketId}-${wave.waveName}-${index}`}
                                       sx={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: 2,
+                                        mb: 2,
                                       }}
                                     >
-                                      <TextField
-                                        id={`${wave.ticketId}-${wave.waveName}-${index}-name`}
-                                        placeholder={`Enter Friend's Name`}
-                                        focused={false}
-                                        autoComplete="false"
-                                        onChange={(
-                                          e: ChangeEvent<HTMLInputElement>
-                                        ) =>
-                                          handleInputChange(
-                                            wave.ticketId,
-                                            wave.waveName,
-                                            ticket.type,
-                                            ticket.color,
-                                            index,
-                                            "name",
-                                            e.target.value,
-                                            wave.waveId,
-                                          )
-                                        }
+                                      <Box
                                         sx={{
-                                          minWidth: "18rem",
-                                          backgroundColor:
-                                            "rgba(51, 51, 51, 1)",
-                                          "input::placeholder": {
-                                            color: "white",
-                                          },
-                                          input: {
-                                            color: "white",
-                                          },
-                                          border: "1px solid",
-                                          borderColor: "gray",
-                                          borderRadius: "10px",
-                                          ".MuiInputBase-root": {
-                                            borderRadius: "10px",
-                                          },
+                                          display: "flex",
+                                          flexDirection: "column",
+                                          gap: 2,
                                         }}
-                                      />
-                                      <TextField
-                                        id={`${wave.ticketId}-${wave.waveName}-${index}-phone`}
-                                        placeholder={`Enter Friend's Phone`}
-                                        focused={false}
-                                        autoComplete="false"
-                                        onChange={(
-                                          e: ChangeEvent<HTMLInputElement>
-                                        ) =>
-                                          handleInputChange(
-                                            wave.ticketId,
-                                            wave.waveName,
-                                            ticket.type,
-                                            ticket.color,
-                                            index,
-                                            "phone",
-                                            e.target.value,
-                                            wave.waveId,
-                                          )
-                                        }
-                                        sx={{
-                                          minWidth: "18rem",
-                                          backgroundColor:
-                                            "rgba(51, 51, 51, 1)",
-                                          "input::placeholder": {
-                                            color: "white",
-                                          },
-                                          input: {
-                                            color: "white",
-                                          },
-                                          border: "1px solid",
-                                          borderColor: "gray",
-                                          borderRadius: "10px",
-                                          ".MuiInputBase-root": {
+                                      >
+                                        <TextField
+                                          id={`${wave.ticketId}-${wave.waveName}-${index}-name`}
+                                          placeholder={`Enter Friend's Name`}
+                                          focused={false}
+                                          autoComplete="false"
+                                          onChange={(
+                                            e: ChangeEvent<HTMLInputElement>
+                                          ) =>
+                                            handleInputChange(
+                                              wave.ticketId,
+                                              wave.waveName,
+                                              ticket.type,
+                                              ticket.color,
+                                              index,
+                                              "name",
+                                              e.target.value,
+                                              wave.waveId
+                                            )
+                                          }
+                                          sx={{
+                                            minWidth: "18rem",
+                                            backgroundColor:
+                                              "rgba(51, 51, 51, 1)",
+                                            "input::placeholder": {
+                                              color: "white",
+                                            },
+                                            input: {
+                                              color: "white",
+                                            },
+                                            border: "1px solid",
+                                            borderColor: "gray",
                                             borderRadius: "10px",
-                                          },
-                                        }}
-                                      />
+                                            ".MuiInputBase-root": {
+                                              borderRadius: "10px",
+                                            },
+                                          }}
+                                        />
+                                        <TextField
+                                          id={`${wave.ticketId}-${wave.waveName}-${index}-phone`}
+                                          placeholder={`Enter Friend's Phone`}
+                                          focused={false}
+                                          autoComplete="false"
+                                          onChange={(
+                                            e: ChangeEvent<HTMLInputElement>
+                                          ) =>
+                                            handleInputChange(
+                                              wave.ticketId,
+                                              wave.waveName,
+                                              ticket.type,
+                                              ticket.color,
+                                              index,
+                                              "phone",
+                                              e.target.value,
+                                              wave.waveId
+                                            )
+                                          }
+                                          sx={{
+                                            minWidth: "18rem",
+                                            backgroundColor:
+                                              "rgba(51, 51, 51, 1)",
+                                            "input::placeholder": {
+                                              color: "white",
+                                            },
+                                            input: {
+                                              color: "white",
+                                            },
+                                            border: "1px solid",
+                                            borderColor: "gray",
+                                            borderRadius: "10px",
+                                            ".MuiInputBase-root": {
+                                              borderRadius: "10px",
+                                            },
+                                          }}
+                                        />
+                                      </Box>
                                     </Box>
-                                  </Box>
-                                )
-                              )}
-                            </Box>
-                          ))}
+                                  )
+                                )}
+                              </Box>
+                            ))}
+                          </Box>
                         </Box>
-                      </Box>
-                    );
-                  })}
+                      );
+                    })}
+                  </Box>
                 </Box>
               )}
               {ticketChosen === "guests" && (
-                <Box sx={{ display: "flex", gap: 1, flexDirection: "column" }}>
+                <Box sx={{ display: "flex", gap: 1, flexDirection: "column" ,width: "100%",}}>
                   <Typography
                     sx={{
                       color: "white",
@@ -1451,11 +1474,12 @@ export default function Events() {
                   {!bookedGuests ? (
                     <Box
                       sx={{
-                        backgroundColor: "black",
+                        backgroundColor: "transparent",
                         p: { xs: 0, sm: 3 },
                         display: "flex",
                         flexDirection: "column",
                         gap: 2,
+                        alignItems: "center",
                       }}
                     >
                       {mainGuest && (
@@ -1827,7 +1851,8 @@ export default function Events() {
                 </Box>
               )}
               {ticketChosen === "book" && (
-                <Box sx={{ position: "relative", marginTop: "50px" }}>
+                <Box sx={{width:'100%', display:'flex', justifyContent:'center' ,mt:2,}}>
+                <Box sx={{ position: "relative", marginTop: "50px"}}>
                   <Box
                     sx={{
                       backgroundColor: "rgba(73, 73, 73, 1)",
@@ -1895,6 +1920,7 @@ export default function Events() {
                       }}
                     />
                   </Box>
+                </Box>
                 </Box>
               )}
             </Box>
@@ -1970,19 +1996,14 @@ export default function Events() {
                 onClick={() => {
                   const tickets = selectedWaves.some((wave) => wave.count > 0);
                   if (tickets) {
-                    // console.log("Selected Waves:", selectedWaves);
                     setTicketChosen("tickets");
                   } else {
                     setValidationWarning(true);
                     setMessage(
                       "Please select at least one ticket before booking."
                     );
-                    console.log(
-                      "Please select at least one ticket before booking."
-                    );
                   }
                   if (ticketChosen === "tickets") {
-                    // console.log("aaaaa");
                     if (isFormValid()) {
                       fetchEventGuests();
                       setTicketChosen("guests");
@@ -1991,17 +2012,12 @@ export default function Events() {
                       setMessage(
                         "Please fill in all names and provide valid phone numbers."
                       );
-                      console.log(
-                        "Please fill in all names and provide valid phone numbers."
-                      );
                     }
                   }
                   if (ticketChosen === "guests") {
-                    // console.log("bbbbbb");
                     createEventBooking();
                   }
                   if (ticketChosen === "book") {
-                    // console.log("cccccc");
                     setNotValidGuestsBooking([]);
                     setTicketChosen("noTickets");
                   }
