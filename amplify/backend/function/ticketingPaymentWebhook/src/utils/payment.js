@@ -7,6 +7,8 @@ let variables, query;
 const {
   createTransaction: createTransactionQuery,
   updateBooking: updateBookingQuery,
+  listWavesConsumptions: listWavesConsumptionsQuery,
+  updateWavesConsumption: updateWavesConsumptionQuery,
 } = require("../constants/queries");
 
 const createTransaction = async (paymentObj) => {
@@ -74,16 +76,69 @@ const updateBooking = async (bookAttributes) => {
   const response = await fetch(GRAPHQL_ENDPOINT, options);
   const responseBody = await response.json();
   console.log({ responseBody: JSON.stringify(responseBody) });
-  return responseBody.data.updateCart;
+  return responseBody.data.updateBooking;
+};
+
+const UpdateWavesConsumptions = async (waveId) => {
+  const filter = {
+    waveId: {
+      eq: waveId,
+    },
+  };
+  const query = listWavesConsumptionsQuery;
+  const generalFetchOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": GRAPHQL_API_KEY,
+    },
+  };
+  const wavesResponse = await fetch(GRAPHQL_ENDPOINT, {
+    ...generalFetchOptions,
+    body: JSON.stringify({
+      query,
+      variables: {
+        filter,
+      },
+    }),
+  });
+  const wavesData = await wavesResponse.json();
+  const wavesArr = wavesData.data.listWavesConsumptions.items;
+  const wave = wavesArr[0];
+  const WaveConsumptionId = wave.id;
+  const WaveConsumption = wave.consumedTickets;
+  const WavetotalTickets = wave.totalTickets;
+  if (WaveConsumption < WavetotalTickets) {
+    variables = {
+      input: {
+        id: WaveConsumptionId,
+        consumedTickets: WaveConsumption + 1,
+      },
+    };
+    const query = updateWavesConsumptionQuery;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": GRAPHQL_API_KEY,
+      },
+      body: JSON.stringify({ query, variables }),
+    };
+    const response = await fetch(GRAPHQL_ENDPOINT, options);
+    const responseBody = await response.json();
+    console.log({ responseBody: JSON.stringify(responseBody) });
+    return responseBody.data.updateWavesConsumption;
+  }
 };
 
 const handleSuccessPayment = async (params) => {
-  const { paymentObj, bookAttributes } = params;
+  const { paymentObj, bookAttributes, waveId } = params;
   // update Booking
   // create a transaction
   const [transaction] = await Promise.all([
-    createTransaction(paymentObj),
-    updateBooking(bookAttributes),
+    // createTransaction(paymentObj),
+    // updateBooking(bookAttributes),
+    UpdateWavesConsumptions(waveId),
   ]);
   console.log({ transaction });
 };
