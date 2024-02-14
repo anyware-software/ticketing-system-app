@@ -521,6 +521,7 @@ type Booking
 
 type GuestTicket {
   number: String
+  redeemed: Boolean
 }
 type RejectReason
   @model
