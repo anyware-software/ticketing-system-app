@@ -1,5 +1,6 @@
 {
-  "key1": "value1",
-  "key2": "value2",
-  "key3": "value3"
+  "body": {
+    "operationId": 1,
+    "waveId": "20c4eb64-0c12-4814-af9c-e5046e99949d"
+  }
 }

@@ -636,7 +636,7 @@ export default function GuestProfile() {
       console.log();
     }
   }
-console.log(bookingLoading);
+// console.log(bookingLoading);
 
   return (
     <Box
