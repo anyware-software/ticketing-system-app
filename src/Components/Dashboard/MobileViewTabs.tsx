@@ -34,6 +34,7 @@ import listAccompaniedGuests from "../../services/listAccompaniedGuests";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import sendSms from "../../services/sendSMS";
+import createTransaction from "../../services/createTransaction";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -76,6 +77,7 @@ export default function MobileViewTabs() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [currentBookings, setCurrentBookings] = useState<Booking>();
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
+  const [bookingLoading, setBookingLoading] = useState(false);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -114,6 +116,7 @@ export default function MobileViewTabs() {
 
   useEffect(() => {
     async function getGuestBookingEvents() {
+      setBookingLoading(true);
       const booking = await listGuestBooking({ bookingGuestid: user?.id });
       if (booking) {
         const sortedBookings = booking.items.sort((a: any, b: any) => {
@@ -124,6 +127,7 @@ export default function MobileViewTabs() {
         setCurrentBookings(sortedBookings[0]);
       }
     }
+    setBookingLoading(false);
     getGuestBookingEvents();
   }, [user]);
 
@@ -430,6 +434,30 @@ export default function MobileViewTabs() {
       console.log(err);
     }
   };
+
+  async function payForTicket() {
+    try {
+      const waveId = currentBookings?.waveId;
+      const wave = currentBookings?.eventTicket?.waves?.find(
+        (wave) => wave?.id === waveId
+      );
+      const amountCents = wave?.price ? wave.price * 100 : 0;
+      await createTransaction({
+        user: user,
+        guestId: currentBookings?.bookingGuestId,
+        eventId: currentBookings?.bookingEventId,
+        ticketId: currentBookings?.bookingEventTicketId,
+        issuccess: true,
+        currency: "EGP",
+        amount_cents: `${amountCents}`,
+        transactionBookingId: currentBookings?.id,
+        isPaid: true,
+        paidAmount: wave?.price,
+      });
+    } catch (err) {
+      console.log();
+    }
+  }
   return (
     <>
       <Box sx={{ width: "100%", display: { xs: "block", sm: "none" } }}>
@@ -667,7 +695,15 @@ export default function MobileViewTabs() {
                             wordWrap: "break-word",
                           }}
                         >
-                          {originalBirthText}
+                          {originalBirthText
+                            ? new Date(originalBirthText)
+                                .toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "numeric",
+                                  day: "numeric",
+                                })
+                                .replaceAll("/", "-")
+                            : "N/A"}
                         </span>
 
                         <IconButton
@@ -1017,7 +1053,13 @@ export default function MobileViewTabs() {
               // gap: 10,
             }}
           >
-            {currentBookings && currentCompanions.length > 0 ? (
+            { bookingLoading ? (
+            <CircularProgress
+              size={64}
+              thickness={1}
+              sx={{ color: "#EE726A" }}
+            />
+          ) : currentBookings ? (
               <Box
                 sx={{
                   display: "flex",
@@ -1199,19 +1241,32 @@ export default function MobileViewTabs() {
                   </Box>
 
                   <Box>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        fontSize: 13,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                        backgroundColor: "#F0635A",
-                        display: { xs: "none", sm: "none", lg: "block" },
-                      }}
-                    >
-                      VIEW TICKET(S)
-                    </Button>
+                    {currentBookings?.status === BookingStatus.APPROVED && (
+                      <Button
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          fontSize: 13,
+                          fontWeight: "600",
+                          wordWrap: "break-word",
+                          backgroundColor: "#F0635A",
+                          display: { xs: "none", sm: "block", lg: "block" },
+                        }}
+                        onClick={() => {
+                          if (currentBookings?.isPaid === false) {
+                            // navigate(`payment/${currentBookings?.id}`);
+                            payForTicket();
+                          } else {
+                            navigate(`ticket/${currentBookings?.id}`);
+                          }
+                        }}
+                      >
+                        {/*  */}
+                        {currentBookings?.isPaid === true
+                          ? "VIEW TICKET(S)"
+                          : "Pay Now"}
+                      </Button>
+                    )}
                   </Box>
                 </Box>
 
@@ -1326,8 +1381,8 @@ export default function MobileViewTabs() {
                             }}
                           >
                             {companion.guest?.name
-                            ? companion.guest.name
-                            : companion.guestName}
+                              ? companion.guest.name
+                              : companion.guestName}
                           </Typography>
                           <Typography
                             sx={{

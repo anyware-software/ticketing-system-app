@@ -53,6 +53,7 @@ import { useNavigate } from "react-router-dom";
 import { toggleDrawer as toggleDrawerState } from "../../state/index";
 import sendSms from "../../services/sendSMS";
 import Resizer from "react-image-file-resizer";
+import createTransaction from "../../services/createTransaction";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -69,6 +70,7 @@ export default function GuestProfile() {
   const open = Boolean(anchorEl);
   const [isHovered, setIsHovered] = useState(false);
   const [currentBookings, setCurrentBookings] = useState<Booking>();
+  const [bookingLoading, setBookingLoading] = useState(false);
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
   const dispatch = useDispatch();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -154,6 +156,7 @@ export default function GuestProfile() {
     }
     getFriends();
     async function getGuestBookingEvents() {
+      setBookingLoading(true);
       const booking = await listGuestBooking({ bookingGuestid: user.id });
       if (booking) {
         const sortedBookings = booking.items.sort((a: any, b: any) => {
@@ -162,6 +165,7 @@ export default function GuestProfile() {
           return startDateA - startDateB;
         });
         setCurrentBookings(sortedBookings[0]);
+        setBookingLoading(false);
       }
     }
     getGuestBookingEvents();
@@ -532,14 +536,16 @@ export default function GuestProfile() {
       } else {
         console.log("you got 3 images remove one and replace it");
         setValidationWarning(true);
-        setMessage("You need to replace one of your images to upload a new one");
+        setMessage(
+          "You need to replace one of your images to upload a new one"
+        );
       }
       return result.key;
     } catch (error) {
       console.log("Error uploading image: ", error);
       throw error;
     }
-};
+  };
 
   const deleteUserPhoto = async (index: any, photo: any) => {
     const updatedImages = [...user.images];
@@ -606,8 +612,31 @@ export default function GuestProfile() {
       console.log(err);
     }
   };
-  // console.log(currentCompanions);
-  // console.log(currentBookings);
+
+  async function payForTicket() {
+    try {
+      const waveId = currentBookings?.waveId;
+      const wave = currentBookings?.eventTicket?.waves?.find(
+        (wave) => wave?.id === waveId
+      );
+      const amountCents = wave?.price ? wave.price * 100 : 0;
+      await createTransaction({
+        user: user,
+        guestId: currentBookings?.bookingGuestId,
+        eventId: currentBookings?.bookingEventId,
+        ticketId: currentBookings?.bookingEventTicketId,
+        issuccess: true,
+        currency: "EGP",
+        amount_cents: `${amountCents}`,
+        transactionBookingId: currentBookings?.id,
+        isPaid: true,
+        paidAmount: wave?.price,
+      });
+    } catch (err) {
+      console.log();
+    }
+  }
+console.log(bookingLoading);
 
   return (
     <Box
@@ -1257,7 +1286,15 @@ export default function GuestProfile() {
                           wordWrap: "break-word",
                         }}
                       >
-                        {originalBirthText}
+                        {originalBirthText
+                          ? new Date(originalBirthText)
+                              .toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "numeric",
+                                day: "numeric",
+                              })
+                              .replaceAll("/", "-")
+                          : "N/A"}
                       </span>
 
                       <IconButton
@@ -1596,7 +1633,13 @@ export default function GuestProfile() {
             mx: { xs: 0, sm: 3, md: 0, lg: 0 },
           }}
         >
-          {currentBookings ? (
+          { bookingLoading ? (
+            <CircularProgress
+              size={64}
+              thickness={1}
+              sx={{ color: "#EE726A" }}
+            />
+          ) : currentBookings ? (
             <Box
               sx={{
                 display: "flex",
@@ -1789,27 +1832,32 @@ export default function GuestProfile() {
                 </Box>
 
                 <Box>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      color: "white",
-                      fontSize: 13,
-                      fontWeight: "600",
-                      wordWrap: "break-word",
-                      backgroundColor: "#F0635A",
-                      display: { xs: "none", sm: "block", lg: "block" },
-                    }}
-                    onClick={() => {
-                      if (currentBookings?.status === BookingStatus.APPROVED) {
-                        navigate(`payment/${currentBookings?.id}`);
-                      }
-                    }}
-                  >
-                    {/*  */}
-                    {currentBookings?.status === BookingStatus.APPROVED
-                      ? "Pay Now"
-                      : "VIEW TICKET(S)"}
-                  </Button>
+                  {currentBookings?.status === BookingStatus.APPROVED && (
+                    <Button
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        fontSize: 13,
+                        fontWeight: "600",
+                        wordWrap: "break-word",
+                        backgroundColor: "#F0635A",
+                        display: { xs: "none", sm: "block", lg: "block" },
+                      }}
+                      onClick={() => {
+                        if (currentBookings?.isPaid === false) {
+                          // navigate(`payment/${currentBookings?.id}`);
+                          payForTicket();
+                        } else {
+                          navigate(`ticket/${currentBookings?.id}`);
+                        }
+                      }}
+                    >
+                      {/*  */}
+                      {currentBookings?.isPaid === true
+                        ? "VIEW TICKET(S)"
+                        : "Pay Now"}
+                    </Button>
+                  )}
                 </Box>
               </Box>
 
@@ -1951,25 +1999,25 @@ export default function GuestProfile() {
                         </Typography>
                       </Box>
                     </Box>
-                      {!companion.bookingGuestId && (
-                        <Button
-                          variant="contained"
-                          sx={{
-                            backgroundColor: "rgba(240, 99, 90, 1)",
-                            fontSize: "12px",
-                            px: .5,
-                            ml: .5,
-                          }}
-                          onClick={() => {
-                            sendSmsToUser(
-                              companion.phone_number,
-                              `Hi ${companion.guestName} ${user.name} is inviting you to ULTER : http://localhost:3000/login/?id=${companion.id}`
-                            );
-                          }}
-                        >
-                          Invite To Ultar !
-                        </Button>
-                      )}
+                    {!companion.bookingGuestId && (
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: "rgba(240, 99, 90, 1)",
+                          fontSize: "12px",
+                          px: 0.5,
+                          ml: 0.5,
+                        }}
+                        onClick={() => {
+                          sendSmsToUser(
+                            companion.phone_number,
+                            `Hi ${companion.guestName} ${user.name} is inviting you to ULTER : http://localhost:3000/login/?id=${companion.id}`
+                          );
+                        }}
+                      >
+                        Invite To Ultar !
+                      </Button>
+                    )}
                     <Box>
                       <IconButton
                         aria-label="more"

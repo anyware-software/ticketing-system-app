@@ -1469,7 +1469,8 @@ export const deleteEventTicket = /* GraphQL */ `mutation DeleteEventTicket(
   APITypes.DeleteEventTicketMutationVariables,
   APITypes.DeleteEventTicketMutation
 >;
-export const createInvitationLimit = /* GraphQL */ `mutation CreateInvitationLimit(
+export const createInvitationLimit =
+  /* GraphQL */ `mutation CreateInvitationLimit(
   $input: CreateInvitationLimitInput!
   $condition: ModelInvitationLimitConditionInput
 ) {
@@ -1488,10 +1489,11 @@ export const createInvitationLimit = /* GraphQL */ `mutation CreateInvitationLim
   }
 }
 ` as GeneratedMutation<
-  APITypes.CreateInvitationLimitMutationVariables,
-  APITypes.CreateInvitationLimitMutation
->;
-export const updateInvitationLimit = /* GraphQL */ `mutation UpdateInvitationLimit(
+    APITypes.CreateInvitationLimitMutationVariables,
+    APITypes.CreateInvitationLimitMutation
+  >;
+export const updateInvitationLimit =
+  /* GraphQL */ `mutation UpdateInvitationLimit(
   $input: UpdateInvitationLimitInput!
   $condition: ModelInvitationLimitConditionInput
 ) {
@@ -1510,10 +1512,11 @@ export const updateInvitationLimit = /* GraphQL */ `mutation UpdateInvitationLim
   }
 }
 ` as GeneratedMutation<
-  APITypes.UpdateInvitationLimitMutationVariables,
-  APITypes.UpdateInvitationLimitMutation
->;
-export const deleteInvitationLimit = /* GraphQL */ `mutation DeleteInvitationLimit(
+    APITypes.UpdateInvitationLimitMutationVariables,
+    APITypes.UpdateInvitationLimitMutation
+  >;
+export const deleteInvitationLimit =
+  /* GraphQL */ `mutation DeleteInvitationLimit(
   $input: DeleteInvitationLimitInput!
   $condition: ModelInvitationLimitConditionInput
 ) {
@@ -1532,9 +1535,9 @@ export const deleteInvitationLimit = /* GraphQL */ `mutation DeleteInvitationLim
   }
 }
 ` as GeneratedMutation<
-  APITypes.DeleteInvitationLimitMutationVariables,
-  APITypes.DeleteInvitationLimitMutation
->;
+    APITypes.DeleteInvitationLimitMutationVariables,
+    APITypes.DeleteInvitationLimitMutation
+  >;
 export const createBooking = /* GraphQL */ `mutation CreateBooking(
   $input: CreateBookingInput!
   $condition: ModelBookingConditionInput
@@ -1747,6 +1750,7 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
     phone_number
     guestTicket {
       number
+      redeemed
       __typename
     }
     guestName
@@ -1994,6 +1998,7 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
     phone_number
     guestTicket {
       number
+      redeemed
       __typename
     }
     guestName
@@ -2241,6 +2246,7 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
     phone_number
     guestTicket {
       number
+      redeemed
       __typename
     }
     guestName
@@ -3016,6 +3022,7 @@ export const createTransaction = /* GraphQL */ `mutation CreateTransaction(
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName
@@ -3270,6 +3277,7 @@ export const updateTransaction = /* GraphQL */ `mutation UpdateTransaction(
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName
@@ -3524,6 +3532,7 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName
@@ -3572,7 +3581,8 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
   APITypes.DeleteTransactionMutationVariables,
   APITypes.DeleteTransactionMutation
 >;
-export const createWavesConsumption = /* GraphQL */ `mutation CreateWavesConsumption(
+export const createWavesConsumption =
+  /* GraphQL */ `mutation CreateWavesConsumption(
   $input: CreateWavesConsumptionInput!
   $condition: ModelWavesConsumptionConditionInput
 ) {
@@ -3587,10 +3597,11 @@ export const createWavesConsumption = /* GraphQL */ `mutation CreateWavesConsump
   }
 }
 ` as GeneratedMutation<
-  APITypes.CreateWavesConsumptionMutationVariables,
-  APITypes.CreateWavesConsumptionMutation
->;
-export const updateWavesConsumption = /* GraphQL */ `mutation UpdateWavesConsumption(
+    APITypes.CreateWavesConsumptionMutationVariables,
+    APITypes.CreateWavesConsumptionMutation
+  >;
+export const updateWavesConsumption =
+  /* GraphQL */ `mutation UpdateWavesConsumption(
   $input: UpdateWavesConsumptionInput!
   $condition: ModelWavesConsumptionConditionInput
 ) {
@@ -3605,10 +3616,11 @@ export const updateWavesConsumption = /* GraphQL */ `mutation UpdateWavesConsump
   }
 }
 ` as GeneratedMutation<
-  APITypes.UpdateWavesConsumptionMutationVariables,
-  APITypes.UpdateWavesConsumptionMutation
->;
-export const deleteWavesConsumption = /* GraphQL */ `mutation DeleteWavesConsumption(
+    APITypes.UpdateWavesConsumptionMutationVariables,
+    APITypes.UpdateWavesConsumptionMutation
+  >;
+export const deleteWavesConsumption =
+  /* GraphQL */ `mutation DeleteWavesConsumption(
   $input: DeleteWavesConsumptionInput!
   $condition: ModelWavesConsumptionConditionInput
 ) {
@@ -3623,6 +3635,6 @@ export const deleteWavesConsumption = /* GraphQL */ `mutation DeleteWavesConsump
   }
 }
 ` as GeneratedMutation<
-  APITypes.DeleteWavesConsumptionMutationVariables,
-  APITypes.DeleteWavesConsumptionMutation
->;
+    APITypes.DeleteWavesConsumptionMutationVariables,
+    APITypes.DeleteWavesConsumptionMutation
+  >;

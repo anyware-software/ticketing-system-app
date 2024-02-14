@@ -1204,7 +1204,8 @@ export const byEventID = /* GraphQL */ `query ByEventID(
   }
 }
 ` as GeneratedQuery<APITypes.ByEventIDQueryVariables, APITypes.ByEventIDQuery>;
-export const getInvitationLimit = /* GraphQL */ `query GetInvitationLimit($id: ID!) {
+export const getInvitationLimit =
+  /* GraphQL */ `query GetInvitationLimit($id: ID!) {
   getInvitationLimit(id: $id) {
     id
     adminID
@@ -1220,9 +1221,9 @@ export const getInvitationLimit = /* GraphQL */ `query GetInvitationLimit($id: I
   }
 }
 ` as GeneratedQuery<
-  APITypes.GetInvitationLimitQueryVariables,
-  APITypes.GetInvitationLimitQuery
->;
+    APITypes.GetInvitationLimitQueryVariables,
+    APITypes.GetInvitationLimitQuery
+  >;
 export const listInvitationLimits = /* GraphQL */ `query ListInvitationLimits(
   $filter: ModelInvitationLimitFilterInput
   $limit: Int
@@ -1459,6 +1460,7 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
     phone_number
     guestTicket {
       number
+      redeemed
       __typename
     }
     guestName
@@ -1697,6 +1699,7 @@ export const listBookings = /* GraphQL */ `query ListBookings(
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName
@@ -2287,6 +2290,7 @@ export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName
@@ -2498,6 +2502,7 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
         phone_number
         guestTicket {
           number
+          redeemed
           __typename
         }
         guestName
@@ -2549,7 +2554,8 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
   APITypes.ListTransactionsQueryVariables,
   APITypes.ListTransactionsQuery
 >;
-export const getWavesConsumption = /* GraphQL */ `query GetWavesConsumption($id: ID!) {
+export const getWavesConsumption =
+  /* GraphQL */ `query GetWavesConsumption($id: ID!) {
   getWavesConsumption(id: $id) {
     waveId
     consumedTickets
@@ -2561,9 +2567,9 @@ export const getWavesConsumption = /* GraphQL */ `query GetWavesConsumption($id:
   }
 }
 ` as GeneratedQuery<
-  APITypes.GetWavesConsumptionQueryVariables,
-  APITypes.GetWavesConsumptionQuery
->;
+    APITypes.GetWavesConsumptionQueryVariables,
+    APITypes.GetWavesConsumptionQuery
+  >;
 export const listWavesConsumptions = /* GraphQL */ `query ListWavesConsumptions(
   $filter: ModelWavesConsumptionFilterInput
   $limit: Int

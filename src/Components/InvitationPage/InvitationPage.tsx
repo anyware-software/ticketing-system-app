@@ -450,7 +450,10 @@ export default function InvitationPage() {
             )}
           </Grid>
 
-          <Typography variant="h4" sx={{color:'white', position: "relative",my:3}}>
+          <Typography
+            variant="h4"
+            sx={{ color: "white", position: "relative", my: 3 }}
+          >
             Invitation Tickets
           </Typography>
 
@@ -471,7 +474,7 @@ export default function InvitationPage() {
               rowGap: 1,
               columnGap: 1,
               flexDirection: "column",
-              gap:3
+              gap: 3,
             }}
           >
             {invitations &&
@@ -589,8 +592,14 @@ export default function InvitationPage() {
                                 Time
                               </Typography>
                               <Typography fontWeight="bold" fontSize={12}>
-                                {invitation?.event?.startDate?.split("T")[1] ||
-                                  "N/A"}
+                                {invitation?.event?.startDate
+                                  ? new Date(
+                                      invitation.event.startDate
+                                    ).toLocaleTimeString("en-US", {
+                                      hour: "numeric",
+                                      minute: "2-digit",
+                                    })
+                                  : "N/A"}
                               </Typography>
                             </Box>
                           </Box>
