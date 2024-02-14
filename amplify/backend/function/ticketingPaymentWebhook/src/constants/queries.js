@@ -495,7 +495,45 @@ const updateBooking = /* GraphQL */ `
     }
   }
 `;
+const listWavesConsumptions = /* GraphQL */ `
+  query ListWavesConsumptions(
+    $filter: ModelWavesConsumptionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listWavesConsumptions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        waveId
+        consumedTickets
+        totalTickets
+        id
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+const updateWavesConsumption = /* GraphQL */ `
+  mutation UpdateWavesConsumption(
+    $input: UpdateWavesConsumptionInput!
+    $condition: ModelWavesConsumptionConditionInput
+  ) {
+    updateWavesConsumption(input: $input, condition: $condition) {
+      waveId
+      consumedTickets
+      totalTickets
+      id
+      __typename
+    }
+  }
+`;
 module.exports = {
   createTransaction,
   updateBooking,
+  listWavesConsumptions,
+  updateWavesConsumption,
 };

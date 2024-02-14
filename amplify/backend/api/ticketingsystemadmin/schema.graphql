@@ -610,7 +610,7 @@ type WavesConsumption
       # allow all authenticated users to read attachments
       { allow: private, operations: [read] }
       # allow all guest users (unauthenticated) to read attachments
-      { allow: public, operations: [read] }
+      { allow: public, operations: [create, update, read] }
     ]
   ) {
   waveId: String
