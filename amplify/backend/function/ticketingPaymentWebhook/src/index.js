@@ -24,6 +24,7 @@ exports.handler = async (event) => {
     const bookAttributes = requestBody.bookAttributes;
     const eventBookingID = requestBody.eventBookingID;
     const paymentObj = requestBody.paymentObj;
+    const waveId = requestBody.waveId;
 
     // transaction success
     const params = {
@@ -61,6 +62,7 @@ exports.handler = async (event) => {
         createdByID: paymentObj.createdByID,
         createdByName: paymentObj.createdByName,
       },
+      waveId : waveId,
     };
 
     // pay transaction

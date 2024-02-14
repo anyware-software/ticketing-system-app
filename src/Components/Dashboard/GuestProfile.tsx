@@ -54,6 +54,7 @@ import { toggleDrawer as toggleDrawerState } from "../../state/index";
 import sendSms from "../../services/sendSMS";
 import Resizer from "react-image-file-resizer";
 import createTransaction from "../../services/createTransaction";
+import validateWaveConsumption from "../../services/validateWaveConsumption";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -636,7 +637,17 @@ export default function GuestProfile() {
       console.log();
     }
   }
-console.log(bookingLoading);
+  console.log(bookingLoading);
+  const validateAvailableRedirect = async () => {
+    const checkWaveAvailability = await validateWaveConsumption({
+      waveId: currentBookings?.waveId || "",
+    });
+    if (checkWaveAvailability.success) {
+      await payForTicket();
+    } else {
+      console.log("check failed");
+    }
+  };
 
   return (
     <Box
@@ -1633,7 +1644,7 @@ console.log(bookingLoading);
             mx: { xs: 0, sm: 3, md: 0, lg: 0 },
           }}
         >
-          { bookingLoading ? (
+          {bookingLoading ? (
             <CircularProgress
               size={64}
               thickness={1}
@@ -1846,7 +1857,7 @@ console.log(bookingLoading);
                       onClick={() => {
                         if (currentBookings?.isPaid === false) {
                           // navigate(`payment/${currentBookings?.id}`);
-                          payForTicket();
+                          validateAvailableRedirect();
                         } else {
                           navigate(`ticket/${currentBookings?.id}`);
                         }

@@ -68,18 +68,51 @@ exports.handler = async (event) => {
       }
 
       responseBody = {
-        waveId: waveId,
-        availableTickets: wave.totalTickets - wave.consumedTickets,
+        data: {
+          waveId: waveId,
+          availableTickets: wave.totalTickets - wave.consumedTickets,
+        },
+        success: true,
       };
     }
     return {
-      success: true,
       statusCode: 200,
-      data: JSON.stringify(responseBody),
+      body: JSON.stringify(responseBody),
     };
   } catch (err) {
     console.error("Error retrieving Data:", err);
     const errorMessage = err.message;
+    if (errorMessage === "No waves found") {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({
+          success: false,
+          error: errorMessage,
+          data: null,
+        }),
+      };
+    }
+    if (errorMessage === "More than one wave found") {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          success: false,
+          error: errorMessage,
+          data: null,
+        }),
+      };
+    }
+    if (errorMessage === "Wave is already consumed") {
+      return {
+        statusCode: 403,
+        body: JSON.stringify({
+          success: false,
+          error: errorMessage,
+          data: null,
+        }),
+      };
+    }
+
     return {
       statusCode: 500,
       body: JSON.stringify({ success: false, error: errorMessage, data: null }),
