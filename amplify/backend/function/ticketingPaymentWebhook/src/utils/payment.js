@@ -110,12 +110,22 @@ const UpdateWavesConsumptions = async (waveId) => {
   const WaveConsumption = wave.consumedTickets;
   const WavetotalTickets = wave.totalTickets;
   if (WaveConsumption < WavetotalTickets) {
-    variables = {
-      input: {
-        id: WaveConsumptionId,
-        consumedTickets: WaveConsumption + 1,
-      },
-    };
+    if (WaveConsumption + 1 === WavetotalTickets) {
+      variables = {
+        input: {
+          id: WaveConsumptionId,
+          consumedTickets: WaveConsumption + 1,
+          consumed: "1",
+        },
+      };
+    } else {
+      variables = {
+        input: {
+          id: WaveConsumptionId,
+          consumedTickets: WaveConsumption + 1,
+        },
+      };
+    }
     const query = updateWavesConsumptionQuery;
     const options = {
       method: "POST",

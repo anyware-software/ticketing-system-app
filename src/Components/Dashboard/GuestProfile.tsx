@@ -70,8 +70,9 @@ export default function GuestProfile() {
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const [isHovered, setIsHovered] = useState(false);
-  const [currentBookings, setCurrentBookings] = useState<Booking|null>(null);
+  const [currentBookings, setCurrentBookings] = useState<Booking | null>(null);
   const [bookingLoading, setBookingLoading] = useState(false);
+  const [companionLoading, setCompanionLoading] = useState(false);
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
   const dispatch = useDispatch();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -174,6 +175,7 @@ export default function GuestProfile() {
 
   useEffect(() => {
     async function getGuestCompanions() {
+      setCompanionLoading(true);
       if (!user) return;
       if (!currentBookings) return;
       const friends = await listAccompaniedGuests({
@@ -181,6 +183,7 @@ export default function GuestProfile() {
         bookingEventId: currentBookings?.event?.id,
       });
       setCurrentCompanions(friends.items);
+      setCompanionLoading(false);
     }
     getGuestCompanions();
   }, [currentBookings, user]);
@@ -648,7 +651,7 @@ export default function GuestProfile() {
     }
   };
   const removeBookings = async () => {
-    await updateBooking({ eventBookingID:currentBookings?.id , deleted: "1" });
+    await updateBooking({ eventBookingID: currentBookings?.id, deleted: "1" });
     setCurrentBookings(null);
   };
 
@@ -1198,7 +1201,7 @@ export default function GuestProfile() {
                       <span
                         style={{
                           color: "white",
-                          fontSize: 18,
+                          fontSize: 15,
                           fontWeight: 600,
                           wordWrap: "break-word",
                         }}
@@ -1285,7 +1288,7 @@ export default function GuestProfile() {
                       <span
                         style={{
                           color: "white",
-                          fontSize: 18,
+                          fontSize: 15,
                           fontWeight: 600,
                           wordWrap: "break-word",
                         }}
@@ -1311,16 +1314,6 @@ export default function GuestProfile() {
                   )}
                 </div>
 
-                {/* <Typography
-                  sx={{
-                    color: "white",
-                    fontSize: 18,
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  12/2/1997
-                </Typography> */}
               </Box>
             </Box>
             <Box
@@ -1400,7 +1393,7 @@ export default function GuestProfile() {
                       <span
                         style={{
                           color: "white",
-                          fontSize: 18,
+                          fontSize: 15,
                           fontWeight: 600,
                           wordWrap: "break-word",
                         }}
@@ -1418,16 +1411,6 @@ export default function GuestProfile() {
                   )}
                 </div>
 
-                {/* <Typography
-                  sx={{
-                    color: "white",
-                    fontSize: 18,
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  Male
-                </Typography> */}
               </Box>
               <Box>
                 <Typography
@@ -1497,7 +1480,7 @@ export default function GuestProfile() {
                       <span
                         style={{
                           color: "white",
-                          fontSize: 18,
+                          fontSize: 15,
                           fontWeight: 600,
                           wordWrap: "break-word",
                         }}
@@ -1514,17 +1497,6 @@ export default function GuestProfile() {
                     </div>
                   )}
                 </div>
-
-                {/* <Typography
-                  sx={{
-                    color: "white",
-                    fontSize: 18,
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  +2010000000
-                </Typography> */}
               </Box>
             </Box>
             <Box
@@ -1599,7 +1571,7 @@ export default function GuestProfile() {
                       <span
                         style={{
                           color: "white",
-                          fontSize: 18,
+                          fontSize: 15,
                           fontWeight: 600,
                           wordWrap: "break-word",
                         }}
@@ -1906,57 +1878,65 @@ export default function GuestProfile() {
                 >
                   Accompanied Guests
                 </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: 2,
-                  }}
-                >
-                  <AvatarGroup
-                    total={currentCompanions.length}
-                    sx={{
-                      "& .MuiAvatar-root": {
-                        width: 35,
-                        height: 35,
-                        fontSize: 10,
-                        color: "black",
-                        border: "1px solid white",
-                        backgroundColor: 'darkgrey" , borderColor',
-                      },
-                    }}
-                  >
-                    {currentCompanions.map((companion) => (
-                      <Avatar
-                        key={companion.bookingGuestId}
-                        src={`${dbStorage}${companion.guest?.guest_avatar}`}
-                      />
-                    ))}
-                  </AvatarGroup>
-
+                {companionLoading ? (
+                  <CircularProgress
+                    size={64}
+                    thickness={1}
+                    sx={{ color: "#EE726A" }}
+                  />
+                ) : (
                   <Box
                     sx={{
-                      backgroundColor: "#EE726A",
                       display: "flex",
-                      alignItems: "center",
-                      px: "8px",
-                      py: "5px",
-                      borderRadius: "5px",
+                      gap: 2,
                     }}
                   >
-                    <Typography
+                    <AvatarGroup
+                      total={currentCompanions.length}
                       sx={{
-                        fontSize: 11,
-                        wordWrap: "break-word",
-                        color: "black",
+                        "& .MuiAvatar-root": {
+                          width: 35,
+                          height: 35,
+                          fontSize: 10,
+                          color: "black",
+                          border: "1px solid white",
+                          backgroundColor: 'darkgrey" , borderColor',
+                        },
                       }}
                     >
-                      Total :{" "}
-                      <span style={{ fontSize: "12px", fontWeight: "700" }}>
-                        {currentCompanions.length}
-                      </span>
-                    </Typography>
+                      {currentCompanions.map((companion) => (
+                        <Avatar
+                          key={companion.bookingGuestId}
+                          src={`${dbStorage}${companion.guest?.guest_avatar}`}
+                        />
+                      ))}
+                    </AvatarGroup>
+
+                    <Box
+                      sx={{
+                        backgroundColor: "#EE726A",
+                        display: "flex",
+                        alignItems: "center",
+                        px: "8px",
+                        py: "5px",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: 11,
+                          wordWrap: "break-word",
+                          color: "black",
+                        }}
+                      >
+                        Total :{" "}
+                        <span style={{ fontSize: "12px", fontWeight: "700" }}>
+                          {currentCompanions.length}
+                        </span>
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
+                )}
               </Box>
 
               <Box

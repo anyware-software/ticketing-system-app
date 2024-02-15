@@ -603,7 +603,7 @@ export default function MobileViewTabs() {
                         <span
                           style={{
                             color: "white",
-                            fontSize: 18,
+                            fontSize: 15,
                             fontWeight: 600,
                             wordWrap: "break-word",
                           }}
@@ -705,7 +705,7 @@ export default function MobileViewTabs() {
                         <span
                           style={{
                             color: "white",
-                            fontSize: 18,
+                            fontSize: 15,
                             fontWeight: 600,
                             wordWrap: "break-word",
                           }}
@@ -820,7 +820,7 @@ export default function MobileViewTabs() {
                         <span
                           style={{
                             color: "white",
-                            fontSize: 18,
+                            fontSize: 15,
                             fontWeight: 600,
                             wordWrap: "break-word",
                           }}
@@ -922,7 +922,7 @@ export default function MobileViewTabs() {
                         <span
                           style={{
                             color: "white",
-                            fontSize: 18,
+                            fontSize: 15,
                             fontWeight: 600,
                             wordWrap: "break-word",
                           }}
@@ -1029,7 +1029,7 @@ export default function MobileViewTabs() {
                         <span
                           style={{
                             color: "white",
-                            fontSize: 18,
+                            fontSize: 15,
                             fontWeight: 600,
                             wordWrap: "break-word",
                           }}

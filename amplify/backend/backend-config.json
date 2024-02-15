@@ -161,6 +161,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "ticketingPaymentAutoShift": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "ticketingsystemadmin"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "ticketingPaymentOperations": {
       "build": true,
       "dependsOn": [
@@ -245,6 +261,22 @@
         {
           "category": "function",
           "resourceName": "ticketingGuestsData"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketingPaymentAutoShift_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketingPaymentAutoShift"
+        }
+      ]
+    },
+    "AMPLIFY_function_ticketingPaymentAutoShift_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "ticketingPaymentAutoShift"
         }
       ]
     },
