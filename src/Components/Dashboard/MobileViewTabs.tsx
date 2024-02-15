@@ -1293,7 +1293,7 @@ export default function MobileViewTabs() {
                       >
                         {/*  */}
                         {currentBookings?.isPaid === true
-                          ? "VIEW TICKET(S)"
+                          ? "VIEW TICKET"
                           : "Pay Now"}
                       </Button>
                     )}

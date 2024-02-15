@@ -1836,7 +1836,7 @@ export default function GuestProfile() {
                     >
                       {/*  */}
                       {currentBookings?.isPaid === true
-                        ? "VIEW TICKET(S)"
+                        ? "VIEW TICKET"
                         : "Pay Now"}
                     </Button>
                   )}

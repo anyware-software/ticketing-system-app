@@ -84,7 +84,7 @@ export default function PayedTicket() {
           >
             <ChevronLeftIcon sx={{ color: "#ee6259", fontSize: "40px" }} />
           </IconButton>
-          <Typography variant="h5">Your Ticket(s)</Typography>
+          <Typography variant="h5">Your Ticket</Typography>
         </Box>
       </Box>
 
@@ -233,8 +233,9 @@ export default function PayedTicket() {
                     sx={{
                       mt: 0.5,
                       color: !validBooking?.guestTicket?.redeemed
-                        ? "green"
+                        ? "lightgreen"
                         : "red",
+                      fontSize: 14,
                     }}
                   >
                     {!validBooking?.guestTicket?.redeemed
