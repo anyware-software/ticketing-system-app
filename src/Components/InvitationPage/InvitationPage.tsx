@@ -516,19 +516,6 @@ export default function InvitationPage() {
                                 color="GrayText"
                                 fontSize={12}
                               >
-                                Date
-                              </Typography>
-                              <Typography fontWeight="bold" fontSize={12}>
-                                {invitation?.event?.startDate?.split("T")[0] ||
-                                  "N/A"}
-                              </Typography>
-                            </Box>
-                            <Box>
-                              <Typography
-                                fontWeight="bold"
-                                color="GrayText"
-                                fontSize={12}
-                              >
                                 Location
                               </Typography>
                               <Typography fontWeight="bold" fontSize={12}>
@@ -543,17 +530,27 @@ export default function InvitationPage() {
                                 color="GrayText"
                                 fontSize={12}
                               >
-                                Payment
+                                Date
                               </Typography>
                               <Typography fontWeight="bold" fontSize={12}>
-                                Successful
+                                {invitation?.event?.startDate?.split("T")[0] ||
+                                  "N/A"}
+                              </Typography>
+                            </Box>
+                            <Box>
+                              <Typography
+                                fontWeight="bold"
+                                color="GrayText"
+                                fontSize={12}
+                              >
+                                Invitation
                               </Typography>
                             </Box>
                           </Box>
                         </Box>
                         <Box
                           sx={{
-                            padding: 2,
+                            pl: 3,
                           }}
                         >
                           <Box

@@ -132,19 +132,19 @@ export default function PayedTicket() {
                 </Box>
                 <Box>
                   <Typography fontWeight="bold" color="GrayText" fontSize={12}>
-                    Date
-                  </Typography>
-                  <Typography fontWeight="bold" fontSize={12}>
-                    {validBooking?.event?.startDate?.split("T")[0] || "N/A"}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography fontWeight="bold" color="GrayText" fontSize={12}>
                     Location
                   </Typography>
                   <Typography fontWeight="bold" fontSize={12}>
                     {validBooking?.event?.location?.address?.split(",")[1] ||
                       "N/A"}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography fontWeight="bold" color="GrayText" fontSize={12}>
+                    Date
+                  </Typography>
+                  <Typography fontWeight="bold" fontSize={12}>
+                    {validBooking?.event?.startDate?.split("T")[0] || "N/A"}
                   </Typography>
                 </Box>
                 <Box>
@@ -157,7 +157,7 @@ export default function PayedTicket() {
                 </Box>
               </Box>
             </Box>
-            <Box>
+            <Box sx={{ pl: 3 }}>
               <Box
                 sx={{
                   display: "flex",
@@ -168,7 +168,11 @@ export default function PayedTicket() {
               >
                 <Box>
                   <Avatar
-                    sx={{ mx: "auto", height: 70, width: 70 }}
+                    sx={{
+                      mx: "auto",
+                      height: { xs: 50, sm: 50, mx: 70 },
+                      width: { xs: 50, sm: 50, mx: 70 },
+                    }}
                     src={`${dbStorage}${validBooking?.guest?.guest_avatar}`}
                   />
                 </Box>
@@ -225,7 +229,7 @@ export default function PayedTicket() {
                   </Typography>
                   <Typography
                     fontWeight="bold"
-                    fontSize={10}
+                    fontSize={12}
                     sx={{
                       mt: 0.5,
                       color: !validBooking?.guestTicket?.redeemed
