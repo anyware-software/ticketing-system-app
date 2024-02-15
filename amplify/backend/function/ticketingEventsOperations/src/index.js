@@ -98,6 +98,9 @@ exports.handler = async (event) => {
           bookingGuestId: {
             eq: guestId,
           },
+          bookingEventId: {
+            eq: bookingEventId,
+          },
         },
       };
       query = listBookings;

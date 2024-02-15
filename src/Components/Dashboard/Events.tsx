@@ -45,6 +45,7 @@ import EventLocationOverlay from "./Event Components/EventLocationOverlay";
 import NoDataEvent from "../NoEvent/NoDataEvent";
 import { toggleDrawer as toggleDrawerState } from "../../state/index";
 import type { Event } from "../../API";
+import listBookingByGuest from "../../services/listBookingByGuest";
 
 // interface Event {
 //   id: string;
@@ -400,25 +401,34 @@ export default function Events() {
       (entry) => entry.phone === mainGuestPhone
     );
     if (eventForMainGuest) {
-      const bookingRequest = await createBooking(
-        user,
-        BookingStatus.PENDING,
-        user.id,
-        mainGuest?.id,
-        currentEvent?.id,
-        eventForMainGuest?.ticketId,
-        true,
-        eventForMainGuest?.waveName,
-        orderId,
-        isSpecial,
-        user.phone_number,
-        { number: generateTicketNumber(), redeemed: false },
-        user.name,
-        eventForMainGuest?.waveId,
-        BookingStatus.PENDING
-      );
-      // console.log(bookingRequest);
-      setTicketChosen("book");
+      const verifyAllBookings = await listBookingByGuest({
+        bookingEventId: currentEvent?.id,
+        guestId: user.id,
+      });
+      if (verifyAllBookings.items.length === 0) {
+        const bookingRequest = await createBooking(
+          user,
+          BookingStatus.PENDING,
+          user.id,
+          mainGuest?.id,
+          currentEvent?.id,
+          eventForMainGuest?.ticketId,
+          true,
+          eventForMainGuest?.waveName,
+          orderId,
+          isSpecial,
+          user.phone_number,
+          { number: generateTicketNumber(), redeemed: false },
+          user.name,
+          eventForMainGuest?.waveId,
+          BookingStatus.PENDING
+        );
+        // console.log(bookingRequest);
+        setTicketChosen("book");
+      } else {
+        setValidationWarning(true);
+        setMessage("You have a Booking already");
+      }
     } else {
       setTicketChosen("tickets");
       setValidationWarning(true);
@@ -429,24 +439,33 @@ export default function Events() {
       const eventForValidGuest = Object.values(bookingRequests).find(
         (entry) => entry.phone === validGuest.phone_number
       );
-      const bookingRequest = await createBooking(
-        user,
-        BookingStatus.PENDING,
-        user.id,
-        validGuest.id,
-        currentEvent?.id,
-        eventForValidGuest?.ticketId,
-        false,
-        eventForValidGuest?.waveName,
-        orderId,
-        isSpecial,
-        validGuest.phone_number,
-        { number: generateTicketNumber(), redeemed: false },
-        user.name,
-        eventForValidGuest?.waveId,
-        BookingStatus.PENDING
-      );
-      // console.log(bookingRequest);
+      const verifyAllBookings = await listBookingByGuest({
+        bookingEventId: currentEvent?.id,
+        guestId: validGuest.id,
+      });
+      if (verifyAllBookings.items.length === 0) {
+        const bookingRequest = await createBooking(
+          user,
+          BookingStatus.PENDING,
+          user.id,
+          validGuest.id,
+          currentEvent?.id,
+          eventForValidGuest?.ticketId,
+          false,
+          eventForValidGuest?.waveName,
+          orderId,
+          isSpecial,
+          validGuest.phone_number,
+          { number: generateTicketNumber(), redeemed: false },
+          user.name,
+          eventForValidGuest?.waveId,
+          BookingStatus.PENDING
+        );
+        // console.log(bookingRequest);
+      } else {
+        setValidationWarning(true);
+        setMessage("One or more of your Friends have a Booking already");
+      }
     });
     notValidGuests.forEach(async (notValidGuest) => {
       const eventForNotValidGuest = Object.values(bookingRequests).find(
@@ -1495,6 +1514,7 @@ export default function Events() {
                             borderRadius: "10px",
                             gap: 3,
                             justifyContent: "space-between",
+                            minWidth: "25rem",
                           }}
                         >
                           <Box
@@ -1625,6 +1645,7 @@ export default function Events() {
                               borderRadius: "10px",
                               gap: 3,
                               justifyContent: "space-between",
+                              minWidth: "25rem",
                             }}
                           >
                             <Box
@@ -1755,6 +1776,7 @@ export default function Events() {
                               borderRadius: "10px",
                               gap: 3,
                               justifyContent: "space-between",
+                              minWidth: "25rem",
                             }}
                           >
                             <Box

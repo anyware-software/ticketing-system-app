@@ -35,6 +35,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import sendSms from "../../services/sendSMS";
 import createTransaction from "../../services/createTransaction";
+import validateWaveConsumption from "../../services/validateWaveConsumption";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -75,7 +76,7 @@ function a11yProps(index: number) {
 
 export default function MobileViewTabs() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [currentBookings, setCurrentBookings] = useState<Booking>();
+  const [currentBookings, setCurrentBookings] = useState<Booking|null>(null);
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
   const [bookingLoading, setBookingLoading] = useState(false);
   const open = Boolean(anchorEl);
@@ -458,6 +459,20 @@ export default function MobileViewTabs() {
       console.log();
     }
   }
+  const validateAvailableRedirect = async () => {
+    const checkWaveAvailability = await validateWaveConsumption({
+      waveId: currentBookings?.waveId || "",
+    });
+    if (checkWaveAvailability.success) {
+      await payForTicket();
+    } else {
+      console.log("check failed");
+    }
+  };
+  const removeBookings = async () => {
+    await updateBooking({ eventBookingID:currentBookings?.id , deleted: "1" });
+    setCurrentBookings(null);
+  };
   return (
     <>
       <Box sx={{ width: "100%", display: { xs: "block", sm: "none" } }}>
@@ -1240,34 +1255,59 @@ export default function MobileViewTabs() {
                     </Box>
                   </Box>
 
-                  <Box>
-                    {currentBookings?.status === BookingStatus.APPROVED && (
-                      <Button
-                        variant="contained"
-                        sx={{
-                          color: "white",
-                          fontSize: 13,
-                          fontWeight: "600",
-                          wordWrap: "break-word",
-                          backgroundColor: "#F0635A",
-                          display: { xs: "none", sm: "block", lg: "block" },
-                        }}
-                        onClick={() => {
-                          if (currentBookings?.isPaid === false) {
-                            // navigate(`payment/${currentBookings?.id}`);
-                            payForTicket();
-                          } else {
-                            navigate(`ticket/${currentBookings?.id}`);
-                          }
-                        }}
-                      >
-                        {/*  */}
-                        {currentBookings?.isPaid === true
-                          ? "VIEW TICKET(S)"
-                          : "Pay Now"}
-                      </Button>
-                    )}
-                  </Box>
+                  <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
+                  }}
+                >
+                  {currentBookings?.status === BookingStatus.APPROVED && (
+                    <Button
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        fontSize: 13,
+                        fontWeight: "600",
+                        wordWrap: "break-word",
+                        backgroundColor: "#F0635A",
+                        display: { xs: "none", sm: "block", lg: "block" },
+                      }}
+                      onClick={() => {
+                        if (currentBookings?.isPaid === false) {
+                          // navigate(`payment/${currentBookings?.id}`);
+                          validateAvailableRedirect();
+                        } else {
+                          navigate(`ticket/${currentBookings?.id}`);
+                        }
+                      }}
+                    >
+                      {/*  */}
+                      {currentBookings?.isPaid === true
+                        ? "VIEW TICKET(S)"
+                        : "Pay Now"}
+                    </Button>
+                  )}
+                  {currentBookings?.isPaid === false && (
+                    <Button
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        fontSize: 13,
+                        fontWeight: "600",
+                        wordWrap: "break-word",
+                        backgroundColor: "#F0635A",
+                        display: { xs: "none", sm: "block", lg: "block" },
+                      }}
+                      onClick={() => {
+                        removeBookings();
+                      }}
+                    >
+                      Cancel Booking
+                    </Button>
+                  )}
+                </Box>
+
                 </Box>
 
                 <Box

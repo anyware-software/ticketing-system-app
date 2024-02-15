@@ -1,11 +1,12 @@
 import { EventEndPoints } from "../constants/Enums";
 import axios from "axios";
 
-async function listBookingByGuest({ guestId }: any) {
+async function listBookingByGuest({ bookingEventId , guestId }: any) {
   try {
     const operationId = 13;
     const requestBody = {
       operationId,
+      bookingEventId,
       guestId,
     };
     const options = {
