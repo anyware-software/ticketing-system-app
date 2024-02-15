@@ -76,7 +76,7 @@ function a11yProps(index: number) {
 
 export default function MobileViewTabs() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [currentBookings, setCurrentBookings] = useState<Booking|null>(null);
+  const [currentBookings, setCurrentBookings] = useState<Booking | null>(null);
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
   const [bookingLoading, setBookingLoading] = useState(false);
   const open = Boolean(anchorEl);
@@ -470,7 +470,7 @@ export default function MobileViewTabs() {
     }
   };
   const removeBookings = async () => {
-    await updateBooking({ eventBookingID:currentBookings?.id , deleted: "1" });
+    await updateBooking({ eventBookingID: currentBookings?.id, deleted: "1" });
     setCurrentBookings(null);
   };
   return (
@@ -1062,10 +1062,11 @@ export default function MobileViewTabs() {
               zIndex: 1,
               position: "relative",
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "start",
               alignItems: "center",
               flexDirection: "column",
               // gap: 10,
+              minHeight:'100vh',
             }}
           >
             {bookingLoading ? (
@@ -1092,222 +1093,229 @@ export default function MobileViewTabs() {
                     alignItems: "center",
                     padding: "1rem",
                     borderRadius: "10px",
-
+                    flexDirection: "column",
                     justifyContent: "space-between",
                   }}
                 >
                   <Box
-                    component="img"
-                    src={`${dbStorage}${currentBookings?.event?.image}`}
-                    alt=""
-                    sx={{
-                      height: "6rem",
-                      width: "6rem",
-                    }}
-                  />
-
-                  <Box
                     sx={{
                       display: "flex",
-                      flexDirection: "column",
+                      gap: "1rem",
+                      alignItems: "center",
+                      mb: 1,
                     }}
                   >
-                    <Box>
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: 18,
-                          fontWeight: "700",
-                          wordWrap: "break-word",
-                          display: { xs: "none", sm: "block" },
-                        }}
-                      >
-                        Electronic Steve-Music Festival
-                      </Typography>
-                    </Box>
+                    <Box
+                      component="img"
+                      src={`${dbStorage}${currentBookings?.event?.image}`}
+                      alt=""
+                      sx={{
+                        height: "6rem",
+                        width: "6rem",
+                      }}
+                    />
 
                     <Box
                       sx={{
                         display: "flex",
-                        flexDirection: { xs: "column", sm: "row" },
-                        gap: { xs: 0.5, sm: 3 },
+                        flexDirection: "column",
                       }}
                     >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 1,
-                        }}
-                      >
-                        <Box>
-                          <CalendarTodayIcon
-                            sx={{ color: "white", fontSize: "20px" }}
-                          />
-                        </Box>
-                        <Box
+                      <Box>
+                        <Typography
                           sx={{
-                            display: "flex",
-                            flexDirection: "column",
+                            color: "white",
+                            fontSize: 18,
+                            fontWeight: "700",
+                            wordWrap: "break-word",
+                            display: { xs: "none", sm: "block" },
                           }}
                         >
-                          <Box>
-                            <Typography
-                              sx={{
-                                color: "white",
-                                fontSize: 12,
-                                fontWeight: "400",
-                                wordWrap: "break-word",
-                              }}
-                            >
-                              {currentBookings?.event?.startDate
-                                ? new Date(
-                                    currentBookings.event.startDate
-                                  ).toLocaleDateString("en-US", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                  })
-                                : "N/A"}
-                            </Typography>
-                          </Box>
-                          <Box>
-                            <Typography
-                              sx={{
-                                color: "white",
-                                fontSize: 9,
-                                fontWeight: "400",
-                                wordWrap: "break-word",
-                              }}
-                            >
-                              {currentBookings?.event?.startDate
-                                ? new Date(
-                                    currentBookings.event.startDate
-                                  ).toLocaleDateString("en-US", {
-                                    weekday: "long",
-                                    hour: "numeric",
-                                    minute: "numeric",
-                                  })
-                                : "N/A"}{" "}
-                              -{" "}
-                              {currentBookings?.event?.endDate
-                                ? new Date(
-                                    currentBookings.event.endDate
-                                  ).toLocaleDateString("en-US", {
-                                    weekday: "long",
-                                    hour: "numeric",
-                                    minute: "numeric",
-                                  })
-                                : "N/A"}
-                            </Typography>
-                          </Box>
-                        </Box>
+                          Electronic Steve-Music Festival
+                        </Typography>
                       </Box>
 
                       <Box
                         sx={{
                           display: "flex",
-                          alignItems: "center",
-                          gap: 1,
+                          flexDirection: { xs: "column", sm: "row" },
+                          gap: { xs: 0.5, sm: 3 },
                         }}
                       >
-                        <Box>
-                          <PlaceIcon
-                            sx={{ color: "white", fontSize: "20px" }}
-                          />
-                        </Box>
                         <Box
                           sx={{
                             display: "flex",
-                            flexDirection: "column",
+                            alignItems: "center",
+                            gap: 1,
                           }}
                         >
                           <Box>
-                            <Typography
-                              sx={{
-                                color: "white",
-                                fontSize: 12,
-                                fontWeight: "400",
-                                wordWrap: "break-word",
-                              }}
-                            >
-                              {
-                                currentBookings?.event?.location?.address?.split(
-                                  ","
-                                )[1]
-                              }
-                            </Typography>
+                            <CalendarTodayIcon
+                              sx={{ color: "white", fontSize: "20px" }}
+                            />
                           </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                            }}
+                          >
+                            <Box>
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  fontWeight: "400",
+                                  wordWrap: "break-word",
+                                }}
+                              >
+                                {currentBookings?.event?.startDate
+                                  ? new Date(
+                                      currentBookings.event.startDate
+                                    ).toLocaleDateString("en-US", {
+                                      year: "numeric",
+                                      month: "long",
+                                      day: "numeric",
+                                    })
+                                  : "N/A"}
+                              </Typography>
+                            </Box>
+                            <Box>
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  fontSize: 9,
+                                  fontWeight: "400",
+                                  wordWrap: "break-word",
+                                }}
+                              >
+                                {currentBookings?.event?.startDate
+                                  ? new Date(
+                                      currentBookings.event.startDate
+                                    ).toLocaleDateString("en-US", {
+                                      weekday: "long",
+                                      hour: "numeric",
+                                      minute: "numeric",
+                                    })
+                                  : "N/A"}{" "}
+                                -{" "}
+                                {currentBookings?.event?.endDate
+                                  ? new Date(
+                                      currentBookings.event.endDate
+                                    ).toLocaleDateString("en-US", {
+                                      weekday: "long",
+                                      hour: "numeric",
+                                      minute: "numeric",
+                                    })
+                                  : "N/A"}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                          }}
+                        >
                           <Box>
-                            <Typography
-                              sx={{
-                                color: "white",
-                                fontSize: 9,
-                                fontWeight: "400",
-                                wordWrap: "break-word",
-                              }}
-                            >
-                              {currentBookings?.event?.location?.address}
-                            </Typography>
+                            <PlaceIcon
+                              sx={{ color: "white", fontSize: "20px" }}
+                            />
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                            }}
+                          >
+                            <Box>
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  fontSize: 12,
+                                  fontWeight: "400",
+                                  wordWrap: "break-word",
+                                }}
+                              >
+                                {
+                                  currentBookings?.event?.location?.address?.split(
+                                    ","
+                                  )[1]
+                                }
+                              </Typography>
+                            </Box>
+                            <Box>
+                              <Typography
+                                sx={{
+                                  color: "white",
+                                  fontSize: 9,
+                                  fontWeight: "400",
+                                  wordWrap: "break-word",
+                                }}
+                              >
+                                {currentBookings?.event?.location?.address}
+                              </Typography>
+                            </Box>
                           </Box>
                         </Box>
                       </Box>
                     </Box>
                   </Box>
-
                   <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 1,
-                  }}
-                >
-                  {currentBookings?.status === BookingStatus.APPROVED && (
-                    <Button
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        fontSize: 13,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                        backgroundColor: "#F0635A",
-                        display: { xs: "none", sm: "block", lg: "block" },
-                      }}
-                      onClick={() => {
-                        if (currentBookings?.isPaid === false) {
-                          // navigate(`payment/${currentBookings?.id}`);
-                          validateAvailableRedirect();
-                        } else {
-                          navigate(`ticket/${currentBookings?.id}`);
-                        }
-                      }}
-                    >
-                      {/*  */}
-                      {currentBookings?.isPaid === true
-                        ? "VIEW TICKET(S)"
-                        : "Pay Now"}
-                    </Button>
-                  )}
-                  {currentBookings?.isPaid === false && (
-                    <Button
-                      variant="contained"
-                      sx={{
-                        color: "white",
-                        fontSize: 13,
-                        fontWeight: "600",
-                        wordWrap: "break-word",
-                        backgroundColor: "#F0635A",
-                        display: { xs: "none", sm: "block", lg: "block" },
-                      }}
-                      onClick={() => {
-                        removeBookings();
-                      }}
-                    >
-                      Cancel Booking
-                    </Button>
-                  )}
-                </Box>
-
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 1,
+                    }}
+                  >
+                    {currentBookings?.status === BookingStatus.APPROVED && (
+                      <Button
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          fontSize: 13,
+                          fontWeight: "600",
+                          wordWrap: "break-word",
+                          backgroundColor: "#F0635A",
+                          display: { xs: "block", sm: "none", lg: "none" },
+                        }}
+                        onClick={() => {
+                          if (currentBookings?.isPaid === false) {
+                            // navigate(`payment/${currentBookings?.id}`);
+                            validateAvailableRedirect();
+                          } else {
+                            navigate(`ticket/${currentBookings?.id}`);
+                          }
+                        }}
+                      >
+                        {/*  */}
+                        {currentBookings?.isPaid === true
+                          ? "VIEW TICKET(S)"
+                          : "Pay Now"}
+                      </Button>
+                    )}
+                    {currentBookings?.isPaid === false && (
+                      <Button
+                        variant="contained"
+                        sx={{
+                          color: "white",
+                          fontSize: 13,
+                          fontWeight: "600",
+                          wordWrap: "break-word",
+                          backgroundColor: "#F0635A",
+                          display: { xs: "block", sm: "none", lg: "none" },
+                        }}
+                        onClick={() => {
+                          removeBookings();
+                        }}
+                      >
+                        Cancel Booking
+                      </Button>
+                    )}
+                  </Box>
                 </Box>
 
                 <Box
@@ -1399,7 +1407,7 @@ export default function MobileViewTabs() {
                         p: 1.5,
                         paddingRight: 0,
                         justifyContent: "space-between",
-                        alignItems:'center',
+                        alignItems: "center",
                       }}
                     >
                       <Box
@@ -1457,7 +1465,7 @@ export default function MobileViewTabs() {
                             px: 2,
                             maxWidth: 0,
                             maxHeight: 30,
-                            mr:3,
+                            mr: 3,
                           }}
                           onClick={() => {
                             sendSmsToUser(
@@ -1536,7 +1544,6 @@ export default function MobileViewTabs() {
                       justifyContent: "start",
                       flexDirection: "column",
                       gap: 2,
-                      pl: 5,
                     }}
                   >
                     <Box>
@@ -1582,7 +1589,7 @@ export default function MobileViewTabs() {
                             fontWeight: "600",
                             wordWrap: "break-word",
                             backgroundColor: "#F0635A",
-                            display: { xs: "none", sm: "block", lg: "block" },
+                            display: { xs: "block", sm: "none", lg: "none" },
                           }}
                         >
                           Book Now

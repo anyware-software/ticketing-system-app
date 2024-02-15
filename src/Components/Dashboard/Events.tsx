@@ -387,7 +387,7 @@ export default function Events() {
 
   const sendSmsToUser = async (phone: string, message: string) => {
     try {
-      await sendSms(phone, message);
+      // await sendSms(phone, message);
     } catch (err) {
       console.log(err);
     }
@@ -1849,7 +1849,7 @@ export default function Events() {
                                   fontSize: "12px",
                                 }}
                               >
-                                Message will be sent to you friend to join ULTER
+                                Message sent to you <br></br>friend to join ULTER
                                 First
                               </Typography>
                             </Box>
