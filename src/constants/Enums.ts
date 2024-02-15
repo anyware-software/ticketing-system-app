@@ -15,6 +15,9 @@ export const dbStorage =
 export enum paymentEndPoints {
   OPERATIONS = "https://crbtmornzj4nrckuxxad6i3fja0jdmsa.lambda-url.us-east-2.on.aws/",
 }
+export const smsEndpoint =
+  "https://sms.anyware.software/cequens-sms/sendSMS";
+
 export enum BookingStatus {
   APPROVED = "approved",
   REGJECTED = "rejected",

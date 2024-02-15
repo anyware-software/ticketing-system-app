@@ -1127,6 +1127,7 @@ export default function GuestProfile() {
                 display: "flex",
                 justifyContent: "space-between",
                 height: { sm: "12vh", xl: "10vh" },
+                width:{sm:'96.5%',lg:'95.5%'},
               }}
             >
               <Box>
@@ -1211,17 +1212,6 @@ export default function GuestProfile() {
                     </div>
                   )}
                 </div>
-
-                {/* <Typography
-                  sx={{
-                    color: "white",
-                    fontSize: 18,
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  Alinader@gmail.com
-                </Typography> */}
               </Box>
               <Box>
                 <Typography

@@ -205,6 +205,7 @@ export default function PayedTicket() {
                         ).toLocaleTimeString("en-US", {
                           hour: "numeric",
                           minute: "2-digit",
+                          hour12: true,
                         })
                       : "N/A"}
                   </Typography>
