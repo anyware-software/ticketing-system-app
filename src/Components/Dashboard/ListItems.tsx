@@ -93,7 +93,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
         <ListItemText primary="events" />
       </ListItemButton>
 
-      <ListItemButton
+      {/* <ListItemButton
         selected={selectedItem === "Notifications"}
         onClick={() => navigate(`/dashboard/${Pages.NOTIFICATIONS}`)}
       >
@@ -139,9 +139,9 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           />
         </ListItemIcon>
         <ListItemText primary="Bookmark" />
-      </ListItemButton>
+      </ListItemButton> */}
 
-      <ListItemButton
+      {/* <ListItemButton
         selected={selectedItem === "Contact US"}
         onClick={() => navigate(`/dashboard/${Pages.CONTACT}`)}
       >
@@ -155,9 +155,9 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           />
         </ListItemIcon>
         <ListItemText primary="Contact US" />
-      </ListItemButton>
+      </ListItemButton> */}
 
-      <ListItemButton
+      {/* <ListItemButton
         selected={selectedItem === "Setting"}
         onClick={() => navigate(`/dashboard/${Pages.SETTINGS}`)}
       >
@@ -187,7 +187,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           />
         </ListItemIcon>
         <ListItemText primary="Help & FAQs" />
-      </ListItemButton>
+      </ListItemButton> */}
 
       <ListItemButton
         selected={selectedItem === "Sign Out"}

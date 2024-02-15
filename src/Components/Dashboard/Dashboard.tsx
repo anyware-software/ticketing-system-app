@@ -191,7 +191,7 @@ export default function Dashboard() {
               alignItems: "center",
             }}
           >
-            <Typography
+            {/* <Typography
               sx={{
                 color: "white",
                 fontSize: 16,
@@ -200,7 +200,7 @@ export default function Dashboard() {
               }}
             >
               Contact Us
-            </Typography>
+            </Typography> */}
             <Button
               variant="text"
               sx={{
@@ -218,11 +218,11 @@ export default function Dashboard() {
               <LoginIcon sx={{ color: "white", fontSize: "25px" }} />
               <p> Sign Out</p>
             </Button>
-            <IconButton color="inherit">
+            {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="warning">
                 <ChatBubbleOutlineOutlinedIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
           </Box>
         </Toolbar>
       </AppBar>
