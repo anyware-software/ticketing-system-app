@@ -5,6 +5,7 @@ const getWavesConsumption = /* GraphQL */ `
       consumedTickets
       totalTickets
       id
+      consumed
       createdAt
       updatedAt
       __typename
@@ -27,6 +28,7 @@ const listWavesConsumptions = /* GraphQL */ `
         consumedTickets
         totalTickets
         id
+        consumed
       }
       nextToken
       __typename

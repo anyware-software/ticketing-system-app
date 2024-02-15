@@ -1,0 +1,27 @@
+{
+  "Records": [
+    {
+      "eventID": "4dfbcc586473d344a05ab22c8013fc8f",
+      "eventName": "MODIFY",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "us-east-2",
+      "dynamodb": {
+        "NewImage": {
+          "waveId": {
+            "S": "66529a4f-636a-467b-a36e-9a4343b55fd3"
+          },
+          "startDate": {
+            "S": "2024-02-27T00:00:00.000Z"
+          },
+          "age": {
+            "N": "25"
+          },
+          "AutomaticShift": {
+            "B": "true"
+          }
+        }
+      }
+    }
+  ]
+}

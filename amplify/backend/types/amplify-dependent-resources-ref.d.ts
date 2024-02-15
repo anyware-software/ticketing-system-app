@@ -49,6 +49,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "ticketingPaymentAutoShift": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "ticketingPaymentOperations": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

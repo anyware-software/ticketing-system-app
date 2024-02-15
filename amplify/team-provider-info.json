@@ -32,15 +32,19 @@
         },
         "ticketingEventsOperations": {
           "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",
-          "s3Key": "amplify-builds/ticketingEventsOperations-6a426777327138786742-build.zip"
+          "s3Key": "amplify-builds/ticketingEventsOperations-5256366732777442336e-build.zip"
         },
         "ticketingPaymentWebhook": {
           "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",
-          "s3Key": "amplify-builds/ticketingPaymentWebhook-52474663713076574336-build.zip"
+          "s3Key": "amplify-builds/ticketingPaymentWebhook-3849386c526174537a77-build.zip"
         },
         "ticketingPaymentOperations": {
           "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",
-          "s3Key": "amplify-builds/ticketingPaymentOperations-6c4e7833746b656e664b-build.zip"
+          "s3Key": "amplify-builds/ticketingPaymentOperations-754a34556f6f762f5243-build.zip"
+        },
+        "ticketingPaymentAutoShift": {
+          "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",
+          "s3Key": "amplify-builds/ticketingPaymentAutoShift-6d314776365350736371-build.zip"
         }
       },
       "api": {

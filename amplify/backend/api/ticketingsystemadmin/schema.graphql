@@ -616,4 +616,5 @@ type WavesConsumption
   waveId: String
   consumedTickets: Int
   totalTickets: Int
+  consumed: String @default(value: "0")
 }
