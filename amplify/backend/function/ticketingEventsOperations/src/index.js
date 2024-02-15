@@ -54,6 +54,7 @@ exports.handler = async (event) => {
     const invitationSecret = requestBody.invitationSecret;
     const fromDate = requestBody.fromDate;
     const toDate = requestBody.toDate;
+    const guestId = requestBody.guestId;
 
     if (operationId === operationIdEnum.listEvents) {
       variables = {
@@ -84,6 +85,18 @@ exports.handler = async (event) => {
           },
           isMainGuest: {
             eq: false,
+          },
+        },
+      };
+      query = listBookings;
+    } else if (operationId === operationIdEnum.listBookingsForGuest) {
+      variables = {
+        filter: {
+          deleted: {
+            eq: '0',
+          },
+          bookingGuestId: {
+            eq: guestId,
           },
         },
       };
@@ -168,7 +181,7 @@ exports.handler = async (event) => {
           orderId: bookAttributes.orderId,
           specialNeed: bookAttributes.specialNeed,
           phone_number: bookAttributes.phone_number,
-          deleted: '0',
+          deleted: bookAttributes.deleted,
           createdAt: bookAttributes.createdAt,
           createdByID: bookAttributes.createdByID,
           createdByName: bookAttributes.createdByName,
@@ -332,6 +345,8 @@ exports.handler = async (event) => {
       items = responseBody.data.listInvitations;
     } else if (operationId === operationIdEnum.createTransaction) {
       items = responseBody.data.createTransaction;
+    } else if (operationId === operationIdEnum.listBookingsForGuest) {
+      items = responseBody.data.listBookings;
     } else if (operationId === operationIdEnum.listEventsByGuestId) {
       variables = {
         filter: {

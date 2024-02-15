@@ -351,40 +351,35 @@ export default function Events() {
     }
   };
   const generateOrderId = () => {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     const idLength = 7;
-    const currentDate = new Date().toISOString().replace(/[-T:Z.]/g, "");
-    let randomId = currentDate;
+    let randomId = "";
     const uniqueCharacters = new Set();
-    let uniqueCharsCount = 0;
-    while (uniqueCharsCount < idLength) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        const char = characters.charAt(randomIndex);
-        if (!uniqueCharacters.has(char)) {
-            randomId += char;
-            uniqueCharacters.add(char);
-            uniqueCharsCount++;
-        }
+    while (randomId.length < idLength) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      const char = characters.charAt(randomIndex);
+      if (!uniqueCharacters.has(char)) {
+        randomId += char;
+        uniqueCharacters.add(char);
+      }
     }
     return randomId;
-};
-
+  };
 
   const generateTicketNumber = () => {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     const idLength = 7;
-    const currentDate = new Date().toISOString().replace(/[-T:Z.]/g, "");
-    let randomId = currentDate;
+    let randomId = "";
     const uniqueCharacters = new Set();
-    let uniqueCharsCount = 0;
-    while (uniqueCharsCount < idLength) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        const char = characters.charAt(randomIndex);
-        if (!uniqueCharacters.has(char)) {
-            randomId += char;
-            uniqueCharacters.add(char);
-            uniqueCharsCount++;
-        }
+    while (randomId.length < idLength) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      const char = characters.charAt(randomIndex);
+      if (!uniqueCharacters.has(char)) {
+        randomId += char;
+        uniqueCharacters.add(char);
+      }
     }
     return randomId;
   };
@@ -1460,7 +1455,14 @@ export default function Events() {
                 </Box>
               )}
               {ticketChosen === "guests" && (
-                <Box sx={{ display: "flex", gap: 1, flexDirection: "column" ,width: "100%",}}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 1,
+                    flexDirection: "column",
+                    width: "100%",
+                  }}
+                >
                   <Typography
                     sx={{
                       color: "white",
@@ -1851,76 +1853,84 @@ export default function Events() {
                 </Box>
               )}
               {ticketChosen === "book" && (
-                <Box sx={{width:'100%', display:'flex', justifyContent:'center' ,mt:2,}}>
-                <Box sx={{ position: "relative", marginTop: "50px"}}>
-                  <Box
-                    sx={{
-                      backgroundColor: "rgba(73, 73, 73, 1)",
-                      width: { xs: "21.5rem", sm: "25rem" },
-                      height: "50vh",
-                      position: "relative",
-                      borderTopLeftRadius: "20px",
-                      borderTopRightRadius: "20px",
-                      mb: 3,
-                      p: 5,
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      textAlign: "center",
-                      gap: 2,
-                    }}
-                  >
-                    <Typography
-                      variant="h5"
+                <Box
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    mt: 2,
+                  }}
+                >
+                  <Box sx={{ position: "relative", marginTop: "50px" }}>
+                    <Box
                       sx={{
-                        color: "white",
+                        backgroundColor: "rgba(73, 73, 73, 1)",
+                        width: { xs: "21.5rem", sm: "25rem" },
+                        height: "50vh",
+                        position: "relative",
+                        borderTopLeftRadius: "20px",
+                        borderTopRightRadius: "20px",
+                        mb: 3,
+                        p: 5,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        textAlign: "center",
+                        gap: 2,
                       }}
                     >
-                      Booking is Pending Review
-                    </Typography>
-                    <Typography
-                      variant="h6"
+                      <Typography
+                        variant="h5"
+                        sx={{
+                          color: "white",
+                        }}
+                      >
+                        Booking is Pending Review
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          color: "#F0635A",
+                        }}
+                      >
+                        Order ID: {orderId}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#AFAEB1",
+                          fontSize: "12px",
+                          fontWeight: 700,
+                        }}
+                      >
+                        Will let you know when you need to pay for your
+                        ticket(s)
+                      </Typography>
+                    </Box>
+                    <Box
                       sx={{
-                        color: "#F0635A",
+                        position: "absolute",
+                        top: "-4rem",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        width: "8rem",
+                        height: "8rem",
+                        borderRadius: "50%",
+                        backgroundColor: "rgba(210, 197, 197, 1)",
+                        border: "3px solid white",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
                     >
-                      Order ID: {orderId}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#AFAEB1",
-                        fontSize: "12px",
-                        fontWeight: 700,
-                      }}
-                    >
-                      Will let you know when you need to pay for your ticket(s)
-                    </Typography>
+                      <PendingActionsIcon
+                        sx={{
+                          color: "#F0635A",
+                          fontSize: "4rem",
+                        }}
+                      />
+                    </Box>
                   </Box>
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: "-4rem",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: "8rem",
-                      height: "8rem",
-                      borderRadius: "50%",
-                      backgroundColor: "rgba(210, 197, 197, 1)",
-                      border: "3px solid white",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <PendingActionsIcon
-                      sx={{
-                        color: "#F0635A",
-                        fontSize: "4rem",
-                      }}
-                    />
-                  </Box>
-                </Box>
                 </Box>
               )}
             </Box>

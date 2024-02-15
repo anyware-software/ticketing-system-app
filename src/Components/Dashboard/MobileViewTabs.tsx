@@ -125,9 +125,9 @@ export default function MobileViewTabs() {
           return startDateA - startDateB;
         });
         setCurrentBookings(sortedBookings[0]);
+        setBookingLoading(false);
       }
     }
-    setBookingLoading(false);
     getGuestBookingEvents();
   }, [user]);
 
@@ -1053,13 +1053,13 @@ export default function MobileViewTabs() {
               // gap: 10,
             }}
           >
-            { bookingLoading ? (
-            <CircularProgress
-              size={64}
-              thickness={1}
-              sx={{ color: "#EE726A" }}
-            />
-          ) : currentBookings ? (
+            {bookingLoading ? (
+              <CircularProgress
+                size={64}
+                thickness={1}
+                sx={{ color: "#EE726A" }}
+              />
+            ) : currentBookings ? (
               <Box
                 sx={{
                   display: "flex",
@@ -1359,6 +1359,7 @@ export default function MobileViewTabs() {
                         p: 1.5,
                         paddingRight: 0,
                         justifyContent: "space-between",
+                        alignItems:'center',
                       }}
                     >
                       <Box
@@ -1413,7 +1414,10 @@ export default function MobileViewTabs() {
                           sx={{
                             backgroundColor: "rgba(240, 99, 90, 1)",
                             fontSize: "12px",
-                            px: 1,
+                            px: 2,
+                            maxWidth: 0,
+                            maxHeight: 30,
+                            mr:3,
                           }}
                           onClick={() => {
                             sendSmsToUser(
@@ -1422,10 +1426,10 @@ export default function MobileViewTabs() {
                             );
                           }}
                         >
-                          Invite To Ultar !
+                          Invite
                         </Button>
                       )}
-                      <Box>
+                      {/* <Box>
                         <IconButton
                           aria-label="more"
                           id="long-button"
@@ -1461,7 +1465,7 @@ export default function MobileViewTabs() {
                             </MenuItem>
                           ))}
                         </Menu>
-                      </Box>
+                      </Box> */}
                     </Box>
                   ))}
                 </Box>

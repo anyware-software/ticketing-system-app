@@ -70,7 +70,7 @@ export default function GuestProfile() {
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const [isHovered, setIsHovered] = useState(false);
-  const [currentBookings, setCurrentBookings] = useState<Booking>();
+  const [currentBookings, setCurrentBookings] = useState<Booking|null>(null);
   const [bookingLoading, setBookingLoading] = useState(false);
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
   const dispatch = useDispatch();
@@ -637,7 +637,6 @@ export default function GuestProfile() {
       console.log();
     }
   }
-  console.log(bookingLoading);
   const validateAvailableRedirect = async () => {
     const checkWaveAvailability = await validateWaveConsumption({
       waveId: currentBookings?.waveId || "",
@@ -647,6 +646,10 @@ export default function GuestProfile() {
     } else {
       console.log("check failed");
     }
+  };
+  const removeBookings = async () => {
+    await updateBooking({ eventBookingID:currentBookings?.id , deleted: "1" });
+    setCurrentBookings(null);
   };
 
   return (
@@ -1127,7 +1130,7 @@ export default function GuestProfile() {
                 display: "flex",
                 justifyContent: "space-between",
                 height: { sm: "12vh", xl: "10vh" },
-                width:{sm:'96.5%',lg:'95.5%'},
+                width: { sm: "96.5%", lg: "95.5%" },
               }}
             >
               <Box>
@@ -1832,7 +1835,13 @@ export default function GuestProfile() {
                   </Box>
                 </Box>
 
-                <Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
+                  }}
+                >
                   {currentBookings?.status === BookingStatus.APPROVED && (
                     <Button
                       variant="contained"
@@ -1857,6 +1866,24 @@ export default function GuestProfile() {
                       {currentBookings?.isPaid === true
                         ? "VIEW TICKET(S)"
                         : "Pay Now"}
+                    </Button>
+                  )}
+                  {currentBookings?.isPaid === false && (
+                    <Button
+                      variant="contained"
+                      sx={{
+                        color: "white",
+                        fontSize: 13,
+                        fontWeight: "600",
+                        wordWrap: "break-word",
+                        backgroundColor: "#F0635A",
+                        display: { xs: "none", sm: "block", lg: "block" },
+                      }}
+                      onClick={() => {
+                        removeBookings();
+                      }}
+                    >
+                      Cancel Booking
                     </Button>
                   )}
                 </Box>
@@ -1952,6 +1979,7 @@ export default function GuestProfile() {
                       p: 1.5,
                       paddingRight: 0,
                       justifyContent: "space-between",
+                      alignItems: "center",
                     }}
                   >
                     <Box
@@ -2006,8 +2034,10 @@ export default function GuestProfile() {
                         sx={{
                           backgroundColor: "rgba(240, 99, 90, 1)",
                           fontSize: "12px",
-                          px: 0.5,
-                          ml: 0.5,
+                          mx: 2.5,
+                          px: 2,
+                          maxWidth: 0,
+                          maxHeight: 30,
                         }}
                         onClick={() => {
                           sendSmsToUser(
@@ -2016,10 +2046,10 @@ export default function GuestProfile() {
                           );
                         }}
                       >
-                        Invite To Ultar !
+                        Invite
                       </Button>
                     )}
-                    <Box>
+                    {/* <Box>
                       <IconButton
                         aria-label="more"
                         id="long-button"
@@ -2055,7 +2085,7 @@ export default function GuestProfile() {
                           </MenuItem>
                         ))}
                       </Menu>
-                    </Box>
+                    </Box> */}
                   </Box>
                 ))}
               </Box>

@@ -13,6 +13,7 @@ async function updateBooking({
   orderId,
   specialNeed,
   phone_number,
+  deleted,
 }: any) {
   // console.log(user, status, bookingMainGuestId, bookingGuestId, bookingEventId, bookingEventTicketId, isMainGuest, wave, orderId, specialNeed);
 
@@ -29,6 +30,7 @@ async function updateBooking({
       orderId: orderId,
       specialNeed: specialNeed,
       phone_number: phone_number,
+      deleted: deleted,
     };
 
     const requestBody = {
