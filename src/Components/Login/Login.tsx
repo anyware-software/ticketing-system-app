@@ -562,6 +562,7 @@ export default function Login() {
                     display: "flex",
                     justifyContent: "space-between",
                   }}
+                  onClick={handleFacebookLogin}
                 >
                   <p style={{ flexGrow: 1 }}> Sign in With Facebook</p>
                   <FacebookIcon
