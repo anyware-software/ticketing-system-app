@@ -39,6 +39,7 @@ const createTransaction = async (paymentObj) => {
   };
   const response = await fetch(GRAPHQL_ENDPOINT, options);
   const responseBody = await response.json();
+  console.log({ responseBody: JSON.stringify(responseBody) });
   return responseBody.data.createTransaction;
 };
 
@@ -136,8 +137,8 @@ const handleSuccessPayment = async (params) => {
   // update Booking
   // create a transaction
   const [transaction] = await Promise.all([
-    // createTransaction(paymentObj),
-    // updateBooking(bookAttributes),
+    createTransaction(paymentObj),
+    updateBooking(bookAttributes),
     UpdateWavesConsumptions(waveId),
   ]);
   console.log({ transaction });

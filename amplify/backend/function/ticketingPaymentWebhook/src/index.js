@@ -9,7 +9,7 @@ Amplify Params - DO NOT EDIT */
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
-const { handleSuccessPayment } = require("./utils/payment");
+const { handleSuccessPayment } = require('./utils/payment');
 
 exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
@@ -42,7 +42,7 @@ exports.handler = async (event) => {
         phone_number: bookAttributes.phone_number,
         isPaid: bookAttributes.isPaid,
         paidAmount: bookAttributes.paidAmount,
-        deleted: "0",
+        deleted: '0',
         createdAt: bookAttributes.createdAt,
         createdByID: bookAttributes.createdByID,
         createdByName: bookAttributes.createdByName,
@@ -62,23 +62,23 @@ exports.handler = async (event) => {
         createdByID: paymentObj.createdByID,
         createdByName: paymentObj.createdByName,
       },
-      waveId : waveId,
+      waveId: waveId,
     };
 
     // pay transaction
     await handleSuccessPayment(params);
-    console.log("transaction success");
+    console.log('transaction success');
 
     return {
       statusCode: 200,
-      body: { message: "request handled successfully" },
+      body: { message: 'request handled successfully' },
     };
   } catch (error) {
-    console.error("Error retrieving Data:", error);
+    console.error('Error retrieving Data:', error);
     const errorMessage = error.message;
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Error retrieving Data", errorMessage }),
+      body: JSON.stringify({ message: 'Error retrieving Data', errorMessage }),
     };
   }
 };

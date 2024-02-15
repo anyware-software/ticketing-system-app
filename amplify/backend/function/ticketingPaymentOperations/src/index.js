@@ -6,8 +6,8 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-const { operationIdEnum } = require("./constants/enums");
-const { listWavesConsumptions } = require("./constants/queries");
+const { operationIdEnum } = require('./constants/enums');
+const { listWavesConsumptions } = require('./constants/queries');
 
 const GRAPHQL_ENDPOINT =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
@@ -18,10 +18,10 @@ const GRAPHQL_API_KEY =
  * @type {import('node-fetch').RequestInit}
  */
 const generalFetchOptions = {
-  method: "POST",
+  method: 'POST',
   headers: {
-    "Content-Type": "application/json",
-    "x-api-key": GRAPHQL_API_KEY,
+    'Content-Type': 'application/json',
+    'x-api-key': GRAPHQL_API_KEY,
   },
 };
 /**
@@ -57,14 +57,14 @@ exports.handler = async (event) => {
       const wavesData = await wavesResponse.json();
       const wavesArr = wavesData.data.listWavesConsumptions.items;
       if (wavesArr.length === 0) {
-        throw new Error("No waves found");
+        throw new Error('No waves found');
       }
       if (wavesArr.length > 1) {
-        throw new Error("More than one wave found");
+        throw new Error('More than one wave found');
       }
       const wave = wavesArr[0];
       if (wave.consumedTickets >= wave.totalTickets) {
-        throw new Error("Wave is already consumed");
+        throw new Error('Wave is already consumed');
       }
 
       responseBody = {
@@ -80,9 +80,9 @@ exports.handler = async (event) => {
       body: JSON.stringify(responseBody),
     };
   } catch (err) {
-    console.error("Error retrieving Data:", err);
+    console.error('Error retrieving Data:', err);
     const errorMessage = err.message;
-    if (errorMessage === "No waves found") {
+    if (errorMessage === 'No waves found') {
       return {
         statusCode: 404,
         body: JSON.stringify({
@@ -92,7 +92,7 @@ exports.handler = async (event) => {
         }),
       };
     }
-    if (errorMessage === "More than one wave found") {
+    if (errorMessage === 'More than one wave found') {
       return {
         statusCode: 500,
         body: JSON.stringify({
@@ -102,7 +102,7 @@ exports.handler = async (event) => {
         }),
       };
     }
-    if (errorMessage === "Wave is already consumed") {
+    if (errorMessage === 'Wave is already consumed') {
       return {
         statusCode: 403,
         body: JSON.stringify({

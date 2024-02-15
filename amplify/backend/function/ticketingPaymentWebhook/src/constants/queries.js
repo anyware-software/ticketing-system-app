@@ -527,8 +527,6 @@ const updateWavesConsumption = /* GraphQL */ `
       consumedTickets
       totalTickets
       id
-      createdAt
-      updatedAt
       __typename
     }
   }

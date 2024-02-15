@@ -1,16 +1,17 @@
 {
-  "body":{
-    "eventBookingID":"111dd799-8241-4606-946e-b11c7654f8ff",
-    "bookAttributes":{
-      "isPaid":true,
-      "paidAmount":10000
+  "body": {
+    "eventBookingID": "ddcb5d1f-84dd-4d4f-9e47-ec02897156f3",
+    "bookAttributes": {
+      "isPaid": true,
+      "paidAmount": 3500
     },
-    "paymentObj":{
+    "paymentObj": {
       "guestId": "e274cbf6-31a9-4249-934d-ca9a8a3af622",
       "eventId": "335e5bb5-bf5a-46bd-8f71-a13ededbf500",
-      "ticketId": "893d8f2f-0e1b-4a6b-bb36-6e7387b22ac2",
-      "transactionBookingId": "111dd799-8241-4606-946e-b11c7654f8ff",
+      "ticketId": "9b163750-f9dd-42b7-a600-0820bf10bf17",
+      "transactionBookingId": "ddcb5d1f-84dd-4d4f-9e47-ec02897156f3",
       "issuccess": true,
+      "amount_cents": 350000,
       "createdAt": "2024-02-12T14:15:17.054Z",
       "createdByID": "e274cbf6-31a9-4249-934d-ca9a8a3af622",
       "createdByName": "mohamed samir"
