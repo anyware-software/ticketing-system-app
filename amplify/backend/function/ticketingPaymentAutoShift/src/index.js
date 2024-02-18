@@ -8,7 +8,7 @@ Amplify Params - DO NOT EDIT */
 
 const { listBookings } = require("./constants/queries");
 const { generateMessage } = require("./utils/generateMessage");
-const { default: sendSms } = require("./utils/sendSMS");
+const { sendSms } = require("./utils/sendSMS");
 
 const GRAPHQL_ENDPOINT =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
@@ -64,45 +64,54 @@ exports.handler = async (event) => {
       (item) => item.id === waveId
     );
     const nextWave = singleBooking.eventTicket.waves.find(
-      (item) => item.index === currentWaveIndex + 1
+      (_, index) => index === currentWaveIndex + 1
+    );
+    console.log("Next wave: ", nextWave);
+    console.log("All waves: ", singleBooking.eventTicket.waves);
+
+    const recipients = bookingsArr.filter(
+      (booking) => booking.status === "approved" && booking.isPaid
+    );
+    //for logs
+    const phoneNumbers = recipients.map(
+      (booking) => booking.guest.phone_number
     );
 
-    if (currentWave.AutomaticShift && nextWave) {
+    // send SMS to all recipients if the current wave is set to AutomaticShift and there is a next wave
+    if (currentWave && currentWave.AutomaticShift && nextWave) {
       // inform users about the next wave
-      const phoneNumbers = bookingsArr.map(
-        (booking) => booking.guest.phone_number
-      );
-      const recipients = bookingsArr.filter(
-        (booking) => booking.status === "approved" && booking.isPaid
-      );
-      const smsS = recipients.map((booking) => {
-        const message = generateMessage(
-          booking.guest.name,
-          nextWave.startDate,
-          currentWave.name,
-          nextWave.name
-        );
-        return sendSms(booking.guest.phone_number, message);
-      });
-
-      await Promise.allSettled(smsS);
-      console.log(`Sent messages to ${phoneNumbers.length} users.`);
-      console.log(`Next wave: ${nextWave.name}, id: ${nextWave.id}`);
-      console.log(`Current wave: ${currentWave.name}: id: ${currentWave.id}`);
+      if (recipients.length > 0) {
+        const smsS = recipients.map((booking) => {
+          const message = generateMessage(
+            booking.guest.name,
+            nextWave.startDate,
+            currentWave.name,
+            nextWave.name
+          );
+          return sendSms(booking.guest.phone_number, message);
+        });
+        await Promise.allSettled(smsS);
+        console.log(`Sent messages to ${smsS.length} users.`);
+        console.log(`Current wave: ${currentWave.name}: id: ${currentWave.id}`);
+        console.log(`Next wave: ${nextWave.name}, id: ${nextWave.id}`);
+        console.log("Phone numbers: ", phoneNumbers);
+      } else {
+        console.log("No messages sent. No recipients.");
+      }
+      // do something if the current wave is set to AutomaticShift but there is no next wave
+    } else if (currentWave && currentWave.AutomaticShift && !nextWave) {
+      // inform users that there are no more waves available || inform users about other events/tickets?
     } else {
-      // inform users that there are no more waves
+      console.log("No AutomaticShift for this wave.");
+      console.log("Current wave: ", currentWave);
     }
+    console.log(
+      "SMS sent to all users who have booked for the next wave, if any."
+    );
   } catch (err) {
-    console.log("Error: ", err);
+    console.error("Error: ", err);
+    console.log(
+      "Error occurred while trying to send SMS to users who have booked for the next wave."
+    );
   }
-
-  return {
-    statusCode: 200,
-    //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  },
-    body: JSON.stringify("Hello from Lambda!"),
-  };
 };

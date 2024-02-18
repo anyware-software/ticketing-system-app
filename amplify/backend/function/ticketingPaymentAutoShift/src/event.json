@@ -9,16 +9,20 @@
       "dynamodb": {
         "NewImage": {
           "waveId": {
-            "S": "66529a4f-636a-467b-a36e-9a4343b55fd3"
+            "S": "006f86ff-b50b-46c7-b0be-82e4df1e4b90"
           },
           "startDate": {
             "S": "2024-02-27T00:00:00.000Z"
           },
-          "age": {
-            "N": "25"
+          "totalTickets": {
+            "N": "100"
           },
-          "AutomaticShift": {
-            "B": "true"
+          "consumedTickets": {
+            "N": "0"
+          },
+
+          "consumed": {
+            "S": "1"
           }
         }
       }
