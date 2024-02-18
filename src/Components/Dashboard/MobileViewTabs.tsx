@@ -36,6 +36,7 @@ import { useNavigate } from "react-router-dom";
 import sendSms from "../../services/sendSMS";
 import createTransaction from "../../services/createTransaction";
 import validateWaveConsumption from "../../services/validateWaveConsumption";
+import getGuestByPhone from "../../services/getGuestByPhone";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -387,6 +388,11 @@ export default function MobileViewTabs() {
         setMobileError(true);
         return;
       }
+      const guestPhones = await getGuestByPhone(mobileText);
+      if (guestPhones.length > 0) {
+        setMobileError(true);
+        return;
+      }
       let UpdatedGuest = await updateGuest({
         userID: user?.id,
         email: user?.email,
@@ -535,7 +541,7 @@ export default function MobileViewTabs() {
               >
                 <Box
                   sx={{
-                    height: "11vh",
+                    height: "10vh",
                   }}
                 >
                   <Typography
@@ -565,13 +571,14 @@ export default function MobileViewTabs() {
                       >
                         <TextField
                           sx={{
-                            backgroundColor: "rgba(255, 255, 255, 0.31)",
                             "input::placeholder": {
                               color: "white",
                             },
                             input: {
+                              backgroundColor: "rgba(255, 255, 255, 0.31)",
                               color: "white",
-                              padding: "10px",
+                              px: "10px",
+                              py: "1px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -634,7 +641,7 @@ export default function MobileViewTabs() {
                 </Box>
                 <Box
                   sx={{
-                    height: "11vh",
+                    height: "10vh",
                   }}
                 >
                   <Typography
@@ -671,7 +678,8 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
-                              padding: "10px",
+                              px: "10px",
+                              py: "1px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -752,7 +760,7 @@ export default function MobileViewTabs() {
               >
                 <Box
                   sx={{
-                    height: "11vh",
+                    height: "10vh",
                   }}
                 >
                   <Typography
@@ -789,7 +797,8 @@ export default function MobileViewTabs() {
                             },
                             ".MuiSelect-select": {
                               color: "white",
-                              padding: "10px",
+                              px: "10px",
+                              py: "1px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -851,7 +860,7 @@ export default function MobileViewTabs() {
                 </Box>
                 <Box
                   sx={{
-                    height: "11vh",
+                    height: "10vh",
                   }}
                 >
                   <Typography
@@ -881,14 +890,16 @@ export default function MobileViewTabs() {
                       >
                         <TextField
                           type="number"
+                          variant="standard"
                           sx={{
-                            backgroundColor: "rgba(255, 255, 255, 0.31)",
                             "input::placeholder": {
                               color: "white",
                             },
                             input: {
+                              backgroundColor: "rgba(255, 255, 255, 0.31)",
                               color: "white",
-                              padding: "10px",
+                              py: "1px",
+                              px: "10px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -961,7 +972,7 @@ export default function MobileViewTabs() {
               >
                 <Box
                   sx={{
-                    height: "15vh",
+                    height: "10vh",
                   }}
                 >
                   <Typography
@@ -997,7 +1008,8 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
-                              padding: "10px",
+                              px: "10px",
+                              py: "1px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",

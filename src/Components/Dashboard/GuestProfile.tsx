@@ -55,6 +55,7 @@ import sendSms from "../../services/sendSMS";
 import Resizer from "react-image-file-resizer";
 import createTransaction from "../../services/createTransaction";
 import validateWaveConsumption from "../../services/validateWaveConsumption";
+import getGuestByPhone from "../../services/getGuestByPhone";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -202,6 +203,10 @@ export default function GuestProfile() {
     try {
       if (!emailRegex.test(emailText)) {
         setEmailError(true);
+        setValidationWarning(true);
+        setMessage(
+          "This Email is Not Correct"
+        );
         return;
       }
       let UpdatedGuest = await updateGuest({
@@ -242,6 +247,10 @@ export default function GuestProfile() {
     try {
       if (!addressText) {
         setAddressError(true);
+        setValidationWarning(true);
+        setMessage(
+          "Address Cannot be Empty"
+        );
         return;
       }
       let UpdatedGuest = await updateGuest({
@@ -384,8 +393,22 @@ export default function GuestProfile() {
     try {
       if (!mobileRegex.test(mobileText)) {
         setMobileError(true);
+        setValidationWarning(true);
+        setMessage(
+          "Please Enter Valid Phone Number"
+        );
         return;
       }
+      const guestPhones = await getGuestByPhone(mobileText);
+      if (guestPhones.length > 0) {
+        setMobileError(true);
+        setValidationWarning(true);
+        setMessage(
+          "This Phone Number is Not Correct"
+        );
+        return;
+      }
+      console.log(guestPhones);
       let UpdatedGuest = await updateGuest({
         userID: user?.id,
         email: user?.email,
@@ -1190,7 +1213,6 @@ export default function GuestProfile() {
                             setEmailError(false);
                           }}
                           error={emailError}
-                          helperText={emailError ? "Invalid email address" : ""}
                         />
                         <IconButton
                           onClick={handleSaveEmailClick}
@@ -1280,9 +1302,6 @@ export default function GuestProfile() {
                             setBirthDateError(false);
                           }}
                           error={birthDateError}
-                          helperText={
-                            birthDateError ? "Invalid Birth Date address" : ""
-                          }
                         />
                         <IconButton
                           onClick={handleSaveBirthClick}
@@ -1461,17 +1480,17 @@ export default function GuestProfile() {
                         <TextField
                           type="number"
                           sx={{
-                            backgroundColor: "rgba(255, 255, 255, 0.31)",
                             "input::placeholder": {
                               color: "white",
                             },
                             input: {
+                              backgroundColor: "rgba(255, 255, 255, 0.31)",
                               color: "white",
                               padding: "10px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
-                            width: "8rem",
+                            width: "10rem",
                           }}
                           value={mobileText}
                           onChange={(e) => {
@@ -1479,9 +1498,6 @@ export default function GuestProfile() {
                             setMobileError(false);
                           }}
                           error={mobileError}
-                          helperText={
-                            mobileError ? "Phone number is not valid" : ""
-                          }
                         />
                         <IconButton
                           onClick={handleSaveMobileClick}
@@ -1569,7 +1585,6 @@ export default function GuestProfile() {
                             setAddressError(false);
                           }}
                           error={addressError}
-                          helperText={addressError ? "Invalid Address" : ""}
                         />
                         <IconButton
                           onClick={handleSaveAddressClick}
