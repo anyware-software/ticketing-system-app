@@ -113,7 +113,6 @@ export default function Dashboard() {
   const handleLogOut = async () => {
     if (!user) {
       console.log("There is no User");
-
       return;
     }
     dispatch(setLogin({ user: null }));
@@ -132,6 +131,20 @@ export default function Dashboard() {
       setLoading(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    const checkLocalStorage = async () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser === "true") {
+        navigate("/dashboard");
+      }
+      if (!storedUser) {
+        await signOut();
+        navigate("/login");
+      }
+    };
+    checkLocalStorage();
+  }, []);
 
   if (loading) return <ContentLoader />;
 
@@ -191,7 +204,7 @@ export default function Dashboard() {
               alignItems: "center",
             }}
           >
-            <Typography
+            {/* <Typography
               sx={{
                 color: "white",
                 fontSize: 16,
@@ -200,7 +213,7 @@ export default function Dashboard() {
               }}
             >
               Contact Us
-            </Typography>
+            </Typography> */}
             <Button
               variant="text"
               sx={{
@@ -218,11 +231,11 @@ export default function Dashboard() {
               <LoginIcon sx={{ color: "white", fontSize: "25px" }} />
               <p> Sign Out</p>
             </Button>
-            <IconButton color="inherit">
+            {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="warning">
                 <ChatBubbleOutlineOutlinedIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
           </Box>
         </Toolbar>
       </AppBar>

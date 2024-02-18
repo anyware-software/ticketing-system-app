@@ -89,9 +89,7 @@ export default function InvitationPage() {
   }, [invitations]);
 
   if (loading) return <ContentLoader />;
-
-  console.log(invitations);
-
+  
   return (
     <>
       <Box

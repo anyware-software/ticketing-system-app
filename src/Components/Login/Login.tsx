@@ -25,6 +25,7 @@ import { setLogin } from "../../state";
 import CloseIcon from "@mui/icons-material/Close";
 import ContentLoader from "../ContentLoader/ContentLoder";
 import { signOut } from "aws-amplify/auth";
+import FacebookIcon from "@mui/icons-material/Facebook";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -86,8 +87,7 @@ export default function Login() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const bookingID = urlParams.get("id");
-    console.log(bookingID);
-    
+    // console.log(bookingID);
     if (bookingID) {
       const eventBooking = bookingID;
       localStorage.setItem("eventBooking", eventBooking);
@@ -200,7 +200,7 @@ export default function Login() {
             pr: { xs: 0, sm: 5 },
           }}
         >
-          <Grid
+          {/* <Grid
             item
             xs={12}
             sm={6}
@@ -516,6 +516,61 @@ export default function Login() {
                 </Box>
               </Box>
             </Box>
+          </Grid> */}
+
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            lg={6}
+            sx={{
+              zIndex: 1,
+              position: "relative",
+              display: "flex",
+              justifyContent: { xs: "center" },
+              alignItems: "center",
+              flexDirection: "column",
+              marginTop: { xs: "0vh", sm: "1vh", md: "5vh", lg: "5vh" },
+              minHeight: "70vh",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 1,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Button
+                  style={{
+                    width: "15rem",
+                    height: "6vh",
+                    background:
+                      "linear-gradient(90deg, #EB5757 0%, rgba(242, 88, 62, 0.46) 100%)",
+                    boxShadow:
+                      "0px 10px 35px rgba(111.39, 125.96, 200.59, 0.25)",
+                    borderRadius: 3,
+                    color: "white",
+                    marginTop: "3vh",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                  onClick={handleFacebookLogin}
+                >
+                  <p style={{ flexGrow: 1, textTransform: "capitalize" }}>
+                    {" "}
+                    Sign in With Facebook
+                  </p>
+                  <FacebookIcon sx={{ color: "white", fontSize: "25px" }} />
+                </Button>
+              </Box>
+            </Box>
           </Grid>
 
           <Grid
@@ -530,6 +585,8 @@ export default function Login() {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
+              marginTop: { xs: "0vh", sm: "1vh", md: "5vh", lg: "5vh" },
+              height: "80vh",
             }}
           >
             <Box
