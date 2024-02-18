@@ -113,7 +113,6 @@ export default function Dashboard() {
   const handleLogOut = async () => {
     if (!user) {
       console.log("There is no User");
-
       return;
     }
     dispatch(setLogin({ user: null }));
@@ -132,6 +131,20 @@ export default function Dashboard() {
       setLoading(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    const checkLocalStorage = async () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser === "true") {
+        navigate("/dashboard");
+      }
+      if (!storedUser) {
+        await signOut();
+        navigate("/login");
+      }
+    };
+    checkLocalStorage();
+  }, []);
 
   if (loading) return <ContentLoader />;
 
