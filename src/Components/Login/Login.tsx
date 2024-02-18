@@ -25,7 +25,7 @@ import { setLogin } from "../../state";
 import CloseIcon from "@mui/icons-material/Close";
 import ContentLoader from "../ContentLoader/ContentLoder";
 import { signOut } from "aws-amplify/auth";
-import FacebookIcon from '@mui/icons-material/Facebook';
+import FacebookIcon from "@mui/icons-material/Facebook";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -87,8 +87,7 @@ export default function Login() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const bookingID = urlParams.get("id");
-    console.log(bookingID);
-
+    // console.log(bookingID);
     if (bookingID) {
       const eventBooking = bookingID;
       localStorage.setItem("eventBooking", eventBooking);
@@ -532,7 +531,7 @@ export default function Login() {
               alignItems: "center",
               flexDirection: "column",
               marginTop: { xs: "0vh", sm: "1vh", md: "5vh", lg: "5vh" },
-              minHeight:'70vh',
+              minHeight: "70vh",
             }}
           >
             <Box
@@ -564,10 +563,11 @@ export default function Login() {
                   }}
                   onClick={handleFacebookLogin}
                 >
-                  <p style={{ flexGrow: 1 }}> Sign in With Facebook</p>
-                  <FacebookIcon
-                    sx={{ color: "white", fontSize: "25px" }}
-                  />
+                  <p style={{ flexGrow: 1, textTransform: "capitalize" }}>
+                    {" "}
+                    Sign in With Facebook
+                  </p>
+                  <FacebookIcon sx={{ color: "white", fontSize: "25px" }} />
                 </Button>
               </Box>
             </Box>
@@ -586,7 +586,7 @@ export default function Login() {
               alignItems: "center",
               justifyContent: "center",
               marginTop: { xs: "0vh", sm: "1vh", md: "5vh", lg: "5vh" },
-              height: "70vh",
+              height: "80vh",
             }}
           >
             <Box
