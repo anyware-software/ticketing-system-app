@@ -1,5 +1,31 @@
 {
-  "key1": "value1",
-  "key2": "value2",
-  "key3": "value3"
+  "Records": [
+    {
+      "eventID": "4dfbcc586473d344a05ab22c8013fc8f",
+      "eventName": "MODIFY",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "us-east-2",
+      "dynamodb": {
+        "NewImage": {
+          "waveId": {
+            "S": "006f86ff-b50b-46c7-b0be-82e4df1e4b90"
+          },
+          "startDate": {
+            "S": "2024-02-27T00:00:00.000Z"
+          },
+          "totalTickets": {
+            "N": "100"
+          },
+          "consumedTickets": {
+            "N": "0"
+          },
+
+          "consumed": {
+            "S": "1"
+          }
+        }
+      }
+    }
+  ]
 }

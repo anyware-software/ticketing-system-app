@@ -44,7 +44,7 @@
         },
         "ticketingPaymentAutoShift": {
           "deploymentBucketName": "amplify-ticketingsystemadmin-dev-132756-deployment",
-          "s3Key": "amplify-builds/ticketingPaymentAutoShift-636151457a64526c7973-build.zip"
+          "s3Key": "amplify-builds/ticketingPaymentAutoShift-5943576a56484259696e-build.zip"
         }
       },
       "api": {
