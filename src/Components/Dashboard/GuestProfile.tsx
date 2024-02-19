@@ -653,6 +653,7 @@ export default function GuestProfile() {
         transactionBookingId: currentBookings?.id,
         isPaid: true,
         paidAmount: wave?.price,
+        waveId: currentBookings?.waveId,
       });
       await sendEmail({
         customerEmail: user.email,

@@ -79,7 +79,7 @@ exports.handler = async (event) => {
     console.log('All waves: ', singleBooking.eventTicket.waves);
 
     const recipients = bookingsArr.filter(
-      (booking) => booking.status === 'approved' && booking.isPaid,
+      (booking) => booking.status === 'approved' && !booking.isPaid,
     );
     //for logs
     const phoneNumbers = recipients.map(

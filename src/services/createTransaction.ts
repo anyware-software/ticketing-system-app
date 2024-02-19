@@ -15,6 +15,7 @@ async function createTransaction({
   transactionBookingId,
   isPaid,
   paidAmount,
+  waveId,
 }: any) {
   try {
     const paymentObj = {
@@ -41,6 +42,7 @@ async function createTransaction({
       eventBookingID: transactionBookingId,
       paymentObj: paymentObj,
       bookAttributes: bookAttributes,
+      waveId: waveId,
     };
     console.log(requestBody);
 
