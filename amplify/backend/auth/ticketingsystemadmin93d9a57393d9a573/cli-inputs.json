@@ -5,9 +5,13 @@
     "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "ticket93d9a573",
     "userPoolName": "ticketingsystemadmin93d9a573_userpool_93d9a573",
-    "autoVerifiedAttributes": ["email"],
+    "autoVerifiedAttributes": [
+      "email"
+    ],
     "mfaConfiguration": "OFF",
-    "mfaTypes": ["SMS Text Message"],
+    "mfaTypes": [
+      "SMS Text Message"
+    ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
@@ -15,34 +19,52 @@
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
-    "requiredAttributes": ["email"],
+    "requiredAttributes": [
+      "email"
+    ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": ["email"],
-    "userpoolClientReadAttributes": ["email"],
+    "userpoolClientWriteAttributes": [
+      "email"
+    ],
+    "userpoolClientReadAttributes": [
+      "email"
+    ],
     "userpoolClientLambdaRole": "ticket93d9a573_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
     "sharedId": "93d9a573",
     "resourceName": "ticketingsystemadmin93d9a57393d9a573",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "defaultSocial",
-    "usernameAttributes": ["email, phone_number"],
+    "usernameAttributes": [
+      "email, phone_number"
+    ],
     "userPoolGroups": true,
     "adminQueries": true,
     "triggers": {
-      "PreSignup": ["custom"]
+      "PreSignup": [
+        "custom"
+      ]
     },
     "hostedUI": true,
-    "userPoolGroupList": ["admin"],
+    "userPoolGroupList": [
+      "admin"
+    ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
     "useEnabledMfas": true,
     "authRoleArn": {
-      "Fn::GetAtt": ["AuthRole", "Arn"]
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
     },
     "unauthRoleArn": {
-      "Fn::GetAtt": ["UnauthRole", "Arn"]
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
     },
     "breakCircularDependency": true,
     "dependsOn": [
@@ -50,7 +72,10 @@
         "category": "function",
         "resourceName": "ticketingsystemadmin93d9a57393d9a573PreSignup",
         "triggerProvider": "Cognito",
-        "attributes": ["Arn", "Name"]
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
       }
     ],
     "permissions": [],
@@ -60,9 +85,11 @@
       "Ref": "AWS::StackId"
     },
     "hostedUIDomainName": "ticketingsystemadminbe039a90-be039a90",
-    "authProvidersUserPool": ["Facebook"],
+    "authProvidersUserPool": [
+      "Facebook"
+    ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"id\"}}]",
     "authProviders": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3001/dashboard/\",\"https://ticketing-system-app-eight.vercel.app/dashboard/\"],\"LogoutURLs\":[\"http://localhost:3001/\",\"https://ticketing-system-app-eight.vercel.app/\"]}"
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/dashboard/\",\"https://ticketing-system-app-eight.vercel.app/dashboard/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://ticketing-system-app-eight.vercel.app/\"]}"
   }
 }

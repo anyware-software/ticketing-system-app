@@ -476,7 +476,7 @@ type Wave {
   endDate: String
   active: Boolean
   quota: Int
-  AutomaticShift: Boolean
+  AutomaticShift: String
 }
 
 type Booking
@@ -613,8 +613,9 @@ type WavesConsumption
       { allow: public, operations: [create, update, read] }
     ]
   ) {
-  waveId: String
+  waveId: String!
   consumedTickets: Int
-  totalTickets: Int
+  totalTickets: Int!
   consumed: String @default(value: "0")
+  eventId: String!
 }

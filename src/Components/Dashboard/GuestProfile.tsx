@@ -57,6 +57,7 @@ import createTransaction from "../../services/createTransaction";
 import validateWaveConsumption from "../../services/validateWaveConsumption";
 import getGuestByPhone from "../../services/getGuestByPhone";
 import LoadingButton from "@mui/lab/LoadingButton";
+import sendEmail from "../../services/sendEmail";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -652,6 +653,13 @@ export default function GuestProfile() {
         transactionBookingId: currentBookings?.id,
         isPaid: true,
         paidAmount: wave?.price,
+      });
+      await sendEmail({
+        customerEmail: user.email,
+        templateName: "UlterPaymentReserved",
+        guestName: user.name,
+        eventName: currentBookings?.event.name,
+        link: `http://localhost:3000/dashboard/ticket/${currentBookings?.id}`,
       });
       const booking = await listGuestBooking({ bookingGuestid: user.id });
       if (booking) {

@@ -9,7 +9,7 @@ const {
   updateBooking: updateBookingQuery,
   listWavesConsumptions: listWavesConsumptionsQuery,
   updateWavesConsumption: updateWavesConsumptionQuery,
-} = require("../constants/queries");
+} = require('../constants/queries');
 
 const createTransaction = async (paymentObj) => {
   const createInput = {
@@ -30,10 +30,10 @@ const createTransaction = async (paymentObj) => {
   variables = { input: createInput };
   query = createTransactionQuery;
   const options = {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "x-api-key": GRAPHQL_API_KEY,
+      'Content-Type': 'application/json',
+      'x-api-key': GRAPHQL_API_KEY,
     },
     body: JSON.stringify({ query, variables }),
   };
@@ -59,7 +59,7 @@ const updateBooking = async (bookAttributes) => {
       phone_number: bookAttributes.phone_number,
       isPaid: bookAttributes.isPaid,
       paidAmount: bookAttributes.paidAmount,
-      deleted: "0",
+      deleted: '0',
       createdAt: bookAttributes.createdAt,
       createdByID: bookAttributes.createdByID,
       createdByName: bookAttributes.createdByName,
@@ -67,10 +67,10 @@ const updateBooking = async (bookAttributes) => {
   };
   const query = updateBookingQuery;
   const options = {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "x-api-key": GRAPHQL_API_KEY,
+      'Content-Type': 'application/json',
+      'x-api-key': GRAPHQL_API_KEY,
     },
     body: JSON.stringify({ query, variables }),
   };
@@ -88,10 +88,10 @@ const UpdateWavesConsumptions = async (waveId) => {
   };
   const query = listWavesConsumptionsQuery;
   const generalFetchOptions = {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "x-api-key": GRAPHQL_API_KEY,
+      'Content-Type': 'application/json',
+      'x-api-key': GRAPHQL_API_KEY,
     },
   };
   const wavesResponse = await fetch(GRAPHQL_ENDPOINT, {
@@ -109,13 +109,13 @@ const UpdateWavesConsumptions = async (waveId) => {
   const WaveConsumptionId = wave.id;
   const WaveConsumption = wave.consumedTickets;
   const WavetotalTickets = wave.totalTickets;
-  if (WaveConsumption < WavetotalTickets) {
+  if (WaveConsumption < WavetotalTickets && wave.consumed !== '1') {
     if (WaveConsumption + 1 === WavetotalTickets) {
       variables = {
         input: {
           id: WaveConsumptionId,
           consumedTickets: WaveConsumption + 1,
-          consumed: "1",
+          consumed: '1',
         },
       };
     } else {
@@ -128,10 +128,10 @@ const UpdateWavesConsumptions = async (waveId) => {
     }
     const query = updateWavesConsumptionQuery;
     const options = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "x-api-key": GRAPHQL_API_KEY,
+        'Content-Type': 'application/json',
+        'x-api-key': GRAPHQL_API_KEY,
       },
       body: JSON.stringify({ query, variables }),
     };
@@ -139,6 +139,8 @@ const UpdateWavesConsumptions = async (waveId) => {
     const responseBody = await response.json();
     console.log({ responseBody: JSON.stringify(responseBody) });
     return responseBody.data.updateWavesConsumption;
+  } else {
+    throw new Error('Wave is already consumed');
   }
 };
 

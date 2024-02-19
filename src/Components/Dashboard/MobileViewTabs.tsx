@@ -41,6 +41,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import LoadingButton from "@mui/lab/LoadingButton";
+import sendEmail from "../../services/sendEmail";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -467,6 +468,13 @@ export default function MobileViewTabs() {
         transactionBookingId: currentBookings?.id,
         isPaid: true,
         paidAmount: wave?.price,
+      });
+      await sendEmail({
+        customerEmail: user.email,
+        templateName: "UlterPaymentReserved",
+        guestName: user.name,
+        eventName:currentBookings?.event.name,
+        link: `http://localhost:3000/dashboard/ticket/${currentBookings?.id}`,
       });
       const booking = await listGuestBooking({ bookingGuestid: user.id });
       if (booking) {

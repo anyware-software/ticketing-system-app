@@ -46,6 +46,7 @@ import NoDataEvent from "../NoEvent/NoDataEvent";
 import { toggleDrawer as toggleDrawerState } from "../../state/index";
 import type { Event } from "../../API";
 import listBookingByGuest from "../../services/listBookingByGuest";
+import sendEmail from "../../services/sendEmail";
 
 // interface Event {
 //   id: string;
@@ -95,6 +96,7 @@ interface Guest {
   name: string;
   guest_avatar: string;
   phone_number: string;
+  email: string;
 }
 
 export default function Events() {
@@ -424,6 +426,12 @@ export default function Events() {
           BookingStatus.PENDING
         );
         // console.log(bookingRequest);
+        await sendEmail({
+          customerEmail: user.email,
+          templateName: "UlterBookingReserved",
+          guestName: user.name,
+          eventName:currentEvent?.name,
+        });
         setTicketChosen("book");
       } else {
         setValidationWarning(true);
@@ -462,6 +470,12 @@ export default function Events() {
           BookingStatus.PENDING
         );
         // console.log(bookingRequest);
+        await sendEmail({
+          customerEmail: validGuest.email,
+          templateName: "UlterBookingReserved",
+          guestName: validGuest.name,
+          eventName:currentEvent?.name,
+        });
       } else {
         setValidationWarning(true);
         setMessage("One or more of your Friends have a Booking already");
@@ -849,8 +863,14 @@ export default function Events() {
                         gap: 2,
                       }}
                     >
-                      <ShareOutlinedIcon sx={{ color: "white" }} onClick={handleShareLink} />
-                      <TurnedInNotIcon sx={{ color: "white" }} onClick={handleShareLink} />
+                      <ShareOutlinedIcon
+                        sx={{ color: "white" }}
+                        onClick={handleShareLink}
+                      />
+                      <TurnedInNotIcon
+                        sx={{ color: "white" }}
+                        onClick={handleShareLink}
+                      />
                     </Box>
                   </Box>
                   <Typography

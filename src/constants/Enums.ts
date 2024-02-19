@@ -25,3 +25,10 @@ export enum BookingStatus {
   PARTIALLY_APPROVED = "partially approved",
   NOT_REGISTERED = "not registered",
 }
+
+export enum LambdaFunctions {
+  ticketingEventsOperations = 'ticketingEventsOperations',
+  ticketingGuestsData = 'ticketingGuestsData',
+  ticketingPaymentOperations = 'ticketingPaymentOperations',
+  ticketingPaymentWebhook = 'ticketingPaymentWebhook',
+}

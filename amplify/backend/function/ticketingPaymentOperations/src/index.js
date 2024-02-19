@@ -63,7 +63,7 @@ exports.handler = async (event) => {
         throw new Error('More than one wave found');
       }
       const wave = wavesArr[0];
-      if (wave.consumedTickets >= wave.totalTickets) {
+      if (wave.consumedTickets >= wave.totalTickets || wave.consumed === '1') {
         throw new Error('Wave is already consumed');
       }
 
