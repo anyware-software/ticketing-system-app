@@ -37,6 +37,9 @@ import sendSms from "../../services/sendSMS";
 import createTransaction from "../../services/createTransaction";
 import validateWaveConsumption from "../../services/validateWaveConsumption";
 import getGuestByPhone from "../../services/getGuestByPhone";
+import CloseIcon from "@mui/icons-material/Close";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -80,6 +83,9 @@ export default function MobileViewTabs() {
   const [currentBookings, setCurrentBookings] = useState<Booking | null>(null);
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
   const [bookingLoading, setBookingLoading] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [validationWarning, setValidationWarning] = useState<boolean>(false);
+  const [message, setMessage] = useState<any>("");
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -461,26 +467,81 @@ export default function MobileViewTabs() {
         isPaid: true,
         paidAmount: wave?.price,
       });
+      const booking = await listGuestBooking({ bookingGuestid: user.id });
+      if (booking) {
+        const sortedBookings = booking.items.sort((a: any, b: any) => {
+          const startDateA = new Date(a.event.startDate).getTime();
+          const startDateB = new Date(b.event.startDate).getTime();
+          return startDateA - startDateB;
+        });
+        setCurrentBookings(sortedBookings[0]);
+      }
     } catch (err) {
-      console.log();
+      console.log(err);
     }
   }
   const validateAvailableRedirect = async () => {
+    setPaymentLoading(true);
     const checkWaveAvailability = await validateWaveConsumption({
       waveId: currentBookings?.waveId || "",
     });
     if (checkWaveAvailability.success) {
       await payForTicket();
+      setPaymentLoading(false);
+      setValidationWarning(true);
+        setMessage(
+          "Your payment has been done successfully"
+        );
     } else {
       console.log("check failed");
+      setPaymentLoading(false);
+      setValidationWarning(true);
+        setMessage(
+          "Your payment Failed"
+        );
     }
   };
+
   const removeBookings = async () => {
     await updateBooking({ eventBookingID: currentBookings?.id, deleted: "1" });
     setCurrentBookings(null);
   };
   return (
     <>
+    <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={validationWarning}
+        autoHideDuration={5000}
+        onClose={() => {
+          setValidationWarning(false);
+        }}
+      >
+        <Alert
+          onClose={() => {
+            setValidationWarning(false);
+          }}
+          severity="warning"
+          sx={{
+            // position: "fixed",
+            top: "16px",
+            right: "56px",
+          }}
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={() => {
+                setValidationWarning(false);
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        >
+          {message}
+        </Alert>
+      </Snackbar>
       <Box sx={{ width: "100%", display: { xs: "block", sm: "none" } }}>
         <Box>
           <Tabs

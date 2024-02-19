@@ -56,6 +56,7 @@ import Resizer from "react-image-file-resizer";
 import createTransaction from "../../services/createTransaction";
 import validateWaveConsumption from "../../services/validateWaveConsumption";
 import getGuestByPhone from "../../services/getGuestByPhone";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -73,6 +74,7 @@ export default function GuestProfile() {
   const [isHovered, setIsHovered] = useState(false);
   const [currentBookings, setCurrentBookings] = useState<Booking | null>(null);
   const [bookingLoading, setBookingLoading] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
   const [companionLoading, setCompanionLoading] = useState(false);
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
   const dispatch = useDispatch();
@@ -204,9 +206,7 @@ export default function GuestProfile() {
       if (!emailRegex.test(emailText)) {
         setEmailError(true);
         setValidationWarning(true);
-        setMessage(
-          "This Email is Not Correct"
-        );
+        setMessage("This Email is Not Correct");
         return;
       }
       let UpdatedGuest = await updateGuest({
@@ -248,9 +248,7 @@ export default function GuestProfile() {
       if (!addressText) {
         setAddressError(true);
         setValidationWarning(true);
-        setMessage(
-          "Address Cannot be Empty"
-        );
+        setMessage("Address Cannot be Empty");
         return;
       }
       let UpdatedGuest = await updateGuest({
@@ -394,18 +392,14 @@ export default function GuestProfile() {
       if (!mobileRegex.test(mobileText)) {
         setMobileError(true);
         setValidationWarning(true);
-        setMessage(
-          "Please Enter Valid Phone Number"
-        );
+        setMessage("Please Enter Valid Phone Number");
         return;
       }
       const guestPhones = await getGuestByPhone(mobileText);
       if (guestPhones.length > 0) {
         setMobileError(true);
         setValidationWarning(true);
-        setMessage(
-          "This Phone Number is Not Correct"
-        );
+        setMessage("This Phone Number is Not Correct");
         return;
       }
       console.log(guestPhones);
@@ -659,20 +653,41 @@ export default function GuestProfile() {
         isPaid: true,
         paidAmount: wave?.price,
       });
+      const booking = await listGuestBooking({ bookingGuestid: user.id });
+      if (booking) {
+        const sortedBookings = booking.items.sort((a: any, b: any) => {
+          const startDateA = new Date(a.event.startDate).getTime();
+          const startDateB = new Date(b.event.startDate).getTime();
+          return startDateA - startDateB;
+        });
+        setCurrentBookings(sortedBookings[0]);
+      }
     } catch (err) {
-      console.log();
+      console.log(err);
     }
   }
   const validateAvailableRedirect = async () => {
+    setPaymentLoading(true);
     const checkWaveAvailability = await validateWaveConsumption({
       waveId: currentBookings?.waveId || "",
     });
     if (checkWaveAvailability.success) {
       await payForTicket();
+      setPaymentLoading(false);
+      setValidationWarning(true);
+        setMessage(
+          "Your payment has been done successfully"
+        );
     } else {
       console.log("check failed");
+      setPaymentLoading(false);
+      setValidationWarning(true);
+        setMessage(
+          "Your payment Failed"
+        );
     }
   };
+
   const removeBookings = async () => {
     await updateBooking({ eventBookingID: currentBookings?.id, deleted: "1" });
     setCurrentBookings(null);
@@ -1849,7 +1864,8 @@ export default function GuestProfile() {
                   }}
                 >
                   {currentBookings?.status === BookingStatus.APPROVED && (
-                    <Button
+                    <LoadingButton
+                    loading={paymentLoading}
                       variant="contained"
                       sx={{
                         color: "white",
@@ -1872,7 +1888,7 @@ export default function GuestProfile() {
                       {currentBookings?.isPaid === true
                         ? "VIEW TICKET"
                         : "Pay Now"}
-                    </Button>
+                    </LoadingButton>
                   )}
                   {currentBookings?.isPaid === false && (
                     <Button
