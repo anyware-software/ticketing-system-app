@@ -40,6 +40,7 @@ import getGuestByPhone from "../../services/getGuestByPhone";
 import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -1345,8 +1346,9 @@ export default function MobileViewTabs() {
                     }}
                   >
                     {currentBookings?.status === BookingStatus.APPROVED && (
-                      <Button
+                      <LoadingButton
                         variant="contained"
+                        loading={paymentLoading}
                         sx={{
                           color: "white",
                           fontSize: 13,
@@ -1368,7 +1370,7 @@ export default function MobileViewTabs() {
                         {currentBookings?.isPaid === true
                           ? "VIEW TICKET"
                           : "Pay Now"}
-                      </Button>
+                      </LoadingButton>
                     )}
                     {currentBookings?.isPaid === false && (
                       <Button

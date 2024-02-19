@@ -675,16 +675,12 @@ export default function GuestProfile() {
       await payForTicket();
       setPaymentLoading(false);
       setValidationWarning(true);
-        setMessage(
-          "Your payment has been done successfully"
-        );
+      setMessage("Your payment has been done successfully");
     } else {
       console.log("check failed");
       setPaymentLoading(false);
       setValidationWarning(true);
-        setMessage(
-          "Your payment Failed"
-        );
+      setMessage("Your payment Failed");
     }
   };
 
@@ -1865,7 +1861,7 @@ export default function GuestProfile() {
                 >
                   {currentBookings?.status === BookingStatus.APPROVED && (
                     <LoadingButton
-                    loading={paymentLoading}
+                      loading={paymentLoading}
                       variant="contained"
                       sx={{
                         color: "white",
