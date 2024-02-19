@@ -544,6 +544,17 @@ export default function Events() {
   //       <ContentLoader />
   //     </Box>
   //   );
+  const handleShareLink = () => {
+    navigator.clipboard
+      .writeText(window.location.href)
+      .then(() => {
+        setValidationWarning(true);
+        setMessage("Event Link Copied in your clipboard");
+      })
+      .catch((error) => {
+        console.error("Error copying URL to clipboard: ", error);
+      });
+  };
 
   if (currentEventId === "")
     return (
@@ -838,8 +849,8 @@ export default function Events() {
                         gap: 2,
                       }}
                     >
-                      <ShareOutlinedIcon sx={{ color: "white" }} />
-                      <TurnedInNotIcon sx={{ color: "white" }} />
+                      <ShareOutlinedIcon sx={{ color: "white" }} onClick={handleShareLink} />
+                      <TurnedInNotIcon sx={{ color: "white" }} onClick={handleShareLink} />
                     </Box>
                   </Box>
                   <Typography
@@ -967,8 +978,14 @@ export default function Events() {
                     gap: 2,
                   }}
                 >
-                  <ShareOutlinedIcon sx={{ color: "white" }} />
-                  <TurnedInNotIcon sx={{ color: "white" }} />
+                  <ShareOutlinedIcon
+                    sx={{ color: "white" }}
+                    onClick={handleShareLink}
+                  />
+                  <TurnedInNotIcon
+                    sx={{ color: "white" }}
+                    onClick={handleShareLink}
+                  />
                 </Box>
               </Box>
             )}
@@ -1514,7 +1531,7 @@ export default function Events() {
                             borderRadius: "10px",
                             gap: 3,
                             justifyContent: "space-between",
-                            minWidth: "25rem",
+                            minWidth: { xs: "15rem", sm: "25rem" },
                           }}
                         >
                           <Box
@@ -1645,7 +1662,7 @@ export default function Events() {
                               borderRadius: "10px",
                               gap: 3,
                               justifyContent: "space-between",
-                              minWidth: "25rem",
+                              minWidth: { xs: "15rem", sm: "25rem" },
                             }}
                           >
                             <Box
@@ -1776,7 +1793,7 @@ export default function Events() {
                               borderRadius: "10px",
                               gap: 3,
                               justifyContent: "space-between",
-                              minWidth: "25rem",
+                              minWidth: { xs: "15rem", sm: "25rem" },
                             }}
                           >
                             <Box
@@ -1849,8 +1866,8 @@ export default function Events() {
                                   fontSize: "12px",
                                 }}
                               >
-                                Message sent to you <br></br>friend to join ULTER
-                                First
+                                Message sent to you <br></br>friend to join
+                                ULTER First
                               </Typography>
                             </Box>
                             {/* <Box>
@@ -1865,12 +1882,20 @@ export default function Events() {
                         ))}
                     </Box>
                   ) : (
-                    <Skeleton
-                      variant="rectangular"
-                      width={450}
-                      height={300}
-                      sx={{ bgcolor: "gray" }}
-                    />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Skeleton
+                        variant="rectangular"
+                        width={450}
+                        height={300}
+                        sx={{ bgcolor: "gray" }}
+                      />
+                    </Box>
                   )}
                 </Box>
               )}
@@ -2027,9 +2052,9 @@ export default function Events() {
                 }}
                 onClick={() => {
                   const tickets = selectedWaves.some((wave) => wave.count > 0);
-                  if (tickets) {
+                  if (tickets && ticketChosen === "noTickets") {
                     setTicketChosen("tickets");
-                  } else {
+                  } else if (!tickets) {
                     setValidationWarning(true);
                     setMessage(
                       "Please select at least one ticket before booking."
