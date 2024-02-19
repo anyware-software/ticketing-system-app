@@ -195,6 +195,9 @@ exports.handler = async (event) => {
       const templateData = {};
       templateData.customerEmail =
         requestBody.queryStringParameters.customerEmail;
+      templateData.adminName = requestBody.queryStringParameters.adminName;
+      templateData.eventName = requestBody.queryStringParameters.eventName;
+      templateData.link = requestBody.queryStringParameters.link;
       templateData.textContent = requestBody.queryStringParameters.textContent;
       const sourceMail = requestBody.queryStringParameters.sourceMail;
       const templateName = requestBody.queryStringParameters.templateName;

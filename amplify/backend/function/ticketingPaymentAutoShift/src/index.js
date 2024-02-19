@@ -6,9 +6,10 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-const { listBookings } = require("./constants/queries");
-const { generateMessage } = require("./utils/generateMessage");
-const { sendSms } = require("./utils/sendSMS");
+const { listBookings } = require('./constants/queries');
+const { generateMessage } = require('./utils/generateMessage');
+const { sendSms } = require('./utils/sendSMS');
+const { AutomaticShiftTypes } = require('./constants/enums');
 
 const GRAPHQL_ENDPOINT =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
@@ -19,10 +20,10 @@ const GRAPHQL_API_KEY =
  * @type {import('node-fetch').RequestInit}
  */
 const generalFetchOptions = {
-  method: "POST",
+  method: 'POST',
   headers: {
-    "Content-Type": "application/json",
-    "x-api-key": GRAPHQL_API_KEY,
+    'Content-Type': 'application/json',
+    'x-api-key': GRAPHQL_API_KEY,
   },
 };
 
@@ -34,7 +35,7 @@ exports.handler = async (event) => {
   try {
     const record = event.Records[0];
     const waveId = record.dynamodb.NewImage.waveId.S;
-    console.log("Wave ID: ", waveId);
+    console.log('Wave ID: ', waveId);
 
     const query = listBookings;
     const filter = {
@@ -53,32 +54,45 @@ exports.handler = async (event) => {
     });
     const bookingsData = await bookings.json();
     const bookingsArr = bookingsData.data.listBookings.items;
-    console.log("Bookings: ", bookingsArr.length);
+    console.log('Bookings: ', bookingsArr.length);
     const singleBooking = bookingsArr[0];
     // console.log("Single booking: ", singleBooking);
     const currentWave = singleBooking.eventTicket.waves.find(
-      (item) => item.id === waveId
+      (item) => item.id === waveId,
     );
-    console.log("Current wave: ", currentWave);
+    if (
+      !currentWave ||
+      currentWave.AutomaticShift === AutomaticShiftTypes.OFF
+    ) {
+      console.log('No AutomaticShift for this wave.');
+      console.log('Current wave: ', currentWave);
+      return;
+    }
+    console.log('Current wave: ', currentWave);
     const currentWaveIndex = singleBooking.eventTicket.waves.findIndex(
-      (item) => item.id === waveId
+      (item) => item.id === waveId,
     );
     const nextWave = singleBooking.eventTicket.waves.find(
-      (_, index) => index === currentWaveIndex + 1
+      (_, index) => index === currentWaveIndex + 1,
     );
-    console.log("Next wave: ", nextWave);
-    console.log("All waves: ", singleBooking.eventTicket.waves);
+    console.log('Next wave: ', nextWave);
+    console.log('All waves: ', singleBooking.eventTicket.waves);
 
     const recipients = bookingsArr.filter(
-      (booking) => booking.status === "approved" && booking.isPaid
+      (booking) => booking.status === 'approved' && booking.isPaid,
     );
     //for logs
     const phoneNumbers = recipients.map(
-      (booking) => booking.guest.phone_number
+      (booking) => booking.guest.phone_number,
     );
+    console.log('AutoShift: ', currentWave.AutomaticShift);
 
     // send SMS to all recipients if the current wave is set to AutomaticShift and there is a next wave
-    if (currentWave && currentWave.AutomaticShift && nextWave) {
+    if (
+      currentWave &&
+      currentWave.AutomaticShift === AutomaticShiftTypes.ON_TICKETS &&
+      nextWave
+    ) {
       // inform users about the next wave
       if (recipients.length > 0) {
         const smsS = recipients.map((booking) => {
@@ -86,7 +100,8 @@ exports.handler = async (event) => {
             booking.guest.name,
             nextWave.startDate,
             currentWave.name,
-            nextWave.name
+            nextWave.name,
+            true,
           );
           return sendSms(booking.guest.phone_number, message);
         });
@@ -94,24 +109,46 @@ exports.handler = async (event) => {
         console.log(`Sent messages to ${smsS.length} users.`);
         console.log(`Current wave: ${currentWave.name}: id: ${currentWave.id}`);
         console.log(`Next wave: ${nextWave.name}, id: ${nextWave.id}`);
-        console.log("Phone numbers: ", phoneNumbers);
+        console.log('Phone numbers: ', phoneNumbers);
       } else {
-        console.log("No messages sent. No recipients.");
+        console.log('No messages sent. No recipients.');
       }
       // do something if the current wave is set to AutomaticShift but there is no next wave
-    } else if (currentWave && currentWave.AutomaticShift && !nextWave) {
-      // inform users that there are no more waves available || inform users about other events/tickets?
+    } else if (
+      currentWave &&
+      currentWave.AutomaticShift === AutomaticShiftTypes.ON_TIME &&
+      nextWave
+    ) {
+      if (recipients.length > 0) {
+        const smsS = recipients.map((booking) => {
+          const message = generateMessage(
+            booking.guest.name,
+            nextWave.startDate,
+            currentWave.name,
+            nextWave.name,
+            true,
+          );
+          return sendSms(booking.guest.phone_number, message);
+        });
+        await Promise.allSettled(smsS);
+        console.log(`Sent messages to ${smsS.length} users.`);
+        console.log(`Current wave: ${currentWave.name}: id: ${currentWave.id}`);
+        console.log(`Next wave: ${nextWave.name}, id: ${nextWave.id}`);
+        console.log('Phone numbers: ', phoneNumbers);
+      } else {
+        console.log('No messages sent. No recipients.');
+      }
     } else {
-      console.log("No AutomaticShift for this wave.");
-      console.log("Current wave: ", currentWave);
+      console.log('No AutomaticShift for this wave.');
+      console.log('Current wave: ', currentWave);
     }
     console.log(
-      "SMS sent to all users who have booked for the next wave, if any."
+      'SMS sent to all users who have booked for the next wave, if any.',
     );
   } catch (err) {
-    console.error("Error: ", err);
+    console.error('Error: ', err);
     console.log(
-      "Error occurred while trying to send SMS to users who have booked for the next wave."
+      'Error occurred while trying to send SMS to users who have booked for the next wave.',
     );
   }
 };
