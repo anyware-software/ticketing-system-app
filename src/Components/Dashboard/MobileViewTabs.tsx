@@ -467,6 +467,7 @@ export default function MobileViewTabs() {
         transactionBookingId: currentBookings?.id,
         isPaid: true,
         paidAmount: wave?.price,
+        waveId: currentBookings?.waveId,
       });
       const booking = await listGuestBooking({ bookingGuestid: user.id });
       if (booking) {
@@ -490,16 +491,12 @@ export default function MobileViewTabs() {
       await payForTicket();
       setPaymentLoading(false);
       setValidationWarning(true);
-        setMessage(
-          "Your payment has been done successfully"
-        );
+      setMessage("Your payment has been done successfully");
     } else {
       console.log("check failed");
       setPaymentLoading(false);
       setValidationWarning(true);
-        setMessage(
-          "Your payment Failed"
-        );
+      setMessage("Your payment Failed");
     }
   };
 
@@ -509,7 +506,7 @@ export default function MobileViewTabs() {
   };
   return (
     <>
-    <Snackbar
+      <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={validationWarning}
         autoHideDuration={5000}
@@ -1140,7 +1137,7 @@ export default function MobileViewTabs() {
               alignItems: "center",
               flexDirection: "column",
               // gap: 10,
-              minHeight:'100vh',
+              minHeight: "100vh",
             }}
           >
             {bookingLoading ? (
