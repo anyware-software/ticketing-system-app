@@ -36,6 +36,11 @@ import { useNavigate } from "react-router-dom";
 import sendSms from "../../services/sendSMS";
 import createTransaction from "../../services/createTransaction";
 import validateWaveConsumption from "../../services/validateWaveConsumption";
+import getGuestByPhone from "../../services/getGuestByPhone";
+import CloseIcon from "@mui/icons-material/Close";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
@@ -79,6 +84,9 @@ export default function MobileViewTabs() {
   const [currentBookings, setCurrentBookings] = useState<Booking | null>(null);
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
   const [bookingLoading, setBookingLoading] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const [validationWarning, setValidationWarning] = useState<boolean>(false);
+  const [message, setMessage] = useState<any>("");
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -387,6 +395,11 @@ export default function MobileViewTabs() {
         setMobileError(true);
         return;
       }
+      const guestPhones = await getGuestByPhone(mobileText);
+      if (guestPhones.length > 0) {
+        setMobileError(true);
+        return;
+      }
       let UpdatedGuest = await updateGuest({
         userID: user?.id,
         email: user?.email,
@@ -455,26 +468,81 @@ export default function MobileViewTabs() {
         isPaid: true,
         paidAmount: wave?.price,
       });
+      const booking = await listGuestBooking({ bookingGuestid: user.id });
+      if (booking) {
+        const sortedBookings = booking.items.sort((a: any, b: any) => {
+          const startDateA = new Date(a.event.startDate).getTime();
+          const startDateB = new Date(b.event.startDate).getTime();
+          return startDateA - startDateB;
+        });
+        setCurrentBookings(sortedBookings[0]);
+      }
     } catch (err) {
-      console.log();
+      console.log(err);
     }
   }
   const validateAvailableRedirect = async () => {
+    setPaymentLoading(true);
     const checkWaveAvailability = await validateWaveConsumption({
       waveId: currentBookings?.waveId || "",
     });
     if (checkWaveAvailability.success) {
       await payForTicket();
+      setPaymentLoading(false);
+      setValidationWarning(true);
+        setMessage(
+          "Your payment has been done successfully"
+        );
     } else {
       console.log("check failed");
+      setPaymentLoading(false);
+      setValidationWarning(true);
+        setMessage(
+          "Your payment Failed"
+        );
     }
   };
+
   const removeBookings = async () => {
     await updateBooking({ eventBookingID: currentBookings?.id, deleted: "1" });
     setCurrentBookings(null);
   };
   return (
     <>
+    <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={validationWarning}
+        autoHideDuration={5000}
+        onClose={() => {
+          setValidationWarning(false);
+        }}
+      >
+        <Alert
+          onClose={() => {
+            setValidationWarning(false);
+          }}
+          severity="warning"
+          sx={{
+            // position: "fixed",
+            top: "16px",
+            right: "56px",
+          }}
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={() => {
+                setValidationWarning(false);
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        >
+          {message}
+        </Alert>
+      </Snackbar>
       <Box sx={{ width: "100%", display: { xs: "block", sm: "none" } }}>
         <Box>
           <Tabs
@@ -535,7 +603,7 @@ export default function MobileViewTabs() {
               >
                 <Box
                   sx={{
-                    height: "11vh",
+                    height: "10vh",
                   }}
                 >
                   <Typography
@@ -565,13 +633,14 @@ export default function MobileViewTabs() {
                       >
                         <TextField
                           sx={{
-                            backgroundColor: "rgba(255, 255, 255, 0.31)",
                             "input::placeholder": {
                               color: "white",
                             },
                             input: {
+                              backgroundColor: "rgba(255, 255, 255, 0.31)",
                               color: "white",
-                              padding: "10px",
+                              px: "10px",
+                              py: "1px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -634,7 +703,7 @@ export default function MobileViewTabs() {
                 </Box>
                 <Box
                   sx={{
-                    height: "11vh",
+                    height: "10vh",
                   }}
                 >
                   <Typography
@@ -671,7 +740,8 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
-                              padding: "10px",
+                              px: "10px",
+                              py: "1px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -752,7 +822,7 @@ export default function MobileViewTabs() {
               >
                 <Box
                   sx={{
-                    height: "11vh",
+                    height: "10vh",
                   }}
                 >
                   <Typography
@@ -789,7 +859,8 @@ export default function MobileViewTabs() {
                             },
                             ".MuiSelect-select": {
                               color: "white",
-                              padding: "10px",
+                              px: "10px",
+                              py: "1px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -851,7 +922,7 @@ export default function MobileViewTabs() {
                 </Box>
                 <Box
                   sx={{
-                    height: "11vh",
+                    height: "10vh",
                   }}
                 >
                   <Typography
@@ -881,14 +952,16 @@ export default function MobileViewTabs() {
                       >
                         <TextField
                           type="number"
+                          variant="standard"
                           sx={{
-                            backgroundColor: "rgba(255, 255, 255, 0.31)",
                             "input::placeholder": {
                               color: "white",
                             },
                             input: {
+                              backgroundColor: "rgba(255, 255, 255, 0.31)",
                               color: "white",
-                              padding: "10px",
+                              py: "1px",
+                              px: "10px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -961,7 +1034,7 @@ export default function MobileViewTabs() {
               >
                 <Box
                   sx={{
-                    height: "15vh",
+                    height: "10vh",
                   }}
                 >
                   <Typography
@@ -997,7 +1070,8 @@ export default function MobileViewTabs() {
                             },
                             input: {
                               color: "white",
-                              padding: "10px",
+                              px: "10px",
+                              py: "1px",
                             },
                             border: "1px solid",
                             borderColor: "rgba(255, 255, 255, 0.63)",
@@ -1272,8 +1346,9 @@ export default function MobileViewTabs() {
                     }}
                   >
                     {currentBookings?.status === BookingStatus.APPROVED && (
-                      <Button
+                      <LoadingButton
                         variant="contained"
+                        loading={paymentLoading}
                         sx={{
                           color: "white",
                           fontSize: 13,
@@ -1295,7 +1370,7 @@ export default function MobileViewTabs() {
                         {currentBookings?.isPaid === true
                           ? "VIEW TICKET"
                           : "Pay Now"}
-                      </Button>
+                      </LoadingButton>
                     )}
                     {currentBookings?.isPaid === false && (
                       <Button
