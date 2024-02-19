@@ -652,7 +652,7 @@ export default function Login() {
             </Box>
           </Grid>
 
-          <Grid
+          {/* <Grid
             item
             xs={12}
             sm={12}
@@ -690,7 +690,7 @@ export default function Login() {
                 Register
               </Button>
             </Typography>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
     </>
