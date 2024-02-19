@@ -652,6 +652,7 @@ export default function GuestProfile() {
         transactionBookingId: currentBookings?.id,
         isPaid: true,
         paidAmount: wave?.price,
+        waveId: currentBookings?.waveId,
       });
       const booking = await listGuestBooking({ bookingGuestid: user.id });
       if (booking) {
