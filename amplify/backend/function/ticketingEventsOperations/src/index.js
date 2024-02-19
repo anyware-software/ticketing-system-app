@@ -199,6 +199,7 @@ exports.handler = async (event) => {
       templateData.eventName = requestBody.queryStringParameters.eventName;
       templateData.link = requestBody.queryStringParameters.link;
       templateData.textContent = requestBody.queryStringParameters.textContent;
+      templateData.guestName = requestBody.queryStringParameters.guestName;
       const sourceMail = requestBody.queryStringParameters.sourceMail;
       const templateName = requestBody.queryStringParameters.templateName;
       await ses
