@@ -77,10 +77,10 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
       </ListItemButton>
 
       <ListItemButton
-        selected={selectedItem === "My Profile"}
+        selected={selectedItem === "Profile"}
         onClick={() => navigate(`/dashboard/${Pages.PROFILE}`)}
       >
-        <ListItemText primary="My Profile" sx={{
+        <ListItemText primary="Profile" sx={{
               color: isCurrentPage(Pages.PROFILE)
                 ? "rgba(240, 99, 90, 1)"
                 : "white",

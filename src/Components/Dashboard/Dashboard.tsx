@@ -87,7 +87,7 @@ const Drawer = styled(MuiDrawer, {
       }),
       width: 0,
       [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(8),
+        width: theme.spacing(0),
       },
     }),
   },
@@ -172,6 +172,7 @@ export default function Dashboard() {
             sx={{
               marginRight: "36px",
               ...(drawerState && { display: "none" }),
+              display: { xs: "block", sm: "block", md: "none" },
             }}
           >
             <MenuIcon />
@@ -215,9 +216,14 @@ export default function Dashboard() {
             >
               Contact Us
             </Typography> */}
-             <List component="nav">
-          <TopListItems onItemSelected={handleListItemClick} />
-        </List>
+            <List
+              component="nav"
+              sx={{
+                display: { xs: "none", sm: "none", md: "block" },
+              }}
+            >
+              <TopListItems onItemSelected={handleListItemClick} />
+            </List>
             <Button
               variant="text"
               sx={{

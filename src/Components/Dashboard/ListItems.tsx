@@ -80,7 +80,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
       </ListItemButton>
 
       <ListItemButton
-        selected={selectedItem === "My Profile"}
+        selected={selectedItem === "Profile"}
         onClick={() => navigate(`/dashboard/${Pages.PROFILE}`)}
       >
         <ListItemIcon>
@@ -92,7 +92,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
             }}
           />
         </ListItemIcon>
-        <ListItemText primary="My Profile" />
+        <ListItemText primary="Profile" />
       </ListItemButton>
 
       <ListItemButton
