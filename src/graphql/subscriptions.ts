@@ -992,7 +992,6 @@ export const onCreateEvent = /* GraphQL */ `subscription OnCreateEvent($filter: 
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       nextToken
@@ -1091,7 +1090,6 @@ export const onUpdateEvent = /* GraphQL */ `subscription OnUpdateEvent($filter: 
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       nextToken
@@ -1190,7 +1188,6 @@ export const onDeleteEvent = /* GraphQL */ `subscription OnDeleteEvent($filter: 
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       nextToken
@@ -1264,7 +1261,6 @@ export const onCreateEventTicket = /* GraphQL */ `subscription OnCreateEventTick
     createdByID
     createdByName
     updatedAt
-    eventTicketsId
     __typename
   }
 }
@@ -1310,7 +1306,6 @@ export const onUpdateEventTicket = /* GraphQL */ `subscription OnUpdateEventTick
     createdByID
     createdByName
     updatedAt
-    eventTicketsId
     __typename
   }
 }
@@ -1356,7 +1351,6 @@ export const onDeleteEventTicket = /* GraphQL */ `subscription OnDeleteEventTick
     createdByID
     createdByName
     updatedAt
-    eventTicketsId
     __typename
   }
 }
@@ -1556,7 +1550,6 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -1622,7 +1615,6 @@ export const onCreateBooking = /* GraphQL */ `subscription OnCreateBooking($filt
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -1801,7 +1793,6 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -1867,7 +1858,6 @@ export const onUpdateBooking = /* GraphQL */ `subscription OnUpdateBooking($filt
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -2046,7 +2036,6 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -2112,7 +2101,6 @@ export const onDeleteBooking = /* GraphQL */ `subscription OnDeleteBooking($filt
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -2289,7 +2277,6 @@ export const onCreateInvitation = /* GraphQL */ `subscription OnCreateInvitation
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -2355,7 +2342,6 @@ export const onCreateInvitation = /* GraphQL */ `subscription OnCreateInvitation
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -2445,7 +2431,6 @@ export const onUpdateInvitation = /* GraphQL */ `subscription OnUpdateInvitation
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -2511,7 +2496,6 @@ export const onUpdateInvitation = /* GraphQL */ `subscription OnUpdateInvitation
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -2601,7 +2585,6 @@ export const onDeleteInvitation = /* GraphQL */ `subscription OnDeleteInvitation
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -2667,7 +2650,6 @@ export const onDeleteInvitation = /* GraphQL */ `subscription OnDeleteInvitation
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -2815,7 +2797,6 @@ export const onCreateTransaction = /* GraphQL */ `subscription OnCreateTransacti
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -2881,7 +2862,6 @@ export const onCreateTransaction = /* GraphQL */ `subscription OnCreateTransacti
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       wave
@@ -3069,7 +3049,6 @@ export const onUpdateTransaction = /* GraphQL */ `subscription OnUpdateTransacti
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -3135,7 +3114,6 @@ export const onUpdateTransaction = /* GraphQL */ `subscription OnUpdateTransacti
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       wave
@@ -3323,7 +3301,6 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -3389,7 +3366,6 @@ export const onDeleteTransaction = /* GraphQL */ `subscription OnDeleteTransacti
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       wave

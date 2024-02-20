@@ -62,7 +62,6 @@ const getEvent = /* GraphQL */ `
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -164,7 +163,6 @@ const listEvents = /* GraphQL */ `
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -250,7 +248,6 @@ const byEventID = /* GraphQL */ `
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       nextToken
@@ -633,7 +630,6 @@ const getBooking = /* GraphQL */ `
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -699,7 +695,6 @@ const getBooking = /* GraphQL */ `
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       wave
@@ -713,6 +708,7 @@ const getBooking = /* GraphQL */ `
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName
@@ -1114,7 +1110,6 @@ const listBookings = /* GraphQL */ `
               createdByID
               createdByName
               updatedAt
-              eventTicketsId
               __typename
             }
             nextToken
@@ -1180,7 +1175,6 @@ const listBookings = /* GraphQL */ `
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         wave
@@ -1194,6 +1188,7 @@ const listBookings = /* GraphQL */ `
         phone_number
         guestTicket {
           number
+          redeemed
           __typename
         }
         guestName
@@ -1339,14 +1334,13 @@ const listOverViewBookings = /* GraphQL */ `
           }
         }
         isPaid
-        paidAmount      
+        paidAmount
         waveId
       }
       nextToken
     }
   }
 `;
-
 const createTransaction = /* GraphQL */ `
   mutation CreateTransaction(
     $input: CreateTransactionInput!

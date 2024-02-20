@@ -911,7 +911,6 @@ export const getEvent = /* GraphQL */ `query GetEvent($id: ID!) {
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       nextToken
@@ -1012,7 +1011,6 @@ export const listEvents = /* GraphQL */ `query ListEvents(
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -1087,7 +1085,6 @@ export const getEventTicket = /* GraphQL */ `query GetEventTicket($id: ID!) {
     createdByID
     createdByName
     updatedAt
-    eventTicketsId
     __typename
   }
 }
@@ -1136,7 +1133,6 @@ export const listEventTickets = /* GraphQL */ `query ListEventTickets(
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     nextToken
@@ -1196,7 +1192,6 @@ export const byEventID = /* GraphQL */ `query ByEventID(
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     nextToken
@@ -1379,7 +1374,6 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -1445,7 +1439,6 @@ export const getBooking = /* GraphQL */ `query GetBooking($id: ID!) {
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -1618,7 +1611,6 @@ export const listBookings = /* GraphQL */ `query ListBookings(
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -1684,7 +1676,6 @@ export const listBookings = /* GraphQL */ `query ListBookings(
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       wave
@@ -1846,7 +1837,6 @@ export const getInvitation = /* GraphQL */ `query GetInvitation($id: ID!) {
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -1912,7 +1902,6 @@ export const getInvitation = /* GraphQL */ `query GetInvitation($id: ID!) {
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -1994,7 +1983,6 @@ export const listInvitations = /* GraphQL */ `query ListInvitations(
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -2060,7 +2048,6 @@ export const listInvitations = /* GraphQL */ `query ListInvitations(
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       wave
@@ -2209,7 +2196,6 @@ export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -2275,7 +2261,6 @@ export const getTransaction = /* GraphQL */ `query GetTransaction($id: ID!) {
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       wave
@@ -2487,7 +2472,6 @@ export const listTransactions = /* GraphQL */ `query ListTransactions(
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         wave

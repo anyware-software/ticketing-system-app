@@ -384,7 +384,7 @@ type Event
   image: String
   gallery: [String]
   visibleTo: String
-  tickets: [EventTicket] @hasMany
+  tickets: [EventTicket] @hasMany(indexName: "byEventID", fields: ["id"])
   invitationLimit: [InvitationLimit] @hasMany
   deleted: String @default(value: "0")
   createdAt: String!

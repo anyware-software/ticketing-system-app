@@ -1088,7 +1088,6 @@ export const createEvent = /* GraphQL */ `mutation CreateEvent(
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       nextToken
@@ -1190,7 +1189,6 @@ export const updateEvent = /* GraphQL */ `mutation UpdateEvent(
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       nextToken
@@ -1292,7 +1290,6 @@ export const deleteEvent = /* GraphQL */ `mutation DeleteEvent(
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       nextToken
@@ -1367,7 +1364,6 @@ export const createEventTicket = /* GraphQL */ `mutation CreateEventTicket(
     createdByID
     createdByName
     updatedAt
-    eventTicketsId
     __typename
   }
 }
@@ -1414,7 +1410,6 @@ export const updateEventTicket = /* GraphQL */ `mutation UpdateEventTicket(
     createdByID
     createdByName
     updatedAt
-    eventTicketsId
     __typename
   }
 }
@@ -1461,7 +1456,6 @@ export const deleteEventTicket = /* GraphQL */ `mutation DeleteEventTicket(
     createdByID
     createdByName
     updatedAt
-    eventTicketsId
     __typename
   }
 }
@@ -1667,7 +1661,6 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -1733,7 +1726,6 @@ export const createBooking = /* GraphQL */ `mutation CreateBooking(
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -1915,7 +1907,6 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -1981,7 +1972,6 @@ export const updateBooking = /* GraphQL */ `mutation UpdateBooking(
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -2163,7 +2153,6 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -2229,7 +2218,6 @@ export const deleteBooking = /* GraphQL */ `mutation DeleteBooking(
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -2410,7 +2398,6 @@ export const createInvitation = /* GraphQL */ `mutation CreateInvitation(
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -2476,7 +2463,6 @@ export const createInvitation = /* GraphQL */ `mutation CreateInvitation(
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -2567,7 +2553,6 @@ export const updateInvitation = /* GraphQL */ `mutation UpdateInvitation(
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -2633,7 +2618,6 @@ export const updateInvitation = /* GraphQL */ `mutation UpdateInvitation(
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -2724,7 +2708,6 @@ export const deleteInvitation = /* GraphQL */ `mutation DeleteInvitation(
           createdByID
           createdByName
           updatedAt
-          eventTicketsId
           __typename
         }
         nextToken
@@ -2790,7 +2773,6 @@ export const deleteInvitation = /* GraphQL */ `mutation DeleteInvitation(
       createdByID
       createdByName
       updatedAt
-      eventTicketsId
       __typename
     }
     wave
@@ -2939,7 +2921,6 @@ export const createTransaction = /* GraphQL */ `mutation CreateTransaction(
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -3005,7 +2986,6 @@ export const createTransaction = /* GraphQL */ `mutation CreateTransaction(
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       wave
@@ -3194,7 +3174,6 @@ export const updateTransaction = /* GraphQL */ `mutation UpdateTransaction(
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -3260,7 +3239,6 @@ export const updateTransaction = /* GraphQL */ `mutation UpdateTransaction(
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       wave
@@ -3449,7 +3427,6 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -3515,7 +3492,6 @@ export const deleteTransaction = /* GraphQL */ `mutation DeleteTransaction(
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       wave
