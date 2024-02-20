@@ -6,13 +6,6 @@ const AppLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // useEffect(() => {
-  //   const storedUser = localStorage.getItem("user");
-  //   if (storedUser === "true" && location.pathname === "/") {
-  //     navigate("/dashboard");
-  //   }
-  // }, [navigate, location]);
-
   useEffect(() => {
     const checkLocalStorage = async () => {
       const storedUser = localStorage.getItem("user");

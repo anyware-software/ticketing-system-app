@@ -39,6 +39,7 @@ import { useEffect, useState } from "react";
 import ContentLoader from "../ContentLoader/ContentLoder";
 
 import { toggleDrawer as toggleDrawerState } from "../../state";
+import { TopListItems } from "./TopListItems";
 
 const drawerWidth: number = 240;
 
@@ -154,7 +155,7 @@ export default function Dashboard() {
       <AppBar
         open={drawerState}
         sx={{
-          backgroundColor: "#000000",
+          backgroundColor: "rgba(0, 0, 0, 0.2)",
           display: { xs: "none", sm: "flex" },
         }}
       >
@@ -214,6 +215,9 @@ export default function Dashboard() {
             >
               Contact Us
             </Typography> */}
+             <List component="nav">
+          <TopListItems onItemSelected={handleListItemClick} />
+        </List>
             <Button
               variant="text"
               sx={{
@@ -288,7 +292,12 @@ export default function Dashboard() {
           </Box>
           <IconButton
             onClick={toggleDrawer}
-            sx={{ display: { xs: "block", sm: "block" } }}
+            sx={{
+              display: {
+                xs: "block",
+                sm: drawerState === false ? "none" : "block",
+              },
+            }}
           >
             <ChevronLeftIcon sx={{ color: "white" }} />
           </IconButton>

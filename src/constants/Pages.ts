@@ -1,5 +1,6 @@
 export enum Pages {
-  PROFILE = "",
+  Home = "",
+  PROFILE = "profile",
   EVENTS = "events",
   PAYMENT = "payment",
   NOTIFICATIONS = "notifications",

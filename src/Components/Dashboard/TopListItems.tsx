@@ -30,7 +30,7 @@ interface MainListItemsProps {
   onItemSelected: (item: string) => void;
 }
 
-export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
+export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
   const [selectedItem, setSelectedItem] = React.useState<string | null>(null);
   const user = useSelector((state: any) => state.app.user);
   const dispatch = useDispatch();
@@ -62,53 +62,40 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
     return location.pathname.includes(page);
   };
   return (
-    <Box>
+    <Box sx={{
+        display:'flex',
+    }}>
       <ListItemButton
         selected={selectedItem === "Home"}
         onClick={() => navigate(`/dashboard/${Pages.Home}`)}
       >
-        <ListItemIcon>
-          <HomeIcon
-            sx={{
+        <ListItemText primary="Home"  sx={{
               color: isCurrentPage("dashboard", true)
                 ? "rgba(240, 99, 90, 1)"
                 : "white",
-            }}
-          />
-        </ListItemIcon>
-        <ListItemText primary="Home" />
+            }}/>
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "My Profile"}
         onClick={() => navigate(`/dashboard/${Pages.PROFILE}`)}
       >
-        <ListItemIcon>
-          <PersonOutlineOutlinedIcon
-            sx={{
+        <ListItemText primary="My Profile" sx={{
               color: isCurrentPage(Pages.PROFILE)
                 ? "rgba(240, 99, 90, 1)"
                 : "white",
-            }}
-          />
-        </ListItemIcon>
-        <ListItemText primary="My Profile" />
+            }}/>
       </ListItemButton>
 
       <ListItemButton
         selected={selectedItem === "tickets"}
         onClick={() => navigate(`/dashboard/${Pages.EVENTS}`)}
       >
-        <ListItemIcon>
-          <FestivalIcon
-            sx={{
+        <ListItemText primary="Tickets" sx={{
               color: isCurrentPage(Pages.EVENTS)
                 ? "rgba(240, 99, 90, 1)"
                 : "white",
-            }}
-          />
-        </ListItemIcon>
-        <ListItemText primary="Tickets" />
+            }}/>
       </ListItemButton>
 
       {/* <ListItemButton
@@ -206,25 +193,6 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
         </ListItemIcon>
         <ListItemText primary="Help & FAQs" />
       </ListItemButton> */}
-
-      <ListItemButton
-        selected={selectedItem === "Sign Out"}
-        // onClick={() => handleItemClick("Sign Out")}
-        onClick={() => {
-          handleLogOut();
-          handleItemClick("Sign Out");
-        }}
-      >
-        <ListItemIcon>
-          <LoginIcon
-            sx={{
-              color:
-                selectedItem === "Sign Out" ? "rgba(240, 99, 90, 1)" : "white",
-            }}
-          />
-        </ListItemIcon>
-        <ListItemText primary="Sign Out" />
-      </ListItemButton>
     </Box>
   );
 };

@@ -28,6 +28,7 @@ import GuestProfile from "./Components/Dashboard/GuestProfile";
 import Events from "./Components/Dashboard/Events";
 import InvitationPage from "./Components/InvitationPage/InvitationPage";
 import PayedTicket from "./Components/PayedTicket/PayedTicket";
+import HomePage from "./Components/HomePage/HomePage";
 //-------------------------------------------------------------
 
 const provider = {
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
     element: <AppLayout />,
 
     children: [
-      { index: true, element: <Login /> },
+      { index: true, element: <Dashboard /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
       { path: "/inv", element: <InvitationPage /> },
@@ -52,7 +53,8 @@ const router = createBrowserRouter([
         path: "/dashboard",
         element: <Dashboard />,
         children: [
-          { index: true, element: <GuestProfile /> },
+          { index: true, element: <HomePage /> },
+          { path: "profile", element: <GuestProfile /> },
           { path: "events", element: <Events /> },
           { path: "payment/:id", element: <PaymentPage /> },
           { path: "ticket/:id", element: <PayedTicket /> },
