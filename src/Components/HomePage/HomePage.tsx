@@ -12,6 +12,7 @@ import {
   Snackbar,
   Alert,
   Grid,
+  Paper,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogin, toggleDrawer as toggleDrawerState } from "../../state/index";
@@ -30,7 +31,8 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import EventMapOverlay from "../Dashboard/Event Components/EventMapOverlay";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventLocationOverlay from "../Dashboard/Event Components/EventLocationOverlay";
-import getEvent from "../../services/getEvent";
+import Carousel from "react-material-ui-carousel";
+import EventItem from "./HomePageCarousel";
 
 export default function HomePage() {
   const user = useSelector((state: any) => state.app.user);
@@ -90,8 +92,6 @@ export default function HomePage() {
       console.error("Error fetching events:", error);
     }
   };
-
-  //   console.log(currentEventTicket);
 
   return (
     <Box
@@ -178,12 +178,11 @@ export default function HomePage() {
             position: "relative",
             display: "flex",
             justifyContent: "center",
+            mt:10,
           }}
         >
           <Box
             sx={{
-              height: "90vh",
-              width: "85%",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -196,285 +195,28 @@ export default function HomePage() {
             <Typography variant="h6" color={"white"}>
               Turn on the feeling with all music event
             </Typography>
-
-            {currentEvent && (
-              <Box
-                sx={{
-                  width: "80%",
-                  display: "flex",
-                  justifyContent: "center",
-                  backgroundColor: "rgba(0, 0, 0, 0.7)",
-                  border: "2px solid #806d6f",
-                  p: 4,
-                  borderRadius: "10px",
-                  mt: 8,
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: {
-                      xs: "column",
-                      sm: "column",
-                      md: "column",
-                      lg: "row",
-                    },
-                    gap: { xs: 0, sm: 2, md: 5 },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Box
-                      component="div"
-                      sx={{
-                        position: "relative",
-                        width: {
-                          xs: "15rem",
-                          sm: "15rem",
-                          md: "15rem",
-                          lg: "12rem",
-                        },
-                        height: {
-                          xs: "15rem",
-                          sm: "15rem",
-                          md: "15rem",
-                          lg: "12rem",
-                        },
-                        borderRadius: "10px",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <Box
-                        component="img"
-                        src={
-                          currentEvent.image
-                            ? `${dbStorage}${currentEvent.image}`
-                            : "../../../Images/event.png"
-                        }
-                        alt={currentEvent.name || ""}
-                        sx={{
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "10px",
-                        }}
-                      />
-
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          width: "100%",
-                          height: "100%",
-                          backgroundImage: {
-                            xs: "linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, .2) 100%)",
-                          },
-                          borderRadius: "10px",
-                          display: { xs: "flex", sm: "none" },
-                          alignItems: "start",
-                          // justifyContent: "space-around",
-                          pt: 5,
-                          gap: 5,
-                        }}
-                      >
-                        <IconButton
-                          onClick={toggleDrawer}
-                          sx={{ display: { xs: "block", sm: "none" } }}
-                        >
-                          <ChevronLeftIcon
-                            sx={{ color: "white", fontSize: "40px" }}
-                          />
-                        </IconButton>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: "18px",
-                            textAlign: "center",
-                            width: "50%",
-                            fontWeight: 700,
-                          }}
-                        >
-                          {currentEvent.name}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 1,
-                      p: { xs: 3, sm: 0 },
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          color: "white",
-                          fontSize: "20px",
-                          fontWeight: "700",
-                          width: { xs: "60%", sm: "100%" },
-                        }}
-                      >
-                        {currentEvent.name}
-                      </Typography>
-                    </Box>
-                    <Typography
-                      sx={{
-                        color: "rgba(255, 255, 255, 0.67)",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {currentEvent.description}
-                    </Typography>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: {
-                          xs: "column",
-                          sm: "column",
-                          md: "column",
-                          lg: "row",
-                        },
-                        gap: { xs: 2, sm: 2, md: 2, lg: 0 },
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 2,
-                          width: "50%",
-                        }}
-                      >
-                        <CalendarTodayIcon sx={{ color: "white" }} />
-                        <Box>
-                          <Typography
-                            sx={{
-                              color: "rgba(255, 255, 255, 0.67)",
-                              fontSize: "15px",
-                              display: { xs: "none", sm: "block" },
-                            }}
-                          >
-                            {currentEvent.startDate
-                              ? new Date(
-                                  currentEvent.startDate
-                                ).toLocaleDateString("en-US", {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                })
-                              : "N/A"}
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "rgba(255, 255, 255, 0.67)",
-                              fontSize: "15px",
-                              display: { xs: "none", sm: "block" },
-                            }}
-                          >
-                            {currentEvent.startDate
-                              ? new Date(
-                                  currentEvent.startDate
-                                ).toLocaleDateString("en-US", {
-                                  weekday: "long",
-                                  hour: "numeric",
-                                  minute: "numeric",
-                                })
-                              : "N/A"}
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "rgba(255, 255, 255, 0.67)",
-                              fontSize: "15px",
-                              display: { xs: "block", sm: "none" },
-                            }}
-                          >
-                            {currentEvent.startDate
-                              ? new Date(currentEvent.startDate).toLocaleString(
-                                  "en-US",
-                                  {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                    weekday: "long",
-                                    hour: "numeric",
-                                    minute: "numeric",
-                                  }
-                                )
-                              : "N/A"}
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <EventLocationOverlay currentEvent={currentEvent} />
-                    </Box>
-
-                    <Box
-                      sx={{
-                        mt: { xs: 2, sm: 0 },
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          color: "rgba(255, 255, 255, 0.67)",
-                          fontSize: "12px",
-                        }}
-                      >
-                        Starting from
-                      </Typography>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          width: "60%",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: "20px",
-                            fontWeight: "700",
-                          }}
-                        >
-                          EGP {startingFrom}
-                        </Typography>
-                        <Button
-                          variant="contained"
-                          sx={{
-                            color: "black",
-                            fontSize: 13,
-                            fontWeight: "600",
-                            wordWrap: "break-word",
-                            backgroundColor: "red",
-                            px: 4,
-                            borderRadius: "8px",
-                          }}
-                          onClick={() => {
-                            navigate("/dashboard/events/");
-                          }}
-                        >
-                          Book Event
-                        </Button>
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            )}
           </Box>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          lg={12}
+          sx={{
+            position: "relative",
+            my: 5,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Carousel sx={{
+            width: {sm:"100%", md:"80%", lg:"70%"},
+            height: {sm:'55vh',md:"60vh",lg:"52vh"},
+          }}>
+            {events.map((event) => (
+              <EventItem key={event.id} event={event} />
+            ))}
+          </Carousel>
         </Grid>
       </Grid>
     </Box>

@@ -127,7 +127,7 @@ const EventLocationOverlay = ({ currentEvent }: { currentEvent: Event }) => {
             sx={{
               color: "rgba(255, 255, 255, 0.67)",
               fontSize: "15px",
-              display: { xs: "none", sm: "block" },
+              display: { xs: "none", sm: "none" , md:'block' },
             }}
           >
             {currentEvent?.location?.address.split(",")[1]}
@@ -138,7 +138,7 @@ const EventLocationOverlay = ({ currentEvent }: { currentEvent: Event }) => {
           sx={{
             color: "rgba(255, 255, 255, 0.67)",
             fontSize: "15px",
-            display: { xs: "none", sm: "block" },
+            display: { xs: "none", sm: "none" , md:'none' , lg: "block" },
           }}
         >
           {currentEvent?.location?.address}
@@ -147,7 +147,7 @@ const EventLocationOverlay = ({ currentEvent }: { currentEvent: Event }) => {
           sx={{
             color: "rgba(255, 255, 255, 0.67)",
             fontSize: "15px",
-            display: { xs: "block", sm: "none" },
+            display: { xs: "block", sm: "block" , md: "block" , lg: "none" },
             textDecoration: { xs: "underline", sm: "normal" },
           }}
         >
