@@ -917,8 +917,8 @@ export default function Events() {
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection: { xs: "column", sm: "column", md: "row" },
-                      gap: { xs: 2, sm: 2, md: 10 },
+                      flexDirection: { xs: "column", sm: "column", md: "column", lg:"row" },
+                      gap: { xs: 2, sm: 2, md: 2 , lg:0 },
                     }}
                   >
                     <Box
@@ -926,6 +926,7 @@ export default function Events() {
                         display: "flex",
                         alignItems: "center",
                         gap: 2,
+                        width: "50%"
                       }}
                     >
                       <CalendarTodayIcon sx={{ color: "white" }} />

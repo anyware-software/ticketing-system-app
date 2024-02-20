@@ -38,8 +38,6 @@ export default function HomePage() {
   const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
   const [currentEvent, setCurrentEvent] = useState<Event>();
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [startingFrom, setStartingFrom] = useState(0);
   const [currentEventTicket, setCurrentEventTicket] = useState<EventTicket[]>(
     []
@@ -52,14 +50,13 @@ export default function HomePage() {
   useEffect(() => {
     if (currentEventTicket.length > 0) {
       const allPrices = currentEventTicket.flatMap((ticket) =>
-        ticket?.waves?.map((wave:any) => wave.price)
+        ticket?.waves?.map((wave: any) => wave.price)
       );
       const smallestPrice = Math.min(...allPrices);
       // console.log("Smallest Price:", smallestPrice);
       setStartingFrom(smallestPrice);
     }
   }, [currentEventTicket]);
-  
 
   const toggleDrawer = () => {
     dispatch(toggleDrawerState());
@@ -78,19 +75,9 @@ export default function HomePage() {
     await signOut();
   };
 
-  const handleNextImage = () => {
-    setIsTransitioning(true);
-    setSelectedImageIndex((prevIndex) =>
-      prevIndex === (currentEvent?.gallery?.length ?? 0) - 4 ? 0 : prevIndex + 1
-    );
-    setTimeout(() => setIsTransitioning(false), 500);
-  };
-
   const getListEvents = async () => {
     try {
       let events = await listEvents();
-      console.log(events);
-      
       const upCommingEvents = events.items.map((event: any) => ({
         ...event,
         startDate: new Date(event.startDate),
@@ -98,17 +85,13 @@ export default function HomePage() {
       upCommingEvents.sort((a: any, b: any) => a.startDate - b.startDate);
       setEvents(upCommingEvents);
       setCurrentEvent(upCommingEvents[0]);
-      let currentEvent = await getEvent(upCommingEvents[0].id);
-      console.log(currentEvent);
-      
       setCurrentEventTicket(upCommingEvents[0].tickets.items);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
   };
 
-//   console.log(currentEventTicket);
-  
+  //   console.log(currentEventTicket);
 
   return (
     <Box
@@ -199,7 +182,7 @@ export default function HomePage() {
         >
           <Box
             sx={{
-              height: "80vh",
+              height: "90vh",
               width: "85%",
               display: "flex",
               flexDirection: "column",
@@ -217,186 +200,123 @@ export default function HomePage() {
             {currentEvent && (
               <Box
                 sx={{
+                  width: "80%",
                   display: "flex",
-                  flexDirection: {
-                    xs: "column",
-                    sm: "column",
-                    md: "column",
-                    lg: "row",
-                  },
-                  gap: { xs: 0, sm: 2, md: 5 },
+                  justifyContent: "center",
+                  backgroundColor: "rgba(0, 0, 0, 0.7)",
+                  border: "2px solid #806d6f",
+                  p: 4,
+                  borderRadius: "10px",
+                  mt: 8,
                 }}
               >
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent: "center",
+                    flexDirection: {
+                      xs: "column",
+                      sm: "column",
+                      md: "column",
+                      lg: "row",
+                    },
+                    gap: { xs: 0, sm: 2, md: 5 },
                   }}
                 >
                   <Box
-                    component="div"
                     sx={{
-                      position: "relative",
-                      width: {
-                        xs: "23.5rem",
-                        sm: "20rem",
-                        md: "20rem",
-                        lg: "15rem",
-                      },
-                      height: {
-                        xs: "18rem",
-                        sm: "20rem",
-                        md: "20rem",
-                        lg: "15rem",
-                      },
-                      borderRadius: "10px",
-                      overflow: "hidden",
+                      display: "flex",
+                      justifyContent: "center",
                     }}
                   >
                     <Box
-                      component="img"
-                      src={
-                        currentEvent.image
-                          ? `${dbStorage}${currentEvent.image}`
-                          : "../../../Images/event.png"
-                      }
-                      alt={currentEvent.name || ""}
+                      component="div"
                       sx={{
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: "10px",
-                      }}
-                    />
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        backgroundImage: {
-                          xs: "linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, .2) 100%)",
+                        position: "relative",
+                        width: {
+                          xs: "15rem",
+                          sm: "15rem",
+                          md: "15rem",
+                          lg: "12rem",
+                        },
+                        height: {
+                          xs: "15rem",
+                          sm: "15rem",
+                          md: "15rem",
+                          lg: "12rem",
                         },
                         borderRadius: "10px",
-                        display: { xs: "flex", sm: "none" },
-                        alignItems: "start",
-                        // justifyContent: "space-around",
-                        pt: 5,
-                        gap: 5,
+                        overflow: "hidden",
                       }}
                     >
-                      <IconButton
-                        onClick={toggleDrawer}
-                        sx={{ display: { xs: "block", sm: "none" } }}
-                      >
-                        <ChevronLeftIcon
-                          sx={{ color: "white", fontSize: "40px" }}
-                        />
-                      </IconButton>
-                      <Typography
+                      <Box
+                        component="img"
+                        src={
+                          currentEvent.image
+                            ? `${dbStorage}${currentEvent.image}`
+                            : "../../../Images/event.png"
+                        }
+                        alt={currentEvent.name || ""}
                         sx={{
-                          color: "white",
-                          fontSize: "18px",
-                          textAlign: "center",
-                          width: "50%",
-                          fontWeight: 700,
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: "10px",
+                        }}
+                      />
+
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          width: "100%",
+                          height: "100%",
+                          backgroundImage: {
+                            xs: "linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, .2) 100%)",
+                          },
+                          borderRadius: "10px",
+                          display: { xs: "flex", sm: "none" },
+                          alignItems: "start",
+                          // justifyContent: "space-around",
+                          pt: 5,
+                          gap: 5,
                         }}
                       >
-                        {currentEvent.name}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 1,
-                    p: { xs: 3, sm: 0 },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: { xs: "none", sm: "flex" },
-                      gap: 1,
-                      transition: "opacity 0.5s ease, transform 1s ease",
-                      opacity: isTransitioning ? 0.5 : 1,
-                    }}
-                  >
-                    {/* <IconButton onClick={handlePrevImage} sx={{ color: "white" }}>
-                    <ArrowBackIosNewIcon />
-                  </IconButton> */}
-                    {currentEvent?.gallery
-                      ?.slice(selectedImageIndex, selectedImageIndex + 4)
-                      .map((image, index) => (
-                        <img
-                          key={`${image}${index}`}
-                          src={
-                            image
-                              ? `${dbStorage}${image}`
-                              : "../../../Images/event.png"
-                          }
-                          alt={`Event ${index + 1}`}
-                          style={{
-                            width: "8rem",
-                            height: "5rem",
-                            borderRadius: "5px",
+                        <IconButton
+                          onClick={toggleDrawer}
+                          sx={{ display: { xs: "block", sm: "none" } }}
+                        >
+                          <ChevronLeftIcon
+                            sx={{ color: "white", fontSize: "40px" }}
+                          />
+                        </IconButton>
+                        <Typography
+                          sx={{
+                            color: "white",
+                            fontSize: "18px",
+                            textAlign: "center",
+                            width: "50%",
+                            fontWeight: 700,
                           }}
-                        />
-                      ))}
-                    <IconButton
-                      onClick={handleNextImage}
-                      sx={{ color: "white" }}
-                    >
-                      <ArrowForwardIosIcon />
-                    </IconButton>
+                        >
+                          {currentEvent.name}
+                        </Typography>
+                      </Box>
+                    </Box>
                   </Box>
 
                   <Box
                     sx={{
                       display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                      flexDirection: "column",
+                      gap: 1,
+                      p: { xs: 3, sm: 0 },
                     }}
                   >
-                    <Typography
-                      sx={{
-                        color: "white",
-                        fontSize: "20px",
-                        fontWeight: "700",
-                        width: { xs: "60%", sm: "100%" },
-                      }}
-                    >
-                      {currentEvent.name}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    sx={{
-                      color: "rgba(255, 255, 255, 0.67)",
-                      fontSize: "12px",
-                    }}
-                  >
-                    {currentEvent.description}
-                  </Typography>
-                  <Box
-                    sx={{
-                      mt: { xs: 2, sm: 0 },
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        color: "rgba(255, 255, 255, 0.67)",
-                        fontSize: "12px",
-                      }}
-                    >
-                      Starting from
-                    </Typography>
                     <Box
                       sx={{
                         display: "flex",
+                        justifyContent: "space-between",
                         alignItems: "center",
-                        gap: 8,
                       }}
                     >
                       <Typography
@@ -404,88 +324,152 @@ export default function HomePage() {
                           color: "white",
                           fontSize: "20px",
                           fontWeight: "700",
+                          width: { xs: "60%", sm: "100%" },
                         }}
                       >
-                        EGP {startingFrom}
+                        {currentEvent.name}
                       </Typography>
-                      <EventMapOverlay currentEvent={currentEvent} />
                     </Box>
-                  </Box>
+                    <Typography
+                      sx={{
+                        color: "rgba(255, 255, 255, 0.67)",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {currentEvent.description}
+                    </Typography>
 
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: { xs: "column", sm: "column", md: "row" },
-                      gap: { xs: 2, sm: 2, md: 10 },
-                    }}
-                  >
                     <Box
                       sx={{
                         display: "flex",
-                        alignItems: "center",
-                        gap: 2,
+                        flexDirection: {
+                          xs: "column",
+                          sm: "column",
+                          md: "column",
+                          lg: "row",
+                        },
+                        gap: { xs: 2, sm: 2, md: 2, lg: 0 },
                       }}
                     >
-                      <CalendarTodayIcon sx={{ color: "white" }} />
-                      <Box>
-                        <Typography
-                          sx={{
-                            color: "rgba(255, 255, 255, 0.67)",
-                            fontSize: "15px",
-                            display: { xs: "none", sm: "block" },
-                          }}
-                        >
-                          {currentEvent.startDate
-                            ? new Date(
-                                currentEvent.startDate
-                              ).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })
-                            : "N/A"}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "rgba(255, 255, 255, 0.67)",
-                            fontSize: "15px",
-                            display: { xs: "none", sm: "block" },
-                          }}
-                        >
-                          {currentEvent.startDate
-                            ? new Date(
-                                currentEvent.startDate
-                              ).toLocaleDateString("en-US", {
-                                weekday: "long",
-                                hour: "numeric",
-                                minute: "numeric",
-                              })
-                            : "N/A"}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "rgba(255, 255, 255, 0.67)",
-                            fontSize: "15px",
-                            display: { xs: "block", sm: "none" },
-                          }}
-                        >
-                          {currentEvent.startDate
-                            ? new Date(currentEvent.startDate).toLocaleString(
-                                "en-US",
-                                {
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 2,
+                          width: "50%",
+                        }}
+                      >
+                        <CalendarTodayIcon sx={{ color: "white" }} />
+                        <Box>
+                          <Typography
+                            sx={{
+                              color: "rgba(255, 255, 255, 0.67)",
+                              fontSize: "15px",
+                              display: { xs: "none", sm: "block" },
+                            }}
+                          >
+                            {currentEvent.startDate
+                              ? new Date(
+                                  currentEvent.startDate
+                                ).toLocaleDateString("en-US", {
                                   year: "numeric",
                                   month: "long",
                                   day: "numeric",
+                                })
+                              : "N/A"}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "rgba(255, 255, 255, 0.67)",
+                              fontSize: "15px",
+                              display: { xs: "none", sm: "block" },
+                            }}
+                          >
+                            {currentEvent.startDate
+                              ? new Date(
+                                  currentEvent.startDate
+                                ).toLocaleDateString("en-US", {
                                   weekday: "long",
                                   hour: "numeric",
                                   minute: "numeric",
-                                }
-                              )
-                            : "N/A"}
+                                })
+                              : "N/A"}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "rgba(255, 255, 255, 0.67)",
+                              fontSize: "15px",
+                              display: { xs: "block", sm: "none" },
+                            }}
+                          >
+                            {currentEvent.startDate
+                              ? new Date(currentEvent.startDate).toLocaleString(
+                                  "en-US",
+                                  {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                    weekday: "long",
+                                    hour: "numeric",
+                                    minute: "numeric",
+                                  }
+                                )
+                              : "N/A"}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <EventLocationOverlay currentEvent={currentEvent} />
+                    </Box>
+
+                    <Box
+                      sx={{
+                        mt: { xs: 2, sm: 0 },
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          color: "rgba(255, 255, 255, 0.67)",
+                          fontSize: "12px",
+                        }}
+                      >
+                        Starting from
+                      </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          width: "60%",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            color: "white",
+                            fontSize: "20px",
+                            fontWeight: "700",
+                          }}
+                        >
+                          EGP {startingFrom}
                         </Typography>
+                        <Button
+                          variant="contained"
+                          sx={{
+                            color: "black",
+                            fontSize: 13,
+                            fontWeight: "600",
+                            wordWrap: "break-word",
+                            backgroundColor: "red",
+                            px: 4,
+                            borderRadius: "8px",
+                          }}
+                          onClick={() => {
+                            navigate("/dashboard/events/");
+                          }}
+                        >
+                          Book Event
+                        </Button>
                       </Box>
                     </Box>
-                    <EventLocationOverlay currentEvent={currentEvent} />
                   </Box>
                 </Box>
               </Box>
