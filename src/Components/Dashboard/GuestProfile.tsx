@@ -2217,10 +2217,20 @@ export default function GuestProfile() {
           <Box
             sx={{
               py: 1,
+              display: "flex",
+              alignItems: "start",
+              gap:1
             }}
           >
+            <Typography sx={{
+              color:'#96989b',
+              textDecoration:'underline',
+              fontSize:'13px',
+            }}>
+              powered by
+            </Typography>
             <svg
-              width="150"
+              width="80"
               height="20"
               viewBox="0 0 1153 321"
               fill="none"
