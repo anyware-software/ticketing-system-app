@@ -31,8 +31,10 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import EventMapOverlay from "../Dashboard/Event Components/EventMapOverlay";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventLocationOverlay from "../Dashboard/Event Components/EventLocationOverlay";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Carousel from "react-material-ui-carousel";
 import EventItem from "./HomePageCarousel";
+import "../ScrollBar/ScrollBar.css";
 
 export default function HomePage() {
   const user = useSelector((state: any) => state.app.user);
@@ -40,25 +42,16 @@ export default function HomePage() {
   const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
   const [currentEvent, setCurrentEvent] = useState<Event>();
-  const [startingFrom, setStartingFrom] = useState(0);
-  const [currentEventTicket, setCurrentEventTicket] = useState<EventTicket[]>(
-    []
-  );
+  const [remainingTime, setRemainingTime] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   useEffect(() => {
     getListEvents();
   }, []);
-
-  useEffect(() => {
-    if (currentEventTicket.length > 0) {
-      const allPrices = currentEventTicket.flatMap((ticket) =>
-        ticket?.waves?.map((wave: any) => wave.price)
-      );
-      const smallestPrice = Math.min(...allPrices);
-      // console.log("Smallest Price:", smallestPrice);
-      setStartingFrom(smallestPrice);
-    }
-  }, [currentEventTicket]);
 
   const toggleDrawer = () => {
     dispatch(toggleDrawerState());
@@ -87,11 +80,29 @@ export default function HomePage() {
       upCommingEvents.sort((a: any, b: any) => a.startDate - b.startDate);
       setEvents(upCommingEvents);
       setCurrentEvent(upCommingEvents[0]);
-      setCurrentEventTicket(upCommingEvents[0].tickets.items);
     } catch (error) {
       console.error("Error fetching events:", error);
     }
   };
+
+  useEffect(() => {
+    if (!currentEvent?.startDate) return;
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = new Date(currentEvent?.startDate ?? "").getTime() - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setRemainingTime({ days, hours, minutes, seconds });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [currentEvent?.startDate]);
 
   return (
     <Box
@@ -165,7 +176,7 @@ export default function HomePage() {
       <Grid
         container
         sx={{
-          mt: { xs: 0, sm: 12, md: 12, lg: 12 },
+          mt: { xs: 0, sm: 12, md: 12, lg: 8.5 },
           overflow: "auto",
         }}
       >
@@ -178,7 +189,7 @@ export default function HomePage() {
             position: "relative",
             display: "flex",
             justifyContent: "center",
-            mt:10,
+            mt: 10,
           }}
         >
           <Box
@@ -189,14 +200,21 @@ export default function HomePage() {
               alignItems: "center",
             }}
           >
-            <Typography color={"white"} sx={{ fontWeight: 700 ,fontSize:{xs:'20px',sm:'35px'} }}>
+            <Typography
+              color={"white"}
+              sx={{ fontWeight: 700, fontSize: { xs: "20px", sm: "35px" } }}
+            >
               ALL ABOUT MUSIC - ITS ALL HERE
             </Typography>
-            <Typography color={"white"} sx={{fontSize:{xs:'18px',sm:'25px'}}}>
+            <Typography
+              color={"white"}
+              sx={{ fontSize: { xs: "18px", sm: "25px" } }}
+            >
               Turn on the feeling with all music event
             </Typography>
           </Box>
         </Grid>
+
         <Grid
           item
           xs={12}
@@ -209,14 +227,246 @@ export default function HomePage() {
             justifyContent: "center",
           }}
         >
-          <Carousel sx={{
-            width: {xs:"100%",sm:"100%", md:"80%", lg:"70%"},
-            // height: {sm:'60vh',md:"65vh",lg:"60vh"},
-          }}>
+          <Carousel
+            sx={{
+              width: { xs: "100%", sm: "100%", md: "80%", lg: "70%" },
+              // height: {sm:'60vh',md:"65vh",lg:"60vh"},
+            }}
+          >
             {events.map((event) => (
               <EventItem key={event.id} event={event} />
             ))}
           </Carousel>
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          lg={12}
+          sx={{
+            position: "relative",
+          }}
+        >
+          <Box
+            sx={{
+              my: 8,
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Typography
+              sx={{
+                color: "white",
+                fontSize: { xs: "18px", sm: "25px" },
+                fontWeight: "bold",
+                "& span": { color: "red" },
+              }}
+            >
+              {currentEvent?.name} <span>STARTS IN</span>
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: { xs: 5, sm: 8 },
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: { xs: "35px", sm: "50px" },
+                    fontWeight: "bold",
+                  }}
+                >
+                  {remainingTime.days}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: "12px",
+                  }}
+                >
+                  Days
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: { xs: "35px", sm: "50px" },
+                    fontWeight: "bold",
+                  }}
+                >
+                  {remainingTime.hours}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: "12px",
+                  }}
+                >
+                  Hours
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: { xs: "35px", sm: "50px" },
+                    fontWeight: "bold",
+                  }}
+                >
+                  {remainingTime.minutes}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: "12px",
+                  }}
+                >
+                  Minutes
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: { xs: "35px", sm: "50px" },
+                    fontWeight: "bold",
+                  }}
+                >
+                  {remainingTime.seconds}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: "12px",
+                  }}
+                >
+                  Seconds
+                </Typography>
+              </Box>
+            </Box>
+            <Button
+              variant="contained"
+              sx={{
+                color: "black",
+                fontSize: 13,
+                fontWeight: "600",
+                wordWrap: "break-word",
+                backgroundColor: "red",
+                px: 4,
+                borderRadius: "8px",
+                mt: 4,
+              }}
+              onClick={() => {
+                navigate("/dashboard/events/");
+              }}
+            >
+              Buy Tickets
+            </Button>
+          </Box>
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          lg={12}
+          sx={{
+            position: "relative",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                width: "30%",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "red",
+                  fontSize: { xs: "18px", sm: "25px" },
+                  fontWeight: "bold",
+                  marginLeft: "auto",
+                }}
+              >
+                Past Events
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  marginLeft: "auto",
+                }}
+              >
+                <Box
+                  sx={{
+                    backgroundColor: "#303030",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    p: 0,
+                  }}
+                >
+                  <ChevronLeftIcon sx={{ color: "red" }} />
+                </Box>
+                <Box
+                  sx={{
+                    backgroundColor: "#303030",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    p: 0,
+                  }}
+                >
+                  <ChevronRightIcon sx={{ color: "red" }} />
+                </Box>
+              </Box>
+            </Box>
+            
+          </Box>
         </Grid>
       </Grid>
     </Box>
