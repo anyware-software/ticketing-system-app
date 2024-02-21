@@ -1,9 +1,7 @@
 import { EndPoints } from "../constants/Enums";
 import axios from "axios";
 
-async function getGuestByPhone(
-    phoneNumber:any,
-) {
+async function getGuestByPhone(phoneNumber: any) {
   try {
     const operationId = 5;
     const requestBody = {
@@ -17,11 +15,11 @@ async function getGuestByPhone(
       },
       body: JSON.stringify(requestBody),
     };
-    
+
     const response = await axios.post(EndPoints.getData, requestBody);
     return response.data;
   } catch (error) {
-    console.error("Error getting user :", error);
+    console.error("Error getting user: ", error);
     throw error;
   }
 }
