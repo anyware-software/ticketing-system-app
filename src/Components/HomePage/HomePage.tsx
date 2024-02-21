@@ -35,12 +35,14 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Carousel from "react-material-ui-carousel";
 import EventItem from "./HomePageCarousel";
 import "../ScrollBar/ScrollBar.css";
+import listEndedEvents from "../../services/listEndedEvents";
 
 export default function HomePage() {
   const user = useSelector((state: any) => state.app.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
+  const [endedEvents, setEndedEvents] = useState<Event[]>([]);
   const [currentEvent, setCurrentEvent] = useState<Event>();
   const [remainingTime, setRemainingTime] = useState({
     days: 0,
@@ -51,6 +53,7 @@ export default function HomePage() {
 
   useEffect(() => {
     getListEvents();
+    getListEndedEvents();
   }, []);
 
   const toggleDrawer = () => {
@@ -85,6 +88,20 @@ export default function HomePage() {
     }
   };
 
+  const getListEndedEvents = async () => {
+    try {
+      let events = await listEndedEvents();
+      const upCommingEvents = events.items.map((event: any) => ({
+        ...event,
+        startDate: new Date(event.startDate),
+      }));
+      upCommingEvents.sort((a: any, b: any) => a.startDate - b.startDate);
+      setEndedEvents(upCommingEvents);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
+  };
+
   useEffect(() => {
     if (!currentEvent?.startDate) return;
     const interval = setInterval(() => {
@@ -103,6 +120,20 @@ export default function HomePage() {
 
     return () => clearInterval(interval);
   }, [currentEvent?.startDate]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === endedEvents.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? endedEvents.length - 1 : prevIndex - 1
+    );
+  };
 
   return (
     <Box
@@ -450,7 +481,9 @@ export default function HomePage() {
                     p: 0,
                   }}
                 >
+                  <IconButton onClick={handlePrev}>
                   <ChevronLeftIcon sx={{ color: "red" }} />
+                  </IconButton>
                 </Box>
                 <Box
                   sx={{
@@ -461,11 +494,28 @@ export default function HomePage() {
                     p: 0,
                   }}
                 >
+                  <IconButton onClick={handleNext}>
                   <ChevronRightIcon sx={{ color: "red" }} />
+                  </IconButton>
                 </Box>
               </Box>
             </Box>
-            
+          </Box>
+          <Box>
+            {endedEvents
+              .slice(currentIndex, currentIndex + 3)
+              .map((event, index) => (
+                <img
+                  key={index}
+                  src={
+                    event.image
+                      ? `${dbStorage}${event.image}`
+                      : "../../../Images/event.png"
+                  }
+                  alt={`Event ${index}`}
+                  style={{ width: 50, height: 50 }}
+                />
+              ))}
           </Box>
         </Grid>
       </Grid>
