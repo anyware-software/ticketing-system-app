@@ -7,8 +7,8 @@
 Amplify Params - DO NOT EDIT */ /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
-const fetch = require('node-fetch');
-const { operationIdEnum } = require('./constants/enum');
+const fetch = require("node-fetch");
+const { operationIdEnum } = require("./constants/enum");
 
 const {
   createGuest,
@@ -16,7 +16,7 @@ const {
   updateGuest,
   listGuests,
   ByPhoneNumber,
-} = require('./constants/queries');
+} = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
@@ -49,7 +49,7 @@ exports.handler = async (event) => {
         faceBookID: userAttributes.faceBookID,
         birthdate: userAttributes.birthdate,
         gender: userAttributes.gender,
-        deleted: '0',
+        deleted: "0",
         createdAt: userAttributes.createdAt,
         createdByID: userAttributes.createdByID,
         createdByName: userAttributes.createdByName,
@@ -65,7 +65,7 @@ exports.handler = async (event) => {
       query = getGuest;
     } else if (operationId === operationIdEnum.getGuestByPhone) {
       let filter = {
-        deleted: { eq: '0' },
+        deleted: { eq: "0" },
       };
       variables = {
         phone_number: phoneNumber,
@@ -94,7 +94,7 @@ exports.handler = async (event) => {
       query = updateGuest;
     } else if (operationId === operationIdEnum.listGuests) {
       let filter = {
-        deleted: { eq: '0' },
+        deleted: { eq: "0" },
       };
       filter.or = [];
       if (faceBookIDs) {
@@ -110,10 +110,10 @@ exports.handler = async (event) => {
     let responseBody = {};
     if (query) {
       const options = {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': GRAPHQL_API_KEY,
+          "Content-Type": "application/json",
+          "x-api-key": GRAPHQL_API_KEY,
         },
         body: JSON.stringify({ query, variables }),
       };
@@ -121,8 +121,8 @@ exports.handler = async (event) => {
       responseBody = await response.json();
     }
     if (responseBody.errors) {
-      console.log('GraphQL error:', responseBody.errors);
-      throw new Error('Error retrieving Data');
+      console.log("GraphQL error:", responseBody.errors);
+      throw new Error("Error retrieving Data");
     }
     console.log({ responseBody });
 
@@ -137,6 +137,22 @@ exports.handler = async (event) => {
       items = responseBody.data.listGuests.items;
     } else if (operationId === operationIdEnum.getGuestByPhone) {
       items = responseBody.data.ByPhoneNumber.items;
+      if (items.length > 0) {
+        return {
+          statusCode: 200,
+          body: JSON.stringify({
+            success: false,
+            dataLength: items.length,
+          }),
+        };
+      }
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          success: true,
+          dataLength: items.length,
+        }),
+      };
     }
 
     return {
@@ -144,11 +160,11 @@ exports.handler = async (event) => {
       body: JSON.stringify(items),
     };
   } catch (error) {
-    console.error('Error retrieving Data:', error);
+    console.error("Error retrieving Data:", error);
     const errorMessage = error.message;
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'Error retrieving Data', errorMessage }),
+      body: JSON.stringify({ message: "Error retrieving Data", errorMessage }),
     };
   }
 };

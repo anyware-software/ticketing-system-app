@@ -12,6 +12,7 @@ const operationIdEnum = {
     'listInvitations': 11,
     'createTransaction': 12,
     'listBookingsForGuest': 13,
+    'listEndedEvents': 14,
 }
 module.exports = {
     operationIdEnum

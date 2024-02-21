@@ -9,9 +9,9 @@ Amplify Params - DO NOT EDIT */
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
-const fetch = require('node-fetch');
-const { operationIdEnum } = require('./constants/enum');
-const aws = require('aws-sdk');
+const fetch = require("node-fetch");
+const { operationIdEnum } = require("./constants/enum");
+const aws = require("aws-sdk");
 
 const {
   getEvent,
@@ -24,14 +24,14 @@ const {
   listOverViewBookings,
   listInvitations,
   createTransaction,
-} = require('./constants/queries');
+} = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
 const GRAPHQL_API_KEY =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIKEYOUTPUT;
 
-aws.config.update({ region: 'us-east-2' });
+aws.config.update({ region: "us-east-2" });
 const ses = new aws.SES();
 
 exports.handler = async (event) => {
@@ -60,7 +60,7 @@ exports.handler = async (event) => {
       variables = {
         filter: {
           deleted: {
-            eq: '0',
+            eq: "0",
           },
           published: {
             eq: true,
@@ -71,11 +71,26 @@ exports.handler = async (event) => {
         },
       };
       query = listEvents;
+    } else if (operationId === operationIdEnum.listEndedEvents) {
+      variables = {
+        filter: {
+          deleted: {
+            eq: "0",
+          },
+          published: {
+            eq: true,
+          },
+          endDate: {
+            lt: new Date().toISOString(),
+          },
+        },
+      };
+      query = listEvents;
     } else if (operationId === operationIdEnum.listBookingsForCompanion) {
       variables = {
         filter: {
           deleted: {
-            eq: '0',
+            eq: "0",
           },
           bookingMainGuestId: {
             eq: bookingMainGuestId,
@@ -93,7 +108,7 @@ exports.handler = async (event) => {
       variables = {
         filter: {
           deleted: {
-            eq: '0',
+            eq: "0",
           },
           bookingGuestId: {
             eq: guestId,
@@ -108,7 +123,7 @@ exports.handler = async (event) => {
       variables = {
         filter: {
           deleted: {
-            eq: '0',
+            eq: "0",
           },
           secret: {
             eq: invitationSecret,
@@ -136,7 +151,7 @@ exports.handler = async (event) => {
         overallStatus: bookAttributes.overallStatus,
         guestName: bookAttributes.guestName,
         isPaid: false,
-        deleted: '0',
+        deleted: "0",
         createdAt: bookAttributes.createdAt,
         createdByID: bookAttributes.createdByID,
         createdByName: bookAttributes.createdByName,
@@ -212,32 +227,32 @@ exports.handler = async (event) => {
           TemplateData: JSON.stringify(templateData),
         })
         .promise();
-      return { status: 'done' };
+      return { status: "done" };
     } else if (operationId === operationIdEnum.sendSmsMessage) {
       try {
         console.log({ event: JSON.stringify(event) });
         const phone = requestBody.queryStringParameters.phone;
         const message = requestBody.queryStringParameters.message;
-        console.log('phone: ' + phone + 'message: ' + message);
+        console.log("phone: " + phone + "message: " + message);
 
         const token = await GetToken();
 
-        console.log('token: ' + token);
+        console.log("token: " + token);
 
         let headers = {
-          accept: 'application/json',
-          'content-type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
-          'Access-Control-Allow-Headers': '*',
+          accept: "application/json",
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
+          "Access-Control-Allow-Headers": "*",
           Authorization: `Bearer ${token}`,
         };
 
-        let senderName = 'ANYWARE';
+        let senderName = "ANYWARE";
 
         var raw = JSON.stringify({
           senderName,
-          messageType: 'text',
+          messageType: "text",
           acknowledgement: 0,
           flashing: 0,
           messageText: message,
@@ -247,15 +262,15 @@ exports.handler = async (event) => {
         console.log({ requestBody: raw });
 
         var requestOptions = {
-          method: 'POST',
+          method: "POST",
           headers: headers,
           body: raw,
-          redirect: 'follow',
+          redirect: "follow",
         };
 
         let requestResponse = await fetch(
-          'https://apis.cequens.com/sms/v1/messages',
-          requestOptions,
+          "https://apis.cequens.com/sms/v1/messages",
+          requestOptions
         )
           .then((response) => {
             return JSON.stringify(response);
@@ -263,7 +278,7 @@ exports.handler = async (event) => {
           .then((result) => console.log(result))
 
           .catch((error) => {
-            console.log('error', error);
+            console.log("error", error);
             return JSON.stringify(error);
           });
 
@@ -277,10 +292,10 @@ exports.handler = async (event) => {
     let responseBody = {};
     if (query) {
       const options = {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': GRAPHQL_API_KEY,
+          "Content-Type": "application/json",
+          "x-api-key": GRAPHQL_API_KEY,
         },
         body: JSON.stringify({ query, variables }),
       };
@@ -288,8 +303,8 @@ exports.handler = async (event) => {
       responseBody = await response.json();
     }
     if (responseBody.errors) {
-      console.log('GraphQL error:', responseBody.errors);
-      throw new Error('Error retrieving Data');
+      console.log("GraphQL error:", responseBody.errors);
+      throw new Error("Error retrieving Data");
     }
     console.log({ responseBody });
 
@@ -300,10 +315,10 @@ exports.handler = async (event) => {
       };
       const eventQuery = getEvent;
       const eventOptions = {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': GRAPHQL_API_KEY,
+          "Content-Type": "application/json",
+          "x-api-key": GRAPHQL_API_KEY,
         },
         body: JSON.stringify({ query: eventQuery, variables: eventVariables }),
       };
@@ -314,10 +329,10 @@ exports.handler = async (event) => {
       };
       const ticketsQuery = byEventID;
       const ticketstOptions = {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': GRAPHQL_API_KEY,
+          "Content-Type": "application/json",
+          "x-api-key": GRAPHQL_API_KEY,
         },
         body: JSON.stringify({
           query: ticketsQuery,
@@ -340,6 +355,8 @@ exports.handler = async (event) => {
       };
     } else if (operationId === operationIdEnum.listEvents) {
       items = responseBody.data.listEvents;
+    } else if (operationId === operationIdEnum.listEndedEvents) {
+      items = responseBody.data.listEvents;
     } else if (operationId === operationIdEnum.bookEvent) {
       items = responseBody.data.createBooking;
     } else if (operationId === operationIdEnum.getBooking) {
@@ -358,7 +375,7 @@ exports.handler = async (event) => {
       variables = {
         filter: {
           deleted: {
-            eq: '0',
+            eq: "0",
           },
           endDate: {
             gt: new Date().toISOString(),
@@ -367,22 +384,22 @@ exports.handler = async (event) => {
       };
       query = listEvents;
       const eventOptions = {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': GRAPHQL_API_KEY,
+          "Content-Type": "application/json",
+          "x-api-key": GRAPHQL_API_KEY,
         },
         body: JSON.stringify({ query: listEvents, variables: variables }),
       };
       const events = await fetch(GRAPHQL_ENDPOINT, eventOptions);
       const eventsList = await events.json();
       const eventsListIds = eventsList.data.listEvents.items.map(
-        (event) => event.id,
+        (event) => event.id
       );
       const bookingVariables = {
         filter: {
           deleted: {
-            eq: '0',
+            eq: "0",
           },
           bookingGuestId: {
             eq: bookingGuestid,
@@ -394,10 +411,10 @@ exports.handler = async (event) => {
       };
       query = listBookings;
       const bookingOptions = {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': GRAPHQL_API_KEY,
+          "Content-Type": "application/json",
+          "x-api-key": GRAPHQL_API_KEY,
         },
         body: JSON.stringify({
           query: listBookings,
@@ -411,7 +428,7 @@ exports.handler = async (event) => {
     } else if (operationId === operationIdEnum.overview) {
       async function list(nextToken, limit) {
         const filter = {
-          deleted: { eq: '0' },
+          deleted: { eq: "0" },
         };
         filter.and = [];
 
@@ -432,10 +449,10 @@ exports.handler = async (event) => {
         if (filter.and && filter.and.length === 0) delete filter.and;
         console.log(filter.and);
         const options = {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': GRAPHQL_API_KEY,
+            "Content-Type": "application/json",
+            "x-api-key": GRAPHQL_API_KEY,
           },
           body: JSON.stringify({
             query: listOverViewBookings,
@@ -443,7 +460,7 @@ exports.handler = async (event) => {
           }),
         };
         const listing = await fetch(GRAPHQL_ENDPOINT, options).then((res) =>
-          res.json(),
+          res.json()
         );
         return listing.data.listBookings;
       }
@@ -492,7 +509,7 @@ exports.handler = async (event) => {
               result.ticketsTypes[booking.eventTicket.type].quota =
                 booking.eventTicket.waves.reduce(
                   (quota, wave) => (quota += wave.quota),
-                  0,
+                  0
                 );
             }
           }
@@ -532,7 +549,7 @@ exports.handler = async (event) => {
           ticketsStatuses: {},
           events: {},
           waves: {},
-        },
+        }
       );
 
       items = result;
@@ -542,30 +559,30 @@ exports.handler = async (event) => {
       body: JSON.stringify(items),
     };
   } catch (error) {
-    console.error('Error retrieving Data:', error);
+    console.error("Error retrieving Data:", error);
     const errorMessage = error.message;
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'Error retrieving Data', errorMessage }),
+      body: JSON.stringify({ message: "Error retrieving Data", errorMessage }),
     };
   }
 };
 const GetToken = async () => {
   const options = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      accept: 'application/json',
-      'content-type': 'application/json',
+      accept: "application/json",
+      "content-type": "application/json",
     },
     body: JSON.stringify({
-      apiKey: 'c4dc5e38-cd68-49ec-b1f4-868ff0e2da67',
-      userName: 'Anyware',
+      apiKey: "c4dc5e38-cd68-49ec-b1f4-868ff0e2da67",
+      userName: "Anyware",
     }),
   };
   try {
     const response = await fetch(
-      'https://apis.cequens.com/auth/v1/tokens/',
-      options,
+      "https://apis.cequens.com/auth/v1/tokens/",
+      options
     );
     const data = await response.json();
 
