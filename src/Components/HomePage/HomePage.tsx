@@ -189,10 +189,10 @@ export default function HomePage() {
               alignItems: "center",
             }}
           >
-            <Typography variant="h4" color={"white"} sx={{ fontWeight: 700 }}>
+            <Typography color={"white"} sx={{ fontWeight: 700 ,fontSize:{xs:'20px',sm:'35px'} }}>
               ALL ABOUT MUSIC - ITS ALL HERE
             </Typography>
-            <Typography variant="h6" color={"white"}>
+            <Typography color={"white"} sx={{fontSize:{xs:'18px',sm:'25px'}}}>
               Turn on the feeling with all music event
             </Typography>
           </Box>
@@ -210,8 +210,8 @@ export default function HomePage() {
           }}
         >
           <Carousel sx={{
-            width: {sm:"100%", md:"80%", lg:"70%"},
-            height: {sm:'55vh',md:"60vh",lg:"52vh"},
+            width: {xs:"100%",sm:"100%", md:"80%", lg:"70%"},
+            // height: {sm:'60vh',md:"65vh",lg:"60vh"},
           }}>
             {events.map((event) => (
               <EventItem key={event.id} event={event} />

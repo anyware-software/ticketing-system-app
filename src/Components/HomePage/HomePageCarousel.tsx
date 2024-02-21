@@ -31,15 +31,16 @@ const EventItem: React.FC<{ event: Event }> = ({ event }) => {
           justifyContent: "center",
           backgroundColor: "rgba(0, 0, 0, 0.7)",
           border: "2px solid #806d6f",
-          p: 4,
+          p: {xs:1,sm:4},
           borderRadius: "10px",
-          height:{sm:'45vh',md:'50vh',lg:'42vh'}
+          // height:{sm:'50vh',md:'55vh',lg:'50vh'}
         }}
       >
         <Box
           sx={{
             display: "flex",
             gap: { xs: 0, sm: 2, md: 5 },
+            flexDirection: {xs:"column",sm:'row'},
           }}
         >
           <Box
@@ -96,7 +97,7 @@ const EventItem: React.FC<{ event: Event }> = ({ event }) => {
                   borderRadius: "10px",
                   display: { xs: "flex", sm: "none" },
                   alignItems: "start",
-                  // justifyContent: "space-around",
+                  justifyContent: "center",
                   pt: 5,
                   gap: 5,
                 }}
@@ -121,7 +122,7 @@ const EventItem: React.FC<{ event: Event }> = ({ event }) => {
               display: "flex",
               flexDirection: "column",
               gap: 1,
-              p: { xs: 3, sm: 0 },
+              px: { xs: 3, sm: 0 },
             }}
           >
             <Box
@@ -137,6 +138,7 @@ const EventItem: React.FC<{ event: Event }> = ({ event }) => {
                   fontSize: "20px",
                   fontWeight: "700",
                   width: { xs: "60%", sm: "100%" },
+                  display: { xs: "none", sm: "flex" },
                 }}
               >
                 {event.name}
@@ -168,7 +170,7 @@ const EventItem: React.FC<{ event: Event }> = ({ event }) => {
                   display: "flex",
                   alignItems: "center",
                   gap: 2,
-                  width: "70%",
+                  width: {xs:'100%',sm:"70%"},
                 }}
               >
                 <CalendarTodayIcon sx={{ color: "white" }} />
@@ -275,7 +277,7 @@ const EventItem: React.FC<{ event: Event }> = ({ event }) => {
                     backgroundColor: "red",
                     px: 4,
                     borderRadius: "8px",
-                    mr:3,
+                    mr:{xs:0,sm:3},
                   }}
                   onClick={() => {
                     navigate("/dashboard/events/");
