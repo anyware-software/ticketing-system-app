@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Typography from "@mui/material/Typography";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import Divider from "@mui/material/Divider";
@@ -42,7 +42,14 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import LoadingButton from "@mui/lab/LoadingButton";
 import sendEmail from "../../services/sendEmail";
+import OTP from "../OTP";
+import { sendOtpViaSMS } from "../../services/sendOTP";
 
+interface OTPState {
+  open: boolean;
+  phoneNumber: string;
+  checkCode: string | undefined;
+}
 const options = ["Choice 1", "Choice 2", "Choice 3"];
 
 const ITEM_HEIGHT = 48;
@@ -382,8 +389,15 @@ export default function MobileViewTabs() {
   const [originalMobileText, setOriginalMobileText] = useState(
     user?.phone_number
   );
+  const [mobileLoading, setMobileLoading] = useState(false);
   const mobileRegex = /^(010|011|012|015)\d{8}$/;
   const [mobileError, setMobileError] = useState(false);
+  const [otpOpen, setOpenOTP] = useState<OTPState>({
+    open: false,
+    phoneNumber: "",
+    checkCode: undefined,
+  });
+  const mobileRef = useRef<HTMLInputElement>(null);
 
   const handleEditMobileClick = () => {
     setMobileEditing(true);
@@ -394,35 +408,29 @@ export default function MobileViewTabs() {
     try {
       if (!mobileRegex.test(mobileText)) {
         setMobileError(true);
+        setValidationWarning(true);
+        setMessage("Please Enter Valid Phone Number");
         return;
       }
-      const guestPhones = await getGuestByPhone(mobileText);
-      if (guestPhones.length > 0) {
+
+      if (mobileText === originalMobileText && mobileText !== "") {
+        setMobileError(false);
+        setMobileEditing(false);
+        return;
+      }
+      setMobileLoading(true);
+      const checkUnique = await getGuestByPhone(mobileText);
+      if (checkUnique?.success === false && checkUnique?.dataLength !== 0) {
         setMobileError(true);
+        setValidationWarning(true);
+        setMessage("This Phone Number already has an account.");
         return;
       }
-      let UpdatedGuest = await updateGuest({
-        userID: user?.id,
-        email: user?.email,
-        name: user?.name,
-        phone_number: mobileText,
-        birthdate: user?.birthdate,
-        gender: user?.gender,
-      });
-      // let UpdatedGuest = await updateGuest(
-      //   updatedData.userID,
-      //   updatedData.email,
-      //   updatedData.name,
-      //   updatedData.phone_number,
-      //   updatedData.birthdate,
-      //   updatedData.gender
-      // );
-      dispatch(setLogin({ user: UpdatedGuest }));
-      setOriginalMobileText(genderText);
-      setMobileError(false);
-      setMobileEditing(false);
+      console.log(checkUnique);
+      await openOtpModal(mobileText);
     } catch (error) {
-      console.error("Error updating BirthDate:", error);
+      console.error("Error sending OTP:", error);
+      setMessage("Something went wrong, please try again later");
     }
   };
   const handleCancelMobileClick = () => {
@@ -430,11 +438,24 @@ export default function MobileViewTabs() {
     setMobileEditing(false);
     setMobileError(false);
   };
+  const openOtpModal = async (phoneNumber: string) => {
+    const { checkCode } = await sendOtpViaSMS(phoneNumber);
+    setOpenOTP({
+      open: true,
+      phoneNumber: phoneNumber,
+      checkCode,
+    });
+  };
   useEffect(() => {
     if (!user) return;
     setMobileText(user.phone_number);
     setOriginalMobileText(user.phone_number);
   }, [user]);
+  useEffect(() => {
+    if (mobileEditing) {
+      mobileRef.current?.focus();
+    }
+  }, [mobileEditing]);
   //Mobile Edit
   //----------------------------------------------------------------
 
@@ -474,7 +495,7 @@ export default function MobileViewTabs() {
         customerEmail: user.email,
         templateName: "UlterPaymentReserved",
         guestName: user.name,
-        eventName:currentBookings?.event.name,
+        eventName: currentBookings?.event.name,
         link: `http://localhost:3000/dashboard/ticket/${currentBookings?.id}`,
       });
       const booking = await listGuestBooking({ bookingGuestid: user.id });
@@ -956,7 +977,7 @@ export default function MobileViewTabs() {
                         }}
                       >
                         <TextField
-                          type="number"
+                          type="text"
                           variant="standard"
                           sx={{
                             "input::placeholder": {
@@ -973,9 +994,26 @@ export default function MobileViewTabs() {
                             width: "13rem",
                           }}
                           value={mobileText}
+                          inputRef={mobileRef}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleSaveMobileClick();
+                            }
+                            if (e.key === "Escape") {
+                              handleCancelMobileClick();
+                            }
+                            if (e.key === ".") {
+                              return e.preventDefault();
+                            }
+                          }}
                           onChange={(e) => {
-                            setMobileText(e.target.value);
-                            setMobileError(false);
+                            if (
+                              !isNaN(Number(e.target.value)) &&
+                              e.target.value.length <= 11
+                            ) {
+                              setMobileText(e.target.value);
+                              setMobileError(false);
+                            }
                           }}
                           error={mobileError}
                           helperText={
@@ -986,7 +1024,11 @@ export default function MobileViewTabs() {
                           onClick={handleSaveMobileClick}
                           sx={{ color: "white" }}
                         >
-                          <CheckOutlinedIcon />
+                          {mobileLoading ? (
+                            <CircularProgress color="error" />
+                          ) : (
+                            <CheckOutlinedIcon />
+                          )}
                         </IconButton>
                         <IconButton
                           onClick={handleCancelMobileClick}
@@ -1683,6 +1725,37 @@ export default function MobileViewTabs() {
           </Grid>
         </CustomTabPanel>
       </Box>
+      <OTP
+        open={otpOpen.open}
+        phoneNumber={mobileText}
+        handleSuccessfulOTP={async () => {
+          try {
+            let UpdatedGuest = await updateGuest({
+              userID: user?.id,
+              email: user?.email,
+              name: user?.name,
+              phone_number: mobileText,
+              birthdate: user?.birthdate,
+              gender: user?.gender,
+            });
+            dispatch(setLogin({ user: UpdatedGuest }));
+            setOriginalMobileText(mobileText);
+            setMobileError(false);
+            setMobileEditing(false);
+          } catch (err) {
+            console.log(err);
+            setMessage("Error updating phone number");
+          } finally {
+            setOpenOTP({ open: false, phoneNumber: "", checkCode: undefined });
+            setMobileLoading(false);
+          }
+        }}
+        checkCode={otpOpen.checkCode}
+        onClose={() => {
+          setOpenOTP({ open: false, phoneNumber: "", checkCode: undefined });
+          setMobileLoading(false);
+        }}
+      />
     </>
   );
 }
