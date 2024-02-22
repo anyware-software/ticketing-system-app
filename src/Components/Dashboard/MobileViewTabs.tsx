@@ -1023,6 +1023,7 @@ export default function MobileViewTabs() {
                         <IconButton
                           onClick={handleSaveMobileClick}
                           sx={{ color: "white" }}
+                          disabled={mobileLoading}
                         >
                           {mobileLoading ? (
                             <CircularProgress color="error" />
@@ -1033,6 +1034,7 @@ export default function MobileViewTabs() {
                         <IconButton
                           onClick={handleCancelMobileClick}
                           sx={{ color: "white" }}
+                          disabled={mobileLoading}
                         >
                           <CancelIcon />
                         </IconButton>
