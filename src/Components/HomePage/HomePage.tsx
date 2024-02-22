@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 import listEvents from "../../services/listEvents";
 import type { Event } from "../../API";
 import type { EventTicket } from "../../API";
-import { dbStorage } from "../../constants/Enums";
+import { BookingStatus, dbStorage } from "../../constants/Enums";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import EventMapOverlay from "../Dashboard/Event Components/EventMapOverlay";
@@ -40,6 +40,9 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import ContentLoader from "../ContentLoader/ContentLoder";
 import { CircularProgress } from "@mui/material";
+import getBooking from "../../services/getBooking";
+import updateGuest from "../../services/updateGuest";
+import updateBooking from "../../services/updateBooking";
 
 export default function HomePage() {
   const user = useSelector((state: any) => state.app.user);
@@ -87,6 +90,41 @@ export default function HomePage() {
       setLoading(false);
     }
   }, [currentEvent?.startDate]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookingID = urlParams.get("id");
+    // console.log(bookingID);
+    if (bookingID) {
+      const eventBooking = bookingID;
+      localStorage.setItem("eventBooking", eventBooking);
+      // handleFacebookLogin();
+    }
+  }, []);
+
+  useEffect(() => {
+    const handdleUpdateBooking = async () => {
+      if (user) {
+        const storedBookingId = localStorage.getItem("eventBooking");
+        if (storedBookingId) {
+          const booking = await getBooking(storedBookingId);
+          await updateGuest({
+            userID: user?.id,
+            phone_number: booking.phone_number,
+          });
+          await updateBooking({
+            eventBookingID: storedBookingId,
+            bookingGuestId: user?.id,
+            status: BookingStatus.PENDING,
+          });
+          localStorage.removeItem("eventBooking");
+        } else {
+          localStorage.removeItem("eventBooking");
+        }
+      }
+    };
+    handdleUpdateBooking();
+  }, []);
 
   const toggleDrawer = () => {
     dispatch(toggleDrawerState());
