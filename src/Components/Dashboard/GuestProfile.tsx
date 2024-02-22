@@ -60,6 +60,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import sendEmail from "../../services/sendEmail";
 import OTP from "../OTP";
 import { sendOtpViaSMS } from "../../services/sendOTP";
+import listBookingByGuest from "../../services/listBookingByGuest";
+import listAllBookingByGuest from "../../services/listAllBookingByGuest";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -84,6 +86,7 @@ export default function GuestProfile() {
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [companionLoading, setCompanionLoading] = useState(false);
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
+  const [attendedBookings, setAttendedBookings] = useState<Booking[]>([]);
   const dispatch = useDispatch();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -121,6 +124,18 @@ export default function GuestProfile() {
     };
     handdleUpdateBooking();
   }, []);
+
+  useEffect(() => {
+    const fetchAttendedBookings = async () => {
+      if (!user) return;
+      const booking = await listAllBookingByGuest({
+        guestId:user.id,
+      });
+      const attendedBookings = booking.items.filter((item: Booking) => item.guestTicket?.redeemed === true);
+      setAttendedBookings(attendedBookings);
+    };
+    fetchAttendedBookings();
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;

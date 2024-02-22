@@ -1,9 +1,9 @@
 import { EventEndPoints } from "../constants/Enums";
 import axios from "axios";
 
-async function listBookingByGuest({ bookingEventId , guestId }: any) {
+async function listAllBookingByGuest({ bookingEventId , guestId }: any) {
   try {
-    const operationId = 13;
+    const operationId = 15;
     const requestBody = {
       operationId,
       bookingEventId,
@@ -18,8 +18,8 @@ async function listBookingByGuest({ bookingEventId , guestId }: any) {
     };
 
     const response = await axios.post(EventEndPoints, requestBody);
-    console.log(requestBody);
-    console.log(response);
+    // console.log(requestBody);
+    // console.log(response);
 
     return response.data;
   } catch (error) {
@@ -28,4 +28,4 @@ async function listBookingByGuest({ bookingEventId , guestId }: any) {
   }
 }
 
-export default listBookingByGuest;
+export default listAllBookingByGuest;
