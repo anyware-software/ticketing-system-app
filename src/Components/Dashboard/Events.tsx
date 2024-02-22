@@ -47,6 +47,7 @@ import { toggleDrawer as toggleDrawerState } from "../../state/index";
 import type { Event } from "../../API";
 import listBookingByGuest from "../../services/listBookingByGuest";
 import sendEmail from "../../services/sendEmail";
+import { useNavigate } from "react-router-dom";
 
 // interface Event {
 //   id: string;
@@ -118,6 +119,7 @@ export default function Events() {
   const [currentEventTicket, setCurrentEventTicket] = useState<EventTickets[]>(
     []
   );
+  const navigate = useNavigate();
   const toggleDrawer = () => {
     dispatch(toggleDrawerState());
   };
@@ -214,6 +216,10 @@ export default function Events() {
     wavePrice: number,
     waveId: string
   ) => {
+    if(!user){
+      sessionStorage.setItem("nav", "book");
+      navigate('/dashboard/')
+    }
     const countKey = `${ticketId}-${ticketType}-${waveName}-${wavePrice}-${waveId}`;
     setWaveCounts((prevCounts) => ({
       ...prevCounts,
@@ -228,6 +234,10 @@ export default function Events() {
     wavePrice: number,
     waveId: string
   ) => {
+    if(!user){
+      sessionStorage.setItem("nav", "book");
+      navigate('/dashboard/')
+    }
     const countKey = `${ticketId}-${ticketType}-${waveName}-${wavePrice}-${waveId}`;
     setWaveCounts((prevCounts) => ({
       ...prevCounts,

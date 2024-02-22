@@ -52,6 +52,7 @@ export default function Login() {
       setLoading(true);
       await signInWithRedirect({ provider: "Facebook" });
       localStorage.setItem("user", "true");
+      localStorage.setItem("userlogged", "true");
       dispatch(setLogin({ user: "" }));
       setLoading(false);
       // navigate('/dashboard')
@@ -86,6 +87,14 @@ export default function Login() {
       const eventBooking = bookingID;
       localStorage.setItem("eventBooking", eventBooking);
       // handleFacebookLogin();
+    }
+  }, []);
+
+  useEffect(() => {
+    const nav = sessionStorage.getItem("nav");
+    if(nav){
+      setValidationWarning(true);
+      setMessage("You need to login First");
     }
   }, []);
 

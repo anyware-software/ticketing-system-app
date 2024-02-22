@@ -97,6 +97,7 @@ export default function GuestProfile() {
   const toggleDrawer = () => {
     dispatch(toggleDrawerState());
   };
+
   useEffect(() => {
     const handdleUpdateBooking = async () => {
       if (user) {
@@ -1715,11 +1716,7 @@ export default function GuestProfile() {
             }}
           >
             {bookingLoading ? (
-              <CircularProgress
-                size={64}
-                thickness={1}
-                sx={{ color: "red" }}
-              />
+              <CircularProgress size={64} thickness={1} sx={{ color: "red" }} />
             ) : currentBookings ? (
               <Box
                 sx={{
@@ -1938,7 +1935,9 @@ export default function GuestProfile() {
                             // navigate(`payment/${currentBookings?.id}`);
                             validateAvailableRedirect();
                           } else {
-                            navigate(`/dashboard/ticket/${currentBookings?.id}`);
+                            navigate(
+                              `/dashboard/ticket/${currentBookings?.id}`
+                            );
                           }
                         }}
                       >

@@ -39,9 +39,9 @@ import { useEffect, useState } from "react";
 import ContentLoader from "../ContentLoader/ContentLoder";
 import { toggleDrawer as toggleDrawerState } from "../../state";
 import { TopListItems } from "./TopListItems";
-import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
-import LoadingButton from '@mui/lab/LoadingButton';
-import CircularProgress from '@mui/material/CircularProgress';
+import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
+import LoadingButton from "@mui/lab/LoadingButton";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const drawerWidth: number = 240;
 interface AppBarProps extends MuiAppBarProps {
@@ -152,13 +152,13 @@ export default function Dashboard() {
       if (storedUser === "false") {
         // navigate("/dashboard");
         // setLoading(false);
-        setLoginState(false)
+        setLoginState(false);
       }
       if (storedUser === "true") {
         // await signOut();
         // navigate("/login");
         // setLoading(true);
-        setLoginState(true)
+        setLoginState(true);
       }
     };
     checkLocalStorage();
@@ -239,7 +239,7 @@ export default function Dashboard() {
                 display: { xs: "none", sm: "none", md: "block" },
               }}
             >
-              <TopListItems onItemSelected={handleListItemClick} />
+              <TopListItems onItemSelected={handleListItemClick} user={user} />
             </List>
             {!loginState ? (
               <Button
@@ -256,15 +256,19 @@ export default function Dashboard() {
                 }}
               >
                 <p>LOGIN WITH</p>
-                <FacebookOutlinedIcon sx={{ color: "#1977f3", fontSize: "25px" }} />
+                <FacebookOutlinedIcon
+                  sx={{ color: "#1977f3", fontSize: "25px" }}
+                />
               </Button>
             ) : (
               <LoadingButton
                 variant="text"
                 loading={userLoading}
                 loadingPosition="center"
-                endIcon={<LoginIcon sx={{ color: "white"}} />}
-                loadingIndicator={<CircularProgress size={24} sx={{ color: '#FC0000' }} />} 
+                endIcon={<LoginIcon sx={{ color: "white" }} />}
+                loadingIndicator={
+                  <CircularProgress size={24} sx={{ color: "#FC0000" }} />
+                }
                 sx={{
                   color: "#FC0000",
                   fontSize: "16px",
@@ -349,7 +353,7 @@ export default function Dashboard() {
         {/* <Divider /> */}
         {/* <List component="nav">{mainListItems}</List> */}
         <List component="nav">
-          <MainListItems onItemSelected={handleListItemClick} />
+          <MainListItems onItemSelected={handleListItemClick} user={user} />
         </List>
       </Drawer>
       {/* Main Component */}

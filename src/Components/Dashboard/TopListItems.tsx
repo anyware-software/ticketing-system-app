@@ -28,6 +28,7 @@ import Box from "@mui/material/Box";
 
 interface MainListItemsProps {
   onItemSelected: (item: string) => void;
+  user: any;
 }
 
 export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
@@ -62,40 +63,47 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
     return location.pathname.includes(page);
   };
   return (
-    <Box sx={{
-        display:'flex',
-    }}>
+    <Box
+      sx={{
+        display: "flex",
+      }}
+    >
       <ListItemButton
         selected={selectedItem === "Home"}
         onClick={() => navigate(`/dashboard/${Pages.Home}`)}
       >
-        <ListItemText primary="Home"  sx={{
-              color: isCurrentPage("dashboard", true)
-                ? "red"
-                : "white",
-            }}/>
+        <ListItemText
+          primary="Home"
+          sx={{
+            color: isCurrentPage("dashboard", true) ? "red" : "white",
+          }}
+        />
       </ListItemButton>
 
-      <ListItemButton
-        selected={selectedItem === "Profile"}
-        onClick={() => navigate(`/dashboard/${Pages.PROFILE}`)}
-      >
-        <ListItemText primary="Profile" sx={{
-              color: isCurrentPage(Pages.PROFILE)
-                ? "red"
-                : "white",
-            }}/>
-      </ListItemButton>
+      {user && (
+        <ListItemButton
+          selected={selectedItem === "Profile"}
+          onClick={() => navigate(`/dashboard/${Pages.PROFILE}`)}
+        >
+          <ListItemText
+            primary="Profile"
+            sx={{
+              color: isCurrentPage(Pages.PROFILE) ? "red" : "white",
+            }}
+          />
+        </ListItemButton>
+      )}
 
       <ListItemButton
         selected={selectedItem === "tickets"}
         onClick={() => navigate(`/dashboard/${Pages.EVENTS}`)}
       >
-        <ListItemText primary="Tickets" sx={{
-              color: isCurrentPage(Pages.EVENTS)
-                ? "red"
-                : "white",
-            }}/>
+        <ListItemText
+          primary="Tickets"
+          sx={{
+            color: isCurrentPage(Pages.EVENTS) ? "red" : "white",
+          }}
+        />
       </ListItemButton>
 
       {/* <ListItemButton

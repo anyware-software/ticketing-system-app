@@ -20,7 +20,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import MenuIcon from "@mui/icons-material/Menu";
 import LoginIcon from "@mui/icons-material/Login";
-import { signOut } from "aws-amplify/auth";
+import { signInWithRedirect, signOut } from "aws-amplify/auth";
 import { useNavigate } from "react-router-dom";
 import listEvents from "../../services/listEvents";
 import type { Event } from "../../API";
@@ -43,6 +43,9 @@ import { CircularProgress } from "@mui/material";
 import getBooking from "../../services/getBooking";
 import updateGuest from "../../services/updateGuest";
 import updateBooking from "../../services/updateBooking";
+import CloseIcon from "@mui/icons-material/Close";
+import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function HomePage() {
   const user = useSelector((state: any) => state.app.user);
@@ -54,6 +57,10 @@ export default function HomePage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [endedEvents, setEndedEvents] = useState<Event[]>([]);
   const [currentEvent, setCurrentEvent] = useState<Event>();
+  const [validationWarning, setValidationWarning] = useState<boolean>(false);
+  const [loginState, setLoginState] = useState(false);
+  const [userLoading, setUserLoading] = useState(false);
+  const [message, setMessage] = useState<any>("");
   const [remainingTime, setRemainingTime] = useState({
     days: 0,
     hours: 0,
@@ -89,7 +96,7 @@ export default function HomePage() {
     } else {
       setLoading(false);
     }
-  }, [currentEvent?.startDate]);
+  }, [currentEvent]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -126,6 +133,41 @@ export default function HomePage() {
     handdleUpdateBooking();
   }, []);
 
+  useEffect(() => {
+    const nav = sessionStorage.getItem("nav");
+    if (nav) {
+      setValidationWarning(true);
+      setMessage("You need to login First");
+      sessionStorage.removeItem("nav");
+    }
+  }, []);
+
+  useEffect(() => {
+    const checkLocalStorage = async () => {
+      const storedUser = localStorage.getItem("userlogged");
+      if (storedUser === "false") {
+        // navigate("/dashboard");
+        // setLoading(false);
+        setLoginState(false);
+      }
+      if (storedUser === "true") {
+        // await signOut();
+        // navigate("/login");
+        // setLoading(true);
+        setLoginState(true);
+      }
+    };
+    checkLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setUserLoading(true);
+    } else {
+      setUserLoading(false);
+    }
+  }, [user]);
+
   const toggleDrawer = () => {
     dispatch(toggleDrawerState());
   };
@@ -140,7 +182,20 @@ export default function HomePage() {
       navigate("/login");
     }
     localStorage.removeItem("user");
+    localStorage.setItem("userlogged", "false");
     await signOut();
+  };
+
+  const handleFacebookLogin = async () => {
+    try {
+      await signInWithRedirect({ provider: "Facebook" });
+      localStorage.setItem("user", "true");
+      localStorage.setItem("userlogged", "true");
+      dispatch(setLogin({ user: "" }));
+    } catch (error) {
+      console.error("Error logging in with Facbook:", error);
+      setLoading(false);
+    }
   };
 
   const getListEvents = async () => {
@@ -230,6 +285,11 @@ export default function HomePage() {
             justifyContent: "space-between",
           }}
         >
+          <Box sx={{
+            display: "flex",
+            alignItems: "center",
+            gap:1
+          }}>
           <Box>
             <IconButton
               onClick={toggleDrawer}
@@ -245,16 +305,89 @@ export default function HomePage() {
               alt=""
             />
           </Box>
-          <IconButton
-            sx={{}}
-            onClick={() => {
-              handleLogOut();
-            }}
-          >
-            <LoginIcon sx={{ color: "white", fontSize: "25px" }} />
-          </IconButton>
+          </Box>
+
+          {!loginState ? (
+              <Button
+                variant="text"
+                sx={{
+                  color: "white",
+                  fontSize: "16px",
+                  wordWrap: "break-word",
+                  gap: 1,
+                  py:0,
+                  mr:1,
+                }}
+                onClick={() => {
+                  handleFacebookLogin();
+                }}
+              >
+                <p style={{margin:0}}>LOGIN</p>
+                <FacebookOutlinedIcon
+                  sx={{ color: "#1977f3", fontSize: "25px" }}
+                />
+              </Button>
+            ) : (
+              <LoadingButton
+                variant="text"
+                loading={userLoading}
+                loadingPosition="center"
+                endIcon={<LoginIcon sx={{ color: "white" }} />}
+                loadingIndicator={
+                  <CircularProgress size={15} sx={{ color: "#FC0000" }} />
+                }
+                sx={{
+                  color: "#FC0000",
+                  fontSize: "16px",
+                  wordWrap: "break-word",
+                  py:0,
+                  mr:1,
+                }}
+                onClick={() => {
+                  handleLogOut();
+                }}
+              >
+                <p> Sign Out</p>
+              </LoadingButton>
+            )}
         </Toolbar>
       </AppBar>
+
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={validationWarning}
+        autoHideDuration={3000}
+        onClose={() => {
+          setValidationWarning(false);
+        }}
+      >
+        <Alert
+          onClose={() => {
+            setValidationWarning(false);
+          }}
+          severity="warning"
+          sx={{
+            position: "fixed",
+            top: "5rem",
+            right: "16px",
+          }}
+          action={
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={() => {
+                setValidationWarning(false);
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        >
+          {message}
+        </Alert>
+      </Snackbar>
+
       {loading ? (
         <Box
           sx={{
