@@ -1063,7 +1063,7 @@ export default function Events() {
                   }}
                 >
                   <ArrowBackIosIcon
-                    sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
+                    sx={{ color: "red", fontSize: "30px" }}
                   />
                 </IconButton>
               )}
@@ -1112,7 +1112,7 @@ export default function Events() {
                   }}
                 >
                   <ArrowBackIosIcon
-                    sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
+                    sx={{ color: "red", fontSize: "30px" }}
                   />
                 </IconButton>
               )}
@@ -1864,7 +1864,7 @@ export default function Events() {
                             >
                               {/* <Button
                                 variant="contained"
-                                sx={{ backgroundColor: "rgba(240, 99, 90, 1)" }}
+                                sx={{ backgroundColor: "red" }}
                                 onClick={() => {
                                   notValidGuestsBooking.forEach((booking) => {
                                     if (
@@ -1959,7 +1959,7 @@ export default function Events() {
                       <Typography
                         variant="h6"
                         sx={{
-                          color: "#F0635A",
+                          color: "red",
                         }}
                       >
                         Order ID: {orderId}
@@ -1993,7 +1993,7 @@ export default function Events() {
                     >
                       <PendingActionsIcon
                         sx={{
-                          color: "#F0635A",
+                          color: "red",
                           fontSize: "4rem",
                         }}
                       />
@@ -2043,7 +2043,7 @@ export default function Events() {
                   label={
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       <AccessibleIcon
-                        sx={{ color: "rgba(240, 99, 90, 1)", fontSize: "30px" }}
+                        sx={{ color: "red", fontSize: "30px" }}
                       />
                       Request assistance for special needs
                     </Box>
@@ -2067,7 +2067,7 @@ export default function Events() {
                 loadingPosition="start"
                 sx={{
                   color: "white",
-                  backgroundColor: "rgba(240, 99, 90, 1)",
+                  backgroundColor: "red",
                   px: 10,
                   py: 1,
                 }}

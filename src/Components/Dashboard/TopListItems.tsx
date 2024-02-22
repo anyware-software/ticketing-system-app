@@ -71,7 +71,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
       >
         <ListItemText primary="Home"  sx={{
               color: isCurrentPage("dashboard", true)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}/>
       </ListItemButton>
@@ -82,7 +82,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
       >
         <ListItemText primary="Profile" sx={{
               color: isCurrentPage(Pages.PROFILE)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}/>
       </ListItemButton>
@@ -93,7 +93,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
       >
         <ListItemText primary="Tickets" sx={{
               color: isCurrentPage(Pages.EVENTS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}/>
       </ListItemButton>
@@ -106,7 +106,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <ChatBubbleOutlineOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.NOTIFICATIONS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -122,7 +122,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <TodayOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.CALENDAR)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -138,7 +138,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <TurnedInNotOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.BOOKMARKS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -154,7 +154,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <LocalPostOfficeOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.CONTACT)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -170,7 +170,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <SettingsOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.SETTINGS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -186,7 +186,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <HelpOutlineOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.HELP)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />

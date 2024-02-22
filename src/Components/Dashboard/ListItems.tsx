@@ -71,7 +71,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <HomeIcon
             sx={{
               color: isCurrentPage("dashboard", true)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -87,7 +87,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <PersonOutlineOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.PROFILE)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -103,7 +103,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <FestivalIcon
             sx={{
               color: isCurrentPage(Pages.EVENTS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -119,7 +119,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <ChatBubbleOutlineOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.NOTIFICATIONS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -135,7 +135,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <TodayOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.CALENDAR)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -151,7 +151,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <TurnedInNotOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.BOOKMARKS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -167,7 +167,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <LocalPostOfficeOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.CONTACT)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -183,7 +183,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <SettingsOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.SETTINGS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -199,7 +199,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <HelpOutlineOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.HELP)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -219,7 +219,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <LoginIcon
             sx={{
               color:
-                selectedItem === "Sign Out" ? "rgba(240, 99, 90, 1)" : "white",
+                selectedItem === "Sign Out" ? "red" : "white",
             }}
           />
         </ListItemIcon>

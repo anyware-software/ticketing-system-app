@@ -37,7 +37,7 @@ import EventItem from "./HomePageCarousel";
 import "../ScrollBar/ScrollBar.css";
 import listEndedEvents from "../../services/listEndedEvents";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import YouTubeIcon from '@mui/icons-material/YouTube';
+import YouTubeIcon from "@mui/icons-material/YouTube";
 
 export default function HomePage() {
   const user = useSelector((state: any) => state.app.user);
@@ -160,7 +160,7 @@ export default function HomePage() {
           bottom: 0,
           left: 0,
           background:
-            "linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), linear-gradient(to right, rgba(0, 0, 0, 0.1)100%, rgba(0, 0, 0, 0.1))",
+            "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), linear-gradient(to right, rgba(0, 0, 0, 0.1)100%, rgba(0, 0, 0, 0.1))",
         },
         zIndex: 0,
         display: "flex",
@@ -292,7 +292,7 @@ export default function HomePage() {
             <Typography
               sx={{
                 color: "white",
-                fontSize: { xs: "18px", sm: "25px" },
+                fontSize: { xs: "15px", sm: "25px" },
                 fontWeight: "bold",
                 "& span": { color: "red" },
               }}
@@ -452,8 +452,9 @@ export default function HomePage() {
             <Box
               sx={{
                 display: "flex",
-                width: "30%",
+                width: { xs: "70%", sm: "30%" },
                 justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
               <Typography
@@ -509,7 +510,7 @@ export default function HomePage() {
               justifyContent: "center",
               alignItems: "center",
               my: 5,
-              gap: 2,
+              gap: {xs:1,sm:2},
             }}
           >
             {endedEvents
@@ -520,9 +521,8 @@ export default function HomePage() {
                   key={index}
                   sx={{
                     position: "relative",
-                    width: 250,
-                    height: 300,
-                    transition: "transform 0.5s ease",
+                    width: { xs: 110, sm: 200, md: 250 },
+                    height: { xs: 160, sm: 250, md: 300 },
                   }}
                 >
                   <Box
@@ -598,68 +598,103 @@ export default function HomePage() {
                 justifyContent: "center",
                 alignItems: "center",
                 my: 3,
-                gap: 2,
+                gap: { xs: 1, sm: 2 },
+                flexDirection: { xs: "column", sm: "column", md: "row" },
               }}
             >
               <Box
                 sx={{
-                  backgroundColor: "white",
-                  color: "black",
-                  p: 2,
-                  borderRadius: "10px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: { xs: 1, sm: 2 },
                 }}
               >
-                🎥 VSTUDIO
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    color: "black",
+                    p: 2,
+                    borderRadius: "10px",
+                    width: "8.5rem",
+                  }}
+                >
+                  🎥 VSTUDIO
+                </Box>
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    color: "black",
+                    p: 2,
+                    borderRadius: "10px",
+                    width: "8.5rem",
+                  }}
+                >
+                  🍕PizzaHOT
+                </Box>
               </Box>
               <Box
                 sx={{
-                  backgroundColor: "white",
-                  color: "black",
-                  p: 2,
-                  borderRadius: "10px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: { xs: 1, sm: 2 },
                 }}
               >
-                🍕PizzaHOT
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    color: "black",
+                    p: 2,
+                    borderRadius: "10px",
+                    width: "8.5rem",
+                  }}
+                >
+                  🚄Trainesia
+                </Box>
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    color: "black",
+                    p: 2,
+                    borderRadius: "10px",
+                    width: "8.5rem",
+                  }}
+                >
+                  🔥Firevent
+                </Box>
               </Box>
+
               <Box
                 sx={{
-                  backgroundColor: "white",
-                  color: "black",
-                  p: 2,
-                  borderRadius: "10px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: { xs: 1, sm: 2 },
                 }}
               >
-                🚄Trainesia
-              </Box>
-              <Box
-                sx={{
-                  backgroundColor: "white",
-                  color: "black",
-                  p: 2,
-                  borderRadius: "10px",
-                }}
-              >
-                🔥Firevent
-              </Box>
-              <Box
-                sx={{
-                  backgroundColor: "white",
-                  color: "black",
-                  p: 2,
-                  borderRadius: "10px",
-                }}
-              >
-                💈Baberock
-              </Box>
-              <Box
-                sx={{
-                  backgroundColor: "white",
-                  color: "black",
-                  p: 2,
-                  borderRadius: "10px",
-                }}
-              >
-                🐊Crocoday
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    color: "black",
+                    p: 2,
+                    borderRadius: "10px",
+                    width: "8.5rem",
+                  }}
+                >
+                  💈Baberock
+                </Box>
+                <Box
+                  sx={{
+                    backgroundColor: "white",
+                    color: "black",
+                    p: 2,
+                    borderRadius: "10px",
+                    width: "8.5rem",
+                  }}
+                >
+                  🐊Crocoday
+                </Box>
               </Box>
             </Box>
           </Box>
@@ -680,8 +715,10 @@ export default function HomePage() {
           <Box
             sx={{
               display: "flex",
-              width: "80%",
+              width: {xs:"80%",sm:"90%",md:"80%"},
               justifyContent: "space-between",
+              flexDirection: {xs:"column",sm:"row",md:"row"},
+              // alignItems: "center",
             }}
           >
             <Box>
@@ -738,7 +775,7 @@ export default function HomePage() {
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "center",
+                  justifyContent: {xs:"start",sm:"start",md:"center"},
                   alignItems: "center",
                   gap: 1,
                 }}
@@ -833,7 +870,7 @@ export default function HomePage() {
           sx={{
             zIndex: 1,
             position: "relative",
-            display: { xs: "none", sm: "flex" },
+            display: "flex",
             // flexDirection: "column",
             // alignItems: "end",
             justifyContent: "center",

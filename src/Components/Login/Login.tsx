@@ -383,7 +383,7 @@ export default function Login() {
                   </Box>
                   <Typography
                     sx={{
-                      color: "#F0635A",
+                      color: "red",
                     }}
                   >
                     Forgot Password ?
