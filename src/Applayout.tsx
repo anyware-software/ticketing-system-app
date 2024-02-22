@@ -6,19 +6,19 @@ const AppLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const checkLocalStorage = async () => {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser === "true" && location.pathname === "/") {
-        navigate("/dashboard");
-      } 
-      if(!storedUser) {
-        await signOut();
-      }
-    };
+  // useEffect(() => {
+  //   const checkLocalStorage = async () => {
+  //     const storedUser = localStorage.getItem("user");
+  //     if (storedUser === "true" && location.pathname === "/") {
+  //       navigate("/dashboard");
+  //     } 
+  //     if(!storedUser) {
+  //       await signOut();
+  //     }
+  //   };
 
-    checkLocalStorage();
-  }, [navigate, location]);
+  //   checkLocalStorage();
+  // }, [navigate, location]);
 
   return (
     <>

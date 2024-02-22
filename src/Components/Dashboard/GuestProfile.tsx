@@ -1938,7 +1938,7 @@ export default function GuestProfile() {
                             // navigate(`payment/${currentBookings?.id}`);
                             validateAvailableRedirect();
                           } else {
-                            navigate(`ticket/${currentBookings?.id}`);
+                            navigate(`/dashboard/ticket/${currentBookings?.id}`);
                           }
                         }}
                       >

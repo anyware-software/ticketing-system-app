@@ -32,17 +32,18 @@ import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutline
 import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "../../state";
 import { Outlet, useNavigate } from "react-router-dom";
-import { signOut } from "aws-amplify/auth";
+import { signInWithRedirect, signOut } from "aws-amplify/auth";
 import { MainListItems } from "./ListItems";
 import { dbStorage } from "../../constants/Enums";
 import { useEffect, useState } from "react";
 import ContentLoader from "../ContentLoader/ContentLoder";
-
 import { toggleDrawer as toggleDrawerState } from "../../state";
 import { TopListItems } from "./TopListItems";
+import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
+import LoadingButton from '@mui/lab/LoadingButton';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const drawerWidth: number = 240;
-
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
@@ -96,11 +97,11 @@ const Drawer = styled(MuiDrawer, {
 export default function Dashboard() {
   const user = useSelector((state: any) => state.app.user);
   const drawerState = useSelector((state: any) => state.app.drawer);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const [loginState, setLoginState] = useState(false);
+  const [userLoading, setUserLoading] = useState(false);
   const [selectedItem, setSelectedItem] = React.useState<string | null>(
     "My Profile"
   );
@@ -121,27 +122,43 @@ export default function Dashboard() {
       navigate("/login");
     }
     localStorage.removeItem("user");
+    localStorage.setItem("userlogged", "false");
     await signOut();
   };
-  // console.log(selectedItem);
+
+  const handleFacebookLogin = async () => {
+    try {
+      await signInWithRedirect({ provider: "Facebook" });
+      localStorage.setItem("user", "true");
+      localStorage.setItem("userlogged", "true");
+      dispatch(setLogin({ user: "" }));
+    } catch (error) {
+      console.error("Error logging in with Facbook:", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!user) {
-      setLoading(true);
+      setUserLoading(true);
     } else {
-      setLoading(false);
+      setUserLoading(false);
     }
   }, [user]);
 
   useEffect(() => {
     const checkLocalStorage = async () => {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser === "true") {
-        navigate("/dashboard");
+      const storedUser = localStorage.getItem("userlogged");
+      if (storedUser === "false") {
+        // navigate("/dashboard");
+        // setLoading(false);
+        setLoginState(false)
       }
-      if (!storedUser) {
-        await signOut();
-        navigate("/login");
+      if (storedUser === "true") {
+        // await signOut();
+        // navigate("/login");
+        // setLoading(true);
+        setLoginState(true)
       }
     };
     checkLocalStorage();
@@ -224,23 +241,44 @@ export default function Dashboard() {
             >
               <TopListItems onItemSelected={handleListItemClick} />
             </List>
-            <Button
-              variant="text"
-              sx={{
-                color: "#FC0000",
-                fontSize: "16px",
-                fontWeight: "700",
-                lineHeight: "25px",
-                wordWrap: "break-word",
-                gap: 1,
-              }}
-              onClick={() => {
-                handleLogOut();
-              }}
-            >
-              <LoginIcon sx={{ color: "white", fontSize: "25px" }} />
-              <p> Sign Out</p>
-            </Button>
+            {!loginState ? (
+              <Button
+                variant="text"
+                sx={{
+                  color: "white",
+                  fontSize: "16px",
+                  lineHeight: "25px",
+                  wordWrap: "break-word",
+                  gap: 1,
+                }}
+                onClick={() => {
+                  handleFacebookLogin();
+                }}
+              >
+                <p>LOGIN WITH</p>
+                <FacebookOutlinedIcon sx={{ color: "#1977f3", fontSize: "25px" }} />
+              </Button>
+            ) : (
+              <LoadingButton
+                variant="text"
+                loading={userLoading}
+                loadingPosition="center"
+                endIcon={<LoginIcon sx={{ color: "white"}} />}
+                loadingIndicator={<CircularProgress size={24} sx={{ color: '#FC0000' }} />} 
+                sx={{
+                  color: "#FC0000",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "25px",
+                  wordWrap: "break-word",
+                }}
+                onClick={() => {
+                  handleLogOut();
+                }}
+              >
+                <p> Sign Out</p>
+              </LoadingButton>
+            )}
             {/* <IconButton color="inherit">
               <Badge badgeContent={4} color="warning">
                 <ChatBubbleOutlineOutlinedIcon />

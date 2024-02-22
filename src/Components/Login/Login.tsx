@@ -65,24 +65,18 @@ export default function Login() {
   };
 
   // useEffect(() => {
-  //   const storedUser = localStorage.getItem("user");
-  //   if (storedUser === "true") {
-  //     navigate("/dashboard");
-  //     setMessage("You are Logged in with Facbook already !");
+  //   const checkLocalStorage = async () => {
+  //     const storedUser = localStorage.getItem("user");
+  //     if (storedUser === "true") {
+  //       navigate("/dashboard");
+  //       setMessage("You are Logged in with Facebook already!");
+  //     }
+  //     if (!storedUser) {
+  //       await signOut();
+  //     }
+  //   };
+  //   checkLocalStorage();
   // }, []);
-  useEffect(() => {
-    const checkLocalStorage = async () => {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser === "true") {
-        navigate("/dashboard");
-        setMessage("You are Logged in with Facebook already!");
-      }
-      if (!storedUser) {
-        await signOut();
-      }
-    };
-    checkLocalStorage();
-  }, []);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);

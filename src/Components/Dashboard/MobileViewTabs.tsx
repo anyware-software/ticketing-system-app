@@ -1409,7 +1409,7 @@ export default function MobileViewTabs() {
                             // navigate(`payment/${currentBookings?.id}`);
                             validateAvailableRedirect();
                           } else {
-                            navigate(`ticket/${currentBookings?.id}`);
+                            navigate(`/dashboard/ticket/${currentBookings?.id}`);
                           }
                         }}
                       >

@@ -601,7 +601,7 @@ export default function Events() {
       </Box>
     );
 
-  if (user.phone_number === "" || user.phone_number === "+20")
+  if (user?.phone_number === "" || user?.phone_number === "+20")
     return (
       <Box
         sx={{
