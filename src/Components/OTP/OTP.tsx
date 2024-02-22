@@ -227,6 +227,7 @@ function OTP({
                 fontWeight: "400",
                 wordWrap: "break-word",
                 cursor: "pointer",
+                userSelect: "none",
               }}
             >
               Resend
@@ -260,17 +261,24 @@ function OTP({
                   width: "100%",
                   height: "3rem",
                   marginTop: "1rem",
-                  backgroundColor: "red",
+                  backgroundColor:
+                    !loading && otp.length === 4 ? "red" : "#a7a7a7",
+                  color: !loading && otp.length === 4 ? "white" : "black",
                   boxShadow:
                     "0px -2.9085745811462402px 13.573348045349121px rgba(255, 255, 255, 0.10)",
                   borderRadius: 12.6,
-                  color: "white",
+                  // color: "white",
                   fontWeight: "bold",
+                  cursor:
+                    !loading && otp.length === 4 ? "pointer" : "not-allowed",
                 }}
                 onClick={() => {
-                  handleOTP();
+                  if (!loading && otp.length === 4) {
+                    handleOTP();
+                  }
                 }}
                 loading={loading}
+                disabled={otp.length !== 4}
               >
                 SEND
               </LoadingButton>
