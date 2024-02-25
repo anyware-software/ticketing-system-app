@@ -25,6 +25,7 @@ import FestivalIcon from "@mui/icons-material/Festival";
 import { Pages } from "../../constants/Pages";
 import HomeIcon from "@mui/icons-material/Home";
 import Box from "@mui/material/Box";
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 
 interface MainListItemsProps {
   onItemSelected: (item: string) => void;
@@ -70,7 +71,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
         onClick={() => navigate(`/dashboard/${Pages.Home}`)}
       >
         <ListItemIcon>
-          <HomeIcon
+          <FestivalIcon
             sx={{
               color: isCurrentPage("dashboard", true) ? "red" : "white",
             }}
@@ -100,7 +101,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
         onClick={() => navigate(`/dashboard/${Pages.EVENTS}`)}
       >
         <ListItemIcon>
-          <FestivalIcon
+          <ConfirmationNumberIcon
             sx={{
               color: isCurrentPage(Pages.EVENTS) ? "red" : "white",
             }}
