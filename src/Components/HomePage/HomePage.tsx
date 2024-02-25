@@ -15,7 +15,10 @@ import {
   Paper,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setLogin, toggleDrawer as toggleDrawerState } from "../../state/index";
+import {
+  setLogin,
+  toggleDrawer as toggleDrawerState,
+} from "../../state/index";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -52,7 +55,6 @@ export default function HomePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [isRemainingTime, setIsRemainingTime] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [events, setEvents] = useState<Event[]>([]);
   const [endedEvents, setEndedEvents] = useState<Event[]>([]);
@@ -86,12 +88,11 @@ export default function HomePage() {
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
       setRemainingTime({ days, hours, minutes, seconds });
     }, 1000);
-    setIsRemainingTime(true);
     return () => clearInterval(interval);
   }, [currentEvent?.startDate]);
 
   useEffect(() => {
-    if (!isRemainingTime) {
+    if (!currentEvent) {
       setLoading(true);
     } else {
       setLoading(false);
@@ -194,8 +195,8 @@ export default function HomePage() {
       dispatch(setLogin({ user: "" }));
     } catch (error) {
       console.error("Error logging in with Facbook:", error);
-      setLoading(false);
-    }
+      setValidationWarning(true);
+      setMessage("Failed to login");    }
   };
 
   const getListEvents = async () => {
@@ -238,7 +239,7 @@ export default function HomePage() {
       prevIndex === 0 ? endedEvents.length - 1 : prevIndex - 1
     );
   };
-
+  
   // if (loading) return <ContentLoader />;
 
   return (
@@ -285,71 +286,75 @@ export default function HomePage() {
             justifyContent: "space-between",
           }}
         >
-          <Box sx={{
-            display: "flex",
-            alignItems: "center",
-            gap:1
-          }}>
-          <Box>
-            <IconButton
-              onClick={toggleDrawer}
-              sx={{ display: { xs: "block", sm: "none" } }}
-            >
-              <MenuIcon sx={{ color: "white", fontSize: "30px", m: 0, p: 0 }} />
-            </IconButton>
-          </Box>
-          <Box>
-            <img
-              src="https://ulter.events/assets/images/ulter-logo-white.png"
-              style={{ height: "3vh" }}
-              alt=""
-            />
-          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <Box>
+              <IconButton
+                onClick={toggleDrawer}
+                sx={{ display: { xs: "block", sm: "none" } }}
+              >
+                <MenuIcon
+                  sx={{ color: "white", fontSize: "30px", m: 0, p: 0 }}
+                />
+              </IconButton>
+            </Box>
+            <Box>
+              <img
+                src="https://ulter.events/assets/images/ulter-logo-white.png"
+                style={{ height: "3vh" }}
+                alt=""
+              />
+            </Box>
           </Box>
 
           {!loginState ? (
-              <Button
-                variant="text"
-                sx={{
-                  color: "white",
-                  fontSize: "16px",
-                  wordWrap: "break-word",
-                  gap: 1,
-                  py:0,
-                  mr:1,
-                }}
-                onClick={() => {
-                  handleFacebookLogin();
-                }}
-              >
-                <p style={{margin:0}}>LOGIN</p>
-                <FacebookOutlinedIcon
-                  sx={{ color: "#1977f3", fontSize: "25px" }}
-                />
-              </Button>
-            ) : (
-              <LoadingButton
-                variant="text"
-                loading={userLoading}
-                loadingPosition="center"
-                endIcon={<LoginIcon sx={{ color: "white" }} />}
-                loadingIndicator={
-                  <CircularProgress size={15} sx={{ color: "#FC0000" }} />
-                }
-                sx={{
-                  color: "#FC0000",
-                  fontSize: "16px",
-                  wordWrap: "break-word",
-                  py:0,
-                  mr:1,
-                }}
-                onClick={() => {
-                  handleLogOut();
-                }}
-              >
-                <p> Sign Out</p>
-              </LoadingButton>
-            )}
+            <Button
+              variant="text"
+              sx={{
+                color: "white",
+                fontSize: "16px",
+                wordWrap: "break-word",
+                gap: 1,
+                py: 0,
+                mr: 1,
+              }}
+              onClick={() => {
+                handleFacebookLogin();
+              }}
+            >
+              <p style={{ margin: 0 }}>LOGIN</p>
+              <FacebookOutlinedIcon
+                sx={{ color: "#1977f3", fontSize: "25px" }}
+              />
+            </Button>
+          ) : (
+            <LoadingButton
+              variant="text"
+              loading={userLoading}
+              loadingPosition="center"
+              endIcon={<LoginIcon sx={{ color: "white" }} />}
+              loadingIndicator={
+                <CircularProgress size={15} sx={{ color: "#FC0000" }} />
+              }
+              sx={{
+                color: "#FC0000",
+                fontSize: "16px",
+                wordWrap: "break-word",
+                py: 0,
+                mr: 1,
+              }}
+              onClick={() => {
+                handleLogOut();
+              }}
+            >
+              <p> Sign Out</p>
+            </LoadingButton>
+          )}
         </Toolbar>
       </AppBar>
 
