@@ -3564,6 +3564,7 @@ export const createWavesConsumption = /* GraphQL */ `mutation CreateWavesConsump
     totalTickets
     consumed
     eventId
+    eventTicketId
     id
     createdAt
     updatedAt
@@ -3584,6 +3585,7 @@ export const updateWavesConsumption = /* GraphQL */ `mutation UpdateWavesConsump
     totalTickets
     consumed
     eventId
+    eventTicketId
     id
     createdAt
     updatedAt
@@ -3604,6 +3606,7 @@ export const deleteWavesConsumption = /* GraphQL */ `mutation DeleteWavesConsump
     totalTickets
     consumed
     eventId
+    eventTicketId
     id
     createdAt
     updatedAt

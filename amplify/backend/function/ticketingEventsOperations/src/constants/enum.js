@@ -14,7 +14,16 @@ const operationIdEnum = {
     'listBookingsForGuest': 13,
     'listEndedEvents': 14,
     'listAllBookingsForGuest': 15,
+    'listConsumedWaves': 16,
 }
+
+const AutomaticShiftTypes = {
+    OFF: 'off',
+    ON_TIME: 'onTime',
+    ON_TICKETS: 'onTickets',
+  };
+
 module.exports = {
-    operationIdEnum
+    operationIdEnum,
+    AutomaticShiftTypes
 }

@@ -2544,6 +2544,7 @@ export const getWavesConsumption = /* GraphQL */ `query GetWavesConsumption($id:
     totalTickets
     consumed
     eventId
+    eventTicketId
     id
     createdAt
     updatedAt
@@ -2566,6 +2567,7 @@ export const listWavesConsumptions = /* GraphQL */ `query ListWavesConsumptions(
       totalTickets
       consumed
       eventId
+      eventTicketId
       id
       createdAt
       updatedAt

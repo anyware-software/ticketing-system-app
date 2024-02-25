@@ -10,7 +10,7 @@ Amplify Params - DO NOT EDIT */
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 const fetch = require("node-fetch");
-const { operationIdEnum } = require("./constants/enum");
+const { operationIdEnum, AutomaticShiftTypes } = require("./constants/enum");
 const aws = require("aws-sdk");
 
 const {
@@ -24,6 +24,7 @@ const {
   listOverViewBookings,
   listInvitations,
   createTransaction,
+  listWavesConsumptions,
 } = require("./constants/queries");
 
 const GRAPHQL_ENDPOINT =
@@ -55,6 +56,8 @@ exports.handler = async (event) => {
     const fromDate = requestBody.fromDate;
     const toDate = requestBody.toDate;
     const guestId = requestBody.guestId;
+    const waveId = requestBody.waveId;
+    const bookingId = requestBody.bookingId;
 
     if (operationId === operationIdEnum.listEvents) {
       variables = {
@@ -146,6 +149,18 @@ exports.handler = async (event) => {
         },
       };
       query = listInvitations;
+    } else if (operationId === operationIdEnum.listConsumedWaves) {
+      variables = {
+        filter: {
+          waveId: {
+            eq: waveId,
+          },
+          consumed: {
+            eq: "1",
+          },
+        },
+      };
+      query = listWavesConsumptions;
     } else if (operationId === operationIdEnum.bookEvent) {
       const createInput = {
         status: bookAttributes.status,
@@ -385,6 +400,88 @@ exports.handler = async (event) => {
       items = responseBody.data.listBookings;
     } else if (operationId === operationIdEnum.listAllBookingsForGuest) {
       items = responseBody.data.listBookings;
+    } else if (operationId === operationIdEnum.listConsumedWaves) {
+      // items = responseBody.data.listWavesConsumptions;
+      // console.log(responseBody.data.listWavesConsumptions.items);
+      if (responseBody.data.listWavesConsumptions.items.length > 0) {
+        const bookingVariables = {
+          id: bookingId,
+        };
+        const bookingQuery = getBooking;
+        const bookingOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": GRAPHQL_API_KEY,
+          },
+          body: JSON.stringify({
+            query: bookingQuery,
+            variables: bookingVariables,
+          }),
+        };
+        try {
+          const response = await fetch(GRAPHQL_ENDPOINT, bookingOptions);
+          const data = await response.json();
+          const booking = data.data.getBooking;
+          const allTicketWaves = booking.eventTicket.waves;
+          const currentWave = booking.eventTicket.waves.find(
+            (item) => item.id === waveId
+          );
+          const currentWaveIndex = booking.eventTicket.waves.findIndex(
+            (item) => item.id === waveId
+          );
+          const nextWave = booking.eventTicket.waves.find(
+            (_, index) => index === currentWaveIndex + 1
+          );
+          if (
+            !currentWave ||
+            currentWave.AutomaticShift === AutomaticShiftTypes.OFF
+          ) {
+            console.log("No AutomaticShift for this wave.");
+            console.log("Current wave: ", currentWave);
+            return;
+          }
+          if (
+            currentWave &&
+            currentWave.AutomaticShift === AutomaticShiftTypes.ON_TICKETS &&
+            nextWave
+          ) {
+            const WavesConsumptionVariables = {
+              filter: {
+                waveId: {
+                  eq: nextWave.id,
+                },
+                consumed: {
+                  eq: "0",
+                },
+              },
+            };
+            const wcQuery = listWavesConsumptions;
+            const wcOptions = {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-api-key": GRAPHQL_API_KEY,
+              },
+              body: JSON.stringify({
+                query: wcQuery,
+                variables: WavesConsumptionVariables,
+              }),
+            };
+            try {
+              const response = await fetch(GRAPHQL_ENDPOINT, wcOptions);
+              const data = await response.json();
+              const nextWaveConsumption = data.data.listWavesConsumptions.items;
+              if (nextWaveConsumption.length > 0) {
+              }
+            } catch (error) {
+              console.error("Error in next wave shifting:", error);
+            }
+          }
+        } catch (error) {
+          console.error("Error while shifting wave:", error);
+        }
+      }
     } else if (operationId === operationIdEnum.listEventsByGuestId) {
       variables = {
         filter: {

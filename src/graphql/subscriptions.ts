@@ -3437,6 +3437,7 @@ export const onCreateWavesConsumption = /* GraphQL */ `subscription OnCreateWave
     totalTickets
     consumed
     eventId
+    eventTicketId
     id
     createdAt
     updatedAt
@@ -3456,6 +3457,7 @@ export const onUpdateWavesConsumption = /* GraphQL */ `subscription OnUpdateWave
     totalTickets
     consumed
     eventId
+    eventTicketId
     id
     createdAt
     updatedAt
@@ -3475,6 +3477,7 @@ export const onDeleteWavesConsumption = /* GraphQL */ `subscription OnDeleteWave
     totalTickets
     consumed
     eventId
+    eventTicketId
     id
     createdAt
     updatedAt

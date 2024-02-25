@@ -618,4 +618,5 @@ type WavesConsumption
   totalTickets: Int!
   consumed: String @default(value: "0")
   eventId: String!
+  eventTicketId: String
 }

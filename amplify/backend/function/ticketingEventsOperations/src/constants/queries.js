@@ -1593,6 +1593,33 @@ const createTransaction = /* GraphQL */ `
     }
   }
 `;
+const listWavesConsumptions = /* GraphQL */ `
+  query ListWavesConsumptions(
+    $filter: ModelWavesConsumptionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listWavesConsumptions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        waveId
+        consumedTickets
+        totalTickets
+        consumed
+        eventId
+        id
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 module.exports = {
   getEvent,
   listEvents,
@@ -1604,4 +1631,5 @@ module.exports = {
   listOverViewBookings,
   listInvitations,
   createTransaction,
+  listWavesConsumptions,
 };
