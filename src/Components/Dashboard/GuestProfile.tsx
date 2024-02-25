@@ -49,7 +49,7 @@ import getBooking from "../../services/getBooking";
 import updateBooking from "../../services/updateBooking";
 import listGuestBooking from "../../services/listGuestBookings";
 import listAccompaniedGuests from "../../services/listAccompaniedGuests";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toggleDrawer as toggleDrawerState } from "../../state/index";
 import sendSms from "../../services/sendSMS";
 import Resizer from "react-image-file-resizer";
@@ -103,13 +103,26 @@ export default function GuestProfile() {
     dispatch(toggleDrawerState());
   };
 
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  
   useEffect(() => {
-    if (!user) {
-      setLoading(true);
+    const storedUser = localStorage.getItem("userlogged");
+    if (storedUser === "false") {
+      navigate("/dashboard/");
     } else {
-      setLoading(false);
+      if (!user) {
+        setLoading(true);
+      } else {
+        setLoading(false);
+      }
     }
   }, [user]);
+
+  useEffect(() => {
+    const id = searchParams.get("id");
+    
+  }, []);
 
   useEffect(() => {
     const handdleUpdateBooking = async () => {
