@@ -52,6 +52,7 @@ export default function Login() {
       setLoading(true);
       await signInWithRedirect({ provider: "Facebook" });
       localStorage.setItem("user", "true");
+      localStorage.setItem("userlogged", "true");
       dispatch(setLogin({ user: "" }));
       setLoading(false);
       // navigate('/dashboard')
@@ -65,24 +66,18 @@ export default function Login() {
   };
 
   // useEffect(() => {
-  //   const storedUser = localStorage.getItem("user");
-  //   if (storedUser === "true") {
-  //     navigate("/dashboard");
-  //     setMessage("You are Logged in with Facbook already !");
+  //   const checkLocalStorage = async () => {
+  //     const storedUser = localStorage.getItem("user");
+  //     if (storedUser === "true") {
+  //       navigate("/dashboard");
+  //       setMessage("You are Logged in with Facebook already!");
+  //     }
+  //     if (!storedUser) {
+  //       await signOut();
+  //     }
+  //   };
+  //   checkLocalStorage();
   // }, []);
-  useEffect(() => {
-    const checkLocalStorage = async () => {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser === "true") {
-        navigate("/dashboard");
-        setMessage("You are Logged in with Facebook already!");
-      }
-      if (!storedUser) {
-        await signOut();
-      }
-    };
-    checkLocalStorage();
-  }, []);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -92,6 +87,14 @@ export default function Login() {
       const eventBooking = bookingID;
       localStorage.setItem("eventBooking", eventBooking);
       // handleFacebookLogin();
+    }
+  }, []);
+
+  useEffect(() => {
+    const nav = sessionStorage.getItem("nav");
+    if(nav){
+      setValidationWarning(true);
+      setMessage("You need to login First");
     }
   }, []);
 
@@ -383,7 +386,7 @@ export default function Login() {
                   </Box>
                   <Typography
                     sx={{
-                      color: "#F0635A",
+                      color: "red",
                     }}
                   >
                     Forgot Password ?

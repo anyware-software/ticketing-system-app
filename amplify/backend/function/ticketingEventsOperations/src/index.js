@@ -119,6 +119,18 @@ exports.handler = async (event) => {
         },
       };
       query = listBookings;
+    } else if (operationId === operationIdEnum.listAllBookingsForGuest) {
+      variables = {
+        filter: {
+          deleted: {
+            eq: "0",
+          },
+          bookingGuestId: {
+            eq: guestId,
+          },
+        },
+      };
+      query = listBookings;
     } else if (operationId === operationIdEnum.listInvitations) {
       variables = {
         filter: {
@@ -370,6 +382,8 @@ exports.handler = async (event) => {
     } else if (operationId === operationIdEnum.createTransaction) {
       items = responseBody.data.createTransaction;
     } else if (operationId === operationIdEnum.listBookingsForGuest) {
+      items = responseBody.data.listBookings;
+    } else if (operationId === operationIdEnum.listAllBookingsForGuest) {
       items = responseBody.data.listBookings;
     } else if (operationId === operationIdEnum.listEventsByGuestId) {
       variables = {

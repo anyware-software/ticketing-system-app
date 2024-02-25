@@ -48,7 +48,7 @@ function OTP({
     height: "3rem",
     width: "3rem",
   };
-  console.log(loading);
+  // console.log(loading);
 
   const handleCloseModal = () => {
     onClose?.();

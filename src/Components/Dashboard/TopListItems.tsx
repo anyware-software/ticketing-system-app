@@ -28,6 +28,7 @@ import Box from "@mui/material/Box";
 
 interface MainListItemsProps {
   onItemSelected: (item: string) => void;
+  user: any;
 }
 
 export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
@@ -62,40 +63,47 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
     return location.pathname.includes(page);
   };
   return (
-    <Box sx={{
-        display:'flex',
-    }}>
+    <Box
+      sx={{
+        display: "flex",
+      }}
+    >
       <ListItemButton
         selected={selectedItem === "Home"}
         onClick={() => navigate(`/dashboard/${Pages.Home}`)}
       >
-        <ListItemText primary="Home"  sx={{
-              color: isCurrentPage("dashboard", true)
-                ? "rgba(240, 99, 90, 1)"
-                : "white",
-            }}/>
+        <ListItemText
+          primary="Home"
+          sx={{
+            color: isCurrentPage("dashboard", true) ? "red" : "white",
+          }}
+        />
       </ListItemButton>
 
-      <ListItemButton
-        selected={selectedItem === "Profile"}
-        onClick={() => navigate(`/dashboard/${Pages.PROFILE}`)}
-      >
-        <ListItemText primary="Profile" sx={{
-              color: isCurrentPage(Pages.PROFILE)
-                ? "rgba(240, 99, 90, 1)"
-                : "white",
-            }}/>
-      </ListItemButton>
+      {user && (
+        <ListItemButton
+          selected={selectedItem === "Profile"}
+          onClick={() => navigate(`/dashboard/${Pages.PROFILE}`)}
+        >
+          <ListItemText
+            primary="Profile"
+            sx={{
+              color: isCurrentPage(Pages.PROFILE) ? "red" : "white",
+            }}
+          />
+        </ListItemButton>
+      )}
 
       <ListItemButton
         selected={selectedItem === "tickets"}
         onClick={() => navigate(`/dashboard/${Pages.EVENTS}`)}
       >
-        <ListItemText primary="Tickets" sx={{
-              color: isCurrentPage(Pages.EVENTS)
-                ? "rgba(240, 99, 90, 1)"
-                : "white",
-            }}/>
+        <ListItemText
+          primary="Tickets"
+          sx={{
+            color: isCurrentPage(Pages.EVENTS) ? "red" : "white",
+          }}
+        />
       </ListItemButton>
 
       {/* <ListItemButton
@@ -106,7 +114,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <ChatBubbleOutlineOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.NOTIFICATIONS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -122,7 +130,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <TodayOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.CALENDAR)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -138,7 +146,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <TurnedInNotOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.BOOKMARKS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -154,7 +162,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <LocalPostOfficeOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.CONTACT)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -170,7 +178,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <SettingsOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.SETTINGS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -186,7 +194,7 @@ export const TopListItems = ({ onItemSelected }: MainListItemsProps) => {
           <HelpOutlineOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.HELP)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />

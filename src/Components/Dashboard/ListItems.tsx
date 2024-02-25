@@ -28,6 +28,7 @@ import Box from "@mui/material/Box";
 
 interface MainListItemsProps {
   onItemSelected: (item: string) => void;
+  user: any;
 }
 
 export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
@@ -45,7 +46,6 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
   const handleLogOut = async () => {
     if (!user) {
       console.log("There is no User");
-
       return;
     }
     dispatch(setLogin({ user: null }));
@@ -53,8 +53,10 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
       navigate("/login");
     }
     localStorage.removeItem("user");
+    localStorage.setItem("userlogged", "false");
     await signOut();
   };
+  
   const isCurrentPage = (page: string, exact?: boolean) => {
     if (exact) {
       return location.pathname.replaceAll("/", "") === page;
@@ -70,30 +72,28 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
         <ListItemIcon>
           <HomeIcon
             sx={{
-              color: isCurrentPage("dashboard", true)
-                ? "rgba(240, 99, 90, 1)"
-                : "white",
+              color: isCurrentPage("dashboard", true) ? "red" : "white",
             }}
           />
         </ListItemIcon>
         <ListItemText primary="Home" />
       </ListItemButton>
 
-      <ListItemButton
-        selected={selectedItem === "Profile"}
-        onClick={() => navigate(`/dashboard/${Pages.PROFILE}`)}
-      >
-        <ListItemIcon>
-          <PersonOutlineOutlinedIcon
-            sx={{
-              color: isCurrentPage(Pages.PROFILE)
-                ? "rgba(240, 99, 90, 1)"
-                : "white",
-            }}
-          />
-        </ListItemIcon>
-        <ListItemText primary="Profile" />
-      </ListItemButton>
+      {user && (
+        <ListItemButton
+          selected={selectedItem === "Profile"}
+          onClick={() => navigate(`/dashboard/${Pages.PROFILE}`)}
+        >
+          <ListItemIcon>
+            <PersonOutlineOutlinedIcon
+              sx={{
+                color: isCurrentPage(Pages.PROFILE) ? "red" : "white",
+              }}
+            />
+          </ListItemIcon>
+          <ListItemText primary="Profile" />
+        </ListItemButton>
+      )}
 
       <ListItemButton
         selected={selectedItem === "tickets"}
@@ -102,9 +102,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
         <ListItemIcon>
           <FestivalIcon
             sx={{
-              color: isCurrentPage(Pages.EVENTS)
-                ? "rgba(240, 99, 90, 1)"
-                : "white",
+              color: isCurrentPage(Pages.EVENTS) ? "red" : "white",
             }}
           />
         </ListItemIcon>
@@ -119,7 +117,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <ChatBubbleOutlineOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.NOTIFICATIONS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -135,7 +133,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <TodayOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.CALENDAR)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -151,7 +149,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <TurnedInNotOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.BOOKMARKS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -167,7 +165,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <LocalPostOfficeOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.CONTACT)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -183,7 +181,7 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <SettingsOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.SETTINGS)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
@@ -199,14 +197,14 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
           <HelpOutlineOutlinedIcon
             sx={{
               color: isCurrentPage(Pages.HELP)
-                ? "rgba(240, 99, 90, 1)"
+                ? "red"
                 : "white",
             }}
           />
         </ListItemIcon>
         <ListItemText primary="Help & FAQs" />
       </ListItemButton> */}
-
+{/* 
       <ListItemButton
         selected={selectedItem === "Sign Out"}
         // onClick={() => handleItemClick("Sign Out")}
@@ -218,13 +216,12 @@ export const MainListItems = ({ onItemSelected }: MainListItemsProps) => {
         <ListItemIcon>
           <LoginIcon
             sx={{
-              color:
-                selectedItem === "Sign Out" ? "rgba(240, 99, 90, 1)" : "white",
+              color: selectedItem === "Sign Out" ? "red" : "white",
             }}
           />
         </ListItemIcon>
         <ListItemText primary="Sign Out" />
-      </ListItemButton>
+      </ListItemButton> */}
     </Box>
   );
 };

@@ -1196,7 +1196,7 @@ export default function MobileViewTabs() {
               <CircularProgress
                 size={64}
                 thickness={1}
-                sx={{ color: "#EE726A" }}
+                sx={{ color: "red" }}
               />
             ) : currentBookings ? (
               <Box
@@ -1403,7 +1403,7 @@ export default function MobileViewTabs() {
                           fontSize: 13,
                           fontWeight: "600",
                           wordWrap: "break-word",
-                          backgroundColor: "#F0635A",
+                          backgroundColor: "red",
                           display: { xs: "block", sm: "none", lg: "none" },
                         }}
                         onClick={() => {
@@ -1411,7 +1411,7 @@ export default function MobileViewTabs() {
                             // navigate(`payment/${currentBookings?.id}`);
                             validateAvailableRedirect();
                           } else {
-                            navigate(`ticket/${currentBookings?.id}`);
+                            navigate(`/dashboard/ticket/${currentBookings?.id}`);
                           }
                         }}
                       >
@@ -1429,7 +1429,7 @@ export default function MobileViewTabs() {
                           fontSize: 13,
                           fontWeight: "600",
                           wordWrap: "break-word",
-                          backgroundColor: "#F0635A",
+                          backgroundColor: "red",
                           display: { xs: "block", sm: "none", lg: "none" },
                         }}
                         onClick={() => {
@@ -1488,7 +1488,7 @@ export default function MobileViewTabs() {
 
                     <Box
                       sx={{
-                        backgroundColor: "#EE726A",
+                        backgroundColor: "red",
                         display: "flex",
                         alignItems: "center",
                         px: "8px",
@@ -1584,7 +1584,7 @@ export default function MobileViewTabs() {
                         <Button
                           variant="contained"
                           sx={{
-                            backgroundColor: "rgba(240, 99, 90, 1)",
+                            backgroundColor: "red",
                             fontSize: "12px",
                             px: 2,
                             maxWidth: 0,
@@ -1653,7 +1653,7 @@ export default function MobileViewTabs() {
                 {/* <CircularProgress
                 size={64}
                 thickness={2}
-                sx={{ color: "#EE726A" }}
+                sx={{ color: "red" }}
               /> */}
                 <Box
                   sx={{
@@ -1712,7 +1712,7 @@ export default function MobileViewTabs() {
                             fontSize: 13,
                             fontWeight: "600",
                             wordWrap: "break-word",
-                            backgroundColor: "#F0635A",
+                            backgroundColor: "red",
                             display: { xs: "block", sm: "none", lg: "none" },
                           }}
                         >
