@@ -162,6 +162,18 @@ exports.handler = async (event) => {
         },
       };
       query = listWavesConsumptions;
+    } else if (operationId === operationIdEnum.listWavesConsumptions) {
+      variables = {
+        filter: {
+          waveId: {
+            eq: waveId,
+          },
+          consumed: {
+            eq: "1",
+          },
+        },
+      };
+      query = listWavesConsumptions;
     } else if (operationId === operationIdEnum.bookEvent) {
       const createInput = {
         status: bookAttributes.status,
@@ -401,9 +413,9 @@ exports.handler = async (event) => {
       items = responseBody.data.listBookings;
     } else if (operationId === operationIdEnum.listAllBookingsForGuest) {
       items = responseBody.data.listBookings;
+    } else if (operationId === operationIdEnum.listWavesConsumptions) {
+      items = responseBody.data.listWavesConsumptions;
     } else if (operationId === operationIdEnum.listConsumedWaves) {
-      // items = responseBody.data.listWavesConsumptions;
-      // console.log(responseBody.data.listWavesConsumptions.items);
       if (responseBody.data.listWavesConsumptions.items.length > 0) {
         const bookingVariables = {
           id: bookingId,

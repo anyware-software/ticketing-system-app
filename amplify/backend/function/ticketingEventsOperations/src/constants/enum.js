@@ -15,6 +15,7 @@ const operationIdEnum = {
     'listEndedEvents': 14,
     'listAllBookingsForGuest': 15,
     'listConsumedWaves': 16,
+    'listWavesConsumptions': 17,
 }
 
 const AutomaticShiftTypes = {

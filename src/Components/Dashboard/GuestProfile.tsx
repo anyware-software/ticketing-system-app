@@ -120,9 +120,17 @@ export default function GuestProfile() {
   }, [user]);
 
   useEffect(() => {
-    const id = searchParams.get("id");
-    
-  }, []);
+    // const id = searchParams.get("id");
+    const checkBooking = async () => {
+      if(!user) return;      
+      if(!currentBookings) return;
+      if(currentBookings.isPaid === true) return;
+      const wave = currentBookings.waveId
+      console.log(wave);
+      
+    }
+    checkBooking();
+  }, [user , currentBookings]);
 
   useEffect(() => {
     const handdleUpdateBooking = async () => {
