@@ -26,6 +26,7 @@ const {
   createTransaction,
   listWavesConsumptions,
 } = require("./constants/queries");
+const { cwd } = require("process");
 
 const GRAPHQL_ENDPOINT =
   process.env.API_TICKETINGSYSTEMADMIN_GRAPHQLAPIENDPOINTOUTPUT;
@@ -423,60 +424,112 @@ exports.handler = async (event) => {
           const response = await fetch(GRAPHQL_ENDPOINT, bookingOptions);
           const data = await response.json();
           const booking = data.data.getBooking;
-          const allTicketWaves = booking.eventTicket.waves;
-          const currentWave = booking.eventTicket.waves.find(
-            (item) => item.id === waveId
-          );
-          const currentWaveIndex = booking.eventTicket.waves.findIndex(
-            (item) => item.id === waveId
-          );
-          const nextWave = booking.eventTicket.waves.find(
-            (_, index) => index === currentWaveIndex + 1
-          );
-          if (
-            !currentWave ||
-            currentWave.AutomaticShift === AutomaticShiftTypes.OFF
-          ) {
-            console.log("No AutomaticShift for this wave.");
-            console.log("Current wave: ", currentWave);
-            return;
-          }
-          if (
-            currentWave &&
-            currentWave.AutomaticShift === AutomaticShiftTypes.ON_TICKETS &&
-            nextWave
-          ) {
-            const WavesConsumptionVariables = {
-              filter: {
-                waveId: {
-                  eq: nextWave.id,
-                },
-                consumed: {
-                  eq: "0",
-                },
+          const ticketId = booking.eventTicket.id;
+          const WavesConsumptionVariables = {
+            filter: {
+              eventTicketId: {
+                eq: ticketId,
               },
-            };
-            const wcQuery = listWavesConsumptions;
-            const wcOptions = {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "x-api-key": GRAPHQL_API_KEY,
+              consumed: {
+                eq: "0",
               },
-              body: JSON.stringify({
-                query: wcQuery,
-                variables: WavesConsumptionVariables,
-              }),
-            };
-            try {
-              const response = await fetch(GRAPHQL_ENDPOINT, wcOptions);
-              const data = await response.json();
-              const nextWaveConsumption = data.data.listWavesConsumptions.items;
-              if (nextWaveConsumption.length > 0) {
+            },
+          };
+          const wcQuery = listWavesConsumptions;
+          const wcOptions = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": GRAPHQL_API_KEY,
+            },
+            body: JSON.stringify({
+              query: wcQuery,
+              variables: WavesConsumptionVariables,
+            }),
+          };
+          try {
+            const response = await fetch(GRAPHQL_ENDPOINT, wcOptions);
+            const data = await response.json();
+            const allWaveConsumption = data.data.listWavesConsumptions.items;
+            const avilableWaves = allWaveConsumption.map((item) => item.waveId);
+            // const allTicketWaves = booking.eventTicket.waves;
+            const currentWave = booking.eventTicket.waves.find(
+              (item) => item.id === waveId
+            );
+            const currentWaveIndex = booking.eventTicket.waves.findIndex(
+              (item) => item.id === waveId
+            );
+            const nextWave = booking.eventTicket.waves.find(
+              (_, index) => index === currentWaveIndex + 1
+            );
+            let nextAvilableWaveId;
+
+            if (nextWave && avilableWaves.includes(nextWave.id)) {
+              nextAvilableWaveId = nextWave.id;
+            } else {
+              let avilable = false;
+              for (
+                let i = currentWaveIndex + 1;
+                i < avilableWaves.length;
+                i++
+              ) {
+                const waveId = avilableWaves[i];
+                if (waveId === nextWave.id) {
+                  nextAvilableWaveId = nextWave.id;
+                  avilable = true;
+                  break;
+                }
               }
-            } catch (error) {
-              console.error("Error in next wave shifting:", error);
+              if (!avilable) {
+                console.log("No available waves");
+              }
             }
+            const nextAvilableWave = booking.eventTicket.waves.find(
+              (item) => item.id === nextAvilableWaveId
+            );
+            if (
+              !currentWave ||
+              currentWave.AutomaticShift === AutomaticShiftTypes.OFF
+            ) {
+              console.log("No AutomaticShift for this wave.");
+              console.log("Current wave: ", currentWave);
+              return;
+            }
+            if (
+              currentWave &&
+              currentWave.AutomaticShift === AutomaticShiftTypes.ON_TICKETS &&
+              nextAvilableWave
+            ) {
+              const bookingVariables = {
+                input: {
+                  id: booking.id,
+                  wave: nextAvilableWave.name,
+                  waveId: nextAvilableWave.id,
+                },
+              };
+              const bookingQuery = updateBooking;
+              const bookingOptions = {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "x-api-key": GRAPHQL_API_KEY,
+                },
+                body: JSON.stringify({
+                  query: bookingQuery,
+                  variables: bookingVariables,
+                }),
+              };
+              try {
+                const response = await fetch(GRAPHQL_ENDPOINT, bookingOptions);
+                const updatedBooking = await response.json();
+                console.log(updatedBooking);
+                items = updatedBooking.data.updateBooking;
+              } catch (error) {
+                console.error("Error in next wave shifting:", error);
+              }
+            }
+          } catch (err) {
+            console.error("all consumptions are full", err);
           }
         } catch (error) {
           console.error("Error while shifting wave:", error);
