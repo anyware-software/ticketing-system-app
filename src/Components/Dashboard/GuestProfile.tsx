@@ -63,6 +63,7 @@ import { sendOtpViaSMS } from "../../services/sendOTP";
 import listBookingByGuest from "../../services/listBookingByGuest";
 import listAllBookingByGuest from "../../services/listAllBookingByGuest";
 import ContentLoader from "../ContentLoader/ContentLoder";
+import Footer from "../Footer/Footer";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -2383,6 +2384,7 @@ export default function GuestProfile() {
                 </svg>
               </Box>
             </Grid>
+            <Footer />
           </Grid>
         )}
       </Box>

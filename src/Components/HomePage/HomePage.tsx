@@ -49,6 +49,7 @@ import updateBooking from "../../services/updateBooking";
 import CloseIcon from "@mui/icons-material/Close";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Footer from "../Footer/Footer";
 
 export default function HomePage() {
   const user = useSelector((state: any) => state.app.user);
@@ -1120,6 +1121,7 @@ export default function HomePage() {
               </svg>
             </Box>
           </Grid>
+          <Footer />
         </Grid>
       )}
     </Box>

@@ -358,7 +358,6 @@ export default function Dashboard() {
       </Drawer>
       {/* Main Component */}
       {/* <GuestProfile /> */}
-
       <Outlet />
     </Box>
   );

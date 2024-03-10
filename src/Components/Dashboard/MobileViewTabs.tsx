@@ -44,6 +44,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import sendEmail from "../../services/sendEmail";
 import OTP from "../OTP";
 import { sendOtpViaSMS } from "../../services/sendOTP";
+import Footer from "../Footer/Footer";
 
 interface OTPState {
   open: boolean;
@@ -1757,6 +1758,7 @@ export default function MobileViewTabs() {
                   </Box>
                 </Box>
               )}
+              <Footer />
             </Grid>
           </CustomTabPanel>
         </Box>
