@@ -45,6 +45,8 @@ import sendEmail from "../../services/sendEmail";
 import OTP from "../OTP";
 import { sendOtpViaSMS } from "../../services/sendOTP";
 import Footer from "../Footer/Footer";
+import Modal from "@mui/material/Modal";
+import listConsumedWaves from "../../services/listConsumedWaves";
 
 interface OTPState {
   open: boolean;
@@ -60,6 +62,22 @@ interface TabPanelProps {
   index: number;
   value: number;
 }
+interface Wave {
+  name: string;
+  price: number;
+}
+
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -90,6 +108,11 @@ function a11yProps(index: number) {
 
 export default function MobileViewTabs() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [waveBeforeShift, setWaveBeforeShift] = useState<Wave | null>(null);
+  const [waveAfterShift, setWaveAfterShift] = useState<Wave | null>(null);
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
   const [currentBookings, setCurrentBookings] = useState<Booking | null>(null);
   const [currentCompanions, setCurrentCompanions] = useState<Booking[]>([]);
   const [bookingLoading, setBookingLoading] = useState(false);
@@ -175,6 +198,45 @@ export default function MobileViewTabs() {
     }
     getGuestCompanions();
   }, [currentBookings, user]);
+
+  useEffect(() => {
+    // const id = searchParams.get("id");
+    const checkBooking = async () => {
+      if (!user) return;
+      if (!currentBookings) return;
+      if (currentBookings.isPaid === true) return;
+      const waveId = currentBookings?.waveId;
+      const waveBeforeShift = currentBookings?.eventTicket?.waves?.find(
+        (wave) => wave?.id === waveId
+      );
+      console.log(waveBeforeShift);
+      
+      if (waveBeforeShift) {
+        setWaveBeforeShift(waveBeforeShift);
+      }
+      const wave = currentBookings.waveId;
+      const bookingId = currentBookings.id;
+      const shift = await listConsumedWaves({
+        waveId: wave,
+        bookingId: bookingId,
+      });
+      if (shift.id) {
+        console.log("User is Shifted to another Wave");
+        const waveId = shift?.waveId;
+        const waveAfterShift = currentBookings?.eventTicket?.waves?.find(
+          (wave) => wave?.id === waveId
+        );
+        if (waveAfterShift) {
+          setWaveAfterShift(waveAfterShift);
+        }
+        setOpenModal(true);
+      } else {
+        console.log("Wave still available");
+      }
+    };
+    checkBooking();
+  }, [user, currentBookings]);
+
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -584,6 +646,26 @@ export default function MobileViewTabs() {
           {message}
         </Alert>
       </Snackbar>
+
+      <Modal
+          open={openModal}
+          onClose={handleCloseModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={modalStyle}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Unfortunately , The ticket wave you have booked is already sold
+              out
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              You currently shifted from {waveBeforeShift?.name} to {waveAfterShift?.name} wave
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Price Changed from {waveBeforeShift?.price} to {waveAfterShift?.price} wave
+            </Typography>
+          </Box>
+        </Modal>
 
       {loading ? (
         <Box

@@ -35,6 +35,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Tooltip from "@mui/material/Tooltip";
 import { listGuests } from "../../services/getOperations";
 import { Booking, Guest } from "../../API";
+import Modal from "@mui/material/Modal";
 import {
   Checkbox,
   FormControl,
@@ -64,6 +65,7 @@ import listBookingByGuest from "../../services/listBookingByGuest";
 import listAllBookingByGuest from "../../services/listAllBookingByGuest";
 import ContentLoader from "../ContentLoader/ContentLoder";
 import Footer from "../Footer/Footer";
+import listConsumedWaves from "../../services/listConsumedWaves";
 
 const options = ["Choice 1", "Choice 2", "Choice 3", "Choice 4", "Choice 5"];
 
@@ -78,11 +80,32 @@ interface OTPState {
   phoneNumber: string;
   checkCode: string | undefined;
 }
+
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+interface Wave {
+  name: string;
+  price: number;
+}
 export default function GuestProfile() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
+  const [waveBeforeShift, setWaveBeforeShift] = useState<Wave | null>(null);
+  const [waveAfterShift, setWaveAfterShift] = useState<Wave | null>(null);
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
   const [isHovered, setIsHovered] = useState(false);
   const [currentBookings, setCurrentBookings] = useState<Booking | null>(null);
   const [bookingLoading, setBookingLoading] = useState(false);
@@ -106,7 +129,7 @@ export default function GuestProfile() {
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  
+
   useEffect(() => {
     const storedUser = localStorage.getItem("userlogged");
     if (storedUser === "false") {
@@ -123,15 +146,40 @@ export default function GuestProfile() {
   useEffect(() => {
     // const id = searchParams.get("id");
     const checkBooking = async () => {
-      if(!user) return;      
-      if(!currentBookings) return;
-      if(currentBookings.isPaid === true) return;
-      const wave = currentBookings.waveId
-      console.log(wave);
+      if (!user) return;
+      if (!currentBookings) return;
+      if (currentBookings.isPaid === true) return;
+      const waveId = currentBookings?.waveId;
+      const waveBeforeShift = currentBookings?.eventTicket?.waves?.find(
+        (wave) => wave?.id === waveId
+      );
+      console.log(waveBeforeShift);
       
-    }
+      if (waveBeforeShift) {
+        setWaveBeforeShift(waveBeforeShift);
+      }
+      const wave = currentBookings.waveId;
+      const bookingId = currentBookings.id;
+      const shift = await listConsumedWaves({
+        waveId: wave,
+        bookingId: bookingId,
+      });
+      if (shift.id) {
+        console.log("User is Shifted to another Wave");
+        const waveId = shift?.waveId;
+        const waveAfterShift = currentBookings?.eventTicket?.waves?.find(
+          (wave) => wave?.id === waveId
+        );
+        if (waveAfterShift) {
+          setWaveAfterShift(waveAfterShift);
+        }
+        setOpenModal(true);
+      } else {
+        console.log("Wave still available");
+      }
+    };
     checkBooking();
-  }, [user , currentBookings]);
+  }, [user, currentBookings]);
 
   useEffect(() => {
     const handdleUpdateBooking = async () => {
@@ -839,6 +887,26 @@ export default function GuestProfile() {
             {message}
           </Alert>
         </Snackbar>
+
+        <Modal
+          open={openModal}
+          onClose={handleCloseModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={modalStyle}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Unfortunately , The ticket wave you have booked is already sold
+              out
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              You currently shifted from {waveBeforeShift?.name} to {waveAfterShift?.name} wave
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Price Changed from {waveBeforeShift?.price} to {waveAfterShift?.price} wave
+            </Typography>
+          </Box>
+        </Modal>
 
         {loading ? (
           <Box
