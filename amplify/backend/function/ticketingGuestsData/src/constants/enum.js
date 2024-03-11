@@ -4,6 +4,7 @@ const operationIdEnum = {
     'updateGuest': 3,
     'listGuests': 4,
     'getGuestByPhone': 5,
+    'getGuestDataByPhone': 6,
 }
 module.exports = {
     operationIdEnum

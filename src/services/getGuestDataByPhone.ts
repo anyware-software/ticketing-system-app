@@ -1,9 +1,9 @@
 import { EndPoints } from "../constants/Enums";
 import axios from "axios";
 
-async function getGuestByPhone(phoneNumber: any) {
+async function getGuestDataByPhone(phoneNumber: any) {
   try {
-    const operationId = 5;
+    const operationId = 6;
     const requestBody = {
       operationId,
       phoneNumber,
@@ -25,4 +25,4 @@ async function getGuestByPhone(phoneNumber: any) {
   }
 }
 
-export default getGuestByPhone;
+export default getGuestDataByPhone;

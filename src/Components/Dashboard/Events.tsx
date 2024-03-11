@@ -26,7 +26,6 @@ import Checkbox from "@mui/material/Checkbox";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import AccessibleIcon from "@mui/icons-material/Accessible";
-import getGuestByPhone from "../../services/getGuestByPhone";
 import Avatar from "@mui/material/Avatar";
 import createBooking from "../../services/createBooking";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,6 +48,7 @@ import listBookingByGuest from "../../services/listBookingByGuest";
 import sendEmail from "../../services/sendEmail";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
+import getGuestDataByPhone from "../../services/getGuestDataByPhone";
 
 // interface Event {
 //   id: string;
@@ -104,6 +104,7 @@ interface Guest {
 export default function Events() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
+  const [bookingLoading, setBookingLoading] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [currentEventId, setCurrentEventsId] = useState("");
@@ -344,7 +345,7 @@ export default function Events() {
       const notValidGuests: any[] = [];
 
       for (const phone of phones) {
-        let guest: any[] = await getGuestByPhone(phone);
+        let guest: any[] = await getGuestDataByPhone(phone);        
         if (guest.length !== 0) {
           if (guest[0].id === user.id) {
             mainGuest = guest[0];
@@ -407,6 +408,7 @@ export default function Events() {
   };
 
   const createEventBooking = async () => {
+    setBookingLoading(true);
     const orderId = generateOrderId();
     setOrderId(orderId);
     const mainGuestPhone = mainGuest ? mainGuest.phone_number : null;
@@ -523,6 +525,7 @@ export default function Events() {
         bookingRequest,
       ]);
     });
+    setBookingLoading(true);
   };
   const isPhoneValid = (phoneNumber: string): boolean => {
     const phoneRegex = /^(010|011|012|015)\d{8}$/;
@@ -581,16 +584,16 @@ export default function Events() {
       });
   };
 
-  if (currentEventId === "")
-    return (
-      <Box
-        sx={{
-          width: "100%",
-        }}
-      >
-        <ContentLoader />
-      </Box>
-    );
+  // if (currentEventId === "")
+  //   return (
+  //     <Box
+  //       sx={{
+  //         width: "100%",
+  //       }}
+  //     >
+  //       <ContentLoader />
+  //     </Box>
+  //   );
   if (loading)
     return (
       <Box
@@ -2078,7 +2081,7 @@ export default function Events() {
               </Typography>
               <LoadingButton
                 variant="outlined"
-                loading={ticketChosen === "guests" && bookedGuests}
+                loading={(ticketChosen === "guests" && bookedGuests) || bookingLoading}
                 loadingPosition="start"
                 sx={{
                   color: "white",

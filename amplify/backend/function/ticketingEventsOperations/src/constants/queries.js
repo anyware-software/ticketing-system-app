@@ -388,7 +388,6 @@ const createBooking = /* GraphQL */ `
             createdByID
             createdByName
             updatedAt
-            eventTicketsId
             __typename
           }
           nextToken
@@ -454,7 +453,6 @@ const createBooking = /* GraphQL */ `
         createdByID
         createdByName
         updatedAt
-        eventTicketsId
         __typename
       }
       wave
@@ -468,6 +466,7 @@ const createBooking = /* GraphQL */ `
       phone_number
       guestTicket {
         number
+        redeemed
         __typename
       }
       guestName

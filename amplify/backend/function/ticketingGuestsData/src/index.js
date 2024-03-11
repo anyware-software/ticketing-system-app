@@ -72,6 +72,15 @@ exports.handler = async (event) => {
         filter,
       };
       query = ByPhoneNumber;
+    } else if (operationId === operationIdEnum.getGuestDataByPhone) {
+      let filter = {
+        deleted: { eq: "0" },
+      };
+      variables = {
+        phone_number: phoneNumber,
+        filter,
+      };
+      query = ByPhoneNumber;
     } else if (operationId === operationIdEnum.updateGuest) {
       console.log(operationIdEnum.updateGuest);
       variables = {
@@ -135,6 +144,8 @@ exports.handler = async (event) => {
       items = responseBody.data.updateGuest;
     } else if (operationId === operationIdEnum.listGuests) {
       items = responseBody.data.listGuests.items;
+    } else if (operationId === operationIdEnum.getGuestDataByPhone) {
+      items = responseBody.data.ByPhoneNumber.items;
     } else if (operationId === operationIdEnum.getGuestByPhone) {
       items = responseBody.data.ByPhoneNumber.items;
       if (items.length > 0) {

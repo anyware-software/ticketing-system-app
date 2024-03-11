@@ -266,7 +266,7 @@ export default function HomePage() {
           bottom: 0,
           left: 0,
           background:
-            "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), linear-gradient(to right, rgba(0, 0, 0, 0.1)100%, rgba(0, 0, 0, 0.1))",
+            "linear-gradient(to top, rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.0)), linear-gradient(to right, rgba(0, 0, 0, 0.1)100%, rgba(0, 0, 0, 0.1))",
         },
         zIndex: 0,
         display: "flex",
@@ -661,7 +661,7 @@ export default function HomePage() {
               >
                 <Typography
                   sx={{
-                    color: "red",
+                    color: "White",
                     fontSize: { xs: "18px", sm: "25px" },
                     fontWeight: "bold",
                     marginLeft: "auto",
@@ -790,7 +790,7 @@ export default function HomePage() {
             >
               <Typography
                 sx={{
-                  color: "red",
+                  color: "white",
                   fontWeight: "bold",
                   fontSize: "20px",
                 }}
