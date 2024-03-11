@@ -49,6 +49,7 @@ import sendEmail from "../../services/sendEmail";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import getGuestDataByPhone from "../../services/getGuestDataByPhone";
+import listWavesConsumptions from "../../services/listWavesConsumptions";
 
 // interface Event {
 //   id: string;
@@ -103,6 +104,7 @@ interface Guest {
 
 export default function Events() {
   const [events, setEvents] = useState<Event[]>([]);
+  const [consumedWaves, setConsumedWaves] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [bookingLoading, setBookingLoading] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -150,6 +152,29 @@ export default function Events() {
       console.error("Error fetching events:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchWavesConsumptions = async () => {
+      try {
+        const waveIds = currentEventTicket.flatMap((ticket) =>
+          ticket.waves.map((wave) => wave.id)
+        );
+        const consumedWaves = [];
+        for (const waveId of waveIds) {
+          const result = await listWavesConsumptions({ waveId });
+          consumedWaves.push(result.items[0]);
+        }
+        const filteredConsumedWaves = consumedWaves
+          .filter((wave) => wave !== undefined)
+          .map((wave) => wave.waveId);
+        // console.log("Results:", filteredConsumedWaves);
+        setConsumedWaves(filteredConsumedWaves);
+      } catch (error) {
+        console.error("Error fetching waves consumptions:", error);
+      }
+    };
+    fetchWavesConsumptions();
+  }, [currentEventTicket]);
 
   useEffect(() => {
     const getCurrentEvent = async () => {
@@ -345,7 +370,7 @@ export default function Events() {
       const notValidGuests: any[] = [];
 
       for (const phone of phones) {
-        let guest: any[] = await getGuestDataByPhone(phone);        
+        let guest: any[] = await getGuestDataByPhone(phone);
         if (guest.length !== 0) {
           if (guest[0].id === user.id) {
             mainGuest = guest[0];
@@ -1228,7 +1253,7 @@ export default function Events() {
                                   position: "relative",
                                 }}
                               >
-                                {wave.quota === 0 && (
+                                {consumedWaves.includes(wave.id) && (
                                   <Box
                                     sx={{
                                       width: 100,
@@ -1312,7 +1337,7 @@ export default function Events() {
                                   >
                                     EGP {wave.price}
                                   </Typography>
-                                  {wave.quota > 0 && (
+                                  {!consumedWaves.includes(wave.id) && (
                                     <>
                                       <ManIcon sx={{ color: "white" }} />
                                       <RemoveCircleIcon
@@ -2081,7 +2106,9 @@ export default function Events() {
               </Typography>
               <LoadingButton
                 variant="outlined"
-                loading={(ticketChosen === "guests" && bookedGuests) || bookingLoading}
+                loading={
+                  (ticketChosen === "guests" && bookedGuests) || bookingLoading
+                }
                 loadingPosition="start"
                 sx={{
                   color: "white",

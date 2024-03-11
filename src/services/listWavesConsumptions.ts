@@ -17,8 +17,8 @@ async function listWavesConsumptions({ waveId }: any) {
     };
 
     const response = await axios.post(EventEndPoints, requestBody);
-    console.log(requestBody);
-    console.log(response);
+    // console.log(requestBody);
+    // console.log(response);
 
     return response.data;
   } catch (error) {

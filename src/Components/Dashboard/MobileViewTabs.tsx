@@ -47,6 +47,7 @@ import { sendOtpViaSMS } from "../../services/sendOTP";
 import Footer from "../Footer/Footer";
 import Modal from "@mui/material/Modal";
 import listConsumedWaves from "../../services/listConsumedWaves";
+import ForwardIcon from "@mui/icons-material/Forward";
 
 interface OTPState {
   open: boolean;
@@ -73,12 +74,12 @@ const modalStyle = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
+  bgcolor: "#dbd9d9",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  p: 3,
+  borderRadius: "20px",
 };
-
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -210,7 +211,7 @@ export default function MobileViewTabs() {
         (wave) => wave?.id === waveId
       );
       console.log(waveBeforeShift);
-      
+
       if (waveBeforeShift) {
         setWaveBeforeShift(waveBeforeShift);
       }
@@ -236,7 +237,6 @@ export default function MobileViewTabs() {
     };
     checkBooking();
   }, [user, currentBookings]);
-
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -648,24 +648,86 @@ export default function MobileViewTabs() {
       </Snackbar>
 
       <Modal
-          open={openModal}
-          onClose={handleCloseModal}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={modalStyle}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Unfortunately , The ticket wave you have booked is already sold
-              out
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            <span style={{ color: "red" }}>Unfortunately</span>,<br></br> The
+            ticket wave you have booked is already
+            <span style={{ color: "red" }}> sold out</span>
+          </Typography>
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2, fontWeight: "bold", fontSize: "20px" }}
+          >
+            You currently shifted from <br></br>
+          </Typography>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              id="modal-modal-description"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "20px",
+              }}
+            >
+              {waveBeforeShift?.name} wave
             </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              You currently shifted from {waveBeforeShift?.name} to {waveAfterShift?.name} wave
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Price Changed from {waveBeforeShift?.price} to {waveAfterShift?.price} wave
+            <ForwardIcon sx={{ color: "red", fontSize: "50px" }} />
+            <Typography
+              id="modal-modal-description"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "20px",
+              }}
+            >
+              {waveAfterShift?.name} wave
             </Typography>
           </Box>
-        </Modal>
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2, fontWeight: "bold", fontSize: "20px" }}
+          >
+            Price Changed from <br></br>
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              id="modal-modal-description"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "20px",
+              }}
+            >
+              {waveBeforeShift?.price} EGP
+            </Typography>
+            <ForwardIcon sx={{ color: "red", fontSize: "50px" }} />
+            <Typography
+              id="modal-modal-description"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "20px",
+              }}
+            >
+              {waveAfterShift?.price} EGP
+            </Typography>
+          </Box>
+        </Box>
+      </Modal>
 
       {loading ? (
         <Box

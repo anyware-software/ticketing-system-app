@@ -36,6 +36,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { listGuests } from "../../services/getOperations";
 import { Booking, Guest } from "../../API";
 import Modal from "@mui/material/Modal";
+import ForwardIcon from "@mui/icons-material/Forward";
 import {
   Checkbox,
   FormControl,
@@ -87,10 +88,11 @@ const modalStyle = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
+  bgcolor: "#dbd9d9",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  p: 3,
+  borderRadius: "20px",
 };
 interface Wave {
   name: string;
@@ -154,7 +156,7 @@ export default function GuestProfile() {
         (wave) => wave?.id === waveId
       );
       console.log(waveBeforeShift);
-      
+
       if (waveBeforeShift) {
         setWaveBeforeShift(waveBeforeShift);
       }
@@ -896,15 +898,71 @@ export default function GuestProfile() {
         >
           <Box sx={modalStyle}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Unfortunately , The ticket wave you have booked is already sold
-              out
+              <span style={{ color: "red" }}>Unfortunately</span>,<br></br> The
+              ticket wave you have booked is already
+              <span style={{ color: "red" }}> sold out</span>
             </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              You currently shifted from {waveBeforeShift?.name} to {waveAfterShift?.name} wave
+            <Typography id="modal-modal-description" sx={{ mt: 2  , fontWeight:'bold' , fontSize:'20px'}}>
+              You currently shifted from <br></br>
             </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Price Changed from {waveBeforeShift?.price} to {waveAfterShift?.price} wave
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                id="modal-modal-description"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                }}
+              >
+                {waveBeforeShift?.name} wave
+              </Typography>
+              <ForwardIcon sx={{ color: "red", fontSize: "50px" }} />
+              <Typography
+                id="modal-modal-description"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                }}
+              >
+                {waveAfterShift?.name} wave
+              </Typography>
+            </Box>
+            <Typography id="modal-modal-description" sx={{ mt: 2  , fontWeight:'bold' , fontSize:'20px'}}>
+              Price Changed from <br></br>
             </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                id="modal-modal-description"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                }}
+              >
+                {waveBeforeShift?.price} EGP
+              </Typography>
+              <ForwardIcon sx={{ color: "red", fontSize: "50px" }} />
+              <Typography
+                id="modal-modal-description"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                }}
+              >
+                {waveAfterShift?.price} EGP
+              </Typography>
+            </Box>
           </Box>
         </Modal>
 
