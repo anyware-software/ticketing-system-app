@@ -95,6 +95,10 @@ export default function HomePage() {
   useEffect(() => {
     if (!currentEvent) {
       setLoading(true);
+      const timeout = setTimeout(() => {
+        setLoading(false);
+      }, 5000);
+      return () => clearTimeout(timeout);
     } else {
       setLoading(false);
     }
@@ -474,6 +478,8 @@ export default function HomePage() {
             </Carousel>
           </Grid>
 
+{currentEvent && (
+
           <Grid
             item
             xs={12}
@@ -634,6 +640,7 @@ export default function HomePage() {
               </Button>
             </Box>
           </Grid>
+)}
 
           <Grid
             item

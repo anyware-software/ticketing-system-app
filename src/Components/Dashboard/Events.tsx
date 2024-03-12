@@ -609,16 +609,14 @@ export default function Events() {
       });
   };
 
-  // if (currentEventId === "")
-  //   return (
-  //     <Box
-  //       sx={{
-  //         width: "100%",
-  //       }}
-  //     >
-  //       <ContentLoader />
-  //     </Box>
-  //   );
+  useEffect(() => {
+    setLoading(true);
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, []);
+
   if (loading)
     return (
       <Box
@@ -629,16 +627,53 @@ export default function Events() {
         <ContentLoader />
       </Box>
     );
-  if (loading && currentEventId === "")
+
+  // if (currentEventId === "")
+  //   return (
+  //     <Box
+  //       sx={{
+  //         width: "100%",
+  //       }}
+  //     >
+  //       <ContentLoader />
+  //     </Box>
+  //   );
+
+  // if (!loading && currentEventId === "")
+  //   return (
+  //     <Box
+  //       sx={{
+  //         width: "100%",
+  //       }}
+  //     >
+  //       <NoEvent />
+  //     </Box>
+  //   );
+
+  if (!loading && currentEventId === "") {
+    setTimeout(() => {
+      if (!loading && currentEventId === "") {
+        return (
+          <Box
+            sx={{
+              width: "100%",
+            }}
+          >
+            <NoEvent />
+          </Box>
+        );
+      }
+    }, 10000);
     return (
       <Box
         sx={{
           width: "100%",
         }}
       >
-        <NoEvent />
+        <ContentLoader />
       </Box>
     );
+  }
 
   if (user?.phone_number === "" || user?.phone_number === "+20")
     return (
