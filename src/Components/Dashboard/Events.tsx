@@ -2192,10 +2192,9 @@ export default function Events() {
             sm={12}
             lg={12}
             sx={{
-              px: { xs: 0, sm: 10, md: 10, lg: 12 },
               zIndex: 1,
               position: "relative",
-              display: { xs: "none", sm: "flex" },
+              display: "flex",
               // flexDirection: "column",
               // alignItems: "end",
               justifyContent: "center",
