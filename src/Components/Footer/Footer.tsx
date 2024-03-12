@@ -27,7 +27,7 @@ export default function Footer() {
         height: "6vh",
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-evenly",
+        justifyContent: "space-around",
         flexDirection: {xs:"column",sm:"row"},
       }}
     >
