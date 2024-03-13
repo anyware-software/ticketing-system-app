@@ -27,7 +27,7 @@ const awsmobile = {
             "profile",
             "aws.cognito.signin.user.admin"
         ],
-        "redirectSignIn": "https://ticketing-system-app-eight.vercel.app/dashboard/,https://ticketing-system-app-eight.vercel.app/dashboard/",
+        "redirectSignIn": "https://ticketing-system-app-eight.vercel.app/,https://ticketing-system-app-eight.vercel.app/dashboard/",
         "redirectSignOut": "https://ticketing-system-app-eight.vercel.app/,https://ticketing-system-app-eight.vercel.app/",
         "responseType": "code"
     },
