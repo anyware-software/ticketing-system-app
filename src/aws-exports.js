@@ -27,8 +27,8 @@ const awsmobile = {
             "profile",
             "aws.cognito.signin.user.admin"
         ],
-        "redirectSignIn": "http://localhost:3000/dashboard/,https://ticketing-system-app-eight.vercel.app/dashboard/",
-        "redirectSignOut": "http://localhost:3000/,https://ticketing-system-app-eight.vercel.app/",
+        "redirectSignIn": "https://ticketing-system-app-eight.vercel.app/dashboard/,https://ticketing-system-app-eight.vercel.app/dashboard/",
+        "redirectSignOut": "https://ticketing-system-app-eight.vercel.app/,https://ticketing-system-app-eight.vercel.app/",
         "responseType": "code"
     },
     "federationTarget": "COGNITO_USER_POOLS",
