@@ -15,10 +15,7 @@ import {
   Paper,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setLogin,
-  toggleDrawer as toggleDrawerState,
-} from "../../state/index";
+import { setLogin, toggleDrawer as toggleDrawerState } from "../../state/index";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -201,7 +198,8 @@ export default function HomePage() {
     } catch (error) {
       console.error("Error logging in with Facbook:", error);
       setValidationWarning(true);
-      setMessage("Failed to login");    }
+      setMessage("Failed to login");
+    }
   };
 
   const getListEvents = async () => {
@@ -244,7 +242,7 @@ export default function HomePage() {
       prevIndex === 0 ? endedEvents.length - 1 : prevIndex - 1
     );
   };
-  
+
   // if (loading) return <ContentLoader />;
 
   return (
@@ -468,7 +466,7 @@ export default function HomePage() {
           >
             <Carousel
               sx={{
-                width: { xs: "100%", sm: "100%", md: "80%", lg: "70%" },
+                width: { xs: "95%", sm: "100%", md: "80%", lg: "70%" },
                 // height: {sm:'60vh',md:"65vh",lg:"60vh"},
               }}
             >
@@ -478,304 +476,309 @@ export default function HomePage() {
             </Carousel>
           </Grid>
 
-{currentEvent && (
-
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            lg={12}
-            sx={{
-              position: "relative",
-            }}
-          >
-            <Box
+          {currentEvent && (
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              lg={12}
               sx={{
-                my: 8,
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "column",
+                position: "relative",
               }}
             >
-              <Typography
+              <Box
                 sx={{
-                  color: "white",
-                  fontSize: { xs: "15px", sm: "25px" },
-                  fontWeight: "bold",
-                  "& span": { color: "red" },
+                  my: 8,
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "column",
                 }}
               >
-                {currentEvent?.name} <span>STARTS IN</span>
-              </Typography>
+                <Typography
+                  sx={{
+                    color: "white",
+                    fontSize: { xs: "15px", sm: "25px" },
+                    fontWeight: "bold",
+                    "& span": { color: "red" },
+                  }}
+                >
+                  {currentEvent?.name} <span>STARTS IN</span>
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: { xs: 5, sm: 8 },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: { xs: "35px", sm: "50px" },
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {remainingTime.days}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: "12px",
+                      }}
+                    >
+                      Days
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: { xs: "35px", sm: "50px" },
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {remainingTime.hours}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: "12px",
+                      }}
+                    >
+                      Hours
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: { xs: "35px", sm: "50px" },
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {remainingTime.minutes}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: "12px",
+                      }}
+                    >
+                      Minutes
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: { xs: "35px", sm: "50px" },
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {remainingTime.seconds}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "white",
+                        fontSize: "12px",
+                      }}
+                    >
+                      Seconds
+                    </Typography>
+                  </Box>
+                </Box>
+                <Button
+                  variant="contained"
+                  sx={{
+                    color: "black",
+                    fontSize: 13,
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                    backgroundColor: "red",
+                    px: 4,
+                    borderRadius: "8px",
+                    mt: 4,
+                  }}
+                  onClick={() => {
+                    navigate("/dashboard/events/");
+                  }}
+                >
+                  Buy Tickets
+                </Button>
+              </Box>
+            </Grid>
+          )}
+
+          {endedEvents && endedEvents?.length > 1 && (
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              lg={12}
+              sx={{
+                position: "relative",
+              }}
+            >
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  gap: { xs: 5, sm: 8 },
                 }}
               >
                 <Box
                   sx={{
                     display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
+                    width: { xs: "70%", sm: "30%" },
+                    justifyContent: "space-between",
                     alignItems: "center",
                   }}
                 >
                   <Typography
                     sx={{
-                      color: "white",
-                      fontSize: { xs: "35px", sm: "50px" },
+                      color: "White",
+                      fontSize: { xs: "18px", sm: "25px" },
                       fontWeight: "bold",
+                      marginLeft: "auto",
                     }}
                   >
-                    {remainingTime.days}
+                    Past Events
                   </Typography>
-                  <Typography
+                  <Box
                     sx={{
-                      color: "white",
-                      fontSize: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      marginLeft: "auto",
                     }}
                   >
-                    Days
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "white",
-                      fontSize: { xs: "35px", sm: "50px" },
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {remainingTime.hours}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "white",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Hours
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "white",
-                      fontSize: { xs: "35px", sm: "50px" },
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {remainingTime.minutes}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "white",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Minutes
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "white",
-                      fontSize: { xs: "35px", sm: "50px" },
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {remainingTime.seconds}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "white",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Seconds
-                  </Typography>
+                    <Box
+                      sx={{
+                        backgroundColor: "#303030",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        p: 0,
+                      }}
+                    >
+                      <IconButton onClick={handlePrev}>
+                        <ChevronLeftIcon sx={{ color: "red" }} />
+                      </IconButton>
+                    </Box>
+                    <Box
+                      sx={{
+                        backgroundColor: "#303030",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        p: 0,
+                      }}
+                    >
+                      <IconButton onClick={handleNext}>
+                        <ChevronRightIcon sx={{ color: "red" }} />
+                      </IconButton>
+                    </Box>
+                  </Box>
                 </Box>
               </Box>
-              <Button
-                variant="contained"
-                sx={{
-                  color: "black",
-                  fontSize: 13,
-                  fontWeight: "600",
-                  wordWrap: "break-word",
-                  backgroundColor: "red",
-                  px: 4,
-                  borderRadius: "8px",
-                  mt: 4,
-                }}
-                onClick={() => {
-                  navigate("/dashboard/events/");
-                }}
-              >
-                Buy Tickets
-              </Button>
-            </Box>
-          </Grid>
-)}
-
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            lg={12}
-            sx={{
-              position: "relative",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
               <Box
                 sx={{
                   display: "flex",
-                  width: { xs: "70%", sm: "30%" },
-                  justifyContent: "space-between",
+                  justifyContent: "center",
                   alignItems: "center",
+                  my: 5,
+                  gap: { xs: 1, sm: 2 },
                 }}
               >
-                <Typography
-                  sx={{
-                    color: "White",
-                    fontSize: { xs: "18px", sm: "25px" },
-                    fontWeight: "bold",
-                    marginLeft: "auto",
-                  }}
-                >
-                  Past Events
-                </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                    marginLeft: "auto",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      backgroundColor: "#303030",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      p: 0,
-                    }}
-                  >
-                    <IconButton onClick={handlePrev}>
-                      <ChevronLeftIcon sx={{ color: "red" }} />
-                    </IconButton>
-                  </Box>
-                  <Box
-                    sx={{
-                      backgroundColor: "#303030",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      p: 0,
-                    }}
-                  >
-                    <IconButton onClick={handleNext}>
-                      <ChevronRightIcon sx={{ color: "red" }} />
-                    </IconButton>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                my: 5,
-                gap: { xs: 1, sm: 2 },
-              }}
-            >
-              {endedEvents
-                .concat(endedEvents)
-                .slice(currentIndex, currentIndex + 3)
-                .map((event, index) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      position: "relative",
-                      width: { xs: 110, sm: 200, md: 250 },
-                      height: { xs: 160, sm: 250, md: 300 },
-                    }}
-                  >
+                {endedEvents
+                  .concat(endedEvents)
+                  .slice(
+                    currentIndex,
+                    currentIndex +
+                      (endedEvents.length < 3 ? endedEvents.length : 3)
+                  )
+                  .map((event, index) => (
                     <Box
-                      component="img"
-                      src={
-                        event.image
-                          ? `${dbStorage}${event.image}`
-                          : "../../../Images/event.png"
-                      }
-                      alt={`Event ${index}`}
+                      key={index}
                       sx={{
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: "5px",
-                      }}
-                    />
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        width: "100%",
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
-                        color: "white",
-                        textAlign: "center",
-                        padding: "8px",
-                        borderBottomLeftRadius: "5px",
-                        borderBottomRightRadius: "5px",
+                        position: "relative",
+                        width: { xs: 110, sm: 200, md: 250 },
+                        height: { xs: 160, sm: 250, md: 300 },
                       }}
                     >
-                      <Typography
+                      <Box
+                        component="img"
+                        src={
+                          event.image
+                            ? `${dbStorage}${event.image}`
+                            : "../../../Images/event.png"
+                        }
+                        alt={`Event ${index}`}
                         sx={{
-                          color: "red",
-                          fontWeight: "bold",
-                          fontSize: "15px",
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: "5px",
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          width: "100%",
+                          backgroundColor: "rgba(0, 0, 0, 0.5)",
+                          color: "white",
+                          textAlign: "center",
+                          padding: "8px",
+                          borderBottomLeftRadius: "5px",
+                          borderBottomRightRadius: "5px",
                         }}
                       >
-                        {event.name}
-                      </Typography>
+                        <Typography
+                          sx={{
+                            color: "red",
+                            fontWeight: "bold",
+                            fontSize: "15px",
+                          }}
+                        >
+                          {event.name}
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                ))}
-            </Box>
-          </Grid>
+                  ))}
+              </Box>
+            </Grid>
+          )}
 
           <Grid
             item

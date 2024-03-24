@@ -1132,14 +1132,13 @@ export default function Events() {
                       setTicketChosen("noTickets");
                     }
                     if (ticketChosen === "guests") {
-                      setBookingRequests({});
+                      // setBookingRequests({});
                       setMainGuest(null);
                       setValidGuests([]);
                       setNotValidGuests([]);
                       setTicketChosen("tickets");
                     }
                     if (ticketChosen === "book") {
-                      // setBookingRequests({});
                       setNotValidGuestsBooking([]);
                       setTicketChosen("noTickets");
                     }
@@ -1179,14 +1178,13 @@ export default function Events() {
                       setTicketChosen("noTickets");
                     }
                     if (ticketChosen === "guests") {
-                      setBookingRequests({});
+                      // setBookingRequests({});
                       setMainGuest(null);
                       setValidGuests([]);
                       setNotValidGuests([]);
                       setTicketChosen("tickets");
                     }
                     if (ticketChosen === "book") {
-                      // setBookingRequests({});
                       setNotValidGuestsBooking([]);
                       setTicketChosen("noTickets");
                     }
@@ -1508,6 +1506,7 @@ export default function Events() {
                                           placeholder={`Enter Friend's Name`}
                                           focused={false}
                                           autoComplete="false"
+                                          value={bookingRequests[`${wave.ticketId}-${wave.waveName}-${wave.waveId}-${index}`]?.name || ''}
                                           onChange={(
                                             e: ChangeEvent<HTMLInputElement>
                                           ) =>
@@ -1545,6 +1544,7 @@ export default function Events() {
                                           placeholder={`Enter Friend's Phone`}
                                           focused={false}
                                           autoComplete="false"
+                                          value={bookingRequests[`${wave.ticketId}-${wave.waveName}-${wave.waveId}-${index}`]?.phone || ''}
                                           onChange={(
                                             e: ChangeEvent<HTMLInputElement>
                                           ) =>

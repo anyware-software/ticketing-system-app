@@ -122,7 +122,7 @@ const EventItem: React.FC<{ event: Event }> = ({ event }) => {
               display: "flex",
               flexDirection: "column",
               gap: 1,
-              px: { xs: 3, sm: 0 },
+              px: { xs: 1.5, sm: 0 },
             }}
           >
             <Box
